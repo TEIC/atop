@@ -13,9 +13,9 @@
     <!-- Global variables. -->
     <let name="docUri" value="document-uri(/)"/>
     
-    <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+_((str)|(int)|(seq)|(dt))$'"/>
+    <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
-    <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+_((str)|(int)|(seq)|(dt))$'"/>
+    <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
     <let name="reFunctionName" value="'^teif:[a-z][a-z\-]+[a-z]$'"/>
     
