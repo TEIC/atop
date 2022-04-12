@@ -9,8 +9,8 @@
                     <xsl:variable name="vGlobalVariable" select="true()"/>
                 </xsl:stylesheet>
             </x:context>
-            <x:expect-assert id="global-name-prefix"/>
-            <x:expect-assert id="global-name-uri"/>
+            <x:expect-assert id="assert-global-name-prefix"/>
+            <x:expect-assert id="assert-global-name-uri"/>
         </x:scenario>
         <x:scenario label="A global variable with the wrong prefix">
             <x:context>
@@ -20,8 +20,8 @@
                     <xsl:variable name="teif:vGlobalVariable" select="true()"/>
                 </xsl:stylesheet>
             </x:context>
-            <x:expect-assert id="global-name-prefix"/>
-            <x:expect-not-assert id="global-name-uri"/>
+            <x:expect-assert id="assert-global-name-prefix"/>
+            <x:expect-not-assert id="assert-global-name-uri"/>
         </x:scenario>
         <x:scenario label="A global variable with the wrong uri">
             <x:context>
@@ -31,8 +31,8 @@
                     <xsl:variable name="atop:vGlobalVariable" select="true()"/>
                 </xsl:stylesheet>
             </x:context>
-            <x:expect-not-assert id="global-name-prefix"/>
-            <x:expect-assert id="global-name-uri"/>
+            <x:expect-not-assert id="assert-global-name-prefix"/>
+            <x:expect-assert id="assert-global-name-uri"/>
         </x:scenario>
         <x:scenario label="A global variable">
             <x:context>
@@ -42,8 +42,8 @@
                     <xsl:variable name="atop:vGlobalVariable" select="true()"/>
                 </xsl:stylesheet>
             </x:context>
-            <x:expect-not-assert id="global-name-prefix"/>
-            <x:expect-not-assert id="global-name-uri"/>
+            <x:expect-not-assert id="assert-global-name-prefix"/>
+            <x:expect-not-assert id="assert-global-name-uri"/>
         </x:scenario>
     </x:scenario>
 </x:description>
