@@ -17,7 +17,7 @@
     
     <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
-    <let name="reFunctionName" value="'^teif:[a-z][a-z\-]+[a-z]$'"/>
+    <let name="reFunctionName" value="'^atop:[a-z][a-z\-]+[a-z]$'"/>
     
     <!-- Constraints -->
     
@@ -61,7 +61,7 @@
     </pattern>
     
     <pattern id="function-names">
-        <rule context="xsl:function">
+        <rule context="xsl:function | xsl:template[@name]">
             <let name="name" value="@name"/>
             <assert test="matches(@name, $reFunctionName)">
                 ERROR: <value-of select="$name"/> must have a name
