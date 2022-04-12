@@ -28,7 +28,7 @@
             <assert test="starts-with(@name, concat($atopNamespacePrefix, ':'))" role="error" id="global-name-prefix">
                 ERROR: The name of a global <value-of select="name()"/> must be a QName with the prefix <value-of select="$atopNamespacePrefix"/>. 
             </assert>
-            <assert test="namespace-uri-for-prefix($atopNamespacePrefix, .) = $atopNamespaceUri" role="error" id="global-name-uri">
+            <assert test="namespace-uri-for-prefix(substring-before(@name, ':'), .) = $atopNamespaceUri" role="error" id="global-name-uri">
                 ERROR: The name of a global <value-of select="name()"/> must be a QName with the namespace URI <value-of select="$atopNamespaceUri"/>. 
             </assert>
         </rule>
