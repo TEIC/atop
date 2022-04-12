@@ -20,7 +20,7 @@
     
     <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
-    <let name="reFunctionName" value="'^teif:[a-z][a-z\-]+[a-z]$'"/>
+    <let name="reFunctionName" value="concat('^', $atopNamespacePrefix, ':[a-z][a-z\-]+[a-z]$')"/>
     
     <!-- Constraints -->
     <pattern id="global-names">
