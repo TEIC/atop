@@ -23,6 +23,16 @@
     <let name="reFunctionName" value="'^teif:[a-z][a-z\-]+[a-z]$'"/>
     
     <!-- Constraints -->
+    <pattern id="global-names">
+        <rule context="/*/xsl:param | /*/xsl:variable | xsl:function | xsl:template[@name]">
+            <assert test="starts-with(@name, concat($atopNamespacePrefix, ':'))" role="error" id="global-name-prefix">
+                ERROR: The name of a global <value-of select="name()"/> must be a QName with the prefix <value-of select="$atopNamespacePrefix"/>. 
+            </assert>
+            <assert test="namespace-uri-for-prefix($atopNamespacePrefix, .) = $atopNamespaceUri" role="error" id="global-name-uri">
+                ERROR: The name of a global <value-of select="name()"/> must be a QName with the namespace URI <value-of select="$atopNamespaceUri"/>. 
+            </assert>
+        </rule>
+    </pattern>
     
     <pattern id="things-must-have-as-attribute">
         <rule context="xsl:template | xsl:variable | xsl:with-param | xsl:param | xsl:function">
