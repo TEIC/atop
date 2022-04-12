@@ -13,6 +13,9 @@
     <!-- Global variables. -->
     <let name="docUri" value="document-uri(/)"/>
     
+    <let name="atopNamespaceUri" value="'http://www.tei-c.org/ns/atop'"/>
+    <let name="atopNamespacePrefix" value="'atop'"/>
+    
     <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
     <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
