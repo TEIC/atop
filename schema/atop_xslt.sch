@@ -71,7 +71,7 @@
     </pattern>
     
     <pattern id="no-literal-text">
-        <rule context="text()[not(normalize-space(.) = '')]">
+        <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:desc)]">
             <assert test="parent::xsl:text">
                 ERROR: Literal text should always be in an xsl:text
                 element or in the @select attribute of xsl:sequence.
