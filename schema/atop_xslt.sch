@@ -44,7 +44,7 @@
             </assert>
         </rule>
         <rule abstract="true" id="local-name">
-            <assert test="not(contains(@name, ':'))" role="error" id="assert-local-name">
+            <assert test="@name castable as xs:NCName" role="error" id="assert-local-name">
                 ERROR: The name of a local <value-of select="name()"/> must be a xs:NCName.
             </assert>
         </rule>
