@@ -73,7 +73,7 @@
         </rule>
         <rule context="xsl:function | xsl:template[@name]">
             <extends rule="global-name"/>
-            <assert test="matches(tokenize(@name, ':')[last()], $reFunctionName)" role="error" id="assert-function-name-re">
+            <assert test="matches(@name, $reFunctionName)" role="error" id="assert-function-name-re">
                 ERROR: The name of a <value-of select="name()"/> must match the regular expression <value-of select="$reFunctionName"/>.
             </assert>
         </rule>
