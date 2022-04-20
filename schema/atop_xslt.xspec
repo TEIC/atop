@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" schematron="atop_xslt.sch">
+    <x:scenario label="Validating global names">
+        <x:scenario label="A global variable with no prefix">
+            <x:context>
+                <xsl:stylesheet version="3.0" 
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="vGlobalVariable" select="true()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-assert id="assert-global-name-prefix"/>
+            <x:expect-assert id="assert-global-name-uri"/>
+        </x:scenario>
+        <x:scenario label="A global variable with the wrong prefix">
+            <x:context>
+                <xsl:stylesheet version="3.0" 
+                    xmlns:teif="http://www.tei-c.org/ns/atop"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="teif:vGlobalVariable" select="true()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-assert id="assert-global-name-prefix"/>
+            <x:expect-not-assert id="assert-global-name-uri"/>
+        </x:scenario>
+        <x:scenario label="A global variable with the wrong uri">
+            <x:context>
+                <xsl:stylesheet version="3.0" 
+                    xmlns:atop="http://www.tei-c.org/ns/functions"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="atop:vGlobalVariable" select="true()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-not-assert id="assert-global-name-prefix"/>
+            <x:expect-assert id="assert-global-name-uri"/>
+        </x:scenario>
+        <x:scenario label="A global variable with the wrong local name">
+            <x:context>
+                <xsl:stylesheet version="3.0" 
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="atop:xxxxx" select="true()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-not-assert id="assert-global-name-prefix"/>
+            <x:expect-not-assert id="assert-global-name-uri"/>
+            <x:expect-assert id="assert-variable-name-re"/>
+        </x:scenario>
+        <x:scenario label="A global variable">
+            <x:context>
+                <xsl:stylesheet version="3.0" 
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="atop:vGlobalVariable" select="true()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-not-assert id="assert-global-name-prefix"/>
+            <x:expect-not-assert id="assert-global-name-uri"/>
+        </x:scenario>
+    </x:scenario>
+</x:description>

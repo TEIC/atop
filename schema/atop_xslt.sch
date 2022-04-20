@@ -13,13 +13,71 @@
     <!-- Global variables. -->
     <let name="docUri" value="document-uri(/)"/>
     
+    <let name="atopNamespaceUri" value="'http://www.tei-c.org/ns/atop'"/>
+    <let name="atopNamespacePrefix" value="'atop'"/>
+    
     <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
     <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
-    <let name="reFunctionName" value="'^teif:[a-z][a-z\-]+[a-z]$'"/>
+    <let name="reFunctionName" value="concat('^', $atopNamespacePrefix, ':[a-z][a-z\-]+[a-z]$')"/>
     
     <!-- Constraints -->
+    <pattern id="names">
+        <title>Coding style rules for names</title>
+        <rule abstract="true" id="param-name-re">
+            <assert test="matches(tokenize(@name, ':')[last()], $reParamName)" id="assert-param-name-re" role="error">
+                ERROR: A <value-of select="name()"/> must have a name matching the regular expression <value-of select="$reParamName"/>. 
+            </assert>
+        </rule>
+        <rule abstract="true" id="variable-name-re">
+            <assert test="matches(tokenize(@name, ':')[last()], $reVarName)" id="assert-variable-name-re" role="error">
+                ERROR: A <value-of select="name()"/> must have a name matching the regular expression <value-of select="$reVarName"/>. 
+            </assert>
+        </rule>
+        <rule abstract="true" id="global-name">
+            <assert test="starts-with(@name, concat($atopNamespacePrefix, ':'))" role="error" id="assert-global-name-prefix">
+                ERROR: The name of a global <value-of select="name()"/> must be a xs:QName with the prefix <value-of select="$atopNamespacePrefix"/>. 
+            </assert>
+            <assert test="namespace-uri-for-prefix(substring-before(@name, ':'), .) = $atopNamespaceUri" role="error" id="assert-global-name-uri">
+                ERROR: The name of a global <value-of select="name()"/> must be a xs:QName with the namespace URI <value-of select="$atopNamespaceUri"/>. 
+            </assert>
+        </rule>
+        <rule abstract="true" id="local-name">
+            <assert test="@name castable as xs:NCName" role="error" id="assert-local-name">
+                ERROR: The name of a local <value-of select="name()"/> must be a xs:NCName.
+            </assert>
+        </rule>
+        <rule context="/*/xsl:param">
+            <extends rule="global-name"/>
+            <extends rule="param-name-re"/>           
+        </rule>
+        <rule context="/*/xsl:variable">
+            <extends rule="global-name"/>
+            <extends rule="variable-name-re"/>            
+        </rule>
+        <rule context="xsl:variable">
+            <extends rule="local-name"/>
+            <extends rule="variable-name-re"/>
+        </rule>
+        <rule context="xsl:param[boolean(@tunnel) eq true()] | xsl:with-param[boolean(@tunnel) eq true()]">
+            <extends rule="local-name"/>
+            <extends rule="param-name-re"/>
+            <assert test="starts-with(@name, 'tp')" role="error" id="assert-tunnel-param-name">
+                ERROR: The name of a tunnel parameter must start with 'tp'.
+            </assert>
+        </rule>
+        <rule context="xsl:param | xsl:with-param">
+            <extends rule="local-name"/>
+            <extends rule="param-name-re"/>
+        </rule>
+        <rule context="xsl:function | xsl:template[@name]">
+            <extends rule="global-name"/>
+            <assert test="matches(tokenize(@name, ':')[last()], $reFunctionName)" role="error" id="assert-function-name-re">
+                ERROR: The name of a <value-of select="name()"/> must match the regular expression <value-of select="$reFunctionName"/>.
+            </assert>
+        </rule>
+    </pattern>
     
     <pattern id="things-must-have-as-attribute">
         <rule context="xsl:template | xsl:variable | xsl:with-param | xsl:param | xsl:function">
@@ -30,46 +88,7 @@
             </assert>
         </rule>
     </pattern>
-    
-    <pattern id="variable-names">
-        <rule context="xsl:variable">
-            <let name="name" value="@name"/>
-            <assert test="matches(@name, $reVarName)">
-                ERROR: <value-of select="$name"/> must have a name
-                matching the regular expression <value-of select="$reVarName"/>. 
-            </assert>
-        </rule>
-    </pattern>
-    
-    <pattern id="param-names">
-        <rule context="xsl:param | xsl:with-param">
-            <let name="name" value="@name"/>
-            <assert test="matches(@name, $reParamName)">
-                ERROR: <value-of select="$name"/> must have a name
-                matching the regular expression <value-of select="$reParamName"/>. 
-            </assert>
-        </rule>
-    </pattern>
-    
-    <pattern id="tunneled-param-names">
-        <rule context="xsl:param[@tunnel] | xsl:with-param[@tunnel]">
-            <let name="name" value="@name"/>
-            <assert test="starts-with(@name, 'tp')">
-                ERROR: <value-of select="$name"/> must have a name starting with 'tp'. 
-            </assert>
-        </rule>
-    </pattern>
-    
-    <pattern id="function-names">
-        <rule context="xsl:function">
-            <let name="name" value="@name"/>
-            <assert test="matches(@name, $reFunctionName)">
-                ERROR: <value-of select="$name"/> must have a name
-                matching the regular expression <value-of select="$reFunctionName"/>. 
-            </assert>
-        </rule>
-    </pattern>
-    
+
     <pattern id="no-literal-text">
         <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:desc)]">
             <assert test="parent::xsl:text">
