@@ -101,4 +101,12 @@
         </rule>
     </pattern>
     
+    <pattern id="xslt-filename-extension">
+        <rule context="/">
+            <assert test="ends-with($docUri, '.xslt')" role="error">
+                ERROR: An XSL Stylesheet must use the file extension '.xslt'.
+            </assert>
+        </rule>
+    </pattern>
+    
 </schema>
