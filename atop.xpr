@@ -368,7 +368,7 @@
                                                                         <Integer>7</Integer>
                                                                     </field>
                                                                     <field name="uri">
-                                                                        <String>${pdu}/schema/atop_xslt.sch</String>
+                                                                        <String>${pdu}/Schemas/atop_xslt.sch</String>
                                                                     </field>
                                                                 </validationUnitSchema>
                                                             </field>
