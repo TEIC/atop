@@ -99,13 +99,11 @@
     </pattern>
     
     <pattern id="root-children-must-have-documentation">
-        <rule context="/*/xsl:*[@name]">
+        <rule context="/*/xsl:*[@name][not(preceding-sibling::*[1][self::xd:doc])]">
             <let name="name" value="@name"/>
-            <assert test="//xd:doc/descendant::xd:ref[@name eq $name]">
-                ERROR: Any element which is a child of the root 
-                and has a name attribute must have an xd:doc block
-                which documents it using xd:ref.
-            </assert>
+            <assert test="//xd:doc/descendant::xd:ref[@name eq $name]" id="assert-documentation"> ERROR: A named top-level
+                element must have an preceding xd:doc block or must be referenced in an xd:ref
+                element in another documentation block. </assert>
         </rule>
     </pattern>
     

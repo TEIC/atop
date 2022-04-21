@@ -58,4 +58,48 @@
             <x:expect-not-assert id="assert-global-name-uri"/>
         </x:scenario>
     </x:scenario>
+    <x:scenario label="Validating the documentation">
+        <x:scenario label="A named top-level element without a preceding xd:doc and no xd:ref reference>
+            <x:context>
+                <xsl:stylesheet version="3.0"
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xsl:variable name="atop:vGlobalVariable-1" select="()"/>
+                    <xsl:variable name="atop:vGlobalVariable-2" select="()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-assert id="assert-documentation"/>
+        </x:scenario>
+        <x:scenario label="A named top-level element with a preceding xd:doc">
+            <x:context>
+                <xsl:stylesheet version="3.0"
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xd:doc/>
+                    <xsl:variable name="atop:vGlobalVariable-1" select="()"/>
+                    <xd:doc/>
+                    <xsl:variable name="atop:vGlobalVariable-2" select="()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-not-assert id="assert-documentation"/>
+        </x:scenario>
+        <x:scenario label="A named top-level element without a preceding xd:doc and an xd:ref reference">           <x:context>
+                <xsl:stylesheet version="3.0"
+                    xmlns:atop="http://www.tei-c.org/ns/atop"
+                    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                    <xd:doc>
+                        <xd:desc>
+                            <xd:ref name="atop:vGlobalVariable-2"/>
+                        </xd:desc>
+                    </xd:doc>
+                    <xsl:variable name="atop:vGlobalVariable-1" select="()"/>
+                    <xsl:variable name="atop:vGlobalVariable-2" select="()"/>
+                </xsl:stylesheet>
+            </x:context>
+            <x:expect-not-assert id="assert-documentation"/>
+        </x:scenario>
+    </x:scenario>
 </x:description>
