@@ -59,7 +59,7 @@
         </x:scenario>
     </x:scenario>
     <x:scenario label="Validating the documentation">
-        <x:scenario label="A named top-level element without a preceding xd:doc and no xd:ref reference>
+        <x:scenario label="A named top-level element without a preceding xd:doc and no xd:ref reference">
             <x:context>
                 <xsl:stylesheet version="3.0"
                     xmlns:atop="http://www.tei-c.org/ns/atop"
