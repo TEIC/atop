@@ -1,0 +1,88 @@
+ODDs from the TEI Wiki
+Martin Holmes 2022-05-11
+
+This is an attempt to gather all ODD files uploaded and/or linked from the TEI wiki.
+
+--------------
+
+From this page:
+
+https://wiki.tei-c.org/index.php?title=Brown_ODDs.odd#Getting_and_Using
+
+there are links to:
+http://www.wwp.brown.edu/outreach/seminars/_current/handouts/TEI_exercise/schemas/brown_odds.odd
+www.wwp.brown.edu/outreach/seminars/_current/handouts/TEI_exercise_support/brown_odds_generation/brown_odds_driver.odd
+
+These links don't retrieve anything (from here, anyway); connections time out.
+
+--------------
+
+From this page:
+
+https://wiki.tei-c.org/index.php?title=Comic_Book_Markup_Language
+
+you can arrive at this ODD:
+https://dcl.ils.indiana.edu/cbml/schema/cbml.odd
+
+--------------
+
+From this page:
+
+https://wiki.tei-c.org/index.php?title=SIG:CMC/CMC-core_schema_for_representing_CMC_in_TEI_(2019)
+
+you can arrive at this ODD package:
+https://www.uni-due.de/germanistik/chatkorpus/tei/cmccore/cmc-core.zip
+
+which contains an ODD.
+--------------
+
+Starting from this page:
+
+https://wiki.tei-c.org/index.php?title=DHConvalidator
+
+you can arrive eventually at this ODD:
+https://raw.githubusercontent.com/ADHO/dhconvalidator/master/src/main/resources/schema/dhconvalidator.odd
+
+--------------
+
+Starting from this page:
+
+https://wiki.tei-c.org/index.php?title=DTA-Basisformat
+
+you can arrive at this ODD:
+http://www.deutschestextarchiv.de/basisformat.odd
+
+--------------
+
+This is an actual ODD file on the wiki:
+
+https://wiki.tei-c.org/index.php?title=DivFragments.odd
+
+but it says "Warning: Very dangerous..."
+
+--------------
+
+This page:
+
+https://wiki.tei-c.org/index.php?title=EVT
+
+eventually gets you to a download of EVT, which includes 
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+
+--------------
+

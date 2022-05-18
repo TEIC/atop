@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0">
+    <teiHeader>
+        <fileDesc>
+
+            <titleStmt>
+                <title>CMC-core: TEI CMC SIG Customisation for the encoding of corpora of
+                    Computer-Mediated Communication</title>
+                <author><ref
+                        target="https://wiki.tei-c.org/index.php/SIG:Computer-Mediated_Communication"
+                        >TEI Special Interest Group Computer-Mediated Communication</ref>
+                </author>
+            </titleStmt>
+
+
+            <publicationStmt>
+                <publisher><ref
+                        target="https://wiki.tei-c.org/index.php/SIG:Computer-Mediated_Communication"
+                        >TEI Special Interest Group Computer-Mediated Communication</ref>
+                </publisher>
+                <date when="2015-10-20" />
+                <idno type="uri">CMC-core.odd</idno>
+                <availability status="free">
+                    <licence target="http://creativecommons.org/licenses/by/4.0/" />
+                </availability>
+            </publicationStmt>
+
+            <sourceDesc>
+                <p>The present ODD was born digital</p>
+            </sourceDesc>
+
+        </fileDesc>
+
+        <encodingDesc>
+            <projectDesc>
+                <p>A customisation by the TEI CMC SIG, introducing the post element with attributes,
+                    and the signatureContent element to provide input for a feature request to the
+                    TEI.</p>
+            </projectDesc>
+        </encodingDesc>
+        <revisionDesc>
+            <change when="2018-07-26" who="HL">v2: introduced changed model for <gi>p</gi></change>
+            <change when="2018-07-26" who="HL">v1: first version of basic customisation for
+                FR</change>
+        </revisionDesc>
+    </teiHeader>
+
+    <text>
+        <front>
+            <titlePage>
+                <docTitle>
+                    <titlePart>CMC-core</titlePart>
+                    <titlePart>TEI Customisation for CMC corpora</titlePart>
+                </docTitle>
+                <docDate>September 2019</docDate>
+            </titlePage>
+        </front>
+
+        <body>
+            <p> This ODD describes an encoding schema for genres of computer-mediated communication
+                (CMC) / social media. It is meant to define a basic setup that one needs to encode
+                CMC corpora, but which is not in the TEI yet.</p>
+
+            <p>CUSTOMIZATION:</p>
+
+            <p>The schema introduces four types of customizations: <list>
+                    <item>(1) A new module named 'cmc' is introduced. It is referenced by the new
+                        model classe model.divPart.cmc, by the new attribute class att.global.cmc,
+                        and by the new element <gi>post</gi>.</item>
+                    <item>(2) The new element <gi>post</gi> has is introduced. </item>
+                    <item>(3) The new attribute class att.global.cmc is introduced. It defines the
+                        new global attribute <att>creation</att>. The existing attribute class
+                        att.global has been modified to additionally be a member of
+                        att.global.cmc</item>
+                    <item>(4) The class model.divPart.cmc is defined. model.divPart.cmc is a member
+                        of model.divPart and serves as a container of the new, CMC-specific element
+                            <gi>post</gi>. </item>
+                </list></p>
+
+            <p> In addition to these customizations, we have provided sample annotations using this
+                schema and covering various genres, i.e. private chat, IRC, twitter, Second Life,
+                and Wikipedia talk.</p>
+
+            <p>STATUS OF THIS SCHEMA:</p>
+
+            <p>The schema accompanies a feature request by the TEI CMC SIG to the TEI in 2019. It
+                comes with encoded examples and documentation</p>
+
+            <p>REFERENCES:</p>
+
+            <p>Michael Beißwenger, Laura Herzberg, Harald Lüngen, Ciara R. Wigham: CMC-core: A basic
+                schema for encoding CMC corpora in TEI. Conference poster, 7th Conference on CMC and
+                Social Media Corpora for the Humanities (CMC-Corpora2019). University
+                Cergy-Pontoise, Paris, France, September 9, 2019.( <ref
+                    target="https://www.uni-due.de/germanistik/chatkorpus/tei/cmccore/poster_teicmccore_2019-08-31.pdf"
+                    >conference poster as pdf</ref> | <ref
+                    target="https://cmccorpora19.sciencesconf.org/resource/page/id/15">abstract in
+                    conference proceedings</ref> )</p>
+
+            <p>Michael Beißwenger, Harald Lüngen (2019, submitted): CMC-core: a schema for the
+                representation of CMC corpora in TEI. Journal article, preview version on
+                request.</p>
+
+            <p xml:lang="en">Description of the Chat2CLARIN schema: <bibl xml:id="chat2clarin">
+                    Harald Lüngen, Michael Beißwenger, Erik Ehrhardt, Axel Herold, Angelika Storrer
+                    (2016): <ref
+                        target="https://www.linguistics.rub.de/konvens16/pub/20_konvensproc.pdf"
+                        >Integrating corpora of computer-mediated communication in CLARIN-D: Results
+                        from the curation project ChatCorpus2CLARIN.</ref> In: Proceedings of the
+                    13th Conference on Natural Language Processing (KONVENS 2016). Ruhr-Universität
+                    Bochum. </bibl>
+            </p>
+
+            <p xml:lang="en" xml:id="descmr">Description of the CoMeRe project: <bibl>Chanier, T.,
+                    Poudat, C., Sagot, B., Antoniadis, G., Wigham, C. R. , Hriba, L.,Longhi, J.
+                    &amp; Seddah, D. (2014) « The CoMeRe corpus for French: structuring and
+                    annotating heterogeneous CMC genres ». Special issue on « Building And
+                    Annotating Corpora Of Computer-Mediated Discourse: Issues and Challenges at the
+                    Interface of Corpus and Computational Linguistics ». <ref
+                        target="http://www.jlcl.org/2014_Heft2/Heft2-2014.pdf ">JLCL (Journal of
+                        Language Technology and Computational Linguistics), pp. 1-31</ref>
+                </bibl>
+            </p>
+            <p xml:lang="en">Description of the DeRiK schema: <bibl xml:id="TEIcmc2012">Michael
+                    Beißwenger, Maria Ermakova, Alexander Geyken, Lothar Lemnitzer, and Angelika
+                    Storrer (2012). « A TEI Schema for the Representation of Computer-mediated
+                    Communication », Journal of the Text Encoding Initiative, Issue 3. <ref
+                        target="http://jtei.revues.org/476"><idno>DOI :
+                        10.4000/jtei.476</idno></ref>
+                </bibl>
+            </p>
+
+
+            <!--  M O D U L E   S P E C S    -->
+
+            <moduleSpec ident="cmc">
+                <desc xml:lang="en">Elements, Attributes, and Models for Computer-mediated
+                    communication (CMC). This module collects all cmc-specific extensions. Hence
+                    these will only be added to a TEI schema when this module is selected in a
+                    customisation.</desc>
+                <altIdent>TEI-CMC</altIdent>
+                <altIdent xml:lang="en">Computer-Mediated Communication</altIdent>
+            </moduleSpec>
+
+
+            <!--  S C H E M A   S P E C S    -->
+
+            <schemaSpec ident="tei_cmr" start="TEI teiCorpus" docLang="en">
+                <!-- @start "specifies entry points to the schema, i.e. which patterns may be used as
+                    the root of documents conforming to it." -->
+
+                <moduleRef key="tei" />
+                <!-- required -->
+                <moduleRef key="cmc" />
+                <moduleRef key="core" />
+                <!-- required -->
+                <moduleRef key="corpus" />
+                <moduleRef key="header" />
+                <!-- required -->
+                <moduleRef key="iso-fs" />
+                <moduleRef key="namesdates" />
+                <moduleRef key="spoken" />
+                <moduleRef key="textstructure" />
+                <!-- required -->
+                <moduleRef key="tagdocs" />
+                <moduleRef key="linking" />
+                <moduleRef key="analysis" />
+                <moduleRef key="figures" />
+
+
+
+                <!--  M O D E L    C L A S S S P E C S    -->
+
+                <classSpec ident="model.divPart.cmc" type="model" module="cmc">
+                    <desc>includes the CMC-specific element <gi>post</gi> and makes it available on
+                        the divPart level. This allows for using (and combining) occurrences of
+                            <gi>post</gi>, <gi>u</gi>, <gi>incident</gi>, and <gi>kinesic</gi> in
+                        one and the same <gi>div</gi> in order to be able to represent the combined
+                        use of written and spoken posts, utterances, and nonverbal acts on the GUI
+                        of multimodal CMC environments.</desc>
+                    <classes>
+                        <memberOf key="model.divPart" />
+                    </classes>
+                </classSpec>
+
+
+
+
+
+
+                <!--  E L E M E N T   S P E C S    -->
+
+
+                <elementSpec ident="post" mode="add" module="cmc">
+
+                    <gloss xml:lang="en">a written (sometimes spoken) contribution to an ongoing CMC
+                        interaction which (1) has been composed by its author in its entirety as
+                        part of a private activity and (2) has been sent to the server en
+                        bloc.</gloss>
+                    <desc xml:lang="en">A written (sometimes spoken, e.g. in WhatsApp chat)
+                        contribution to an ongoing CMC interaction which (1) has been composed by
+                        its author in its entirety as part of a private activity and (2) has been
+                        sent to the server en bloc. Even though in some CMC genres (e.g., WhatsApp),
+                        the other parties are informed by an automated alert about the fact that
+                        another party is currently composing a new post, they cannot track the
+                        process of verbalization, i.e. how the written utterance emerges in the
+                        entry form on the user interface of its author. It is not until the author
+                        performs a ‘posting’ action (e.g., by hitting the ‘enter’ key or by
+                        activating a ‘send’ button with the mouse) that the result of the
+                        composition process - the post - is made available for the other parties.
+                        From the perspective of its addressees/readers, a post is a stretch of text
+                        that has been composed in advance. Different from spoken utterances but
+                        similar to edited text, (1) the reader of a post does not have access to the
+                        verbalization process and (2) the mental processing of a post is not
+                        possible until the process of verbalization (the composition) has been
+                        finished and the posting action has been performed by the author. Posts
+                        occur in a broad range of written CMC genres: as user ‘messages’ in chats
+                        and WhatsApp dialogues, as SMS messages, as tweets in Twitter timelines, as
+                        individual comments following a status update on Facebook pages, as posts in
+                        forum threads, as contributions on Wikipedia talk pages or in the comments
+                        section of a weblog. [Element adpoted from the <ref target="#TEIcmc2012"
+                            >DeRiK schema</ref>. Aspects of the model adopted from the <ref
+                            target="#descmr">CoMeRe Schema</ref>]. <gi>Post</gi> is a member of the
+                        model class model.divPart (via model.divPart.cmc). This allows for using
+                        (and combining) occurrences of <gi>post</gi>, <gi>u</gi>, <gi>incident</gi>,
+                        and <gi>kinesic</gi>in one and the same <gi>div</gi> in order to be able to
+                        represent the combined use of written and spoken utterances and nonverbal
+                        acts on the GUI of multimodal CMC environments. </desc>
+                    <desc>The attribute <att>mode</att> for post is required, its value is either
+                        written or spoken. The content model of a <gi>post</gi>
+                        <att>mode</att>=<val>spoken</val> should be macro.paraContent, i.e. the same
+                        as the one for <gi>u</gi>. The content model of a <gi>post</gi>
+                        <att>mode</att>=<val>written</val> should be like the one from Chat2CLARIN,
+                        i,e, similar to the one for <gi>div</gi>. However this co-occurrence
+                        constraint between the values of <att>mode</att> and the content models
+                        cannot be expressed in ODD code. It could be expressed in pure RNG code, but
+                        so far we have refrained from doing so, because it is ignored by the
+                        ODD2HTML stylesheets. </desc>
+
+
+                    <classes>
+                        <memberOf key="model.divPart.cmc" />
+                        <memberOf key="att.ascribed" />
+                        <memberOf key="att.canonical" />
+                        <memberOf key="att.datable" />
+                        <memberOf key="att.docStatus" />
+                        <memberOf key="att.global" />
+                        <memberOf key="att.timed" />
+                        <memberOf key="att.typed" />
+                    </classes>
+
+
+                    <content>
+                        <!-- The content model ist based on 
+                            macro.paraContent (macro for the content model of <p> and <u>, 
+                            with the additional choice of model.headLike, model.pLike, the element opener, and model.divBottom, to 
+                            possibly include headings, paragraphs, openers, closers, salutations, and the like.
+                        -->
+
+                        <!-- The original marco.paraContent is this:
+                        macro.paraContent =   (
+                            text
+                            | model.gLike
+                            | model.phrase
+                            | model.inter
+                            | model.global
+                            | lg
+                            | model.lLike  )*              
+                        -->
+
+                        <zeroOrMore xmlns="http://relaxng.org/ns/structure/1.0">
+                            <choice>
+                                <rng:text />
+
+                                <ref name="model.headLike" />
+                                <ref name="opener" />
+                                <ref name="model.pLike" />
+
+                                <ref name="model.gLike" />
+                                <ref name="model.phrase" />
+                                <ref name="model.inter" />
+                                <ref name="model.global" />
+                                <ref name="lg" />
+                                <ref name="model.lLike" />
+
+                                <ref name="model.divBottom" />
+                            </choice>
+                        </zeroOrMore>
+                    </content>
+
+
+                    <attList>
+                        <attDef ident="mode" usage="req" mode="add">
+                            <desc xml:lang="en">written or spoken mode</desc>
+                            <valList xml:lang="en" type="closed">
+                                <valItem ident="written">
+                                    <gloss xml:lang="en">post is in written mode</gloss>
+                                </valItem>
+                                <valItem ident="spoken">
+                                    <gloss xml:lang="en">post is in spoken mode</gloss>
+                                </valItem>
+                            </valList>
+                        </attDef>
+
+                        <attDef ident="replyTo" mode="add">
+                            <desc>indicates to which previous post the current post replies or
+                                refers to. This attribute should be used to encode "technical" reply
+                                information, i.e. which is due to a formal reply action (such as
+                                activating a "reply" button in the client software) and which is
+                                also formally represented in the source, e.g. in the "references"
+                                field of an email or Usenet message header. It should rather not be
+                                used for inferred, or interpreted reply relations such as based on
+                                linguistic discourse markers, nor for the indentation relations in
+                                Wiki talk pages. See Lüngen/Herzberg (2018).</desc>
+                            <datatype minOccurs="1" maxOccurs="unbounded">
+                                <rng:ref name="data.pointer" />
+                            </datatype>
+                        </attDef>
+                        <attDef ident="indentLevel" mode="add">
+                            <desc>marks the level of indentation of the current post in a
+                                thread-like structure (as defined by its author and in relation to
+                                the standard level of indentation which should be encoded as
+                                indentLevel="0"). Basically used for Wiki talk pages, but may and
+                                should also be used for genres such as webblog comments when the
+                                source was HTML. [Adapted from the <ref target="#TEIcmc2012"
+                                    >DeRiK-Schema</ref>]. </desc>
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.count" />
+                            </datatype>
+                        </attDef>
+                    </attList>
+
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>standard user postings in chat</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="standard" creation="human" who="#A05" rend="color:red">
+                                <p>oh ja, in die Wärme...</p>
+                            </post>
+                            <post type="standard" creation="human" who="#A03" rend="color:red">
+                                <p>nein, hast du nicht !!</p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>chat message-type "system": user enters a chatroom, "system" defined in
+                            listPerson</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <listPerson>
+                                <person xml:id="system">
+                                    <persName>system</persName>
+                                </person>
+                                <!-- [...] -->
+                            </listPerson>
+                            <!--  [...] -->
+                            <post type="event" creation="system" who="#system" rend="color:navy">
+                                <p>
+                                    <name type="nickname" corresp="#A07">Interseb</name> betritt den
+                                    Raum.</p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>action message in chat</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="event" creation="human" who="#A02" rend="color:blue">
+                                <p>
+                                    <name type="nickname" corresp="#A02">McMike</name> hechtet zum
+                                    Steuer </p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+                    <exemplum type="Chat2CLARIN">
+                        <p>chat messages incl. interaction words (types: inflective and acronym) and
+                            an interaction phrase</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="standard" creation="human" who="#A03" rend="color:green">
+                                <p>
+                                    <w type="AKWIND">*</w><w type="AKW" subtype="inflective"
+                                        >schwank</w><w type="AKWIND">*</w>
+                                    <!--...-->
+                                    <w type="AKWIND">*</w><w type="AKW">seekrank</w><w type="AKWIND"
+                                        >*</w>
+                                </p>
+                            </post>
+                            <!--[...] -->
+                            <post type="standard" creation="human" who="#A02" rend="color:blue">
+                                <p>
+                                    <w type="AKWIND">*</w><w type="AKW" subtype="acronym">lol</w><w
+                                        type="AKWIND">*</w> [...] </p>
+                            </post>
+                            <!--[...]-->
+                            <post type="standard" creation="human" who="#A01" rend="color:black">
+                                <p>
+                                    <phr type="AKW"><w type="AKWIND">*</w><name type="nickname"
+                                            corresp="#A02">McMike</name> einen fallschirm <w
+                                            type="AKW" subtype="inflective">umbind</w><w
+                                            type="AKWIND">*</w></phr>
+                                </p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>user posting incl. an emoticon</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="standard" creation="human" who="#A01" rend="color:black">
+                                <p> naja, der war gestrandet <w type="emoticon" subtype="ascii"
+                                        >:(</w>
+                                </p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>Twitter: Tweet containing an addressing term and a hashtag expression</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="standard" creation="human" who="#A01" when="2015-11-18">
+                                <p>
+                                    <ref corresp="#A02" target="https://twitter.com/textarchiv">
+                                        <w type="ADRIND">@</w><w type="ADR">textarchiv</w></ref>
+                                    Erfurter Europäische Welt- und Staats-Geschichte: 20 Ausgaben
+                                    von 1744 aus dem MKHZ bereits in DTAQ <ref
+                                        target="http://www.deutschestextarchiv.de/dtaq/about">
+                                        http://www.deutschestextarchiv.de/dtaq/about</ref>
+                                    <ref target="https://twitter.com/hashtag/dtaclarin14?src=hash"
+                                            ><w type="hashtag">#dtaclarin14</w></ref>
+                                </p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+                    <exemplum type="Chat2CLARIN">
+                        <p>example from Wikipedia discussion</p>
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post type="standard" creation="human" indentLevel="3" synch="t02622878"
+                                who="WU00018921">
+                                <p> Wie du siehst hab ich die Lemma geändert, danke für den Hinweis,
+                                    ich war nämlich selbst auch etwas unsicher bei der ganzen Sache
+                                    und bin jetzt damit auch viel glücklicher!--<signed
+                                        creation="template" who="WU00018921"><gap
+                                            reason="signatureContent" />
+                                        <time creation="template" who="WU00018921">12:01, 12. Jun.
+                                            2009 (CEST)</time>
+                                    </signed>
+                                </p>
+                            </post>
+                        </egXML>
+                    </exemplum>
+
+
+                    <exemplum type="Blog">
+                        <p>Blog comment: Die Anthropodizee-Frage. Wer den Himmel leerräumt, schafft
+                            die Menschheit ab. by Volker Birk.
+                                <ref>https://scilogs.spektrum.de/natur-des-glaubens/die-anthropodizee-frage-wer-himmel/#comment-31899</ref></p>
+
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <post xml:id="p5" type="comment" who="#u4" synch="#t005" replyTo="#p4">
+                                <p>“Wenn Sie diesen Gruppen also “mangelnde Bildung“ attestieren
+                                    wollen, so verwenden Sie bereits einen bestimmten,
+                                    kulturgebundenen Bildungsbegriff.”</p>
+                                <p>Ich hoffe doch, wir können beim Bildungsbegriff der Aufklärung
+                                    bleiben. Wer das nicht möchte, hat die Wissenschaft
+                                    verlassen.</p></post>
+                        </egXML>
+
+                    </exemplum>
+
+                    <remarks>
+                        <p>References: <bibl>Lüngen, Harald, and Herzberg, Laura (2018): Reply
+                                relations in CMC: Types and annotation. In: <ref
+                                    target="https://www.uantwerpen.be/images/uantwerpen/container49896/files/proceedings_CMCcorpora2018.pdf"
+                                    > >Proceedings of the 6th Conference on Computer-Mediated
+                                    Communication (CMC) and Social Media Corpora (CMC-corpora 2018)
+                                    17-18 September 2018, University of Antwerp</ref></bibl></p>
+                    </remarks>
+                </elementSpec>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!--    A T T R I B U T E    C L A S S S P E C S     -->
+
+
+                <classSpec ident="att.global" type="atts" module="tei" mode="change">
+                    <classes mode="change">
+                        <memberOf key="att.global.cmc" mode="add" />
+                    </classes>
+                </classSpec>
+
+                <classSpec ident="att.global.cmc" type="atts" module="cmc">
+                    <desc>For the time being, this class contains only the attribute
+                            <att>creation</att>. This class provides the additional global attribute
+                            <att>creation</att> for associating information about how the element
+                        content was created in a CMC environment.</desc>
+                    <attList>
+                        <attDef ident="creation" mode="add" module="cmc" usage="opt">
+                            <desc>Marks how the content of the respective element was generated in a
+                                CMC environment. </desc>
+                            <!--datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.text"/>
+                            </datatype-->
+                            <valList xml:lang="en" type="closed">
+                                <valItem ident="human">
+                                    <desc xml:lang="en">The content of the respective element was
+                                        "naturally" typed or spoken by a human user</desc>
+                                </valItem>
+                                <valItem ident="template">
+                                    <desc xml:lang="en">The content of the respective element was
+                                        generated after a human user activated a template for its
+                                        insertion</desc>
+                                </valItem>
+                                <valItem ident="system">
+                                    <desc xml:lang="en">The content of the respective element was
+                                        generated by the system, i.e. the CMC environment</desc>
+                                </valItem>
+                                <valItem ident="bot">
+                                    <desc xml:lang="en">The content of the respective element was
+                                        generated by a bot, i.e. a non-human agent, mostly external
+                                        to the CMC environment.</desc>
+                                </valItem>
+                                <valItem ident="unspecified">
+                                    <desc xml:lang="en"> How the content of the respective element
+                                        was generated is unknown or unspecified.</desc>
+                                </valItem>
+                            </valList>
+
+
+
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>automatic system message in chat: user moves on to another
+                                    chatroom</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <post type="event" creation="system" who="#system"
+                                        rend="color:blue">
+                                        <p>
+                                            <name type="nickname" corresp="#A02">McMike</name> geht
+                                            in einen anderen Raum: <name type="roomname"
+                                                >Kreuzfahrt</name>
+                                        </p>
+                                    </post>
+                                </egXML>
+                            </exemplum>
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>automatic system message in chat: user enters a chatroom</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <post type="event" creation="system">
+                                        <p>
+                                            <name type="nickname" corresp="#A08">c_bo</name> betritt
+                                            den Raum. </p>
+                                    </post>
+                                </egXML>
+                            </exemplum>
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>automatic system message in chat: user changes his font color</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <post type="event" creation="system" rend="color:red">
+                                        <p>
+                                            <name type="nickname" corresp="#A08">c_bo</name> hat die
+                                            Farbe gewechselt. </p>
+                                    </post>
+                                </egXML>
+                            </exemplum>
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>An automatic signature of user including an automatic timestamp
+                                    (Wikipedia discussion, anonymized). The specification of
+                                        <att>creation</att> at the inner element <gi>signed</gi> is
+                                    meant to override the specification at the outer element
+                                        <gi>post</gi>. This is generally possible when the outer
+                                        <att>creation</att> value is "human".</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <post type="standard" gemeration="human" indentLevel="2"
+                                        synch="t00394407" who="WU00005582">
+                                        <p> Kurze Nachfrage: Die Hieros für den Goldnamen stammen
+                                            auch von Beckerath gem. Literatur ? Grüße --<signed
+                                                creation="template"><gap reason="signatureContent"
+                                                   /><time creation="template" who="WU00005582"
+                                                  >18:50, 22. Okt. 2008 (CEST)</time></signed>
+                                        </p>
+                                    </post>
+                                </egXML>
+                            </exemplum>
+
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>Usenet news message: a client-generated line that introduces a
+                                    quotation from a previous message (similar to email):</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <cit type="replyCit">
+                                        <bibl type="introQuote" creation="template">Am 03.04.2015 um
+                                            09:46 schrieb [_NAME_]:</bibl>
+                                        <quote>
+                                            <!-- [...] -->
+                                        </quote>
+                                    </cit>
+                                </egXML>
+                            </exemplum>
+
+                            <exemplum type="Chat2CLARIN">
+                                <p>Wikipedia talk page, user signature</p>
+                                <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    <signed creation="template" who="WU00018921"><gap
+                                            reason="signatureContent" />
+                                        <time creation="template" who="WU00018921">12:01, 12. Jun.
+                                            2009 (CEST)</time>
+                                    </signed>
+                                </egXML>
+                            </exemplum>
+
+                        </attDef>
+
+
+                    </attList>
+                </classSpec>
+
+
+            </schemaSpec>
+
+        </body>
+    </text>
+</TEI>
