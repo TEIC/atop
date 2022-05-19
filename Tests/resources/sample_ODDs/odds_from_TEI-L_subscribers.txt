@@ -1,0 +1,6 @@
+ODDs gathered from 2022-05-18 request on TEI-L
+---- -------- ---- ---------- ------- -- -----
+
+
+ * wea.odd: Courtesy Joey Takeda
+   https://github.com/winnifredeatonarchive/wea_data/blob/main/data/sch/wea.odd
