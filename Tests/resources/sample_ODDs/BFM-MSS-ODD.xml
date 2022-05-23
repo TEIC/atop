@@ -1,0 +1,4996 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?oxygen RNGSchema="tei_odds.rnc" type="compact"?>
+<?xml-stylesheet type="text/css" href="Oxygen%20CSS/tei_oxygen.css"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xtei="http://www.tei-c.org/ns/Examples"
+    xmlns:me="http:// www.menota.org/ns/1.0" xmlns:bfm="http://bfm.ens-lsh.fr/ns/1.0"
+    xmlns:rng="http://relaxng.org/ns/structure/1.0">
+
+    <teiHeader xml:lang="fr" type="text">
+        <fileDesc>
+            <titleStmt>
+                <title type="normal">Manuel d’encodage XML-TEI étendu des transcriptions de
+                    manuscrits dans le projet BFM-Manuscrits</title>
+                <author>Alexei Lavrentiev (Alexei.Lavrentev@ens-lsh.fr)</author>
+                <editor role="editor">Équipe diachronie et bases textuelles d’ancien et moyen
+                    français - UMR5191 ICAR, CNRS/ENS-LSH</editor>
+            </titleStmt>
+            <extent/>
+            <publicationStmt>
+                <distributor>
+                    <name>Projet BFM, UMR5191 ICAR, CNRS/ENS-LSH</name>
+                    <address>
+                        <addrLine>15, parvis René Descartes</addrLine>
+                        <addrLine>69342 Lyon BP7000 Cedex 07</addrLine>
+                        <addrLine>Tél : 04 37 37 63 10</addrLine>
+                        <addrLine>Fax : 04 37 37 62 65</addrLine>
+                        <addrLine>Mèl : <ref target="mailto:bfm@lsh.fr">bfm@ens-lsh.fr</ref></addrLine>
+                        <addrLine><ref target="http://bfm.ens-lsh.fr">http://bfm.ens-lsh.fr/</ref></addrLine>
+                    </address>
+                </distributor>
+                <availability status="restricted">
+                    <p>Ce document de travail est élaboré dans le cadre des opérations de saisie et
+                        de traitement automatique des transcriptions de manuscrits de la Base de
+                        Français Médiéval (<ref target="http://bfm.ens-lsh.fr"
+                            >http://bfm.ens-lsh.fr)</ref>. Le protocole du balisage est une
+                        extension du schéma de la TEI (P5) (<ref target="http://www.tei-c.org"
+                            >http://www.tei-c.org</ref>) et se base sur les principes exposés dans
+                        le <title>Manuel d’encodage XML-TEI des textes de la Base de
+                            Français Médiéval</title> (<ref
+                                target="http://ccfm.ens-lyon.fr/IMG/pdf/Manuel_Encodage_TEI-BFM_v3.2.1.pdf"
+                                >http://ccfm.ens-lyon.fr/IMG/pdf/Manuel_Encodage_TEI-BFM_v3.2.1.pdf</ref>) et dans le
+                            <hi rend="ital">Manuel de description de textes pour la Base de Français
+                            Médiéval</hi>, sur l’expérience du projet <hi rend="ital">Charrette</hi>
+                            (<ref target="http://www.princeton.edu/~lancelot/"
+                            >http://www.princeton.edu/~lancelot/</ref>), sur les recommandations
+                        présentées dans le <hi rend="ital">Handbook</hi> (v. 2) du projet Menota
+                            (<ref target="http://www.menota.org/">http://www.menota.org/</ref>) et
+                        sur les propositions de l’initiative MUFI (<ref
+                            target="http://gandalf.aksis.uib.no/mufi/"
+                            >http://gandalf.aksis.uib.no/mufi/</ref>).</p>
+                    <p>
+                        <ref target="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/deed.fr"><graphic url="http://fr.creativecommons.org/images/cdr_bouton.gif"/></ref>
+                   </p>
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p>Guidelines TEI P5</p>
+            </sourceDesc>
+        </fileDesc>
+        <revisionDesc>
+            <change when="2005-12-31">(VERSION 1.0 - DECEMBRE 2005)</change>
+            <change when="2008-03-31">(VERSION 2.0 - MARS 2008)</change>
+
+
+        </revisionDesc>
+
+    </teiHeader>
+ 
+
+    <text>
+
+<front></front>
+
+        <body>
+
+
+            <div type="div1">
+                <head>
+                    <anchor type="bookmark-start" xml:id="id__Ref121312235"/> Introduction : <lb/>
+                    Principes du codage XML, application et extension de la TEI </head>
+
+
+                <p>Comme c’est le cas de l’ensemble des textes constituant la Base de Français
+                    Médiéval (BFM), le corpus de transcriptions de manuscrits, d’incunables et de
+                    livres imprimés du XVI <hi rend="exp">e</hi> siècle (BFM-MSS) est encodé selon
+                    la norme XML (<ref target="http://www.w3c.org/xml"
+                    >http://www.w3c.org/xml</ref>), en conformité avec les recommandations de la
+                    Text Encoding Initiative (TEI, version P5, <ref
+                        target="http://www.tei-c.org/Guidelines/P5"
+                        >http://www.tei-c.org/Guidelines/P5</ref>).</p>
+
+                <p>Les principes de base du langage XML et de la TEI sont exposés dans la
+                    documentation de référence publiée sur les sites indiqués ci-dessus.</p>
+
+                <p>Les recommandations de la TEI étant très générales, une adaptation et une
+                    sous-spécification sont nécessaires dans le cadre d’un projet particulier. Le
+                    protocole d’encodage du corps des textes d’éditions modernes numérisées pour la
+                    BFM est exposé dans le <title>Manuel d’encodage XML-TEI des textes de
+                        la Base de Français Médiéval</title> (<ref
+                            target="http://ccfm.ens-lyon.fr/IMG/pdf/Manuel_Encodage_TEI-BFM_v3.2.1.pdf"
+                            >http://ccfm.ens-lyon.fr/IMG/pdf/Manuel_Encodage_TEI-BFM_v3.2.1.pdf</ref>). Le protocole
+                    de description et de caractérisation des textes de la BFM est exposé dans le <hi
+                        rend="ital"><title>Manuel de description de textes pour la Base de Français
+                        Médiéval</title></hi>. Ces deux documents servent de base pour des extensions
+                    éventuelles dans le cadre d’un projet particulier.</p>
+
+                <p>La transcription fine de manuscrits et d’incunables a nécessité l’usage de
+                    balises spéciales, définies pour la plupart dans les modules <hi rend="gras"
+                        >transcr</hi> et <hi rend="gras">msdescription</hi> de la TEI. Dans quelques
+                    cas précis, l’introduction de balises supplémentaires à celles proposée par la
+                    TEI a été jugé utile. Quelques unes de ces balises sont empruntées au schéma du
+                    projet Menota (Medieval Nordic Text Archive, <ref target="http://www.menota.org"
+                        >http://www.menota.org</ref>), d’autres sont définies par le projet BFM-MSS.
+                    L’introduction de ces balises étrangères à la TEI s’est effectuée en conformité
+                    avec les mécanismes d’extension prévue par la TEI même.</p>
+
+                <p>L’espace de nommage des balises XML par défaut est celui de la TEI (<ref
+                        target="http://www.tei-c.org/ns/1.0">http://www.tei-c.org/ns/1.0</ref>).
+                    Toutes les balises non-TEI appartiennent soit à l’espace Menota (<ref
+                        target="http://www.menota.org/ns/1.0">http:// www.menota.org/ns/1.0</ref>,
+                    préfixe <hi rend="gras">me:</hi> ), soit BFM (<ref
+                        target="http://bfm.ens-lsh.fr/ns/1.0">http://bfm.ens-lsh.fr/ns/1.0</ref>,
+                    préfixe <hi rend="gras">bfm:</hi> ).</p>
+            </div>
+
+            <div type="div1">
+                <head> Descripteur (entête TEI) </head>
+
+                <p>Le corpus est composé de transcriptions de fragments de manuscrits français
+                    médiévaux, d’incunables et de livres du XVI <hi rend="exp">e</hi> siècle. Chaque
+                    transcription forme une unité du corpus. Chaque unité du corpus porte un entête
+                    TEI.</p>
+
+                <p>Comme c’est le cas de l’ensemble des textes de la BFM, les descripteurs des
+                    unités textuelles sont stockés dans une base de données relationnelle, les
+                    entêtes TEI sont générés à partir des données de cette base au moment de la
+                    publication du corpus ou d’un document particulier. Par la publication nous
+                    entendons l’intégration à l’outil d’exploitation, toute mise en ligne, cession à
+                    un partenaire, etc.</p>
+
+
+                <p>Le descripteur d’une unité du corpus BFM-MSS inclut tous les champs
+                    caractérisant une œuvre dans la Base de Français Médiéval (titre, auteur, date
+                    de composition, forme, domaine, genre, etc.). La liste complète de ces champs
+                    est donnée dans le <title>Manuel de description de textes pour la
+                        BFM</title>.</p>
+
+
+                <p>La description du manuscrit et de sa transcription sont basées sur les dernières
+                    recommandations de la TEI, qui sont à leur tour, le fruit d’un long travail d’un
+                    groupe d’experts.</p>
+
+                <p>Un manuscrit médiéval (ou codex) peut en effet être composé de plusieurs parties
+                    hétérogènes réunies sous une reliure longtemps après l’écriture du texte.
+                    Chacune de ses parties peut à son tour inclure plusieurs unités textuelles
+                    (« œuvres » dans la terminologie de la BFM). Une transcription représente enfin
+                    une ou plusieurs parties d’une unité textuelle dans un manuscrit. Nous avons
+                    donc affaire à une structure hiérarchique, qui, dans une représentation XML
+                    prend forme d’arborescence d’éléments : <gi>msDesc</gi> (description du volume
+                    physique) peut contenir plusieurs <gi>msPart</gi> (parties physiquement
+                    homogènes) qui, à leur tour, contiennent un certain nombre de <gi>msItem</gi>
+                    (unités textuelles dans un manuscrit). Bien entendu, l’entête TEI d’une
+                    transcription donnée ne contiendra qu’un seul <gi>msItem</gi>.</p>
+
+                <p>Dans notre base de données relationnelle, cette hiérarchie est traduite par un
+                    système de tables entretenant une relation « un à plusieurs » et portant, pour
+                    la commodité, les mêmes noms que les balises TEI correspondantes (cf. le schéma
+                    des relations ci-joint, section <ref target="#id__Ref193449267"
+                        type="chapter">7</ref>). Enfin, une table spéciale (‘MsTranscription’) est
+                    dédiée aux données sur la transcription.</p>
+
+
+                <p>Les incunables et les livres du XVI <hi rend="exp">e</hi> siècle occupent une
+                    place intermédiaire entre les manuscrits et les éditions modernes : la
+                    description de l’exemplaire (objet physique localisé dans une bibliothèque) est
+                    pour eux aussi importante que les références de générale de l’édition. Dans
+                    notre base de données ces imprimés anciens sont décrits dans des tables
+                    spécialisées (‘Incunable’, ‘IncItem’ et ‘IncTranscription’, cf. le schéma des
+                    relations). Dans l’entête TEI, les incunables sont décrits de la même façon que
+                    les manuscrits, avec quelques différences légères (par exemple, il n’y a pas de
+                    description des mains).</p>
+
+
+                <p>Un exemple d’un entête complet d’une transcription d’un manuscrit est présenté
+                    ci-dessous. Si la structure générale de l’entête est imposée par la TEI, les
+                    projets individuels disposent d’une certaine liberté dans le choix
+                    d’informations renseignées et dans leur disposition. Nous commenterons ensuite
+                    les éléments de l’entête dans l’ordre de leur apparition en indiquant nos choix
+                    aux cas où le schéma de la TEI est flexible.</p>
+
+
+                <p>
+
+                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                        <teiHeader type="text">
+                            <fileDesc>
+                                <titleStmt>
+                                    <title type="normal">Chronique</title>
+                                    <title type="source">Manuscrit Paris, BnF fr. 2682</title>
+                                    <title type="reference" n="1012">monstre2682</title>
+                                    <title type="medium">transcription électronique</title>
+                                    <author>Enguerrand de Monstrelet</author>
+                                    <editor role="editor">Équipe diachronie et bases textuelles
+                                        d’ancien et moyen français - UMR5191 ICAR,
+                                        CNRS/ENS-LSH</editor>
+                                    <respStmt>
+                                        <resp>Transcription du manuscrit, encodage XML</resp>
+                                        <name type="person" xml:id="AL">Alexei Lavrentiev</name>
+                                    </respStmt>
+                                    <respStmt>
+                                        <resp>Datation du manuscrit</resp>
+                                        <name type="document" xml:id="catBNF">Catalogue de la
+                                            BnF</name>
+                                    </respStmt>
+                                </titleStmt>
+                                <extent>- Taille approximative du fichier encodé en TEI non
+                                    compressé : 104827 octets- Nombre d’occurrences-mots : 847-
+                                    Numéros de pages saisies : de 233r à 233v </extent>
+                                <publicationStmt>
+                                    <distributor>
+                                        <name>Projet BFM, UMR 5191 ICAR, CNRS/ENS LSH</name>
+                                        <address>
+                              <addrLine>15 parvis René-Descartes</addrLine>
+                              <addrLine>B.P. 7000 </addrLine>
+                              <addrLine>69342 Lyon Cedex 07</addrLine>
+                              <addrLine>France</addrLine>
+                              <addrLine>Tél : 04 37 37 63 10</addrLine>
+                              <addrLine>Fax : 04 37 37 62 65</addrLine>
+                              <addrLine>http://bfm.ens-lsh.fr/</addrLine>
+                          </address>
+                                        <email>bfm@ens-lsh.fr</email>
+                                    </distributor>
+                                    <availability status="restricted">
+                                        <p>(c) 2007, Equipe BFM, CNRS/ENS-LSH. <hi>Conditions
+                                                d’utilisation</hi> : usage interne équipe BFM Pour
+                                            d’autres conditions d’usage, contacter :
+                                            <address>
+                                  <addrLine>
+                                      <name type="person">Céline Guillot</name>
+                                  </addrLine>
+                                  <addrLine>Mèl : Celine.Guillot@ens-lsh.fr</addrLine>
+                              </address>
+                                       </p>
+                                    </availability>
+                                </publicationStmt>
+                                <sourceDesc>
+                                    <msDesc>
+                                        <msIdentifier>
+                                            <country>France;</country>
+                                            <settlement>Paris</settlement>
+                                            <repository>BnF</repository>
+                                            <idno>fr. 2682</idno>
+                                        </msIdentifier>
+                                        <msPart>
+                                            <altIdentifier>
+                                                <idno>bnf_fr2682</idno>
+                                            </altIdentifier>
+                                            <physDesc>
+                                                <handDesc hands="2">
+                                                  <handNote xml:id="scribe1">Premier scribe : <name
+                                                  type="person">inconnu</name>
+                                                  </handNote>
+                                                  <handNote xml:id="rubricateur1">Premier
+                                                  rubricateur : <name type="person">inconnu</name>
+                                                  </handNote>
+                                                </handDesc>
+                                            </physDesc>
+                                            <history>
+                                                <origin> Date du manuscrit : <origDate
+                                                  value="1450-01-01" notBefore="1400-01-01"
+                                                  notAfter="1499-01-01" resp="#catBNF"
+                                                  evidence="undefined" cert="low">15e s. </origDate>
+                                                  Région : <region>inconnue</region> Ville :
+                                                  <settlement>inconnue</settlement> Atelier :
+                                                  <origPlace>inconnu</origPlace>
+                                                </origin>
+                                            </history>
+                                        </msPart>
+                                    </msDesc>
+                                </sourceDesc>
+                            </fileDesc>
+                            <profileDesc>
+                                <creation>
+                                    <date when="1441-01-01">1441</date>
+                                </creation>
+                                <langUsage>
+                                    <language ident="fr" usage="100"> Le texte est entièrement écrit
+                                        en vers en français médiéval </language>
+                                </langUsage>
+                                <textDesc n="chronique">
+                                    <channel mode="w"/>
+                                    <constitution type="single"/>
+                                    <derivation type="original"/>
+                                    <domain type="historique"/>
+                                    <factuality type="inapplicable"/>
+                                    <interaction type="none"/>
+                                    <preparedness type="prepared"/>
+                                    <purpose type="inform"/>
+                                </textDesc>
+                                <textClass>
+                                    <catRef target="#forme_prose"/>
+                                </textClass>
+                            </profileDesc>
+                            <encodingDesc>
+                                <classDecl>
+                                    <taxonomy xml:id="forme">
+                                        <category xml:id="forme_vers">
+                                            <catDesc>vers</catDesc>
+                                        </category>
+                                        <category xml:id="forme_prose">
+                                            <catDesc>prose</catDesc>
+                                        </category>
+                                        <category xml:id="forme_mixte">
+                                            <catDesc>mixte</catDesc>
+                                        </category>
+                                    </taxonomy>
+                                </classDecl>
+                                <projectDesc>
+                                    <p>Projet : BFM-MSS - Base de Français Médiéval - Manuscrits
+                                        Resp. : <name type="person">Alexei Lavrentiev</name> Équipe
+                                        : Diachronie et bases textuelles d’ancien et de moyen
+                                        français Laboratoire : UMR5191 ICAR Institution : CNRS / ENS
+                                        LSH, Lyon <address>
+                              <addrLine>15 parvis René-Descartes</addrLine>
+                              <addrLine>B.P. 7000 </addrLine>
+                              <addrLine>69342 Lyon Cedex 07</addrLine>
+                              <addrLine>France</addrLine>
+                              <addrLine>Tél : 04 37 37 63 10</addrLine>
+                              <addrLine>Fax : 04 37 37 62 65</addrLine>
+                              <addrLine>http://bfm.ens-lsh.fr/</addrLine>
+                          </address>
+                                        <email>bfm@ens-lsh.fr</email>
+                                   </p>
+                                </projectDesc>
+                                <editorialDecl>
+                                    <p>See BFM-MSS Encoding Guidelines at
+                                        http://bfm.ens-lsh.fr/IMG/pdf/BFM-Mss_Encodage-XML.pdf.See
+                                        also BFM XML-TEI Encoding Guidelines at
+                                        http://bfm.ens-lsh.fr/IMG/pdf/Manuel_Encodage_TEI.pdf and
+                                        BFM XML-TEI Encoding Instructions at
+                                        http://bfm.ens-lsh.fr/IMG/pdf/Consignes_BFM.pdf</p>
+                                </editorialDecl>
+                            </encodingDesc>
+                            <revisionDesc>
+                                <change who="#AL" when="2007-07-22">Création de l’entête TEI et de
+                                    la représentation diffractée</change>
+                            </revisionDesc>
+                        </teiHeader>
+                    </egXML>
+
+               </p>
+
+                <div type="div2">
+                    <head>
+                        <gi>teiHeader</gi>
+                    </head>
+
+                    <p>L’entête TEI peut contenir 4 éléments : <gi>fileDesc</gi>,
+                            <gi>encodingDesc</gi>, <gi>profileDesc</gi> et <gi>revisionDesc</gi>.
+                        Tous ces éléments sont présents dans l’entête BFM-MSS.</p>
+                </div>
+
+                <div type="div2">
+                    <head>
+                        <gi>fileDesc</gi>
+                    </head>
+
+                    <p>Description du document électronique. Dans le projet BFM-MSS cette
+                        description est composée de <gi>titleStmt</gi>, <gi>extent</gi>,
+                            <gi>publicationStmt</gi> et <gi>sourceDesc</gi>.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>titleStmt</gi>
+                    </head>
+
+                    <p>Déclaration du titre. Contient une ou plusieurs occurrences des éléments
+                        suivants : <gi>title</gi>, <gi>author</gi>, <gi>editor</gi>.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>title</gi>
+                    </head>
+
+                    <p>Balise générique pour un titre. Son attribut <att>type</att> est utilisé
+                        pour les catégoriser.</p>
+
+
+                    <list type="unordered">
+
+                        <item>
+                            <att>type</att> =<val>normal</val> – titre conventionnel de l’œuvre,
+                            tel que donné dans les ouvrages de référence ;</item>
+
+                        <item>
+                            <att>type</att> =<val>source</val> – brève indication de la source ;</item>
+
+                        <item>
+                            <att>type</att> =<val>reference</val> – identifiant BFM (l’attribut
+                            <att>n</att> contient l’identifiant numérique dans le corpus de transcriptions) ;</item>
+
+                        <item>
+                            <att>type</att> =<val>medium</val> – sert à préciser qu’il s’agit
+                            d’une transcription électronique.</item>
+
+                    </list>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>author</gi>
+                    </head>
+
+                    <p>Le nom de l’auteur.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>editor</gi>
+                    </head>
+
+                    <p>Balise générique pour un auteur « secondaire ». Son attribut <att>role</att>
+                        permet de préciser le rôle.</p>
+
+
+                    <list type="unordered">
+
+                        <item>
+                            <att>role</att> =<val>editor</val> – institution responsable de
+                            l’édition du document numérique ;</item>
+
+                        <item>
+                            <att>role</att> =<val>ed_sci</val> – éditeur scientifique
+                            (responsable des corrections dans la représentation normalisée) ;</item>
+
+                        <item>
+                            <att>role</att> =<val>imprimeur</val> – scribe (utilisé dans
+                                <gi>msDesc</gi> pour les incunables).</item>
+
+                    </list>
+
+
+                    <p>Dans les deux derniers cas, cet élément porte également un attribut
+                            <att>xml:id</att> permettant de se référer à la personne correspondante.
+                   </p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>respStmt</gi>
+                    </head>
+
+                    <p>Déclaration des responsabilités, contient un ou plusieurs éléments
+                            <gi>resp</gi> et <gi>name</gi>.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>resp</gi>
+                    </head>
+
+                    <p>Description d’un rôle d’un responsable de l’édition.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>name</gi>
+                    </head>
+
+                    <p>Balise générique pour un nom propre. Son attribut <att>type</att> permet de
+                        les catégoriser. Son attribut <att>xml:id</att> permet de créer un
+                        identifiant auquel d’autres éléments pourront se référer (par exemple,
+                        d’indiquer le responsable d’une correction dans le texte).</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>extent</gi>
+                    </head>
+
+                    <p>Informations sur les dimensions du document numérique.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>publicationStmt</gi>
+                    </head>
+
+                    <p>Déclaration de la publication : informations sur la distribution et
+                        l’accessibilité du document numérique. Contient les éléments
+                            <gi>distibutor</gi> et <gi>availability</gi> que nous ne détaillerons
+                        pas davantage.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>sourceDesc</gi>
+                    </head>
+
+                    <p>Conteneur de la description de la source du document numérique. Dans
+                        l’entête d’un texte du corpus BFM-MSS, il contient toujours un élément
+                            <gi>msDesc</gi>.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>msDesc</gi>
+                    </head>
+
+                    <p>Conteneur de la description du codex ou de l’incunable.</p>
+
+                    <p>Il contient un <gi>msIdentifier</gi> et</p>
+
+                    <list type="unordered">
+
+                        <item>
+                            <gi>msPart</gi>, si le codex est hétérogène ;</item>
+
+                        <item>
+                            <gi>physDesc</gi> et <gi>history</gi>, si le manuscrit est homogène.</item>
+
+                    </list>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>msIdentifier</gi>
+                    </head>
+
+                    <p>Identifiant du manuscrit. Contient les éléments permettant de localiser le
+                        manuscrit puis l’exemplaire de l’incunable transcrit : <gi>country</gi>
+                        (pays), <gi>settlement</gi> (ville), <gi>repository</gi> (bibliothèque ou
+                        autre lieu de dépôt), <gi>idno</gi> (cote).</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>msPart</gi>
+                    </head>
+
+                    <p>Contient un identifiant altIdentifier et les mêmes éléments que
+                            <gi>msDesc</gi> pour les manuscrits homogènes.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>physDesc</gi>
+                    </head>
+
+                    <p>Description physique du manuscrit ou de l’incunable. Contient l’élement
+                            <gi>objectDesc</gi> (description du volume en « prose libre ») et, pour
+                        les manuscrits, <gi>handDesc</gi> .</p>
+                </div>
+                <div type="div2">
+
+                    <head>
+                        <gi>handDesc</gi>
+                    </head>
+
+                    <p>Description des mains du manuscrit. Contient plusieurs éléments
+                            <gi>handNote</gi>. Son attribut <att>hands</att> sert à indiquer le
+                        nombre de mains. On distingue habituellement au moins deux mains : celles du
+                        scribe et du rubricateur (qui réalise les lettrines et les titres en
+                        couleur).</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>handNote</gi>
+                    </head>
+
+                    <p>Une note caractérisant une main particulière du manuscrit. Son attribut
+                            <att>xml:id</att> permet de créer l’identifiant auquel on peut se
+                        référer pour indiquer la responsabilité de corrections scribales. La valeur
+                        de cet attribut indique le rôle et un indice numérique. Par exemple,
+                            <att>xml:id</att> =<val>scribe1</val> pour le premier (ou unique)
+                        scribe identifié. Cet élément peut contenir de la « prose libre » avec un
+                        élément <gi>name</gi> qui indique éventuellement le nom de la personne.</p>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>history</gi>
+                    </head>
+
+                    <p>Dans le corpus BFM-MSS, il contient un seul élément <gi>origin</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>origin</gi>
+                    </head>
+
+                    <p>Contient les informations sur l’origine du manuscrit ou de l’incunable :</p>
+
+                    <list type="unordered">
+
+                        <item>date du manuscrit (élément <gi>origDate</gi>, cf. élément
+                                <gi>date</gi> ci-dessous) ;</item>
+
+                        <item>région (élément <gi>region</gi> ) ;</item>
+
+                        <item>ville (élement <gi>settlement</gi> ) ;</item>
+
+                        <item>atelier pour les manuscrits (élément <gi>origPlace</gi> ) ;</item>
+
+                        <item>nom de l’imprimeur pour les incunables (élément <tag type="start"
+                                >editor role="imprimeur"</tag>).</item>
+
+                    </list>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>profileDesc</gi>
+                    </head>
+
+                    <p>Description du texte représenté par la transcription, indépendante de sa
+                        forme matérielle. Le même schéma est utilisé pour l’ensemble des textes de
+                        la BFM. Contient les éléments <gi>creation</gi>, <gi>langUsage</gi>,
+                            <gi>textDesc</gi> et <gi>textClass</gi>. Le modèle de cette description
+                        est commun pour l’ensemble des textes de la BFM.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>creation</gi>
+                    </head>
+
+                    <p>Informations sur la composition du texte, contient un élément <gi>date</gi>
+                        indiquant la date de composition.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>date</gi>
+                    </head>
+
+                    <p>Elément générique permettant d’encoder une date. D’autres éléments, plus
+                        spécialisés peuvent être utilisés selon les cas (par exemple,
+                            <gi>origDate</gi>), mais le mécanisme est toujours le même.</p>
+
+                    <p>Le contenu de cet élément est l’indication de la date sous forme libre. Ses
+                        attributs permettent de formaliser la date pour la rendre exploitable par
+                        des outils informatiques :</p>
+
+                    <list type="unordered">
+
+                        <item>
+                            <att>when</att> : date au format ISO (aaaa-mm-jj) ;</item>
+
+                        <item>
+                            <att>notBefore</att> : la date la plus ancienne possible au format
+                            ISO ;</item>
+
+                        <item>
+                            <att>notAfter</att> : la date la plus tardive possible au format ISO ;</item>
+
+                        <item>
+                            <att>cert</att> : certitude de la datation ;</item>
+
+                        <item>
+                            <att>resp</att> : responsable de la datation.</item>
+
+                    </list>
+
+
+                    <p>L’algorithme du calcul de la date formalisée du projet BFM est décrit dans
+                        le <title>Manuel de description de textes pour la BFM</title> .</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>langUsage</gi>
+                    </head>
+
+                    <p>Cet élément défini dans le module indique l’usage des différentes langues
+                        dans le texte. Contient un ou plusieurs éléments <gi>language</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>textDesc</gi>
+                    </head>
+
+                    <p>Caractérisation typologique du texte, contient les éléments <gi>channel</gi>, 
+                        <gi>constitution</gi>, <gi>derivation</gi>, <gi>domain</gi>,
+                            <gi>factuality</gi>, <gi>interaction</gi>, <gi>preparedness</gi> et
+                            <gi>purpose</gi> dont l’usage est précidément défini par la TEI. Dans la
+                        BFM, le domaine du texte occupe une place centrale parmi les variables de la
+                        typologie textuelle. Une liste d’autorité des domaines a été établie et
+                        intégrée à la personnalisation du schéma de la TEI pour la BFM. Cette liste
+                        d’autorité figure dans le <title>Manuel de description de textes
+                            pour la BFM</title>.</p>
+
+                    <p>D’autres variables importantes pour la BFM (telles que la forme et le genre
+                        du texte), elles ont donc été introduites à l’aide d’un mécanisme plus
+                        générique utilisant les éléments <gi>catRef</gi> et <gi>catDesc</gi>
+                        présentés ci-dessous.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>textClass</gi>
+                    </head>
+
+                    <p>Conteneur de la référence à la caractérisation du texte selon une taxonomie
+                        quelconque. Contient un ou plusieurs éléments <gi>catRef</gi>. Dans le
+                        projet BFM ce mécanisme est utilisé pour caractériser la forme (vers, prose
+                        ou mixte) et le genre du texte (roman, chronique, etc.). La liste d’autorité
+                        des genres et des formes figure dans le <title>Manuel de
+                            description de textes pour la BFM</title>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>catRef</gi>
+                    </head>
+
+                    <p>Référence à une catégorie. Son attribut <att>target</att> assure la
+                        connexion avec la description de la catégorie <gi>catDesc</gi> dans le cadre
+                        d’une taxonomie.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>encodingDesc</gi>
+                    </head>
+
+                    <p>Description des normes d’encodage. Contient les déclarations des classes
+                        classDecl, ainsi que les éléments <gi>projectDesc</gi> et
+                            <gi>editorialDecl</gi> que nous ne détaillerons pas davantage.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>classDecl</gi>
+                    </head>
+
+                    <p>Déclaration d’une classe. Utilisée dans la BFM pour présenter les taxonomies
+                        de catégories de textes. Contient plusieurs éléments <gi>taxonomy</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>taxonomy</gi>
+                    </head>
+
+                    <p>Contient plusieurs éléments <gi>category</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>category</gi>
+                    </head>
+
+                    <p>Contient la description d’une catégorie <gi>catDesc</gi>. Son attribut
+                            <att>xml:id</att> permet de se référer à cette description à partir de
+                            <gi>catRef</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>catDesc</gi>
+                    </head>
+
+                    <p>Contient une description de la catégorie en « prose libre ».</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>revisionDesc</gi>
+                    </head>
+
+                    <p>Historique des modifications du document numérique. Contient plusieurs
+                        éléments <gi>change</gi>.</p>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>change</gi>
+                    </head>
+
+                    <p>Contient la description d’une opération de modification. Ses attributs
+                            <att>who</att> et <att>when</att> permettent d’indiquer la personne
+                        intervenante (qui doit figurer dans la déclaration des responsabilités) et
+                        la date de la modification.</p>
+
+                </div>
+            </div>
+            <div type="div1">
+                <head> Niveaux de représentation des données <anchor type="bookmark-end"
+                        corresp="#id__Ref121312235"/> (diffraction) </head>
+
+                <p>Un document XML est organisé comme une arborescence d’éléments imbriqués. Ainsi,
+                    un roman en prose peut être représenté comme un élément <gi>text</gi> composé
+                    d’une partie liminaire (titre, épigraphe, prologue, etc.) et du « corps » du
+                    texte, composé à son tours de plusieurs chapitres. Les transcriptions des
+                    sources du projet BFM-Manuscrits visent à représenter de façon fine et fidèle
+                    les données des originaux, en y ajoutant des couches distinctes de normalisation
+                    et de « filtrage » permettant d’en faciliter la lecture et l’analyse. Pour
+                    atteindre cet objectif, il a été nécessaire de créer des représentations
+                    multiples des données et de choisir le niveau de la structure textuelle auquel
+                    ces représentations divergent.</p>
+
+
+                <p>Puisque la BFM est destinée avant tout à servir à des recherches linguistiques,
+                    l’unité principale de représentation qui s’impose est le mot. Le mot est en
+                    effet « porteur » des propriétés morpho-syntaxiques et l’unité d’indexation pour
+                    une grande partie des outils de l’informatique linguistique. Au même niveau que
+                    les mots se situent les marques de ponctuation et certaines balises de mise en
+                    page et de référence (sauts de ligne et de page, certains commentaires).</p>
+
+                <p>La structure de la transcription se complique dans les cas où le manuscrit
+                    présente des corrections scribales (suppressions ou ajouts) ou des passages
+                    illisibles (détérioration matérielle ou écriture ambigüe).</p>
+
+
+                <p>Nous utilisons le terme de <hi rend="ital">représentation diffractée</hi>
+                    <note place="foot" n="1"> Terme proposé par Nicolas Mazziotta. </note> pour
+                    désigner la séparation systématique des niveaux de transcription. C’est à partir
+                    de cette représentation que sont générées les différentes formes d’éditions
+                    (visualisations) et c’est à cette représentation que sont rattachées les
+                    annotations linguistiques. En revanche, une <hi rend="ital">syntaxe
+                        compacte</hi> est utilisée au stade de saisie et de correction des
+                    transcriptions (cf. section <ref target="#saisie_correc_compact" type="chapter">6</ref> ci-dessous).</p>
+
+
+
+                <p>Illustration de la structure arborescente</p>
+
+                <p>
+
+                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                        <text>
+                            <front> </front>
+                            <body>
+                                <div>
+                                    <p>
+                                        <w>
+                                            <choice>
+                                                <me:norm>chevaliers</me:norm>
+                                                <me:dipl>ch<ex>eualie</ex>rs</me:dipl>
+                                                <me:facs><bfm:mdvAbbr>ch&amp;apos;&amp;rrot;</bfm:mdvAbbr>s </me:facs>
+                                                <me:pal> … </me:pal>* </choice>
+                                        </w>
+                                        <bfm:punct>
+                                            <choice>
+                                                <me:norm/>
+                                                <me:dipl>,</me:dipl>
+                                                <me:facs>&amp;punctelev;</me:facs>
+                                                <me:pal> … </me:pal>* </choice>
+                                        </bfm:punct>
+                                   </p>
+                                </div>
+                            </body>
+                        </text>
+                    </egXML>
+
+               </p>
+
+                <note xmlns="http://www.tei-c.org/ns/1.0" place="foot" n="2"> Dans les exemples de
+                    balisage, un astérisque après une balise signifie que l’usage de cette balise
+                    est optionnel. </note>
+
+                <div type="div2">
+
+                    <head>Représentation normalisée : <gi>me:norm</gi></head>
+
+
+                    <p>Ce niveau de représentation est conforme aux normes appliquées dans les
+                        éditions critiques modernes (cf. Vielliard, Guyotjeannin 2001). La seule
+                        différence est qu’il s’agit toujours de la transcription d’un manuscrit, par
+                        conséquent toutes les corrections basées sur des leçons des autres
+                        manuscrits ou sur des données extratextuelles (corrections de noms
+                        géographiques, personnages historiques, etc.) ne sont pas prises en compte.
+                        Celles-ci peuvent éventuellement figurer dans des commentaires (élément
+                            <gi>note</gi> ).</p>
+
+                    <div type="div3">
+                        <head>Traits caractéristiques</head>
+
+                        <list type="unordered">
+
+                            <item>Usage de caractères modernes (suppression des variantes
+                                calligraphiques et des diacritiques médiévaux) ;</item>
+
+                            <item>Résolution tacite des abréviations ;</item>
+
+                            <item>Introduction de la distinction <hi rend="ital">u/v, i/j</hi>  ;</item>
+
+                            <item>Usage de diacritiques modernes désambigüisants ( <hi rend="ital"
+                                    >é, ï, ü,</hi> etc.) ;</item>
+
+                            <item>Séparation de ligatures ;</item>
+
+                            <item>Notation des noms propres avec les majuscules ;</item>
+
+                            <item>Segmentation des unités-mots normalisée ;</item>
+
+                            <item>Ponctuation modernisée.</item>
+
+                        </list>
+                    </div>
+                    <div type="div3">
+                        <head> Contenu :</head>
+
+
+                        <p>text (PCDATA)</p>
+
+                        <p>
+
+                            <gi>corr</gi>
+
+                       </p>
+
+                        <p>
+
+                            <gi>supplied</gi>
+
+                       </p>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head> Représentation diplomatique : <gi>me:dipl</gi></head>
+
+
+                    <p>Cette représentation se situe dans la lignée des éditions dites
+                        « diplomatiques », même si les pratiques varient beaucoup selon les
+                        éditeurs. Les normes appliquées dans le projet BFM-MSS se basent sur le
+                        principe de transcription graphématique : les variantes de graphèmes sont
+                        neutralisées, mais on n’introduit pas de marques désambigüisantes.</p>
+                    <div type="div3">
+                        <head>Traits caractéristiques</head>
+
+                        <list type="unordered">
+
+                            <item>Usage de caractères modernes (suppression des variantes
+                                calligraphiques et des diacritiques médiévaux) ;</item>
+
+                            <item>Résolution des abréviations avec une mise en évidence
+                                typographique des caractères restitués ;</item>
+
+                            <item>Les caractères <hi rend="ital">i, j, u</hi> et <hi rend="ital"
+                                    >v</hi> du manuscrit sont respectés ;</item>
+
+                            <item>Pas d’usage de diacritiques modernes désambigüisants ( <hi
+                                    rend="ital">é, ï, ü,</hi> etc.) ;</item>
+
+                            <item>Séparation de ligatures ;</item>
+
+                            <item>Respect des majuscules et des minuscules du manuscrit ;</item>
+
+                            <item>Segmentation des unités-mots normalisée ;</item>
+
+                            <item>Représentation de la ponctuation de la source : une virgule pour
+                                une ponctuation faible et un point pour une ponctuation forte.</item>
+
+                        </list>
+                    </div>
+                    <div type="div3">
+                        <head> Contenu :</head>
+
+
+                        <p>texte (PCDATA)</p>
+
+                        <p>
+
+                            <gi>bfm:expan</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>ex</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>sic</gi>
+
+                       </p>
+                    </div>
+                </div>
+                <div type="div2">
+
+                    <head>Représentation imitative : <gi>me:facs</gi></head>
+
+
+                    <p>Cette représentation s’inspire de certaines éditions dites
+                        « hyper-diplomatiques » ou « imitatives ». Son principe est de représenter
+                        fidèlement toutes les données potentiellement pertinentes pour une analyse
+                        linguistique du système graphique. Cette représentation ne peut remplacer ni
+                        la représentation normalisée, ni la représentation photographique de la
+                        source, mais elles les complète en répondant à des besoins de recherches
+                        spécifiques.</p>
+                    <div type="div3">
+                        <head>Traits caractéristiques</head>
+
+                        <list type="unordered">
+
+                            <item>Distinction de variantes calligraphiques clairement identifiables
+                                (allographes), maintien de diacritiques médiévaux ;</item>
+
+                            <item>Représentation des marques d’abréviation médiévales ;</item>
+
+                            <item>Les caractères <hi rend="ital">i, j, u</hi> et <hi rend="ital"
+                                    >v</hi> du manuscrit sont respectés ;</item>
+
+                            <item>Pas d’usage de diacritiques modernes désambigüisants ( <hi
+                                    rend="ital">é, ï, ü,</hi> etc.) ;</item>
+
+                            <item>Maintien de certaines ligatures ;</item>
+
+                            <item>Représentation des majuscules et des minuscules du manuscrit
+                                (éventuellement, des « grandes minuscules » et des « petites
+                                majuscules ») ;</item>
+
+                            <item>Segmentation des unités-mots originale (maintien des
+                                agglutinations et des déglutinations) ;</item>
+
+                            <item>Marques de ponctuation médiévales ;</item>
+
+                            <item>Représentation des marques de correction scribales.</item>
+
+                        </list>
+                    </div>
+                    <div type="div3">
+                        <head> Contenu (mots) :</head>
+
+
+                        <p>texte (PCDATA)</p>
+
+                        <p>
+
+
+                            <gi>add</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>am</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>bfm:mdvAbbr</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>bfm:dropcap</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>del</gi>
+
+                       </p>
+
+                        <p>
+
+
+                            <gi>unclear</gi>
+
+                       </p>
+                    </div>
+                    <div type="div3">
+                        <head> Contenu (ponctuation)</head>
+
+
+                        <p>texte (PCDATA)</p>
+
+                        <p>
+
+
+                            <gi>bfm:eol</gi>
+
+                       </p>
+                    </div>
+                </div>
+                <div type="div2">
+
+                    <head> Représentation paléographique (facultative) : <gi>me:pal</gi></head>
+
+
+                    <p>Niveau de représentation prévu pour les annotations paléographiques 
+                        (distinction fine des tracés de caractères, des traits d’écriture individuels,
+                        des espaces de différentes tailles, etc.). Il n’est pas implémenté à présent
+                        dans les transcriptions BFM-MSS.</p>
+
+
+                </div>
+            </div>
+            <div type="div1">
+                <head>
+                    <anchor type="bookmark-start" xml:id="id__Ref121309429"/> Corrections scribales
+                    et éditoriales ; passages difficilement lisibles ou illisibles <anchor
+                        type="bookmark-end" corresp="#id__Ref121309429"/>
+                </head>
+
+
+                <p>Les transcriptions du projet BFM-Manuscrits visent à représenter les manuscrits
+                    sans corriger les erreurs éventuelles des scribes ou copistes. Par conséquent,
+                    les seules corrections intégrées de façon systématique sont celles effectuées
+                    sur le manuscrit par le scribe lui-même ou par un (re)lecteur médiéval. Des
+                    corrections éditoriales de coquilles évidentes peuvent toutefois être ajoutées
+                    au niveau de représentation normalisée. Les mêmes principes de balisage
+                    s’appliquent aux passages du manuscrit difficilement lisible ou illisible à
+                    cause de l’état matériel du manuscrit. Les balises XML recommandées par la TEI
+                    sont utilisées pour toutes les corrections et passages illisibles.</p>
+
+                <p>Le niveau hiérarchique sur lequel apparaissent les balises de corrections et
+                    assimilées dépend de l’étendu de celles-ci. Trois cas de figure se présentent :</p>
+
+                <div type="div2">
+                    <head> Partie d’un mot</head>
+
+
+                    <p>Les éléments correspondants (<gi>corr</gi>, <gi>add</gi>, <gi>del</gi>,
+                            <gi>unclear</gi>, etc.) sont placés à l’intérieur de la représentation
+                        facsimilaire, diplomatique ou normalisée selon les cas.</p>
+
+                   
+                    <p>
+
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <w>
+                                <choice>
+                                    <me:norm>Platon</me:norm>
+                                    <me:dipl>platon</me:dipl>
+                                    <me:facs>p <del rend="dots_below" hand="#scribe1">i</del> laton
+                                    </me:facs>
+                                </choice>
+                            </w>
+                        </egXML>
+
+                   </p>
+                </div>
+                <div type="div2">
+                    <head>Un mot entier ou plusieurs mots</head>
+
+
+                    <p>Les mots (<gi>w</gi>) concernés sont placés dans les éléments
+                        correspondants (<gi>corr</gi>, <gi>add</gi>, <gi>del</gi>,
+                            <gi>unclear</gi>, etc.). Dans les passages supprimés, seul le niveau de
+                        représentation facsimilé sera présent.</p>
+
+                  
+                    <p>
+
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <del rend="dots_below" hand="#scribe1">
+                                <w type="num">
+                                    <me:facs>.iij.</me:facs>
+                                </w>
+                                <w>
+                                    <bfm:mdvAbbr>
+                                        <me:facs>phi<am>&amp;apos;.</am></me:facs>
+                                    </bfm:mdvAbbr>
+                                </w>
+                                <space dim="horizontal" unit="chars" quantity="9"/>
+                                <w>
+                                    <me:facs>in</me:facs>
+                                </w>
+                                <w>
+                                    <me:facs>p&amp;rrot;ologo</me:facs>
+                                </w>
+                            </del>
+                        </egXML>
+
+                   </p>
+                </div>
+                <div type="div2">
+
+                    <head>Segment commençant ou finissant au milieu d’un mot et s’étendant sur
+                        plusieurs mots</head>
+
+
+                    <p>Ce cas, assez rare, présente un problème de structure hiérarchique XML. La
+                        technique de « fragmentation et reconstitution d’éléments virtuels » est
+                        utilisée pour le résoudre (cf. <hi rend="ital"
+                            ><ref target="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/NH.html">
+                            http://www.tei-c.org/release/doc/tei-p5-doc/en/html/NH.html</ref></hi> ), qui
+                        semble satisfaisante pour le traitement de cas rares.</p>
+
+                
+                    <p>
+
+                        <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                            <w>
+                                <me:norm>lairons</me:norm>
+                                <me:dipl>l<unclear xml:id="ucl123" next="#ucl124">airons</unclear></me:dipl>
+                                <me:facs>l<unclear corresp="#ucl123" next="#ucl124">airons</unclear></me:facs>
+                            </w>
+                            <unclear xml:id="ucl124" prev="#ucl123">
+                                <w>
+                                    <me:norm>nous</me:norm>
+                                    <me:dipl>nous</me:dipl>
+                                    <me:facs>nous</me:facs>
+                                </w>
+                            </unclear>
+                        </egXML>
+
+                   </p>
+
+                </div>
+                <div type="div2">
+                    <head>Notes et commentaires du relecteur/encodeur</head>
+
+                    <p>Une <gi>note</gi> peut être utilisée pour ajouter un commentaire à l’endroit
+                        du texte où l’encodage pose un problème ou si le choix de balisage nécessite
+                        une explication. L’élément <gi>note</gi> est normalement placé au même
+                        niveau d’arborescence XML que les mots (<gi>w</gi>), à la fin du passage
+                        commenté.</p>
+                </div>
+            </div>
+            <div type="div1">
+                <head>Définition et description des éléments</head>
+
+
+                <p>Par défaut, les éléments ci-dessous sont définis par la TEI. Les éléments
+                    définis par le projet Menota portent un préfixe me: (xmlns:me="http://www.menota.org/ns/1.0").
+                    Les éléments définis par le projet
+                    BFM-MSS portent le préfixe bfm: (xmlns:bfm="http://bfm.ens-lsh.fr/ns/1.0").</p>
+
+                <div type="div2">
+                    <head>
+                        <gi>ab</gi>
+                    </head>
+
+
+                    <p>Balise générique pour une unité textuelle de niveau équivalent au paragraphe. 
+                        Dans la BFM, cette balise est utilisée dans les textes en vers.</p>
+
+                    <p>La structure linguistique (en particulier, la division en phrases ou « unités
+                        ponctuables » est prioritaire dans la BFM. Pour éviter le conflit de
+                        « hiérarchies concurrentes », les éléments <gi>l</gi> (vers) et <gi>lg</gi>
+                        (groupe de vers) ne sont donc pas utilisés.</p>
+                    <div type="div3">
+                        <head> Position (« parents » ou « frères et sœurs »)</head>
+
+
+                        <p>A l’intérieur d’une division (<tag type="start">div
+                                type="chapitre"</tag> ou autre).</p>
+                    </div>
+                    <div type="div3">
+                        <head> Contenu (« enfants »)</head>
+
+
+                        <p>
+
+                            <gi>w</gi>
+
+                       </p>
+
+                        <p>
+
+                            <gi>bfm:punct</gi>
+
+                       </p>
+
+                        <p>
+                            <gi>lb</gi> , etc.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>type</att> : type d’unité ( <val>gv</val> pour groupe de
+                                vers) ;</item>
+
+                            <item>
+                                <att>n</att> : indique éventuellement le numéro du paragraphe.</item>
+
+                        </list>
+                    </div>
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>add</gi>
+                    </head>
+
+                    <p>Lettres, mots ou groupes de mots ajoutés au texte initial dans le manuscrit
+                        par le scribe ou autre personne à l’époque proche de la création du
+                        manuscrit.</p>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>place</att> : indique l’endroit où le texte ajouté est placé.
+                                La TEI propose une liste de valeurs non restrictive 
+                                ( <val>infralinear</val>, <val>supralinear</val>, 
+                                <val>margin-right</val>, <val>inline</val>, etc.). Une
+                                valeur <val>overwritten</val> est ajoutée par le projet BFM-MSS.
+                                Attribut obligatoire ;</item>
+
+                            <item>
+                                <att>hand</att> : indique la main ayant effectué l’ajout. Si
+                                absent, on suppose que c’est le premier scribe ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de l’ajout</item>
+
+                            <item>
+                                <att>seq</att> : indique éventuellement l’ordre séquentiel en cas
+                                de plusieurs « couches » de corrections dans un manuscrit.</item>
+
+                        </list>
+                    </div>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>
+                            .</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>am</gi>
+                    </head>
+
+                    <p>Marque d’abréviation</p>
+
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Dans l’élément <gi>bfm:mdvAbbr</gi> (représentation facsimilaire).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>PCDATA (un caractère MUFI représenté par une entité , cf. section <ref
+                                target="#id__Ref193449267" type="chapter">7</ref> ).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>resp</att> – responsable du balisage (identification de la
+                                marque).</item>
+
+                        </list>
+                    
+
+                        <p>Exemples</p>
+
+                        <p>Cf. <gi>bfm:mdvAbbr</gi> plus bas.</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>bfm:dropcap</gi>
+                    </head>
+
+                    <p>Lettre initiale (lettrine).</p>
+
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>Représentation imitative : <gi>me:facs</gi>.</p>
+                    </div>
+                    <div type="div3">
+
+                        <head>Contenu</head>
+
+                        <p>Un caractère ( PCDATA)</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>color</att> – couleur (principale) de l’initiale ;</item>
+
+                            <item>
+                                <att>colorSuppl</att> – couleur secondaire ;</item>
+
+                            <item>
+                                <att>size</att> – taille prévue : nombre de lignes d’alinéa ;</item>
+
+                            <item>
+                                <att>sizeAct</att> – taille réelle de l’initiale en nombre de
+                                lignes ;</item>
+
+                            <item>
+                                <att>decoration</att> – détails de la décoration ;</item>
+
+                            <item>
+                                <att>ref</att> – référence de la description complète de
+                                l’initiale ;</item>
+
+                            <item>
+                                <att>resp</att> – responsable du balisage.</item>
+
+                        </list>
+
+                    
+
+                        <p>
+                            <figure>
+                                <head>Lettrine</head>
+                                <figDesc/>
+                                <graphic
+                                    url="http://img200.imageshack.us/img200/3048/imagelettrine.jpg"
+                                />
+                            </figure>
+                       </p>
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <bfm:dropcap color="blue" colorSuppl="red" size="6" sizeAct="6">O</bfm:dropcap>R
+                            </egXML>
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+
+                        <gi>bfm:headlb</gi>
+                    </head>
+
+
+                    <p>Saut de ligne « supplémentaire » dans un titre.</p>
+
+                    <p>Cet élément est utilisé dans un cas particulier de la mise en page médiévale.
+                        Dans certains manuscrits les titres ou résumés de chapitres sont écrits en
+                        encre de couleur différente et placés immédiatement après la fin du chapitre
+                        précédent, souvent sans retour à la ligne. Parfois ces titres continuent sur
+                        les fins des premières lignes du chapitre suivant, ce qui pose un problème
+                        de continuité linéaire du texte (cf. illustration ci-dessous). La solution
+                        proposée est de placer la totalité du titre avant le début du chapitre
+                        annoncé et d’utiliser une balise spéciale la où une partie du titre se
+                        trouve sur la même ligne physique que le contenu d’une autre unité
+                        sémantique du texte (fin de la division précédente ou début de la division
+                        suivante). En revanche une simple balise <gi>lb</gi> est utilisée lorsqu’une
+                        ligne du titre occupe la totalité d’une ligne physique.</p>
+
+
+
+                    <p>
+                        <figure>
+                            <head>Fragment de l’<hi rend="ital">Image du monde, ms. Paris, BNF, fr. 574, f° 83r (cf. exemple de code
+                                ci-dessous)</hi></head>
+                            <figDesc></figDesc>
+                            <graphic url="http://img706.imageshack.us/img706/3908/imagetitrev.jpg"/>
+                        </figure>
+                   </p>
+
+
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Dans un titre (ou résumé) d’un chapitre ou autre unité textuelle
+                            (<gi>head</gi>).</p>
+
+                        <p>Comme <gi>lb</gi>, cet élément marque en effet le début (et non la fin
+                            d’une ligne). La première balise se trouve donc au début du titre.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Elément vide.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item><att>lines</att> – nombre de lignes de décalage par rapport à la position
+                                normale (fin de la dernière ligne de la division précédente. Sa
+                                valeur est <val>0</val> si le titre commence à la même ligne,
+                                elle est négative si le titre commence avant la dernière ligne de la
+                                division précédente et positive si le titre continue sur des fins de
+                                ligne du début de la division suivante.</item>
+
+                        </list>
+                    
+
+                        <p>(cf. illustration ci-dessus)</p>
+
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <div>
+                                    <p>
+                                        <lb/>est desus ia ne sera si fo 
+                                        <bfm:lb/>rt 
+                                        <lb/>tour . 
+                                   </p>
+                                </div>
+                                <div>
+                                    <head>
+                                        <bfm:headlb lines="0"/>comment la terre 
+                                        <bfm:headlb lines="1"/>crolle et fent . 
+                                    </head>
+                                    <p>
+                                        <lb/>Ore 
+                                        <lb/>entendez donques 
+                                        <lb/>du mouuement que
+                                   </p>
+                                </div>
+                            </egXML>
+
+                       </p>
+                    </div>
+                </div>
+                <div type="div2">
+
+                    <head>
+                        <gi>bfm:hyphen</gi>
+                    </head>
+
+
+                    <p>Marque de coupure de mot en fin de ligne</p>
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>Représentation facsimilaire : <gi>me:facs</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Un caractère (représenté souvent par une entité MUFI &amp;sol; ,
+                            &amp;dbloblhyphen; )</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>place</att> – indique éventuellement la position de la marque
+                                de coupure ( <val>margin</val> ou, par défaut, 
+                                <val>inline</val> ).</item>
+
+                        </list>
+                   
+
+                        <p>
+                            <figure>
+                                <head/>
+                                <figDesc/>
+                                <graphic
+                                    url="http://img830.imageshack.us/img830/5016/imagecoupure.jpg"/>
+                            </figure>
+                       </p>
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples"> la man
+                                    <bfm:hyphen>&amp;dbloblhyphen;</bfm:hyphen> che </egXML>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>bfm:mdvAbbr</gi>
+                    </head>
+
+                    <p>Abréviation médiévale. Cette balise marque le segment graphique « affecté »
+                        par l’abréviation. Selon le type d’abréviation, il peut s’étendre de la
+                        marque d’abréviation proprement dite à une ou plusieurs lettres associées à
+                        la marque, voire à un mot entier. Le fait que les limites de l’abréviation
+                        ne coïncident pas forcément avec celles d’un mot nous empêche d’utiliser
+                        l’élément <gi>abbr</gi> de la TEI.</p>
+
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>Dans la représentation facsimilaire : <gi>me:facs</gi>
+                       </p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>caractères ( PCDATA)</p>
+
+                        <p>
+
+                            <gi>am</gi>
+
+                       </p>
+
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>range</att> – précision de l’étendu de l’abréviation (
+                                <val>chars</val>, <val>word</val> or <val>phrase</val>) ;</item>
+
+                            <item>
+                                <att>type</att> – type d’abréviation ( <val>regular</val>, 
+                                <val>frequent_word</val>, etc.) ;</item>
+
+                            <item>
+                                <att>resp</att> – responsable du balisage (en particulier, de la
+                                délimitation de l’abréviation) ;</item>
+
+                            <item>
+                                <att>cert</att> – certitude de l’identification de l’abréviation.</item>
+
+                        </list>
+                   
+                     
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <bfm:mdvAbbr>
+                                    <am>&amp;et;</am>
+                                </bfm:mdvAbbr> h<bfm:mdvAbbr>o <am>&amp;bar;</am>
+                                </bfm:mdvAbbr>me <bfm:mdvAbbr>ml <am>&amp;apos;</am> t
+                                </bfm:mdvAbbr>
+                            </egXML><note place="foot" n="3"> Tous les exemples cités sont tirés du
+                                corpus BFM-MSS. Pour améliorer la lisibilité, seules les balises
+                                pertinentes pour l’exemple en question sont conservées. Sauf
+                                indication contraire, les graphies sont représentées au niveau
+                                diplomatique.</note>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>bfm:punct</gi>
+                    </head>
+
+                    <p>Marque de ponctuation ou toute « frontière ponctuable ».</p>
+
+                    <p>Cette balise sert à la fois à représenter les marques de ponctuation
+                        utilisées dans le manuscrit, les marques ajoutées au niveau « normalisé »
+                        pour faciliter la lecture du texte et à repérer les « frontières
+                        ponctuables ».</p>
+
+                    <p>Une balise <gi>me:punct</gi> est proposée par le projet Menota, mais elle n’a
+                        pas exactement les mêmes propriétés que la balise <gi>bfm:punct</gi>.</p>
+
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Au même niveau que les mots (<gi>w</gi>).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Un élément <gi>choice</gi> ou l’une des représentations multiples :
+                                <gi>me:norm</gi>, <gi>me:dipl</gi>, <gi>me:facs</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>force</att> : indique la force de la ponctuation 
+                                (<val>strong</val> ou <val>weak</val>) ;</item>
+
+                            <item>
+                                <att>mark</att> : donne le nom conventionnel de la marque de
+                                ponctuation médiévale, sa valeur est <val>none</val> si aucune marque de
+                                ponctuation médiévale n’est présente dans la source (une marque peut
+                                apparaitre en revanche au niveau normalisé ou diplomatique)  ;</item>
+
+                            <item>
+                                <att>ana</att> : le code du type de frontière ponctuable.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>bfm:sb</gi>
+                    </head>
+
+                    <p>Espace blanc à l’intérieur d’un mot (« déglutination »).</p>
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>Dans la représentation facsimilaire : <gi>me:facs</gi> d’un mot.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Elément vide</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>cert</att> : certitude de la présence d’un espace ;</item>
+
+                        </list>
+
+                        <p>
+                            <note type="notabene">L’absence de certitude
+                                de déglutination signifie normalement qu’il y a un « petit
+                                blanc ».</note>
+                       </p>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>resp</att> : responsable du balisage.</item>
+
+                        </list>
+                   
+
+                        <p>
+                            <figure>
+                                <head/>
+                                <figDesc/>
+                                <graphic
+                                    url="http://img814.imageshack.us/img814/5356/imageespace.jpg"/>
+                            </figure>
+                       </p>
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                ce quil a<mdv_sb  cert="no"/>fiert a
+                            </egXML>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>cb</gi>
+                    </head>
+
+                    <p>Saut de colonne.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Elément vide, situé entre des mots ou des divisions de niveaux
+                            supérieurs.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>n</att> : indique le numéro de la colonne (habituellement 
+                                <val>a</val>, <val>b</val>, <val>c</val> ou 
+                                <val>d</val>).</item>
+
+                        </list>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>choice</gi>
+                    </head>
+
+                    <p>Balise TEI servant à délimiter les représentations alternatives d’un même
+                        segment du texte. Dans le projet BFM-MSS, à l’exemple du projet Menota,
+                        cette balise entoure les représentations alternatives d’un mot ou d’une
+                        marque de ponctuation.</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>A l’intérieur d’un <gi>w</gi> ou d’un <gi>bfm:punct</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>
+                            <gi>me:norm</gi>, <gi>me:dipl</gi> et <gi>me:facs</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <p>Pas d’attributs.</p>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>corr</gi>
+                    </head>
+
+                    <p>Lettres, mots ou groupes de mots corrigés par l’éditeur ou par un
+                        relecteur/encodeur dans la représentation normalisée.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>cert</att> : indique la certitude de la correction ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de la correction.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>damage</gi>
+                    </head>
+
+                    <p>Fragment du manuscrit endommagé.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>extent</att> : indication de la taille du fragment endommagé ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de la correction.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>del</gi>
+                    </head>
+
+                    <p>Lettres, mots ou groupes de mots supprimés dans le manuscrit.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>rend</att> : indique la méthode de suppression utilisée. Les
+                                valeurs utilisées sont les suivantes : <val>dots_below</val>,
+                                <val>horbar</val>, <val>diagbar</val>, etc. ;</item>
+
+                            <item>
+                                <att>hand</att> : indique la main ayant effectué l’ajout, si
+                                identifiable ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de l’ajout.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>div</gi>
+                    </head>
+
+                    <p>Division structurelle du texte.</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>A l’intérieur du corps du texte <gi>body</gi> ou d’une autre
+                                <gi>div</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu </head>
+
+                        <p>Eventuellement <gi>head</gi> au début ; <gi>p</gi> ou <gi>ab</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>rend</att> : indique la méthode de suppression utilisée. Les
+                                valeurs utilisées sont les suivantes : <val>dots_below</val>, 
+                                <val>horbar</val>, <val>diagbar</val> , etc. ;</item>
+
+                            <item>
+                                <att>hand</att> : indique la main ayant effectué l’ajout, si
+                                identifiable ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de l’ajout.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>ex</gi>
+                    </head>
+
+                    <p>Lettres restituées dans la résolution d’une abréviation.</p>
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>Dans la représentation diplomatique.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Une ou plusieurs lettres (PCDATA)</p>
+
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>cert</att> : certitude de la résolution ;</item>
+
+                            <item>
+                                <att>resp</att> : responsable de la restitution des lettres.</item>
+
+                        </list>
+                   
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                    ch<ex>eualie</ex>rih<ex>e</ex>r<ex>usa</ex>l<ex>e</ex>m
+                            </egXML>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>gap</gi>
+                    </head>
+
+                    <p>Fragment de texte omis : soit parce qu’il est illisible dans le manuscrit,
+                        soit pour des raisons d’échantillonnage.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>unit</att> : indique l’unité de mesure : <val>chars</val>
+                                , <val>words</val> , <val>pages</val> , etc. ;</item>
+
+                            <item>
+                                <att>extent</att> : indication numérique de l’étendu (en unités
+                                choisies) ;</item>
+
+                            <item>
+                                <att>reason</att> : indique la raison de l’omission : 
+                                <val>illegible</val>, <val>deleted</val> ou 
+                                <val>sampling</val>  ;</item>
+
+                            <item>
+                                <att>hand</att> : en cas d’effacement volontaire, indique le
+                                responsable, si identifiable ;</item>
+
+                            <item>
+                                <att>resp</att> : indique le responsable du balisage et
+                                d’attribution de l’ajout.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>head</gi>
+                    </head>
+
+                    <p>Titre ou autre élément liminaire d’une division textuelle (chapitre, partie,
+                        etc.).</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Début d’une division <gi>div</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Mots <gi>w</gi> et autres unités du même niveau ;</p>
+
+                        <p>
+                            <gi>bfm:headlb</gi> dans un cas particulier (cf. la définition de cet
+                            élément).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <p>Attribut globaux seulement.</p>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>hi</gi>
+                    </head>
+
+                    <p>Segment de texte mise en relief.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>rend</att> : indique la forme de mise en relief : 
+                                <val>exp</val>, <val>color:red</val> , etc.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>lb</gi>
+                    </head>
+
+                    <p>Saut de ligne.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Elément vide, situé entre des mots (sauf car particulier).</p>
+
+                        <p>Contrairement à l’apparence, cette balise marque un début et non la fin
+                            d’une ligne. Elle est par conséquent placée au début de la première
+                            ligne et est absente à la fin de la dernière.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>n</att> : indique le numéro de la ligne dans la page ou dans
+                                la colonne.</item>
+
+                        </list>
+
+
+                        <p>
+                            <hi rend="gras">Cas particulier :</hi> saut de ligne coupant un mot.</p>
+
+                        <p>L’attribut <att>ed</att>=<val>facs</val> est utilisé à l’intérieur de
+                            la représentation imitative à l’endroit précis du saut de ligne dans le
+                            manuscrit. Une deuxième balise <gi>lb</gi> est placée après le mot
+                            coupé, portant un attribut <att>ed</att>=<val>norm</val>.</p>
+
+
+                       
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <lb n="4"/> que parfaitte proëce estoit entee et en 
+                                <lb ed="facs"/>rachinee 
+                                <lb ed="norm" n="5"/> au plus fort ez cuers des nobles 
+                            </egXML>
+
+                       </p>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>me:dipl</gi>
+                    </head>
+
+                    <p>Représentation diplomatique d’un mot ou d’une marque de ponctuation.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121312235" type="chapter">3</ref>.</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>me:facs</gi>
+                    </head>
+
+                    <p>Représentation « facsimilé » d’un mot ou d’une marque de ponctuation. Elément
+                        défini par le projet Menota.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121312235" type="chapter">3</ref>.</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>me:norm</gi>
+                    </head>
+
+                    <p>Représentation normalisée d’un mot ou d’une marque de ponctuation.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121312235" type="chapter">3</ref>.</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>me:pal</gi>
+                    </head>
+
+                    <p>Représentation « paléographique » d’un mot ou d’une marque de ponctuation.
+                        Elément défini par le projet Menota.</p>
+
+                    <p>Le projet BFM-MSS ne prend pas en charge ce niveau de représentation au stade
+                        actuel.</p>
+
+
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>note</gi>
+                    </head>
+
+                    <p>Note ou commentaire du relecteur/encodeur. Elément défini par la TEI.</p>
+                    <div type="div3">
+                        <head>Position dans la structure</head>
+
+                        <p>A l’intérieur de paragraphes <gi>p</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Texte brut (métatexte par rapport à la transcription).</p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>p</gi>
+                    </head>
+
+                    <p>Paragraphe (dans les textes en prose).</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>A l’intérieur d’une division (<tag type="start">div
+                                type="chapitre"</tag> ou autre).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>
+
+                            <gi>w</gi>
+
+                       </p>
+
+                        <p>
+
+                            <gi>bfm:punct</gi>
+
+                       </p>
+
+                        <p>
+                            <gi>lb</gi>, etc.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>n</att> : indique éventuellement le numéro du paragraphe.</item>
+
+                        </list>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>pb</gi>
+                    </head>
+
+                    <p>Saut de page (ou de folio).</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Entre des mots ou entre des divisions de niveau supérieur.</p>
+
+                        <p>Contrairement à l’apparence, cette balise marque un début et non la fin
+                            d’une page. Elle est par conséquent placée au début de la première page
+                            et est absente à la fin de la dernière.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Elément vide.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>n</att> : indique le numéro de la page ou du folio.</item>
+
+                        </list>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>q</gi>
+                    </head>
+
+                    <p>Balise du discours direct.</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>A l’intérieur des paragraphes. Si le discours direct dépasse un
+                            paragraphe, le mécanisme de « fragmentation et reconstitution d’éléments
+                            virtuels » est utilisé (cf. section <ref target="#id__Ref121309429"
+                                type="chapter">4</ref> ).</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Eventuellement, des segments ponctuables <tag type="start">seg
+                                type="sp"</tag> ;</p>
+
+                        <p>Mots <gi>w</gi> et autres éléments de ce niveau.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>type</att> : type de discours direct (<val>spoken</val>
+                                par défaut, <val>written</val> ou autre éventuellement).</item>
+
+                        </list>
+
+                      
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                A quoy il respondy , sans dire wy , ou nanil , 
+                                <q> " par foy &amp;slong;ire il souffira assez se je voy ce qui se fera , "
+                                </q> et ce disoit le conte… 
+                            </egXML>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi> seg</gi>
+                    </head>
+
+                    <p>Elément générique pour la segmentation linguistique du texte.</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>A l’intérieur des paragraphes.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Mots, marques de ponctuation, etc.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>type</att> : type de segment (<val>sp</val> pour
+                                « segment ponctuable »).</item>
+
+                        </list>
+
+                        <p>La limite de <tag type="start">seg type="sp"</tag>et placée avant la
+                            marque de ponctuation. La marque de ponctuation est ainsi intégrée à
+                            l’unité textuelle qui la suit.</p>
+
+                     
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <seg type="sp" ana="#d9 #z4"> … vouldroy je parler</seg>
+                                <seg type="sp" ana="#c4 #c3">, C’est de chace … </seg>
+                            </egXML>
+
+                       </p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>space</gi>
+                    </head>
+
+                    <p>Espace blanc de taille significative.</p>
+                    <div type="div3">
+                        <head> Position dans la structure </head>
+
+                        <p>Entre des mots.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Elément vide.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>dim</att> : dimension (<val>vertical</val> ou 
+                                <val>horizontal</val>) ;</item>
+
+                            <item>
+                                <att>unit</att> : unité de mesure (<val>chars</val>, 
+                                <val>lines</val>, etc.) ;</item>
+
+                            <item>
+                                <att>quantity</att> : valeur numérique ;</item>
+
+                            <item>
+                                <att>resp</att> : responsable du balisage.</item>
+
+                        </list>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>subst</gi>
+                    </head>
+
+                    <p>Regroupe les éléments <gi>del</gi> et <gi>add</gi> en cas de correction
+                        scribale.</p>
+                    <div type="div3">
+                        <head>Position</head>
+
+                        <p>Représentation imitative.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>
+                            <gi>del</gi> et <gi>add</gi>.</p>
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>supplied</gi>
+                    </head>
+
+                    <p>Lettres, mots ou groupes de mots ajoutés par l’éditeur ou par un
+                        relecteur/encodeur pour corriger les coquilles du manuscrit.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Représentation normalisée, cf. section <ref target="#id__Ref121309429"
+                                type="chapter">4</ref></p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>unclear</gi>
+                    </head>
+
+                    <p>Lettres, mots ou groupes de mots difficilement lisibles dans le manuscrit.
+                        Elément défini par la TEI.</p>
+                    <div type="div3">
+                        <head>Position et contenu</head>
+
+                        <p>Cf. section <ref target="#id__Ref121309429" type="chapter">4</ref></p>
+
+                    </div>
+                </div>
+                <div type="div2">
+                    <head>
+                        <gi>w</gi>
+                    </head>
+
+                    <p>Mot lexical ou grammatical. Elément défini par la TEI ; modèle du contenu
+                        modifié par le projet Menota ; attributs ajoutés par le projet BFM-MSS.</p>
+                    <div type="div3">
+                        <head> Position dans la structure </head>
+
+                        <p>Unité principale de structuration linguistique. Utilisé à l’intérieur de
+                            paragraphes <gi>p</gi>.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Contenu</head>
+
+                        <p>Un élément <gi>choice</gi> ou l’une des représentations multiples :
+                                <gi>me:norm</gi>, <gi>me:dipl</gi>, <gi>me:facs</gi>.</p>
+
+                    </div>
+                    <div type="div3">
+                        <head>Attributs</head>
+
+                        <list type="unordered">
+
+                            <item>
+                                <att>bfm:aggl</att> – indique l’absence de blanc avant du mot
+                                suivant (valeurs : <val>elision</val>, 
+                                <val>simple</val>) ;</item>
+
+                            <item>
+                                <att>bfm:agglCert</att> – certitude de l’agglutination ;</item>
+
+                            <item>
+                                <att>bfm:agglResp</att> – responsable de l’identification de
+                                l’agglutination ;</item>
+
+                            <item>
+                                <att>lemma</att> – référence à un lemme ;</item>
+
+                            <item>
+                                <att>ana</att> – étiquette morpho-syntaxique ;</item>
+
+                            <item>
+                                <att>type</att>.</item>
+
+                        </list>
+                    </div>
+                </div>
+            </div>
+            <div type="div1">
+                <head> <anchor type="bookmark-start" xml:id="saisie_correc_compact"/>Saisie et correction des transcriptions (syntaxe compacte) </head>
+
+
+                <p>Les transcriptions sont saisies au niveau imitatif, avec des méta-caractères
+                    non-XML permettant de générer les niveaux diplomatique et normalisé.</p>
+
+                <p>Si la transcription s’appuie sur le texte d’une édition de référence, celui-ci
+                    est traité par un script permettant de le « diplomatiser » tout en gardant les
+                    informations nécessaires pour le niveau de représentation normalisée.</p>
+
+                <p>Même si elles contiennent des anno tations non-XML, les transcriptions compactes
+                    sont des documents XML validables contre un schéma conforme à la TEI.</p>
+
+                <div type="div2">
+                    <head>Caractères de raccourci, balises simplifiées</head>
+
+
+                    <div type="div3">
+                        <head>Segmentation</head>
+
+                        <p>+ – agglutination simple ;</p>
+
+                        <p>+? – agglutination simple « pas sure » ou « petit blanc » ;</p>
+
+                        <p>' – élision ;</p>
+
+                        <p>_ – déglutination ;</p>
+
+                        <p>_? – déglutination « pas sure » ou « petit blanc ».</p>
+                    </div>
+                    <div type="div3">
+                        <head>Abréviations</head>
+
+                        <p>L a portée de l’abréviation (voir la définition plus haut) est marquée
+                            par des parenthèses doubles.</p>
+
+
+                        <p>Si la résolution de l’abréviation est régulière (automatique à partir de
+                            l’association de la marque et des lettres dans la portée de
+                            l’abréviation, seule la marque de l’abréviation est donnée (sous la
+                            forme d’une entité MUFI).</p>
+
+
+                        <table rend="frame" xml:id="Tableau1">
+
+
+
+                            <row>
+
+                                <cell> Syntaxe compacte </cell>
+
+                                <cell> Représentation diffractée </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> ((&amp;et;)) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm/>
+                                        <me:dipl>
+                                            <ex>et</ex>
+                                        </me:dipl>
+                                        <me:facs>
+                                            <bfm:mdvAbbr>
+                                                <am>&amp;et;</am>
+                                            </bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> ((o &amp;bar; )) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>on</me:norm>
+                                        <me:dipl>o<ex>n</ex></me:dipl>
+                                        <me:facs>
+                                            <bfm:mdvAbbr>o<am>&amp;bar;</am></bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> …((&amp;m&amp;dblbar;t)) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>…ment</me:norm>
+                                        <me:dipl>…m<ex>en</ex>t</me:dipl>
+                                        <me:facs>… <bfm:mdvAbbr>m&amp;dblbar;t</bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                        </table>
+
+
+                        <p>Si la résolution n’est pas « automatique », celle-ci est ajoutée,
+                            précédée d’une marque de soulignement. Les lettres « restituées » sont
+                            placées entre crochets.</p>
+
+
+                        <table rend="frame" xml:id="Tableau2">
+
+
+
+                            <row>
+
+                                <cell> Syntaxe compacte </cell>
+
+                                <cell> Représentation diffractée </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> ((e&amp;bar;_e[st])) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>est</me:norm>
+                                        <me:dipl>e<ex>st</ex></me:dipl>
+                                        <me:facs>
+                                            <bfm:mdvAbbr>e<am>&amp;bar;</am></bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> ((ch&amp;apomod;&amp;rrot;_ch[evalie]r)) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>chevalier</me:norm>
+                                        <me:dipl>ch<ex>evalie</ex>r</me:dipl>
+                                        <me:facs>
+                                            <bfm:mdvAbbr>ch<am>&amp;apomod;</am>&amp;rrot;</bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> ((nr &amp;apomod; e_n[ost]re)) </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>nostre</me:norm>
+                                        <me:dipl>n<ex>ost</ex>re</me:dipl>
+                                        <me:facs>
+                                            <bfm:mdvAbbr>nr<am>&amp;apomod;</am>e</bfm:mdvAbbr>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                        </table>
+                    </div>
+                    <div type="div3">
+
+                        <head>Grandes initiales (lettrines)</head>
+
+                        <p>Les grandes initiales sont entourées de doubles accolades. La lettre est
+                            séparée de ses attributs (nombre de lignes en retrait, taille réelle en
+                            nombre de lignes, couleur principale, éventuellement la décoration) par
+                            des deux-points :</p>
+
+
+                        <table rend="frame" xml:id="Tableau3">
+
+
+
+                            <row>
+
+                                <cell> Syntaxe compacte </cell>
+
+                                <cell> Représentation diffractée </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> {{Q:2:7:blue}}uant </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>Quant</me:norm>
+                                        <me:dipl>
+                                            <hi rend="initiale">Q</hi>uant </me:dipl>
+                                        <me:facs>
+                                            <bfm:dropcap size="2" sizeAct="7" color="blue">Q</bfm:dropcap>uant
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                        </table>
+                    </div>
+                    <div type="div3">
+
+                        <head>Variantes de lettres</head>
+
+                        <p>Entités MUFI</p>
+
+                        <p>(voir la liste complète dans le <hi rend="ital">Tableau d’encodage des
+                                caractères</hi> , section <ref target="#id__Ref193449267"
+                                type="chapter">7</ref>)</p>
+                    </div>
+                    <div type="div3">
+
+                        <head>Lettres à normaliser</head>
+
+                        <p>Les lettres qui doivent être modifiées dans la représentation normalisée
+                            sont précédées de symboles * et # :</p>
+
+
+                        <p>*u – <hi rend="ital">u</hi> diplomatique, à transformer en <hi
+                                rend="ital">v</hi>
+                       </p>
+
+                        <p>*v – <hi rend="ital">v</hi> diplomatique, à transformer en <hi
+                                rend="ital">u</hi>
+                       </p>
+
+                        <p>*i – <hi rend="ital">i</hi> diplomatique, à transformer en <hi
+                                rend="ital">j</hi>
+                       </p>
+
+                        <p>*j – <hi rend="ital">j</hi> diplomatique, à transformer en <hi
+                                rend="ital">i</hi>
+                       </p>
+
+
+                        <p>Le dièse (#) est utilisé devant les minuscules à transformer en
+                            majuscules (noms propres, débuts de phrases dans la représentation
+                            normalisée.</p>
+
+
+                        <p>Si les deux marques se combinent, le dièse est placé avant
+                            l’astérisque.</p>
+
+
+                        <p>Les diacritiques de la représentation normalisée (<hi rend="ital">é, ï,
+                                ü</hi> , etc.) sont utilisés dans la saisie initiale.</p>
+                    </div>
+                    <div type="div3">
+                        <head>Ponctuation</head>
+
+                        <p>Les marques de ponctuation sont balisées <tag type="start">c
+                                type="punct"</tag> (le préfixe bfm: est ajouté ultérieurement). Les
+                            trois représentations sont fournies, séparées par % :</p>
+
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <punct>.%,%&amp;punctelev;</punct>
+                            </egXML>
+
+                       </p>
+
+
+                        <p>Selon les cas, une ou deux représentations peuvent être vides :</p>
+
+
+                        <p>
+
+                            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                <punct>,%%</punct>
+                                <punct>%,%.</punct>
+                            </egXML>
+
+                       </p>
+
+
+                        <p>Le premier exemple représente une de ponctuation ajoutée par l’éditeur,
+                            qui ne correspond à aucune marque de la source. Le deuxième exemple
+                            représente une marque présente dans la source que l’éditeur a choisi
+                            d’éliminer dans la représentation normalisée.</p>
+                    </div>
+                    <div type="div3">
+                        <head> Correction sscribales</head>
+
+
+                        <p>La syntaxe compacte est applicable pour le balisage des corrections
+                            scribales (suppressions et ajouts de mots ou de caractères) qui
+                            concernent un mot ou une partie d’un mot. Les balises XML TEI
+                            correspondantes sont doivent être utilisées pour des corrections de
+                            taille supérieure.</p>
+
+                        <p>Les marques utilisées pour noter les corrections scribales en syntaxe
+                            compacte sont basées sur les recommandations de F. Masai (1950) avec
+                            quelques modifications visant à les rendre plus systématiques.</p>
+
+                        <p>De façon générale, l es doubles crochets servent à délimiter le segment
+                            concerné par la correction. Une barre oblique indique l’ajout sur la
+                            ligne (à la place du texte supprimé ou d’un espace blanc). Une barre
+                            oblique inversée ‹ \ › indique l’ajout au-dessus de la ligne. Un tiret
+                            signifie une suppression par rature ; un point souscrit (entité de type
+                            &amp;xdotbl; ) signifie une suppression par exponctuation.</p>
+
+
+                        <table rend="frame" xml:id="Tableau4">
+
+
+
+                            <row>
+
+                                <cell> Syntaxe compacte </cell>
+
+                                <cell> Représentation diffractée </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>addition interlinéaire</item>
+
+                                    </list> [[\aprés/]] </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>aprés</me:norm>
+                                        <me:dipl>apres</me:dipl>
+                                        <me:facs>
+                                            <add place="interlinear">apres</add>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>addition sur la ligne</item>
+
+                                    </list> [[/et\]] </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>et</me:norm>
+                                        <me:dipl>et</me:dipl>
+                                        <me:facs>
+                                            <add place="inline">et</add>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>addition en marge</item>
+
+                                    </list> [[\\qui//]] </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>qui</me:norm>
+                                        <me:dipl>qui</me:dipl>
+                                        <me:facs>
+                                            <add place="margin">qui</add>
+                                        </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>suppression par rature (lettre encore lisible)</item>
+
+                                    </list> vi[[- r]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>vient</me:norm>
+                                        <me:dipl>vient</me:dipl>
+                                        <me:facs>vi<del rend="line-through">r</del>ent</me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>suppression par rature (lettre illisible)</item>
+
+                                    </list> vi[[- ]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>vient</me:norm>
+                                        <me:dipl>vient</me:dipl>
+                                        <me:facs>vi<del rend="line-through">
+                                                <gap/>
+                                            </del>ent</me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>suppression par exponctuation</item>
+
+                                    </list> vi[[&amp;rdotbl;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>vient</me:norm>
+                                        <me:dipl>vient</me:dipl>
+                                        <me:facs>vi<del rend="dotbl">&amp;rdotbl;</del>ent</me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>suppression par tout autre procédé (lettre encore
+                                            lisible)</item>
+
+                                    </list> vi[[r]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>vient</me:norm>
+                                        <me:dipl>vient</me:dipl>
+                                        <me:facs>vi<del>r</del>ent</me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>suppression par tout autre procédé (lettre illisible)</item>
+
+                                    </list> vi[[ ]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>vient</me:norm>
+                                        <me:dipl>vient</me:dipl>
+                                        <me:facs>vi<del>
+                                                <gap/>
+                                            </del>ent</me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution au dessus d’une rature (lettre encore
+                                            lisible)</item>
+
+                                    </list> vi[[- r \ &amp;slong;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>visent</me:norm>
+                                        <me:dipl>visent</me:dipl>
+                                        <me:facs>vi<subst>
+                                                <del rend="line-through">r</del>
+                                                <add place="interlinear">&amp;slong;</add>
+                                            </subst>ent </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution au dessus d’une rature (lettre supprimée
+                                            illisible)</item>
+
+                                    </list> vi[[- \ &amp;slong;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>visent</me:norm>
+                                        <me:dipl>visent</me:dipl>
+                                        <me:facs>vi<subst>
+                                                <del rend="line-through">
+                                                  <gap/>
+                                                </del>
+                                                <add place="interlinear">&amp;slong;</add>
+                                            </subst>ent </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution au dessus d’une exponctuation</item>
+
+                                    </list> vi[[&amp;rdotbl; \ &amp;slong;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>visent</me:norm>
+                                        <me:dipl>visent</me:dipl>
+                                        <me:facs>vi<subst>
+                                                <del rend="dotbl">&amp;rdotbl;</del>
+                                                <add place="interlinear">&amp;slong;</add>
+                                            </subst>ent </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitu tion par transformation</item>
+
+                                    </list> [[e &gt; i]]n </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>in</me:norm>
+                                        <me:dipl>in</me:dipl>
+                                        <me:facs>
+                                            <subst>
+                                                <del rend="transform">e</del>
+                                                <add place="overwrite">i</add>
+                                            </subst>n </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution par superposition d’une lettre écrite
+                                            sur une autre</item>
+
+                                    </list> [[e + i]]n </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>in</me:norm>
+                                        <me:dipl>in</me:dipl>
+                                        <me:facs>
+                                            <subst>
+                                                <del rend="unmarked">e</del>
+                                                <add place="overwrite">i</add>
+                                            </subst>n </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution par superposition d’une lettre écrite au
+                                            dessus d’une autre (non expressément supprimée)</item>
+
+                                    </list> [[e + \ i]]n </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>in</me:norm>
+                                        <me:dipl>in</me:dipl>
+                                        <me:facs>
+                                            <subst>
+                                                <del rend="unmarked">e</del>
+                                                <add place="interlinear">i</add>
+                                            </subst>n </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution sur grattage ou autre type de
+                                            suppression (lettre supprimée encore lisible)</item>
+
+                                    </list> vi[[r / &amp;slong;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>visent</me:norm>
+                                        <me:dipl>visent</me:dipl>
+                                        <me:facs>vi <subst>
+                                                <del>r</del>
+                                                <add place="overwrite">&amp;slong;</add>
+                                            </subst>ent </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>
+                                    <list type="unordered">
+
+                                        <item>substitution sur grattage ou autre ty pe de
+                                            suppression (lettre supprimée illisible)</item>
+
+                                    </list> vi[[ / &amp;slong;]]ent </cell>
+
+                                <cell>
+
+
+                                    <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                                        <me:norm>visent</me:norm>
+                                        <me:dipl>visent</me:dipl>
+                                        <me:facs>vi <subst>
+                                                <del>
+                                                  <gap/>
+                                                </del>
+                                                <add place="overwrite">&amp;slong;</add>
+                                            </subst>ent </me:facs>
+                                    </egXML>
+
+
+                                </cell>
+
+                            </row>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div type="div1">
+                <head>
+                    <anchor type="bookmark-start" xml:id="id__Ref193449267"/> Relations dans la ba
+                    se des descripteurs BFM </head>
+
+
+                <p>
+                    <figure>
+                        <head>Relations dans la base des descripteurs BFM</head>
+                        <figDesc/>
+                        <graphic url="http://img204.imageshack.us/img204/6894/imagedescripteurs.jpg"
+                        />
+                    </figure>
+               </p>
+
+            </div>
+            <div type="div1">
+                <head>Tableaux d’encodage des caractères « spéciaux »<anchor type="bookmark-end"
+                        corresp="#id__Ref193449267"/>
+                </head>
+
+                <div type="div2">
+                    <head>Lettres initiales (lettrines)</head>
+
+                    <table rend="frame" xml:id="Tableau5">
+
+
+
+
+
+                        <row>
+
+                            <cell> Glyphe </cell>
+
+                            <cell> CHR </cell>
+
+                            <cell> MUFI </cell>
+
+                            <cell> CODE </cell>
+
+                            <cell> BFM + Commentaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> Encodé au moyen d’éléments </cell>
+
+                        </row>
+
+                    </table>
+
+                </div>
+                <div type="div2">
+                    <head>Variantes de caractères</head>
+
+                    <table rend="frame" xml:id="Tableau6">
+
+
+
+
+
+                        <row>
+
+                            <cell> Glyphe </cell>
+
+                            <cell> CHR </cell>
+
+                            <cell> MUFI </cell>
+
+                            <cell> CODE </cell>
+
+                            <cell> BFM + Commentaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> = i </cell>
+
+                            <cell> &amp;inodot; </cell>
+
+                            <cell> 0131 </cell>
+
+                            <cell>
+                                <hi rend="ital">i</hi> simple utilisé dans la transcription, le
+                                caractère sans point apparait seulement lors de la visualisation
+                                facsimilaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> = i </cell>
+
+                            <cell> &amp;iacute; </cell>
+
+                            <cell> 00ED </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> = d </cell>
+
+                            <cell> &amp;drot; </cell>
+
+                            <cell> F109 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> [final m] </cell>
+
+                            <cell> &amp;mrdes; </cell>
+
+                            <cell> F223 (v2) </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;n; </cell>
+
+                            <cell> &amp;nrdes; </cell>
+
+                            <cell> F228 (v2) </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;r; </cell>
+
+                            <cell> &amp;rrot; </cell>
+
+                            <cell> F20E </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;s; </cell>
+
+                            <cell> &amp;slong; </cell>
+
+                            <cell> 017F </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;s2; </cell>
+
+                            <cell> -- </cell>
+
+                            <cell> </cell>
+
+                            <cell> ~ &amp;stigma; 03C2 </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> &amp;s3; </cell>
+
+                            <cell> -- </cell>
+
+                            <cell> </cell>
+
+                            <cell>  &amp;slong; </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> &amp;s4; </cell>
+
+                            <cell> -- </cell>
+
+                            <cell> </cell>
+
+                            <cell>  &amp;slong; </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> s (final) </cell>
+
+                            <cell> &amp;sclose; </cell>
+
+                            <cell> F128 </cell>
+
+                            <cell> non utilisé </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;y-dot; </cell>
+
+                            <cell> &amp;ydot; </cell>
+
+                            <cell> 1E8F </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                    </table>
+                </div>
+                <div type="div2">
+
+                    <head>Ligatures</head>
+
+                    <table rend="frame" xml:id="Tableau7">
+
+
+
+
+
+                        <row>
+
+                            <cell> Glyphe </cell>
+
+                            <cell> CHR </cell>
+
+                            <cell> MUFI </cell>
+
+                            <cell> CODE </cell>
+
+                            <cell> BFM + Commentaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> -- </cell>
+
+                            <cell> &amp;pplig; </cell>
+
+                            <cell> EED6 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;ctlig; </cell>
+
+                            <cell> EEC5 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;ftlig; </cell>
+
+                            <cell> EECB </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;slongtlig; </cell>
+
+                            <cell> FB05 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                    </table>
+
+                </div>
+                <div type="div2">
+                    <head>Caractères exponctués</head>
+
+                    <p>point souscrit</p>
+
+                    <table rend="frame" xml:id="Tableau8">
+
+
+
+
+
+                        <row>
+
+                            <cell> Glyphe </cell>
+
+                            <cell> CHR </cell>
+
+                            <cell> MUFI </cell>
+
+                            <cell> CODE </cell>
+
+                            <cell> BFM + Commentaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;ddotbl; </cell>
+
+                            <cell> 1EOD </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                    </table>
+
+                </div>
+                <div type="div2">
+                    <head>Abréviations</head>
+
+                    <div type="div3">
+                        <head>caractères spéciaux</head>
+
+                        <table rend="frame" xml:id="Tableau9">
+
+
+
+
+
+                            <row>
+
+                                <cell> Glyphe </cell>
+
+                                <cell> CHR </cell>
+
+                                <cell> MUFI </cell>
+
+                                <cell> CODE </cell>
+
+                                <cell> BFM + Commentaire </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;et; &amp;et1; </cell>
+
+                                <cell> &amp;et; </cell>
+
+                                <cell> 204A </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+
+                                <cell> &amp;etslash; </cell>
+
+                                <cell> F158 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;et2; </cell>
+
+                                <cell> &amp;ET ; </cell>
+
+                                <cell> F142 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;et3; </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;etfin; </cell>
+
+                                <cell> F155 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;est; </cell>
+
+                                <cell> &amp;est; </cell>
+
+                                <cell> 223B </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;nine; </cell>
+
+                                <cell> &amp;usmod; </cell>
+
+                                <cell> F151 </cell>
+
+                                <cell> cf. &amp;us; si sur une lettre </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;com; </cell>
+
+                                <cell> &amp;condes; </cell>
+
+                                <cell> F156 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;is; </cell>
+
+                                <cell> F15A </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;rum; </cell>
+
+                                <cell> F154 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                        </table>
+                    </div>
+                    <div type="div3">
+
+                        <head>caractères suscrits (combinés)</head>
+
+                        <table rend="frame" xml:id="Tableau10">
+
+
+
+
+
+                            <row>
+
+                                <cell> Glyphe </cell>
+
+                                <cell> CHR </cell>
+
+                                <cell> MUFI </cell>
+
+                                <cell> CODE </cell>
+
+                                <cell> BFM + Commentaire </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;x <note place="foot" n="4"> « x » signifie ici
+                                        n’importe quel caractère alphabétique. </note> -alpha; </cell>
+
+                                <cell> x&amp;asup; </cell>
+
+                                <cell> 0363 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> e </cell>
+
+                                <cell> x&amp;esup; </cell>
+
+                                <cell> 0364 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> o </cell>
+
+                                <cell> x&amp;osup; </cell>
+
+                                <cell> 0366 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> u </cell>
+
+                                <cell> x&amp;usup; </cell>
+
+                                <cell> 0367 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> ["] </cell>
+
+                                <cell> x&amp;ssup; </cell>
+
+                                <cell> F027 </cell>
+
+                                <cell> ??? « stigma » suscrit </cell>
+
+                            </row>
+
+                        </table>
+
+                    </div>
+                    <div type="div3">
+                        <head>caractères diacritiques</head>
+
+                        <table rend="frame" xml:id="Tableau11">
+
+
+
+
+
+
+                            <row>
+
+                                <cell> Glyphe </cell>
+
+                                <cell> CHR </cell>
+
+                                <cell> MUFI </cell>
+
+                                <cell> CODE </cell>
+
+                                <cell> BFM + Commentaire </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;x-vbar; </cell>
+
+                                <cell> x&amp;verbarup; </cell>
+
+                                <cell> 02C8 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;x-hbar; </cell>
+
+                                <cell> x&amp;bar; </cell>
+
+                                <cell> 0305 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> </cell>
+
+                                <cell> *&amp;dblbar; </cell>
+
+                                <cell> 035E </cell>
+
+                                <cell> Absent MUFI, police Cardo </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;x-tilde; </cell>
+
+                                <cell> &amp;combtilde; </cell>
+
+                                <cell> 0303 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> </cell>
+
+                                <cell> *&amp;combinvbreve; </cell>
+
+                                <cell> 0311 </cell>
+
+                                <cell> Absent MUFI, police Cardo </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                                <cell> *&amp;combdblinvbreve; </cell>
+
+                                <cell> 0361 </cell>
+
+                                <cell> Absent MUFI, police Cardo </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;x-omeg; </cell>
+
+                                <cell> &amp;ra; </cell>
+
+                                <cell> F157 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;apost; </cell>
+
+                                <cell> &amp;apomod; </cell>
+
+                                <cell> 02BC </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> </cell>
+
+                                <cell> &amp;combcomma; </cell>
+
+                                <cell> 0315 </cell>
+
+                                <cell> code plus correct pour l’apostrophe abbréviatif </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;ier; </cell>
+
+                                <cell> &amp;combtildevert; </cell>
+
+                                <cell> 033E </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;er; </cell>
+
+                                <cell> 035B </cell>
+
+                                <cell> à distinguer de tildevert ? </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;ercurl; </cell>
+
+                                <cell> F1C8 </cell>
+
+                                <cell> pb espace après Andron </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;ur; </cell>
+
+                                <cell> F1C3 </cell>
+
+                                <cell> ^ dans trscr 2001 </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;urrot; </cell>
+
+                                <cell> F153 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> --/ &amp;nine; </cell>
+
+                                <cell> &amp;us; </cell>
+
+                                <cell> F15B </cell>
+
+                                <cell> cf. &amp;usmod; </cell>
+
+                            </row>
+
+                        </table>
+
+                    </div>
+                    <div type="div3">
+                        <head>lettres modifiées</head>
+
+                        <table rend="frame" xml:id="Tableau12">
+
+
+
+
+
+                            <row>
+
+                                <cell> Glyphe </cell>
+
+                                <cell> CHR </cell>
+
+                                <cell> MUFI </cell>
+
+                                <cell> CODE </cell>
+
+                                <cell> BFM + Commentaire </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> d° </cell>
+
+                                <cell> &amp;de; </cell>
+
+                                <cell> F159 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;par; </cell>
+
+                                <cell> &amp;pbardes; </cell>
+
+                                <cell> E670 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;pro; &amp;pro1; </cell>
+
+                                <cell> &amp;pflour; </cell>
+
+                                <cell> E67D </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;pro2; </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                                <cell> ??? </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> </cell>
+
+                                <cell> &amp;qslstrok; </cell>
+
+                                <cell> E8B1 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;slongslstrok; </cell>
+
+                                <cell> E8B8 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> -- </cell>
+
+                                <cell> &amp;szlig; </cell>
+
+                                <cell> 00DF </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;Ver; </cell>
+
+                                <cell> &amp;Vslstrok; </cell>
+
+                                <cell> 2123 </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell>  </cell>
+
+                                <cell> &amp;ver; </cell>
+
+                                <cell> &amp;vdiagstrok; </cell>
+
+                                <cell> E8BC (v2) </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;Vos; </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                            <row>
+
+                                <cell> </cell>
+
+                                <cell> &amp;vos; </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                                <cell> </cell>
+
+                            </row>
+
+                        </table>
+                    </div>
+                </div>
+                <div type="div2">
+
+                    <head>Marques de ponctuation et de mise en page</head>
+
+                    <table rend="frame" xml:id="Tableau13">
+
+
+
+
+
+
+                        <row>
+
+                            <cell> Glyphe </cell>
+
+                            <cell> CHR </cell>
+
+                            <cell> MUFI </cell>
+
+                            <cell> CODE </cell>
+
+                            <cell> BFM + Commentaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> . </cell>
+
+                            <cell> &amp;middot; </cell>
+
+                            <cell> 00B7 </cell>
+
+                            <cell> ASCII 183 </cell>
+
+                        </row>
+
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> &amp;punct; </cell>
+
+                            <cell> &amp;punctelev; </cell>
+
+                            <cell> F161 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;punctelevdiag; </cell>
+
+                            <cell> F1F0 </cell>
+
+                            <cell> Est-ce le même que !  ? </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;punctinter; </cell>
+
+                            <cell> F160 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> , </cell>
+
+                            <cell> &amp;sol; </cell>
+
+                            <cell> 002F </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;virgmin; </cell>
+
+                            <cell> F1F7 (v2) </cell>
+
+                            <cell> Cf. 05F3 </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;tridotsdownw; </cell>
+
+                            <cell> F1EE </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;lozengedot; </cell>
+
+                            <cell> 2058 </cell>
+
+                            <cell> </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> *&amp;dbloblhyphen; </cell>
+
+                            <cell> 2E17 </cell>
+
+                            <cell> Absent MUFI Code 03DF et police Cardo utilisés temporairement </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;para; </cell>
+
+                            <cell> 00B6 </cell>
+
+                            <cell> pied de mouche… faute de mieux </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;parag; </cell>
+
+                            <cell> F1E1 </cell>
+
+                            <cell> crochet a dlinéaire </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell>  </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;logand; </cell>
+
+                            <cell> 2227 </cell>
+
+                            <cell> marque d’insertion </cell>
+
+                        </row>
+
+                        <row>
+
+                            <cell> </cell>
+
+                            <cell> </cell>
+
+                            <cell> &amp;puncsp; </cell>
+
+                            <cell> 2008 </cell>
+
+                            <cell> espace allongé utilisé comme marque de ponctuation </cell>
+
+                        </row>
+
+                    </table>
+                </div>
+
+
+            </div>
+            <div type="div1">
+                <head>Projets cités :</head>
+
+
+                <p>
+                    <hi rend="ital">Charrette</hi> : <ref
+                        target="http://www.princeton.edu/~lancelot"
+                        >http://www.princeton.edu/~lancelot</ref>
+               </p>
+
+                <p>
+                    <hi rend="ital">Christine de Pizan</hi>  : <ref
+                        target="http://www.pizan.lib.ed.ac.uk/">http://www.pizan.lib.ed.ac.uk/</ref>
+               </p>
+
+                <p>
+                    <hi rend="ital">Khartês</hi> (Université de Liège) : non accessible en ligne</p>
+
+                <p>
+                    <hi rend="ital">Menota</hi> : <ref target="http://www.menota.org"
+                        >http://www.menota.org</ref>
+               </p>
+
+                <p>MUFI  : <ref target="http://gandalf.aksis.uib.no/mufi/"
+                        >http://gandalf.aksis.uib.no/mufi/</ref>
+               </p>
+
+            </div>
+            <div type="schema">
+                            <schemaSpec ident="bfmmss_d" xml:lang="en">
+                <moduleRef key="tei"/>
+                <moduleRef key="analysis"/>
+                <moduleRef key="core"/>
+                <moduleRef key="corpus"/>
+                <moduleRef key="gaiji"/>
+                <moduleRef key="header"/>
+                <moduleRef key="linking"/>
+                <moduleRef key="msdescription"/>
+                <moduleRef key="namesdates"/>
+                <moduleRef key="transcr"/>
+                <moduleRef key="textstructure"/>
+
+                <elementSpec module="analysis" ident="cl" mode="delete"/>
+                <elementSpec module="analysis" ident="m" mode="delete"/>
+                <elementSpec module="analysis" ident="phr" mode="delete"/>
+                <elementSpec module="core" ident="abbr" mode="delete"/>
+                <elementSpec module="core" ident="binaryObject" mode="delete"/>
+                <elementSpec module="core" ident="cit" mode="delete"/>
+                <elementSpec module="core" ident="distinct" mode="delete"/>
+                <elementSpec module="core" ident="divGen" mode="delete"/>
+                <elementSpec module="core" ident="gloss" mode="delete"/>
+                <elementSpec module="core" ident="graphic" mode="delete"/>
+                <elementSpec module="core" ident="imprint" mode="delete"/>
+                <elementSpec module="core" ident="index" mode="delete"/>
+                <elementSpec module="core" ident="l" mode="delete"/>
+                <elementSpec module="core" ident="lg" mode="delete"/>
+                <elementSpec module="core" ident="measure" mode="delete"/>
+                <elementSpec module="core" ident="measureGrp" mode="delete"/>
+                <elementSpec module="core" ident="meeting" mode="delete"/>
+                <elementSpec module="core" ident="mentioned" mode="delete"/>
+                <elementSpec module="core" ident="monogr" mode="delete"/>
+                <elementSpec module="core" ident="postBox" mode="delete"/>
+                <elementSpec module="core" ident="postCode" mode="delete"/>
+                <elementSpec module="core" ident="relatedItem" mode="delete"/>
+                <elementSpec module="core" ident="soCalled" mode="delete"/>
+                <elementSpec module="core" ident="sp" mode="delete"/>
+                <elementSpec module="core" ident="speaker" mode="delete"/>
+                <elementSpec module="core" ident="stage" mode="delete"/>
+                <elementSpec module="core" ident="street" mode="delete"/>
+                <elementSpec module="core" ident="time" mode="delete"/>
+                <elementSpec module="namesdates" ident="addName" mode="delete"/>
+                <elementSpec module="namesdates" ident="affiliation" mode="delete"/>
+                <elementSpec module="namesdates" ident="age" mode="delete"/>
+                <elementSpec module="namesdates" ident="birth" mode="delete"/>
+                <elementSpec module="namesdates" ident="bloc" mode="delete"/>
+                <elementSpec module="namesdates" ident="climate" mode="delete"/>
+                <elementSpec module="namesdates" ident="death" mode="delete"/>
+                <elementSpec module="namesdates" ident="district" mode="delete"/>
+                <elementSpec module="namesdates" ident="education" mode="delete"/>
+                <elementSpec module="namesdates" ident="event" mode="delete"/>
+                <elementSpec module="namesdates" ident="faith" mode="delete"/>
+                <elementSpec module="namesdates" ident="floruit" mode="delete"/>
+                <elementSpec module="namesdates" ident="forename" mode="delete"/>
+                <elementSpec module="namesdates" ident="genName" mode="delete"/>
+                <elementSpec module="namesdates" ident="geo" mode="delete"/>
+                <elementSpec module="namesdates" ident="geogFeat" mode="delete"/>
+                <elementSpec module="namesdates" ident="geogName" mode="delete"/>
+                <elementSpec module="namesdates" ident="langKnowledge" mode="delete"/>
+                <elementSpec module="namesdates" ident="langKnown" mode="delete"/>
+                <elementSpec module="namesdates" ident="listNym" mode="delete"/>
+                <elementSpec module="namesdates" ident="listOrg" mode="delete"/>
+                <elementSpec module="namesdates" ident="listPerson" mode="delete"/>
+                <elementSpec module="namesdates" ident="listPlace" mode="delete"/>
+                <elementSpec module="namesdates" ident="location" mode="delete"/>
+                <elementSpec module="namesdates" ident="nameLink" mode="delete"/>
+                <elementSpec module="namesdates" ident="nationality" mode="delete"/>
+                <elementSpec module="namesdates" ident="nym" mode="delete"/>
+                <elementSpec module="namesdates" ident="occupation" mode="delete"/>
+                <elementSpec module="namesdates" ident="offset" mode="delete"/>
+                <elementSpec module="namesdates" ident="org" mode="delete"/>
+                <elementSpec module="namesdates" ident="orgName" mode="delete"/>
+                <elementSpec module="namesdates" ident="persName" mode="delete"/>
+                <elementSpec module="namesdates" ident="person" mode="delete"/>
+                <elementSpec module="namesdates" ident="personGrp" mode="delete"/>
+                <elementSpec module="namesdates" ident="place" mode="delete"/>
+                <elementSpec module="namesdates" ident="placeName" mode="delete"/>
+                <elementSpec module="namesdates" ident="population" mode="delete"/>
+                <elementSpec module="namesdates" ident="relation" mode="delete"/>
+                <elementSpec module="namesdates" ident="relationGrp" mode="delete"/>
+                <elementSpec module="namesdates" ident="residence" mode="delete"/>
+                <elementSpec module="namesdates" ident="roleName" mode="delete"/>
+                <elementSpec module="namesdates" ident="sex" mode="delete"/>
+                <elementSpec module="namesdates" ident="socecStatus" mode="delete"/>
+                <elementSpec module="namesdates" ident="surname" mode="delete"/>
+                <elementSpec module="namesdates" ident="terrain" mode="delete"/>
+                <elementSpec module="namesdates" ident="trait" mode="delete"/>
+                <elementSpec module="textstructure" ident="div1" mode="delete"/>
+                <elementSpec module="textstructure" ident="div2" mode="delete"/>
+                <elementSpec module="textstructure" ident="div3" mode="delete"/>
+                <elementSpec module="textstructure" ident="div4" mode="delete"/>
+                <elementSpec module="textstructure" ident="div5" mode="delete"/>
+                <elementSpec module="textstructure" ident="div6" mode="delete"/>
+                <elementSpec module="textstructure" ident="div7" mode="delete"/>
+                <elementSpec module="textstructure" ident="docAuthor" mode="delete"/>
+                <elementSpec module="textstructure" ident="docDate" mode="delete"/>
+                <elementSpec module="textstructure" ident="docEdition" mode="delete"/>
+                <elementSpec module="textstructure" ident="docImprint" mode="delete"/>
+                <elementSpec module="textstructure" ident="docTitle" mode="delete"/>
+                <elementSpec module="textstructure" ident="epigraph" mode="delete"/>
+                <elementSpec module="textstructure" ident="floatingText" mode="delete"/>
+                <elementSpec module="textstructure" ident="imprimatur" mode="delete"/>
+                <elementSpec module="textstructure" ident="postscript" mode="delete"/>
+                <elementSpec module="textstructure" ident="salute" mode="delete"/>
+                <elementSpec module="textstructure" ident="signed" mode="delete"/>
+                <elementSpec module="textstructure" ident="titlePage" mode="delete"/>
+                <elementSpec module="textstructure" ident="titlePart" mode="delete"/>
+                <elementSpec module="textstructure" ident="trailer" mode="delete"/>
+                <elementSpec module="linking" ident="alt" mode="delete"/>
+                <elementSpec module="linking" ident="altGrp" mode="delete"/>
+                <elementSpec module="linking" ident="link" mode="delete"/>
+                <elementSpec module="linking" ident="timeline" mode="delete"/>
+                <elementSpec module="linking" ident="when" mode="delete"/>
+                <elementSpec module="core" ident="analytic" mode="delete"/>
+                <elementSpec module="core" ident="emph" mode="delete"/>
+                <elementSpec module="core" ident="teiCorpus" mode="delete"/>
+                <elementSpec module="linking" ident="linkGrp" mode="delete"/>
+                <elementSpec module="core" ident="biblStruct" mode="delete"/>
+                <elementSpec module="textstructure" ident="byline" mode="delete"/>
+                <elementSpec module="textstructure" ident="closer" mode="delete"/>
+                <elementSpec module="textstructure" ident="opener" mode="delete"/>
+                <elementSpec module="corpus" ident="particDesc" mode="delete"/>
+                <elementSpec ident="domain" module="corpus" mode="change">
+                    <attList>
+                        <attDef ident="type" mode="change" usage="opt">
+                            <desc>categorizes the domain of use.</desc>
+                            <datatype minOccurs="1" maxOccurs="5">
+                                <rng:ref name="data.enumerated"/>
+                            </datatype>
+                            <valList type="closed" mode="replace">
+                                <valItem ident="didactique"/>
+                                <valItem ident="historique"/>
+                                <valItem ident="juridique"/>
+                                <valItem ident="litteraire"/>
+                                <valItem ident="religieux"/>
+                            </valList>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="c" module="analysis" mode="change">
+                    <attList>
+                        <attDef ident="type" mode="change" usage="opt">
+                            <desc>characterizes the type of segment.</desc>
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                            <valList type="open" mode="replace">
+                                <valItem ident="pucnt_strong"/>
+                                <valItem ident="punct_weak"/>
+                                <valItem ident="other"/>
+                            </valList>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="w" module="analysis" mode="change">
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:ref name="choice"/>
+                                <rng:ref name="model.menota"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="aggl" ns="http://bfm.ens-lsh.fr/ns/1.0" mode="add" usage="opt">
+                            <desc>Specifies whether the word is agglutinated</desc>
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                            <defaultVal>no</defaultVal>
+                            <valList type="closed" mode="replace">
+                                <valItem ident="no"/>
+                                <valItem ident="simple"/>
+                                <valItem ident="elision"/>
+                            </valList>
+                        </attDef>
+                        <attDef ident="agglCert" ns="http://bfm.ens-lsh.fr/ns/1.0" mode="add" usage="opt">
+                            <desc>The certitude of agglutination</desc>
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.certainty"/>
+                            </datatype>
+                            <defaultVal>high</defaultVal>
+                        </attDef>
+                        <attDef ident="agglResp" ns="http://bfm.ens-lsh.fr/ns/1.0" mode="add" usage="opt">
+                            <desc>Indicates responsibilty for indentifying the agglutination</desc>
+                            <datatype minOccurs="1" maxOccurs="unbounded">
+                                <rng:ref name="data.pointer"/>
+                            </datatype>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="head" module="core" mode="change">
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="macro.paraContent"/>
+                                <rng:ref name="headlb"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                </elementSpec>
+                <elementSpec ident="choice" module="core" mode="change">
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:ref name="model.choicePart"/>
+                                <rng:ref name="model.menota"/>
+                                <rng:ref name="choice"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                </elementSpec>
+                <!-- MENOTA  ELEMENTS -->
+                <classSpec type="model" ident="model.menota">
+                    <desc>groups elements used for the menotic structures for dipl, facs, norm, etc. </desc>
+                    <classes>
+                        <memberOf key="model.choicePart"/>
+                    </classes>
+                    <remarks>
+                        <p>Borrowed from Menota</p>
+                    </remarks>
+                </classSpec>
+                <elementSpec ident="dipl" mode="add" ns="http://www.menota.org/ns/1.0">
+                    <desc>Contains normalized representation level</desc>
+                    <classes>
+                        <memberOf key="model.menota"/>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.typed"/>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:ref name="macro.paraContent"/>
+                    </content>
+                    <remarks>
+                        <p>Based on Menota P5</p>
+                    </remarks>
+                </elementSpec>
+                <elementSpec ident="facs" mode="add" ns="http://www.menota.org/ns/1.0">
+                    <desc>Contains diplomatic representation level</desc>
+                    <classes>
+                        <memberOf key="model.menota"/>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.typed"/>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                    <rng:zeroOrMore>
+                        <rng:choice>
+                            <rng:text/>
+                            <rng:ref name="mdvAbbr"/>
+                            <rng:ref name="am"/>
+                            <rng:ref name="dropcap"/>
+                            <rng:ref name="headlb"/>
+                            <rng:ref name="hi"/>
+                            <rng:ref name="hyphen"/>
+                            <rng:ref name="lb"/>
+                            <rng:ref name="sb"/>
+                            <rng:ref name="sic"/>
+                        </rng:choice>
+                    </rng:zeroOrMore>
+                    </content>
+                </elementSpec>
+                <elementSpec ident="norm" mode="add" ns="http://www.menota.org/ns/1.0">
+                    <desc>Contains imitative (allographic) representation level</desc>
+                    <classes>
+                        <memberOf key="model.menota"/>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.typed"/>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:ref name="macro.paraContent"/>
+                    </content>
+                </elementSpec>
+                
+                <!-- BFM MSS Elements  -->
+
+                <elementSpec ident="dropcap" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>Medieval dropped capital</desc>
+                    <classes>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.typed"/>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="c"/>
+                                <rng:ref name="g"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="size" usage="req">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.count"/>
+                            </datatype>
+                        </attDef>
+                        <attDef ident="sizeAct" usage="opt">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.count"/>
+                            </datatype>
+                        </attDef>
+                        <attDef ident="color" usage="rec">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                        </attDef>
+                        <attDef ident="decoration" usage="opt">
+                            <datatype minOccurs="1" maxOccurs="5">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="headlb" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>"Additional" line break in a heading</desc>
+                    <classes>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:empty/>
+                    </content>
+                    <attList>
+                        <attDef ident="lines" usage="rec">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.numeric"/>
+                            </datatype>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="hyphen" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>Hyphenation mark</desc>
+                    <classes>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="c"/>
+                                <rng:ref name="g"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="place" usage="rec">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                            <defaultVal>inline</defaultVal>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="mdvAbbr" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>Medieval abbreviation</desc>
+                    <classes>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.global"/>
+                        <memberOf key="att.typed"/>
+                    </classes>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:text/>
+                                <rng:ref name="am"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="range" usage="opt">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.enumerated"/>
+                            </datatype>
+                            <valList type="closed" mode="replace">
+                                <valItem ident="chars"/>
+                                <valItem ident="word"/>
+                                <valItem ident="phrase"/>
+                            </valList>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="punct" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>Punctuation mark</desc>
+                    <classes>
+                        <memberOf key="model.segLike"/>
+                        <memberOf key="att.global"/>
+                        <memberOf key="att.typed"/>
+                    </classes>
+                    <content>
+                        <rng:zeroOrMore>
+                            <rng:choice>
+                                <rng:ref name="model.menota"/>
+                                <rng:ref name="choice"/>
+                            </rng:choice>
+                        </rng:zeroOrMore>
+                    </content>
+                    <attList>
+                        <attDef ident="force" usage="rec">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                            <valList type="closed" mode="replace">
+                                <valItem ident="strong"/>
+                                <valItem ident="weak"/>
+                            </valList>
+                        </attDef>
+                        <attDef ident="mark" usage="opt">
+                            <datatype minOccurs="1" maxOccurs="1">
+                                <rng:ref name="data.word"/>
+                            </datatype>
+                        </attDef>
+                    </attList>
+                </elementSpec>
+                <elementSpec ident="sb" mode="add" ns="http://bfm.ens-lsh.fr/ns/1.0">
+                    <desc>Deglutination (space break inside a word)</desc>
+                    <classes>
+                        <memberOf key="att.transcriptional"/>
+                        <memberOf key="att.typed"/>
+                        <memberOf key="att.global"/>
+                    </classes>
+                    <content>
+                        <rng:empty/>
+                    </content>
+                </elementSpec>
+            </schemaSpec>
+            </div>
+        </body>
+    </text>
+</TEI>

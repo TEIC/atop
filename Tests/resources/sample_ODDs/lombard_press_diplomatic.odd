@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xml:lang="en" xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" >
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>LombardPress Customization File</title>
+        <author xml:id="JeffreyWitt">Jeffrey C. Witt</author>
+        <author xml:id="MichaelChristensen">Michael Stenskjær Christensen</author>
+        <author xml:id="NicolasVaughan">Nicolas Vaughan</author>
+      </titleStmt>
+      <publicationStmt>
+        <authority>An SCTA and LombardPress Collaboration Project</authority>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born Digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc status="draft">
+      <change who="#JeffreyWitt" when="2012-05-08" n="0.0.0-dev"></change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="lombardpress-schema" start="TEI"
+          source="http://www.tei-c.org/Vault/P5/3.1.0/xml/tei/odd/p5subset.xml">
+        
+        <!-- Core Module -->
+        <moduleRef key="core"/>
+
+        <!-- Begin modifications to del element -->
+        
+        <elementSpec ident="del" module="core" mode="change">
+          <attList>
+            <attDef ident="rend" usage="rec" mode="change">
+              <valList type="semi" mode="add">
+                <valItem ident="strikethrough">
+                  <gloss>strikethrough</gloss>
+                  <desc>A deletion indicated by a line through the center of the text</desc>
+                </valItem>
+                <valItem ident="expunctuation">
+                  <gloss>expunctuation</gloss>
+                  <desc>A deletion indicated by dots underneath the text</desc>
+                </valItem>
+                <valItem ident="blackout">
+                  <gloss>black out</gloss>
+                  <desc>A deletion indicated by blacking out the word or segment</desc>
+                </valItem>
+                <valItem ident="underline">
+                  <gloss>underline</gloss>
+                  <desc>A deletion indicated by underling the word or segment</desc>
+                </valItem>
+                <valItem ident="erasure">
+                  <gloss>erasure</gloss>
+                  <desc>Deletion by erasure</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <!-- end del element -->
+
+        <!-- begin add element -->
+        
+        <elementSpec ident="add" module="core" mode="change">
+          <attList>
+            <attDef ident="place" usage="rec" mode="change">
+              <valList type="semi" mode="add">
+                <valItem ident="margin">
+                  <gloss>margin</gloss>
+                  <desc>A generic place locator for an addition appearing in some margin</desc>
+                </valItem>
+                <valItem ident="margin-right">
+                  <gloss>margin-right</gloss>
+                  <desc>Indicates an addition in the margin to the right of the text in question</desc>
+                </valItem>
+                <valItem ident="margin-left">
+                  <gloss>margin-left</gloss>
+                  <desc>Indicates an addition in the margin to the left of the text in question</desc>
+                </valItem>
+                <valItem ident="margin-above">
+                  <gloss>margin-above</gloss>
+                  <desc>Indicates an addition in the margin to the above of the text in question</desc>
+                </valItem>
+                <valItem ident="margin-below">
+                  <gloss>margin-below</gloss>
+                  <desc>Indicates an addition in the margin to the below of the text in question</desc>
+                </valItem>
+                <valItem ident="above-line">
+                  <gloss>above-line</gloss>
+                  <desc>Indicates an addition inserted above the line in question</desc>
+                </valItem>
+                <valItem ident="below-line">
+                  <gloss>below-line</gloss>
+                  <desc>Indicates an addition inserted below the line in question</desc>
+                </valItem>
+                <valItem ident="in-line">
+                  <gloss>in-line</gloss>
+                  <desc>Indicates an addition inserted in the line</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <!-- end add element -->
+
+        <elementSpec ident="note" module="core" mode="change">
+          <attList>
+            <attDef ident="type" mode="change" usage="rec">
+              <constraintSpec ident="note-place-noplace" scheme="isoschematron">
+                <desc>These constraints are used to require a place attribute when a when marginal attribute is used and to forbid a place attribute when an editorial note is used. The reasoning is that an editorial note is an intervention and a new creation, therefore there is no pre-existing place or location that it can be found. A marginal note is just the opposite, it has a physical place is a primary source witness, therefore that place needs to be recorded with a place attribute.</desc>
+                 <constraint>
+                  <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:note[@type='marginal-note']">
+                    <report test="not(./@place)">This is a marginal note. This means that it is a note that exist in the primary source. Therefore it has a physical location that needs to be recorded.</report>
+                  </rule>
+                </constraint>
+              </constraintSpec>
+              <valList type="semi" mode="change">
+                <valItem ident="marginal-note">
+                  <gloss>Marginal Note</gloss>
+                  <desc>A note present in the manuscript witness itself, but clear meant as annotation to the actual text. This note may either be in the same hand as the text or supplied by a latter reader.</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <!-- RULES FOR MILESTON ELEMENTS -->
+        <constraintSpec ident="milestones-must-have-ed-attr" scheme="schematron">
+          <desc>Milestones must have ed attribute</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="//tei:lb|tei:cb|tei:pb">
+              <report test="not(./@ed)">Milestones must have ed attribute</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="cb-and-pb-must-have-n-attr" scheme="schematron">
+          <desc>cb and pb must have n attribute</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="//tei:cb|tei:pb">
+              <report test="not(./@n)">cb and pb must have n attribute</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+
+        <moduleRef key="tei"/>
+
+        <!-- header module -->
+        <moduleRef key="header"/>
+        <!-- header rules -->
+        <!-- titleStmt rules -->
+        <constraintSpec ident="missing-author-rule" scheme="schematron">
+          <desc>An author must be stated. Either the author's name or anonymous should be stated</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:titleStmt[1]">
+              <report test="not(./tei:author)">An author must be stated. Either the author's name or anonymous should be stated</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- editionStmt rules -->
+        <constraintSpec ident="missing-edition-n" scheme="schematron">
+          <desc>EditionStmt edition must have an n attribute</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:editionStmt[1]/tei:edition[1]">
+              <report test="not(./@n)">Edition element must indicate edition number with n attribute of the form x.x.x or x.x.x-dev</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="missing-edition-date" scheme="schematron">
+          <desc>EditionStmt Edition must have an date element as child</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:editionStmt[1]/tei:edition[1]">
+              <report test="not(./tei:date)">EditionStmt Edition must have an date element as child</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="missing-edition-date-when-attribute" scheme="schematron">
+          <desc>EditionStmt Edition Date must have a when attribute</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:editionStmt[1]/tei:edition[1]">
+              <report test="not(./tei:date/@when)">EditionStmt Edition Date must have a when attribute</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- pub stmt rules -->
+        <constraintSpec ident="pubstmt-must-have-authority" scheme="schematron">
+          <desc>publicationStmt must have an authority if p is not used</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:publicationStmt[1][not(./tei:p)]">
+              <report test="not(./tei:authority)">publicationStmt must have an authority as child if p is not used</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="pubstmt-must-have-availability" scheme="schematron">
+          <desc>publicationStmt must have an availability element as child if p is not used</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:publicationStmt[1][not(./tei:p)]">
+              <report test="not(./tei:availability)">publicationStmt must have an availability element as child if p is not used</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        
+        <!-- sourceDesc rules -->
+        <constraintSpec ident="src-desc-must-contain-listwit-or-listbibl-but-not-both" scheme="schematron">
+          <desc>Source description must contain a listWit or listBibl, but not both</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]">
+              <report test="not(./tei:listWit) and not(./tei:listBibl)">Source description must contain a listWit or listBibl, but not both</report>
+            </rule>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listWit[1]">
+              <report test="./tei:listBibl">Source description must contain a listWit or listBibl, but not both</report>
+            </rule>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:fileDesc[1]/tei:sourceDesc[1]/tei:listBibl[1]">
+              <report test="./tei:listWit">Source description must contain a listWit or listBibl, but not both</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- encodingDesc rules -->
+        <constraintSpec ident="encoding-desc-must-be-present" scheme="schematron">
+          <desc>Encoding description must be present</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]">
+              <report test="not(./tei:encodingDesc)">Encoding description must be present</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="schema-ref-must-be-present" scheme="schematron">
+          <desc>SchemaRef must be present</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:encodingDesc[1]">
+              <report test="not(./tei:schemaRef)">SchemaRef must be present</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="schema-ref-must-have-n-attribute" scheme="schematron">
+          <desc>SchemaRef must have an n attribute indicating schema version followed</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:encodingDesc[1]/tei:schemaRef[1]">
+              <report test="not(./@n)">SchemaRef must have an n attribute indicating the schema version followed, e.g. "lbp-diplomatic-1.0.0" </report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- revisionDesc rules -->
+        <constraintSpec ident="revision-desc-must-be-present" scheme="schematron">
+          <desc>Revision description must be present</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]">
+              <report test="not(./tei:revisionDesc)">Revision description must be present</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- TODO: I can't get this test to work -->
+        <constraintSpec ident="revision-desc-must-have-status" scheme="schematron">
+          <desc>Revision description must have a status</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:teiHeader[1]/tei:revisionDesc[1]">
+              <report test="not(./@status)">Revision description must have a status</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- TODO: there are more MUST's here, but enforcement is not urgent -->
+        
+        <!-- END HEADER RULES -->
+        
+        <!-- text structure module -->
+        <moduleRef key="textstructure"/>
+        
+        <!-- rules for front -->
+        <constraintSpec ident="front-element-must-be-present" scheme="schematron">
+          <desc>Front element must be present</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:text[1]">
+              <report test="not(./tei:front)">Front element must be present</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="front-element-starts-on-div" scheme="schematron">
+          <desc>Front element must contain a div with a starts-on xml:id</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:text[1]/tei:front[1]">
+              <report test="not(./tei:div[@xml:id='starts-on'])">Front element must contain a div with a "starts-on" xml:id, i.e. @xml:id='starts-on'</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- rules for body -->
+        <constraintSpec ident="body-must-have-immediate-div-and-no-other-direct-children" scheme="schematron">
+          <desc>Body must have immediate div and no other direct children</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:text[1]/tei:body[1]">
+              <report test="not(./tei:div[1])">Body must have immediate div</report>
+            </rule>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:text[1]/tei:body[1]">
+              <report test="count(./*) gt 1">Body must have ONLY child that is a div</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+        <!-- rules for head -->
+        <!-- head rules are covered by general tei rules -->
+        
+        <!-- rules for p -->
+        
+        <!-- note that this rule disallows the use of p as children of any other rules. 
+          Thus Ps are not allowed in notes or cites or quotes. P is a privileged structure, 
+          the "ab" element should be used everywhere else there is not for creating structure block units -->
+        
+        <constraintSpec ident="body-p-is-child-of-div" scheme="schematron">
+          <desc>every body p must be an immediate child of a div</desc>
+          <constraint>
+            <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="/tei:TEI/tei:text[1]/tei:body[1]//tei:p">
+              <report test="not(./parent::tei:div[1])">every body p must be an immediate child of a div</report>
+            </rule>
+          </constraint>
+        </constraintSpec>
+
+        <!-- optional modules -->
+
+        <!-- linking module -->
+        <moduleRef key="linking"/>
+
+        <!-- Name and Date Module -->
+        <moduleRef key="namesdates"/>
+
+        <!-- Text Criticism Module -->
+        <moduleRef key="textcrit"/>
+
+        <!-- Primary Source Transcription Module -->
+        <moduleRef key="transcr"/>
+
+        <!-- Ms Description Module -->
+        <!-- not sure what elements need here; but I will probably need a lot more elements for the official bibliography of the mansucriopt witnesses -->
+        <moduleRef key="msdescription"/>
+
+        <!-- Character and Glyph Documentat Module -->
+        <!-- may not be necessary once <pc> element replaces glyps -->
+        <moduleRef key="gaiji"/>
+
+        <!-- analysis module -->
+        <moduleRef key="analysis"/>
+        
+        <elementSpec ident="pc" module="analysis" mode="change">
+          <attList>
+            <attDef ident="type" usage="rec" mode="change">
+              <valList type="semi" mode="add">
+                <valItem ident="pilcrow">
+                  <gloss>pilcrow</gloss>
+                  <desc>A pilcrow punctuation character ¶</desc>
+                </valItem>
+                <valItem ident="virgula">
+                  <gloss>virgula</gloss>
+                  <desc>A virgula punctuation character /</desc>
+                </valItem>
+                <valItem ident="punctus">
+                  <gloss>punctus</gloss>
+                  <desc>A punctus punctuation character .</desc>
+                </valItem>
+                <valItem ident="punctus-medius">
+                  <gloss>punctus medius</gloss>
+                  <desc>A punctus medius punctuation character ·</desc>
+                </valItem>
+                <valItem ident="punctus-elevatus">
+                  <gloss>punctus elevatus</gloss>
+                  <desc>A punctus elevatus punctuation character ;</desc>
+                </valItem>
+                <valItem ident="punctus-interrogativus">
+                  <gloss>punctus interrogativus</gloss>
+                  <desc>A punctus interrogativus punctuation character ?</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+                
+        
+        <!-- attribute class modifications -->
+
+        <classSpec ident="att.placement" type="atts" mode="change">
+          <attList>
+            <attDef ident="place" mode="change" usage="rec">
+              <valList type="semi" mode="replace">
+                <valItem ident="above-line">
+                  <gloss>Above Line</gloss>
+                  <desc>Inter-linearly, above the line in which it is being inserted</desc>
+                </valItem>
+                <valItem ident="margin-left">
+                  <gloss>Left Margin</gloss>
+                  <desc>In the left margin of the page</desc>
+                </valItem>
+                <valItem ident="margin-right">
+                  <gloss>Right Margin</gloss>
+                  <desc>In the right margin of the page</desc>
+                </valItem>
+                <valItem ident="margin-bottom">
+                  <gloss>Bottom Margin</gloss>
+                  <desc>In the bottom margin of the page</desc>
+                </valItem>
+                <valItem ident="margin-top">
+                  <gloss>Top Margin</gloss>
+                  <desc>In the top margin of the page</desc>
+                </valItem>
+                <valItem ident="in-line">
+                  <gloss>In line</gloss>
+                  <desc>the addition is made in the line itself</desc>
+                </valItem>
+                <!-- TODO: do we need to support this -->
+                <valItem ident="in-space">
+                  <gloss>In space</gloss>
+                  <desc>In a predefined space left for an addition, perhaps a space left by another scribe.</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>ODD del Proyecto Humboldt Digital</title>
+        <editor>
+          <persName>
+            <surname>Rojas Castro</surname>
+            <forename>Antonio</forename>
+          </persName>
+        </editor>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>ODD publicada por Proyecto Humboldt Digital (ProHD) por primera vez en enero de
+            <date when="2021-01-15">2021</date></publisher>
+      </publicationStmt>
+      <sourceDesc>
+        <bibl>ODD basada en TEI U5 y <ref
+            target="https://www.ediarum.org/docs/ediarum.BASE.manual/index.html"
+          />ediarum.BASE.manual</bibl>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="prohd" start="TEI" prefix="tei_" targetLang="es" docLang="es">
+
+        <!-- modules -->
+        <moduleRef key="tei"/>
+        <moduleRef key="core"
+          include="abbr add addrLine address author bibl biblScope choice cit corr date del desc divGen editor emph expan foreign gap gloss graphic head hi index item l label lb lg list listBibl measure mentioned milestone name note num orig p pb ptr pubPlace publisher q ref reg relatedItem resp respStmt rs sic soCalled sp speaker stage term time title unclear quote"/>
+        <moduleRef key="header"
+          include="authority availability catDesc catRef category change classCode classDecl creation distributor edition editionStmt editorialDecl encodingDesc extent fileDesc funder idno keywords langUsage language licence notesStmt principal profileDesc projectDesc publicationStmt refsDecl revisionDesc samplingDecl seriesStmt sourceDesc sponsor taxonomy teiHeader textClass titleStmt abstract listChange correspAction correspDesc correspContext"/>
+        <moduleRef key="textstructure"
+          include="TEI argument back body byline closer dateline div docAuthor docDate docEdition docImprint docTitle epigraph front group imprimatur opener postscript salute signed text titlePage titlePart trailer"/>
+        <moduleRef key="figures" include="cell figure figDesc formula row table"/>
+        <moduleRef key="linking" include="anchor seg linkGrp ab"/>
+        <moduleRef key="tagdocs" include="att code eg gi ident val"/>
+        <moduleRef key="transcr" include="facsimile fw space subst ex supplied metamark"/>
+        <moduleRef key="msdescription"
+          include="physDesc msDesc msIdentifier institution collection repository"/>
+        <moduleRef key="textcrit" include="listWit witness"/>
+        <moduleRef key="namesdates"
+          include="persName placeName surname forename orgName listPerson listOrg listPlace person org place occupation affiliation birth death floruit"/>
+        <moduleRef key="gaiji" include="g"/>
+
+        <!-- element Specifications -->
+
+        <!-- elements in teiHeader -->
+        <!-- required attributes and possible values -->
+        <!-- graphic can be also in text -->
+        <elementSpec ident="graphic" mode="change">
+          <attList>
+            <!-- This change is right because in the TEI defaul model @url is required -->
+            <attDef ident="url" usage="opt" mode="change"/>
+            <!-- This is actually an addition because this element does not admit @hand in the TEI default model -->
+            <attDef ident="hand" usage="opt" mode="add">
+              <valList type="semi">
+                <valItem ident="#author"/>
+                <valItem ident="#addressee"/>
+                <valItem ident="#unknown"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="idno" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="uri"/>
+                <valItem ident="URLImages"/>
+                <valItem ident="shelfmark"/>
+                <valItem ident="URLCatalogue"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="bibl" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="print"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="change" mode="change">
+          <attList>
+            <attDef ident="when" usage="req" mode="change"/>
+            <attDef ident="who" usage="req" mode="change"/>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="correspAction" mode="change">
+          <attList>
+            <attDef ident="type" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="sent"/>
+                <valItem ident="received"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="date" mode="change">
+          <attList>
+            <attDef ident="cert" mode="change">
+              <!-- Suggestion made by Lou Burnard per email -->
+              <datatype>
+                <dataRef key="teidata.enumerated"/>
+              </datatype>
+              <valList type="closed" mode="replace">
+                <valItem ident="high"/>
+                <valItem ident="low"/>
+              </valList>
+            </attDef>
+            <attDef ident="calendar" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#Julian"/>
+                <valItem ident="#Gregorian"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="msDesc" mode="change">
+          <attList>
+            <!-- This attribute cannot be required -->
+            <attDef ident="rend" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="print"/>
+                <valItem ident="copy"/>
+                <valItem ident="manuscript"/>
+                <valItem ident="concept"/>
+                <valItem ident="notExtant"/>
+              </valList>
+            </attDef>
+            <attDef ident="select" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#this"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="note" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="editorial"/>
+                <valItem ident="remarkResponsibility"/>
+              </valList>
+            </attDef>
+            <attDef ident="place" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="left"/>
+                <valItem ident="right"/>
+                <valItem ident="mTop"/>
+                <valItem ident="mBottom"/>
+                <valItem ident="inline"/>
+              </valList>
+            </attDef>
+            <attDef ident="hand" mode="change">
+              <valList type="open" mode="replace">
+                <valItem ident="#author"/>
+                <valItem ident="#addressee"/>
+                <valItem ident="#unknown"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="quote" mode="change">
+          <attList>
+            <attDef ident="rendition" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#u"/>
+                <valItem ident="#i"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="ref" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="hasAttachment"/>
+                <valItem ident="attachedTo"/>
+                <valItem ident="next"/>
+                <valItem ident="previous"/>
+              </valList>
+            </attDef>
+            <attDef ident="target" usage="req" mode="change"/>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="revisionDesc" mode="change">
+          <attList>
+            <attDef ident="status" usage="req" mode="change"/>
+          </attList>
+        </elementSpec>
+
+
+        <!-- content and sequence of elements -->
+        <elementSpec ident="abstract" mode="change">
+          <content>
+            <elementRef key="p" minOccurs="1" maxOccurs="unbounded"/>
+          </content>
+          <attList>
+            <attDef ident="xml:lang" mode="change" usage="req">
+              <valList type="closed" mode="replace">
+                <valItem ident="de"/>
+                <valItem ident="es"/>
+                <valItem ident="en"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="language" mode="change">
+          <attList>
+            <attDef ident="ident" mode="change" usage="req">
+              <valList type="closed" mode="replace">
+                <valItem ident="de"/>
+                <valItem ident="es"/>
+                <valItem ident="en"/>
+                <valItem ident="fr"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+
+
+        <!-- elements in text -->
+        <elementSpec ident="lb" mode="change">
+          <attList>
+            <attDef ident="break" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="no"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <!--<elementSpec ident="pb" mode="change"/>-->
+        <elementSpec ident="fw" mode="change">
+          <attList>
+            <attDef ident="type" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="folNum"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="space" mode="change">
+          <attList>
+            <attDef ident="unit" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="lines"/>
+                <valItem ident="chars"/>
+                <valItem ident="words"/>
+              </valList>
+            </attDef>
+            <attDef ident="quantity" usage="req" mode="change"/>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="g" mode="change">
+          <attList>
+            <attDef ident="ref" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#typoHyphen"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <!--<elementSpec ident="row" mode="change">
+          <attList>
+            <attDef ident="role" mode="change" usage="opt">
+              <valList type="closed" mode="replace">
+                <valItem ident="label"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>-->
+        <elementSpec ident="cell" mode="change">
+          <attList>
+            <attDef ident="rendition" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#right"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="hi" mode="change">
+          <attList>
+            <attDef ident="rendition" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#u"/>
+                <valItem ident="#uu"/>
+                <valItem ident="#mMM"/>
+                <valItem ident="#sup"/>
+                <valItem ident="#i"/>
+                <valItem ident="#b"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="add" mode="change">
+          <attList>
+            <attDef ident="place" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="superlinear"/>
+                <valItem ident="sublinear"/>
+                <valItem ident="intralinear"/>
+                <valItem ident="across"/>
+                <valItem ident="left"/>
+                <valItem ident="right"/>
+                <valItem ident="mTop"/>
+                <valItem ident="mBottom"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="del" mode="change">
+          <attList>
+            <attDef ident="rendition" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="#ow"/>
+                <valItem ident="#s"/>
+                <valItem ident="#erased"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="figure" mode="change">
+          <attList>
+            <attDef ident="facs" usage="req" mode="change"/>
+            <attDef ident="hand" usage="req" mode="change"/>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="unclear" mode="change">
+          <attList>
+            <attDef ident="reason" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="illegible"/>
+                <valItem ident="covered"/>
+              </valList>
+            </attDef>
+            <attDef ident="cert" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="low"/>
+                <valItem ident="high"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="gap" mode="change">
+          <attList>
+            <attDef ident="quantity" usage="req" mode="change"/>
+            <attDef ident="reason" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="lost"/>
+                <valItem ident="illegible"/>
+                <valItem ident="covered"/>
+                <valItem ident="empty"/>
+                <valItem ident="fm"/>
+                <valItem ident="insignificant"/>
+              </valList>
+            </attDef>
+            <attDef ident="unit" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="chars"/>
+                <valItem ident="lines"/>
+                <valItem ident="pages"/>
+                <valItem ident="words"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="supplied" mode="change">
+          <attList>
+            <attDef ident="cert" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="low"/>
+                <valItem ident="high"/>
+              </valList>
+            </attDef>
+            <!-- This is not necessary for now -->
+            <!--<attDef ident="reason" mode="delete"/>-->
+          </attList>
+        </elementSpec>
+        <elementSpec ident="seg" mode="change">
+          <attList>
+            <attDef ident="type" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="comment"/>
+                <valItem ident="code"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="anchor" mode="change">
+          <attList>
+            <attDef ident="type" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="target"/>
+                <valItem ident="index"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="foreign" mode="change">
+          <attList>
+            <attDef ident="xml:lang" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="gr"/>
+                <valItem ident="la"/>
+                <valItem ident="he"/>
+                <valItem ident="de"/>
+                <valItem ident="fr"/>
+                <valItem ident="en"/>
+                <valItem ident="ru"/>
+                <valItem ident="es"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <elementSpec ident="rs" mode="change">
+          <attList>
+            <attDef ident="type" usage="req" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="term"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

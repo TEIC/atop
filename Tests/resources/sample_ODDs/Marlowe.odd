@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:svg="http://www.w3.org/2000/svg" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns="http://www.tei-c.org/ns/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xml:lang="en">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>TEI Schema for Texts related to Marlowe</title>
+        <author>Scott Hamlin</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Created for the LC 347, a course at Stonehill. Based on an ODD developed by Martin
+          Holmes. Free to anyone for any purpose.</p>
+      </publicationStmt>
+      <notesStmt>
+        <note type="ns">http://www.example.org/ns/nonTEI</note>
+      </notesStmt>
+      <sourceDesc>
+        <p>Born-digital document.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <div>
+        <head>Preface</head>
+        <p>This ODD is used to generate schema for encoding TEI documents for LC 347 A - "Rogue's
+          Progress: Mapping Kit Marlowe's Social Networks", Fall 2017 and Spring 2018. Taught by
+          Kristen Bennett and Scott Hamlin at Stonehill College. This ODD is based on the ODD
+          developed by Martin Holmes of MoEML at the University of Victoria for use in Kristen
+          Bennet's LC 343 A Spring 2017 class at Stonehill.</p>
+      </div>
+      <div>
+        <schemaSpec ident="Marlowe_odd" start="TEI teiCorpus">
+          <moduleRef key="tei"/>
+          <moduleRef key="core" include="abbr add addrLine address author bibl choice corr date editor email expan foreign gap gloss head hi item l label lb lg list listBibl name note orig p pb pubPlace publisher quote ref reg resp respStmt sic sp speaker title unclear"/>
+          <moduleRef key="header" include="authority availability change distributor encodingDesc extent fileDesc idno licence profileDesc projectDesc publicationStmt rendition revisionDesc sourceDesc tagsDecl teiHeader textClass titleStmt"/>
+          <moduleRef key="textstructure" include="TEI back body byline div docAuthor docDate docEdition docImprint docTitle epigraph front imprimatur postscript salute signed text titlePage titlePart trailer"/>
+          <moduleRef key="figures" include="figDesc figure"/>
+          <moduleRef key="linking" include="seg"/>
+          <!-- this version is compiled against P5 2.1 and no other, so we suppress @version  -->
+          <elementSpec ident="TEI" mode="change">
+            <attList>
+              <attDef ident="version" mode="delete"/>
+            </attList>
+          </elementSpec>
+          <classRef key="att.global.facs"/>
+          <classSpec ident="att.global" type="atts" mode="change" module="tei">
+            <attList>
+              <attDef ident="xml:base" mode="delete"/>
+            </attList>
+          </classSpec>
+          <classSpec type="atts" ident="att.global.linking" module="linking" mode="change">
+            <attList>
+              <attDef ident="synch" mode="delete"/>
+              <attDef ident="sameAs" mode="delete"/>
+              <attDef ident="copyOf" mode="delete"/>
+              <attDef ident="exclude" mode="delete"/>
+              <attDef ident="select" mode="delete"/>
+            </attList>
+          </classSpec>
+          <classSpec type="atts" ident="att.datable.w3c" module="tei" mode="change">
+            <attList>
+              <attDef ident="notBefore" mode="delete"/>
+              <attDef ident="notAfter" mode="delete"/>
+              <attDef ident="from" mode="delete"/>
+              <attDef ident="to" mode="delete"/>
+            </attList>
+          </classSpec>
+          <classSpec type="atts" ident="att.datable" module="tei" mode="change">
+            <attList>
+              <attDef ident="calendar" mode="delete"/>
+            </attList>
+          </classSpec>
+          <classSpec type="atts" ident="att.internetMedia" module="tei" mode="delete"/>
+          <classSpec type="model" ident="model.msItemPart" module="tei" mode="delete"/>
+          <!-- ??? -->
+          <classSpec type="model" ident="model.msQuoteLike" module="tei" mode="delete"/>
+          <!--        This is taken directly from the TEI Simple ODD and modified to make it even simpler. -->
+          <!--        NOTE: WE HAVE ABANDONED THE USE OF TEI SIMPLE VALUES IN FAVOUR OF PREDEFINED @renditions. -->
+          <classSpec type="atts" ident="att.global.rendition" mode="change">
+            <!--<constraintSpec ident="renditionpointer" scheme="isoschematron">
+            <constraint>
+              <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:*[@rendition]">
+                <let name="results"
+                  value="for $val in tokenize(normalize-space(@rendition),'\s+') return        starts-with($val,'simple:') or starts-with($val, 'simplePlus:')"/>
+                <assert test="every $x in $results satisfies $x"> Error: Each of the rendition values in "<value-of
+                  select="@rendition"/>" must point to a local ID or to a token in the Simple scheme (<value-of
+                    select="$results"/>)</assert>
+              </rule>
+            </constraint>
+          </constraintSpec>-->
+            <constraintSpec ident="corresppointer" scheme="isoschematron">
+              <constraint>
+                <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:*[@corresp]">
+                  <let name="results" value="for $t in        tokenize(normalize-space(@corresp),'\s+') return starts-with($t,'#') and not(id(substring($t,2)))"/>
+                  <report test="some $x in $results  satisfies $x"> Error: Every local pointer
+                    in "<value-of select="@corresp"/>" must point to an ID in this document
+                      (<value-of select="$results"/>)</report>
+                </rule>
+              </constraint>
+            </constraintSpec>
+            <!--    This is an attempt to validate CSS rulesets in @style attributes. It is crude, but it should help.      -->
+            <constraintSpec ident="stylecsssyntax" scheme="isoschematron">
+              <constraint>
+                <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:*/@style">
+                  <assert test="matches(., '(\s*[a-z\-]+\s*:\s*[\-a-z0-9%\.]+\s*;\s*)+')"> Error:
+                    The syntax in <value-of select="."/> is not
+                correct.</assert>
+                </rule>
+              </constraint>
+            </constraintSpec>
+            <constraintSpec ident="stylecssprops" scheme="isoschematron">
+              <constraint>
+                <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:*/@style">
+                  <let name="properties" value="for $r in tokenize(normalize-space(.),'\s*;\s*') return substring-before($r, ':')"/>
+                  <assert test="every $p in $properties satisfies($p = '' or matches($p, '^\s*((clear)|(display)|(font-weight)|(font-style)|(font-size)|(font-variant)|(float)|(text-align)|(text-indent)|(line-height)|(letter-spacing)|(width)|(height)|(vertical-align)|(((padding)|(margin))(-((left)|(right)|(top)|(bottom)))?)|(border(-((left)|(right)|(top)|(bottom)))?-style))\s*$'))"> Error: A CSS property in <value-of select="."/> is not
+                  correct.</assert>
+                </rule>
+              </constraint>
+            </constraintSpec>
+            <constraintSpec ident="stylecssvals" scheme="isoschematron">
+              <constraint>
+                <rule xmlns="http://purl.oclc.org/dsdl/schematron" context="tei:*/@style">
+                  <let name="vals" value="for $r in tokenize(normalize-space(.),'\s*;\s*') return substring-after($r, ':')"/>
+                  <assert test="every $v in $vals  satisfies($v = '' or matches($v, '^\s*((bold)|(normal)|(italic)|(center)|(left)|(right)|(both)|(justify)|(small-caps)|(block)|(inline)|(inline-block)|(solid)|(super)|(sub)|(0)|(-?[0-9\.]+((em)|(rem)|(%)|(px))))\s*$'))"> Error: A CSS value in <value-of select="."/> is not
+                correct.</assert>
+                </rule>
+              </constraint>
+            </constraintSpec>
+          </classSpec>
+          <!--     MH 2014-11-19: 
+     From http://sourceforge.net/p/tei/bugs/688/
+     Since we have to replace the examples in P5, which contain elements not 
+     permitted in TEI Lite, we might as well fix the confusing content model
+     at the same time.
+     -->
+          <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="header" ident="editorialDecl" mode="change">
+            <content>
+              <oneOrMore xmlns="http://relaxng.org/ns/structure/1.0">
+                <choice>
+                  <ref name="model.pLike"/>
+                </choice>
+              </oneOrMore>
+            </content>
+            <exemplum xml:lang="en">
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <editorialDecl>
+                  <p>All words converted
+                    to Modern American spelling using Websters 9th Collegiate dictionary </p>
+                  <p>All
+                    opening quotation marks converted to “ all closing quotation marks converted to
+                    &amp;cdq;.</p>
+                </editorialDecl>
+              </egXML>
+            </exemplum>
+            <exemplum versionDate="2008-04-06" xml:lang="fr">
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <editorialDecl>
+                  <p>Certains mots coupés
+                    par accident typographique en fin de ligne ont été réassemblés sans
+                    commentaire.</p>
+                  <p>Les "guillements français" ont été remplacée par des
+                    "guillemets droits" (sans symétrie)</p>
+                </editorialDecl>
+              </egXML>
+            </exemplum>
+            <exemplum xml:lang="zh-TW">
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <editorialDecl>
+                  <p> 所有字皆轉換為源自Websters
+                    9th Collegiate字典的現代美語拼法</p>
+                  <p>所有的前括號都改成" 後括號都改成 "</p>
+                </editorialDecl>
+              </egXML>
+            </exemplum>
+          </elementSpec>
+          <!-- changed this example per bug #1266 but I fear there are many more similar cases
+         and that the effort is probably not worth making LB 2015-10-03 -->
+          <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="core" ident="cit" mode="change">
+            <exemplum xml:lang="en">
+              <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#DSHD-eg-30">
+                <cit>
+                  <q>and the
+                    breath of the whale is frequently attended with such an insupportable smell, as
+                    to bring on disorder of the brain.</q>
+                  <bibl>Ulloa's South
+                America</bibl>
+                </cit>
+              </egXML>
+            </exemplum>
+            <exemplum versionDate="2008-04-06" xml:lang="fr">
+              <egXML xmlns="http://www.tei-c.org/ns/Examples" source="#fr-ex-Perec-vie">
+                <cit>
+                  <q>Regarde de tous tes yeux, regarde</q>
+                  <bibl>Jules Verne, Michel
+                    Strogof</bibl>
+                </cit>
+              </egXML>
+            </exemplum>
+          </elementSpec>
+          <moduleRef key="transcr" except="addSpan am damage damageSpan delSpan ex facsimile handNotes handShift line listTranspose metamark mod redo restore retrace secl sourceDoc space subst substJoin surface surfaceGrp surplus transpose undo zone"/>
+          <moduleRef key="corpus" except="activity channel constitution derivation domain factuality interaction locale preparedness purpose setting settingDesc textDesc"/>
+          <moduleRef key="namesdates" include="addName birth death forename genName listOrg listPerson listPlace org orgName persName person place placeName roleName sex surname"/>
+          <elementSpec ident="div" module="textstructure" mode="change">
+            <attList>
+              <attDef ident="type" mode="change">
+                <valList type="closed" mode="replace">
+                  <valItem ident="chapter"/>
+                  <valItem ident="section"/>
+                  <valItem ident="fragment"/>
+                  <valItem ident="epigram"/>
+                  <valItem ident="epistle"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="fw" module="transcr" mode="change">
+            <attList>
+              <attDef ident="type" mode="change">
+                <desc>Used for catchwords, footers signatures, headers, and page numbers.</desc>
+                <valList type="closed" mode="replace">
+                  <valItem ident="catchword"/>
+                  <valItem ident="footer"/>
+                  <valItem ident="header"/>
+                  <valItem ident="pageNum"/>
+                  <valItem ident="signature"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="supplied" module="transcr" mode="change">
+            <attList>
+              <attDef ident="reason" mode="change" usage="req">
+                <!--   valList taken directly from MoEML ODD.           -->
+                <valList mode="add" type="closed">
+                  <valItem ident="bleedthrough">
+                    <gloss>Heavy type or writing on reverse obscuring text.</gloss>
+                  </valItem>
+                  <valItem ident="broken-type">
+                    <gloss>Type apparently malformed or fractured.</gloss>
+                  </valItem>
+                  <valItem ident="damage">
+                    <gloss>Dirt on the page, tearing, etc.</gloss>
+                  </valItem>
+                  <valItem ident="error-in-original">
+                    <gloss>Misprint or typesetting error.</gloss>
+                  </valItem>
+                  <valItem ident="faded-ink">
+                    <gloss>The ink has faded, obscuring the text.</gloss>
+                  </valItem>
+                  <valItem ident="gap-in-inking">
+                    <gloss>Type not (sufficiently) inked.</gloss>
+                  </valItem>
+                  <valItem ident="ink-smudged">
+                    <gloss>Smudging dating from the original print process.</gloss>
+                  </valItem>
+                  <valItem ident="lost-folio">
+                    <gloss>The folio is missing from the document.</gloss>
+                  </valItem>
+                  <valItem ident="omitted-in-original">
+                    <gloss>Omitted from the original text due to a printing or typesetting
+                      error.</gloss>
+                  </valItem>
+                  <valItem ident="original-cropped">
+                    <gloss>The original page has been cut or cropped with the loss of some
+                      text.</gloss>
+                  </valItem>
+                  <valItem ident="scan-cropped">
+                    <gloss>The facsimile photograph does not include the whole surface.</gloss>
+                  </valItem>
+                  <valItem ident="scan-unclear">
+                    <gloss>The facsimile photograph is not clear, out-of-focus, etc.</gloss>
+                  </valItem>
+                  <valItem ident="unclear">
+                    <gloss>The text is not clear for some reason not covered by other values of
+                      @reason.</gloss>
+                  </valItem>
+                </valList>
+              </attDef>
+              <!--            Taken directly from MoEML ODD. -->
+              <attDef ident="evidence" mode="change">
+                <valList mode="add" type="closed">
+                  <valItem ident="internal">
+                    <gloss>The text has been supplied based on evidence internal to this text
+                      (context, etc.).</gloss>
+                  </valItem>
+                  <valItem ident="external">
+                    <gloss>The text has been supplied based on an external source (which should be
+                      referenced through the @source attribute).</gloss>
+                  </valItem>
+                  <valItem ident="conjecture">
+                    <gloss>The text has been supplied based on guesswork.</gloss>
+                  </valItem>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="seg" module="linking" mode="change">
+            <attList>
+              <attDef ident="type" mode="change" usage="req">
+                <valList type="closed" mode="replace">
+                  <valItem ident="decorInit">
+                    <desc>A decorative initial capital (drop-capital at the beginning of a
+                      block).</desc>
+                  </valItem>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="add" module="core" mode="change">
+            <attList>
+              <attDef ident="rend" mode="change">
+                <valList type="closed" mode="replace">
+                  <valItem ident="handwritten"/>
+                  <valItem ident=" printed"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="persName" module="namesdates" mode="change">
+            <attList>
+              <attDef ident="type" mode="change">
+                <valList type="closed" mode="replace">
+                  <valItem ident="contr"/>
+                  <valItem ident=" hist"/>
+                  <valItem ident=" lit"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="addName" module="namesdates" mode="change">
+            <attList>
+              <attDef ident="type" mode="change">
+                <valList type="closed" mode="replace">
+                  <valItem ident="alt_name"/>
+                  <valItem ident=" alt_spelling"/>
+                  <valItem ident=" epithet"/>
+                  <valItem ident=" honorific"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          <elementSpec ident="head" module="core" mode="change">
+            <attList>
+              <attDef ident="type" mode="change">
+                <valList type="open" mode="replace">
+                  <valItem ident="maintitle"/>
+                  <valItem ident=" subtitle"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+        </schemaSpec>
+      </div>
+    </body>
+  </text>
+</TEI>
