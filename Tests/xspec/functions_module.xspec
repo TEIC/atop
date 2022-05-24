@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSpec file for testing ${pd}/XSLT/modules/functions_module.xslt. -->
+<!-- Each function should have at least one test. -->
+
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+  xmlns:atop="http://www.tei-c.org/ns/atop" stylesheet="../../XSLT/modules/functions_module.xslt">
+  <x:scenario label="Scenarios for testing function norm-space-preserve-outer">
+    <x:scenario label="norm-space-preserve-outer with lots of spaces everywhere">
+      <x:call function="atop:norm-space-preserve-outer">
+        <x:param name="pIn_string" select="'  &#x09;this  has&#x0a; lots of   spaces   '"/>
+      </x:call>
+      <x:expect label="All space sequences normalized to one space." select="' this has lots of spaces '"/>
+    </x:scenario>
+    <x:scenario label="norm-space-preserve-outer with no changes required">
+      <x:call function="atop:norm-space-preserve-outer">
+        <x:param name="pIn_string" select="'this has single spaces'"/>
+      </x:call>
+      <x:expect label="All space sequences normalized to one space." select="'this has single spaces'"/>
+    </x:scenario>
+  </x:scenario>
+</x:description>
