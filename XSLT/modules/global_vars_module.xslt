@@ -24,7 +24,7 @@
     </xd:doc>
     
     <xd:doc>
-        <xd:desc><ref name="atop:vCurrP5subset_uri">vP5subset_uri</ref>is the location of the 
+        <xd:desc><ref name="atop:vCurrP5subset_uri">vCurrP5subset_uri</ref> is the location of the 
         p5subset.xml file in the current release of P5.</xd:desc>
     </xd:doc>
     <xsl:variable name="atop:vCurrP5subset_uri" as="xs:string" select="'https://tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml'"/>
