@@ -24,13 +24,13 @@
     </xd:doc>
     
     <xd:doc>
-        <xd:desc><ref name="atop:norm-space-preserve-outer">atop:norm-space-preserve-outer</ref>
+        <xd:desc><ref name="atop:collapse-space">atop:norm-space-preserve-outer</ref>
         takes an xs:string as input and returns a string in which space has been normalized, but
         any leading or trailing space is not stripped, but instead is reduced to a single space.</xd:desc>
         <xd:param name="pIn_string" as="xs:string">The input string.</xd:param>
         <xd:return as="xs:string">The transformed string.</xd:return>
     </xd:doc>
-    <xsl:function name="atop:norm-space-preserve-outer" as="xs:string">
+    <xsl:function name="atop:collapse-space" as="xs:string">
         <xsl:param name="pIn_string" as="xs:string"/>
         <xsl:sequence select="replace($pIn_string, '\s+', ' ')"/>
     </xsl:function>
