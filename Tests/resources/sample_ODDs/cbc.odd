@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title xml:lang="fr"
+          >Schéma et documentation de l’édition structurée des procès-verbaux du Conseil des bâtiments civils</title>
+        <principal xml:id="EC">Emmanuel Château-Dutier</principal>
+        <funder>Labex Les Passés dans le Présent, <date from="2013" to="2018"
+          >2013-2018</date></funder>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>Université de Montréal</publisher>
+        <date from="2017">2017</date>
+        <availability status="restricted">
+          <licence target="http://creativecommons.org/licenses/by-sa/4.0/fr/">
+            <p>Ce contenu est mis à disposition selon les termes de la licence CC-BY-SA 4.0.</p>
+            <!-- TODO renseigner le texte de la licence et mettre lien vers l’image --> </licence>
+        </availability>
+      </publicationStmt>
+      <seriesStmt>
+        <title xml:lang="fr">Les procès-verbaux du Conseil des bâtiments civils</title>
+      </seriesStmt>
+      <sourceDesc>
+        <p>Fichier nativement numérique <ptr target="https://github.com/publicarchi/cbc"/></p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2017-02-20" resp="#EC">Création du document</change>
+      <change when="2022-05-25" resp="ATOP">Added repo link to source description</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <div>
+        <p/>
+      </div>
+    </front>
+    <body>
+      <schemaSpec ident="cbc" start="TEI teiCorpus">
+        <!-- infrastructure TEI -->
+        <moduleRef key="tei"/>
+        <classSpec ident="att.duration.iso" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="dur-iso" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.transcriptional" mode="change" type="atts" module="tei">
+          <attList>
+            <attDef ident="seq" mode="delete"/>
+            <attDef ident="cause" mode="delete"/>
+            <attDef ident="status" mode="delete"/>
+            <!-- <attDef ident="hand" mode="delete"/> -->
+          </attList>
+        </classSpec>
+        <moduleRef key="core"
+          except="binaryObject headItem headLabel measure measureGrp name postBox postCode relatedItem said sp speaker stage street textLang time"/>
+        <moduleRef key="linking" except="ab alt altGrp anchor join joinGrp timeline when"/>
+        <moduleRef key="header"
+          except="appInfo application biblFull calendar calendarDesc correspAction correspContext correspDesc distributor refState scriptNote segmentation "
+        />
+        <!-- pour une utilisation de handNote afin de traiter les annotations éventuelles -->
+        <classSpec ident="att.handFeatures" mode="change" type="atts" module="tei">
+          <attList>
+            <attDef ident="scribe" mode="delete"/>
+            <attDef ident="scribeRef" mode="delete"/>
+            <attDef ident="script" mode="delete"/>
+            <attDef ident="scriptRef" mode="delete"/>
+            <attDef ident="scope" mode="change" usage="req">
+              <valList type="closed" mode="replace">
+                <valItem ident="sole"/>
+                <valItem ident="major"/>
+                <valItem ident="minor"/>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+        <moduleRef key="msdescription"/>
+        <!-- structure du texte -->
+        <moduleRef key="textstructure" except="div1 div2 div3 div4 div5 div6 div7"/>
+        <elementSpec ident="div" mode="change">
+          <attList>
+            <attDef ident="type" mode="change">
+              <datatype minOccurs="1" maxOccurs="unbounded"> <text
+                xmlns="http://relaxng.org/ns/structure/1.0"/> </datatype>
+              <valList mode="replace" type="closed">
+                <valItem ident="advice"/>
+                <valItem ident="additional"/>
+                <valItem ident="assembly"/>
+                <valItem ident="case"/>
+                <valItem ident="report"/>
+                <valItem ident="signing"/>
+                <valItem ident="unknown"/>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        <!-- transcription -->
+        <moduleRef key="transcr"
+          except="addSpan am damage damageSpan delSpan ex line listTranspose mod redo restore retrace sourceDoc"/>
+        <!-- à supprimer si non nécessaires handNotes handShift subst substJoin surface surfaceGrp transpose undo -->
+        <classSpec ident="att.global.change" module="transcr" mode="change" type="atts">
+          <attList>
+            <attDef ident="change" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.coordinated" module="transcr" mode="change" type="atts">
+          <attList>
+            <attDef ident="start" mode="delete"/>
+          </attList>
+        </classSpec>
+        <moduleRef key="certainty" except="precision certainty respons"/>
+        <moduleRef key="gaiji"
+          except="char charDecl charName charProp localName mapping unicodeName value"/>
+        <moduleRef key="figures" except="notatedMusic"/>
+        <!-- entités nommées -->
+        <moduleRef key="namesdates"
+          except="age bloc climate education faith geogFeat langKnowledge langKnown nationality offset population socecStatus terrain"/>
+        <classSpec ident="att.datable.custom" module="namesdates" mode="change" type="atts">
+          <attList>
+            <attDef ident="datingMethod" mode="delete"/>
+            <attDef ident="datingPoint" mode="delete"/>
+            <attDef ident="from-custom" mode="delete"/>
+            <attDef ident="notAfter-custom" mode="delete"/>
+            <attDef ident="notBefore-custom" mode="delete"/>
+            <attDef ident="to-custom" mode="delete"/>
+            <attDef ident="when-custom" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.datable.iso" module="namesdates" mode="change" type="atts">
+          <attList>
+            <attDef ident="from-iso" mode="delete"/>
+            <attDef ident="notAfter-iso" mode="delete"/>
+            <attDef ident="notBefore-iso" mode="delete"/>
+            <attDef ident="to-iso" mode="delete"/>
+            <attDef ident="when-iso" mode="delete"/>
+          </attList>
+        </classSpec>
+        <!-- mécanismes d’analyse -->
+        <moduleRef key="analysis" except="c cl m pc phr s w"/>
+        <classSpec ident="att.global.linking" mode="change" type="atts" module="linking">
+          <attList>
+            <attDef ident="exclude" mode="delete"/>
+            <attDef ident="next" mode="delete"/>
+            <attDef ident="prev" mode="delete"/>
+            <attDef ident="sameAs" mode="delete"/>
+            <attDef ident="select" mode="delete"/>
+            <attDef ident="synch" mode="delete"/>
+          </attList>
+        </classSpec>
+        <!-- divers classes -->
+        <classSpec ident="att.breaking" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="break" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.damaged" mode="change" type="atts" module="tei">
+          <attList>
+            <attDef ident="group" mode="delete"/>
+            <attDef ident="agent" mode="change" usage="req">
+              <valList type="closed" mode="replace">
+                <valItem ident="fire"/>
+                <valItem ident="moisture"/>
+                <valItem ident="rubbing"/>
+                <valItem ident="smoke"/>
+                <valItem ident="tear"/>
+                <valItem ident="water"/>
+                <valItem ident="unknown"/>
+              </valList>
+            </attDef>
+            <attDef ident="degree" mode="change" usage="req">
+              <valList type="closed" mode="replace">
+                <valItem ident="high"/>
+                <valItem ident="low"/>
+                <valItem ident="medium"/>
+                <valItem ident="unknown"/>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+        <!-- @RMQ peut-être à supprimer car on travaille sur des multiples -->
+        <classSpec ident="att.datable" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="calendar" mode="delete"/>
+            <attDef ident="period" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.datcat" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="datcat" mode="delete"/>
+            <attDef ident="valueDatcat" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.dimensions" mode="change" type="atts" module="tei">
+          <attList>
+            <attDef ident="precision" mode="delete"/>
+            <attDef ident="scope" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.editLike" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="evidence" mode="delete"/>
+            <attDef ident="instant" mode="delete"/>
+            <attDef ident="source" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.edition" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="ed" mode="delete"/>
+            <attDef ident="edRef" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.enjamb" mode="delete" type="atts">
+          <attList>
+            <attDef ident="enjamb" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.fragmentable" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="part" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.identified" mode="delete" type="atts"/>
+
+        <classSpec ident="att.interpLike" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="inst" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.lexicographic" mode="change" type="atts">
+          <!-- module="dictionaries" -->
+          <attList>
+            <attDef ident="expand" mode="delete"/>
+            <attDef ident="location" mode="delete"/>
+            <attDef ident="mergedIn" mode="delete"/>
+            <attDef ident="norm" mode="delete"/>
+            <attDef ident="opt" mode="delete"/>
+            <attDef ident="orig" mode="delete"/>
+            <attDef ident="split" mode="delete"/>
+            <attDef ident="value" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.metrical" mode="delete" type="atts"> </classSpec>
+
+        <classSpec ident="att.pointing" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="evaluate" mode="delete"/>
+            <attDef ident="targetLang" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.pointing.group" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="domains" mode="delete"/>
+            <attDef ident="targFunc" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.ranging" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="atLeast" mode="delete"/>
+            <attDef ident="atMost" mode="delete"/>
+            <attDef ident="confidence" mode="delete"/>
+            <attDef ident="max" mode="delete"/>
+            <attDef ident="min" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.segLike" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="function" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.scoping" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="match" mode="delete"/>
+            <attDef ident="target" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.styleDef" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="scheme" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.timed" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="end" mode="delete"/>
+            <attDef ident="start" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.translatable" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="versionDate" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.combinable" mode="delete" type="atts"> </classSpec>
+        <classSpec ident="att.typed" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="subtype" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.divLike" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="org" mode="delete"/>
+            <attDef ident="sample" mode="delete"/>
+          </attList>
+        </classSpec>
+
+
+        <classSpec ident="att.internetMedia" type="atts" mode="change" module="tei">
+          <attList>
+            <attDef ident="mimeType" mode="change">
+              <valList type="closed" mode="replace">
+                <valItem ident="image/jpg"/>
+                <valItem ident="image/png"/>
+                <valItem ident="application/pdf"/>
+                <valItem ident="application/tei+xml"/>
+                <valItem ident="application/xml"/>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.media" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="height" mode="delete"/>
+            <attDef ident="scale" mode="delete"/>
+            <attDef ident="width" mode="delete"/>
+          </attList>
+        </classSpec>
+        <!-- att.milestoneUnit -->
+        <classSpec ident="att.milestoneUnit" module="core" mode="delete" type="atts">
+          <attList>
+            <attDef ident="unit" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.namespaceable" mode="delete" type="atts"> </classSpec>
+        <classSpec ident="att.naming" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="nymRef" mode="delete"/>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.sortable" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="sortKey" mode="delete"/>
+          </attList>
+        </classSpec>
+        <classSpec ident="att.source" module="tei" mode="change" type="atts">
+          <attList>
+            <attDef ident="source" mode="delete"/>
+          </attList>
+        </classSpec>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
