@@ -29,5 +29,10 @@
     </xd:doc>
     <xsl:variable name="atop:vCurrP5subset_uri" as="xs:string" select="'https://tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml'"/>
         
-    
+    <xd:doc>
+        <xd:desc><ref name="atop:vTeiNs">vTeiNs</ref> is the location current TEI namespace.</xd:desc>
+    </xd:doc>
+    <xsl:variable name="atop:vTeiNs" as="xs:string" select="'http://www.tei-c.org/ns/1.0'"/>
+
+
 </xsl:stylesheet>
