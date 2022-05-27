@@ -15,11 +15,12 @@
         <authority>An SCTA and LombardPress Collaboration Project</authority>
       </publicationStmt>
       <sourceDesc>
-        <p>Born Digital</p>
+        <p>Born Digital <ptr target="https://lombardpress.org/schema/docs/"/></p>
       </sourceDesc>
     </fileDesc>
     <revisionDesc status="draft">
       <change who="#JeffreyWitt" when="2012-05-08" n="0.0.0-dev"></change>
+      <change when="2022-05-27" resp="ATOP">Added project reference to source description</change>
     </revisionDesc>
   </teiHeader>
   <text>

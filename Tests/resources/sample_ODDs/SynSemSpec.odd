@@ -143,8 +143,8 @@
                   <elementRef key="fs"/>
                </content>
             </elementSpec>
-            
-            
+
+
             <elementSpec ident="SynSemCorrespondence" mode="add">
                <classes>
                   <memberOf key="att.global"/>
@@ -181,7 +181,7 @@
                   </attDef>
                </attList>
             </elementSpec>
-            
+
          </schemaSpec>
       </body>
    </text>

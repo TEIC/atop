@@ -37,7 +37,10 @@
                 <p>for use by whoever wants it</p>
             </publicationStmt>
             <sourceDesc>
-                <p>This document is the original source; created on 23 November 2006.</p>
+                <p>This document is the original source; created on 23 November 2006. <ptr
+                        target="https://dcl.ils.indiana.edu/cbml/schema/cbml.odd
+                    "/></p>
+
             </sourceDesc>
         </fileDesc>
         <revisionDesc>
@@ -51,6 +54,7 @@
                     <item>Updated <term>data.pointer</term> to <term>teidata.pointer</term>.</item>
                 </list>
             </change>
+            <change when="2022-05-27" resp="ATOP">Added project reference to source description</change>            
         </revisionDesc>
     </teiHeader>
     <text>
@@ -401,12 +405,13 @@
 
 
                 <!-- indicia -->
-                
-                <elementSpec ident="indicia" mode="add" module="cbml" ns="http://www.cbml.org/ns/1.0" prefix="cbml_">
+
+                <elementSpec ident="indicia" mode="add" module="cbml"
+                    ns="http://www.cbml.org/ns/1.0" prefix="cbml_">
                     <desc>Contains the <soCalled>small print</soCalled> bibliographic and legal
-                        information, traditionally found at the bottom of the first recto after the cover of
-                        a comic book, more recently some of the major comic book publishers have
-                        moved this information to the bottom of the final verso before the back
+                        information, traditionally found at the bottom of the first recto after the
+                        cover of a comic book, more recently some of the major comic book publishers
+                        have moved this information to the bottom of the final verso before the back
                         cover.</desc>
                     <classes>
                         <memberOf key="att.global"/>
@@ -416,7 +421,7 @@
                         <rng:ref name="macro.paraContent"/>
                     </content>
                 </elementSpec>
-                
+
 
                 <!-- deleted elements -->
                 <!-- The "numbered divs" are deleted in favor of using numbered divs. -->

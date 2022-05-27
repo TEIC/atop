@@ -19,15 +19,18 @@
                         target="https://wiki.tei-c.org/index.php/SIG:Computer-Mediated_Communication"
                         >TEI Special Interest Group Computer-Mediated Communication</ref>
                 </publisher>
-                <date when="2015-10-20" />
+                <date when="2015-10-20"/>
                 <idno type="uri">CMC-core.odd</idno>
                 <availability status="free">
-                    <licence target="http://creativecommons.org/licenses/by/4.0/" />
+                    <licence target="http://creativecommons.org/licenses/by/4.0/"/>
                 </availability>
             </publicationStmt>
 
             <sourceDesc>
-                <p>The present ODD was born digital</p>
+                <p>The present ODD was born digital  <ptr
+                        target="https://www.uni-due.de/germanistik/chatkorpus/tei/cmccore/cmc-core.zip"
+                    />
+                </p>
             </sourceDesc>
 
         </fileDesc>
@@ -43,6 +46,8 @@
             <change when="2018-07-26" who="HL">v2: introduced changed model for <gi>p</gi></change>
             <change when="2018-07-26" who="HL">v1: first version of basic customisation for
                 FR</change>
+            <change when="2022-05-27" resp="ATOP">Added project reference to source description</change>
+            
         </revisionDesc>
     </teiHeader>
 
@@ -150,23 +155,23 @@
                 <!-- @start "specifies entry points to the schema, i.e. which patterns may be used as
                     the root of documents conforming to it." -->
 
-                <moduleRef key="tei" />
+                <moduleRef key="tei"/>
                 <!-- required -->
-                <moduleRef key="cmc" />
-                <moduleRef key="core" />
+                <moduleRef key="cmc"/>
+                <moduleRef key="core"/>
                 <!-- required -->
-                <moduleRef key="corpus" />
-                <moduleRef key="header" />
+                <moduleRef key="corpus"/>
+                <moduleRef key="header"/>
                 <!-- required -->
-                <moduleRef key="iso-fs" />
-                <moduleRef key="namesdates" />
-                <moduleRef key="spoken" />
-                <moduleRef key="textstructure" />
+                <moduleRef key="iso-fs"/>
+                <moduleRef key="namesdates"/>
+                <moduleRef key="spoken"/>
+                <moduleRef key="textstructure"/>
                 <!-- required -->
-                <moduleRef key="tagdocs" />
-                <moduleRef key="linking" />
-                <moduleRef key="analysis" />
-                <moduleRef key="figures" />
+                <moduleRef key="tagdocs"/>
+                <moduleRef key="linking"/>
+                <moduleRef key="analysis"/>
+                <moduleRef key="figures"/>
 
 
 
@@ -180,7 +185,7 @@
                         use of written and spoken posts, utterances, and nonverbal acts on the GUI
                         of multimodal CMC environments.</desc>
                     <classes>
-                        <memberOf key="model.divPart" />
+                        <memberOf key="model.divPart"/>
                     </classes>
                 </classSpec>
 
@@ -240,14 +245,14 @@
 
 
                     <classes>
-                        <memberOf key="model.divPart.cmc" />
-                        <memberOf key="att.ascribed" />
-                        <memberOf key="att.canonical" />
-                        <memberOf key="att.datable" />
-                        <memberOf key="att.docStatus" />
-                        <memberOf key="att.global" />
-                        <memberOf key="att.timed" />
-                        <memberOf key="att.typed" />
+                        <memberOf key="model.divPart.cmc"/>
+                        <memberOf key="att.ascribed"/>
+                        <memberOf key="att.canonical"/>
+                        <memberOf key="att.datable"/>
+                        <memberOf key="att.docStatus"/>
+                        <memberOf key="att.global"/>
+                        <memberOf key="att.timed"/>
+                        <memberOf key="att.typed"/>
                     </classes>
 
 
@@ -271,20 +276,20 @@
 
                         <zeroOrMore xmlns="http://relaxng.org/ns/structure/1.0">
                             <choice>
-                                <rng:text />
+                                <rng:text/>
 
-                                <ref name="model.headLike" />
-                                <ref name="opener" />
-                                <ref name="model.pLike" />
+                                <ref name="model.headLike"/>
+                                <ref name="opener"/>
+                                <ref name="model.pLike"/>
 
-                                <ref name="model.gLike" />
-                                <ref name="model.phrase" />
-                                <ref name="model.inter" />
-                                <ref name="model.global" />
-                                <ref name="lg" />
-                                <ref name="model.lLike" />
+                                <ref name="model.gLike"/>
+                                <ref name="model.phrase"/>
+                                <ref name="model.inter"/>
+                                <ref name="model.global"/>
+                                <ref name="lg"/>
+                                <ref name="model.lLike"/>
 
-                                <ref name="model.divBottom" />
+                                <ref name="model.divBottom"/>
                             </choice>
                         </zeroOrMore>
                     </content>
@@ -314,7 +319,7 @@
                                 linguistic discourse markers, nor for the indentation relations in
                                 Wiki talk pages. See Lüngen/Herzberg (2018).</desc>
                             <datatype minOccurs="1" maxOccurs="unbounded">
-                                <rng:ref name="data.pointer" />
+                                <rng:ref name="data.pointer"/>
                             </datatype>
                         </attDef>
                         <attDef ident="indentLevel" mode="add">
@@ -326,7 +331,7 @@
                                 source was HTML. [Adapted from the <ref target="#TEIcmc2012"
                                     >DeRiK-Schema</ref>]. </desc>
                             <datatype minOccurs="1" maxOccurs="1">
-                                <rng:ref name="data.count" />
+                                <rng:ref name="data.count"/>
                             </datatype>
                         </attDef>
                     </attList>
@@ -443,7 +448,7 @@
                                     ich war nämlich selbst auch etwas unsicher bei der ganzen Sache
                                     und bin jetzt damit auch viel glücklicher!--<signed
                                         creation="template" who="WU00018921"><gap
-                                            reason="signatureContent" />
+                                            reason="signatureContent"/>
                                         <time creation="template" who="WU00018921">12:01, 12. Jun.
                                             2009 (CEST)</time>
                                     </signed>
@@ -498,7 +503,7 @@
 
                 <classSpec ident="att.global" type="atts" module="tei" mode="change">
                     <classes mode="change">
-                        <memberOf key="att.global.cmc" mode="add" />
+                        <memberOf key="att.global.cmc" mode="add"/>
                     </classes>
                 </classSpec>
 
@@ -592,7 +597,7 @@
                                         <p> Kurze Nachfrage: Die Hieros für den Goldnamen stammen
                                             auch von Beckerath gem. Literatur ? Grüße --<signed
                                                 creation="template"><gap reason="signatureContent"
-                                                   /><time creation="template" who="WU00005582"
+                                                  /><time creation="template" who="WU00005582"
                                                   >18:50, 22. Okt. 2008 (CEST)</time></signed>
                                         </p>
                                     </post>
@@ -618,7 +623,7 @@
                                 <p>Wikipedia talk page, user signature</p>
                                 <egXML xmlns="http://www.tei-c.org/ns/Examples">
                                     <signed creation="template" who="WU00018921"><gap
-                                            reason="signatureContent" />
+                                            reason="signatureContent"/>
                                         <time creation="template" who="WU00018921">12:01, 12. Jun.
                                             2009 (CEST)</time>
                                     </signed>

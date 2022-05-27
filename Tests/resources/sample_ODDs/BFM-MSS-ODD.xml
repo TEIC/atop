@@ -54,12 +54,13 @@
             </publicationStmt>
             <sourceDesc>
                 <p>Guidelines TEI P5</p>
+                <p>Project BFMMSS (<ptr target="http://portal.textometrie.org/bfm/"/>)</p>
             </sourceDesc>
         </fileDesc>
         <revisionDesc>
             <change when="2005-12-31">(VERSION 1.0 - DECEMBRE 2005)</change>
             <change when="2008-03-31">(VERSION 2.0 - MARS 2008)</change>
-
+            <change when="2022-05-27" resp="ATOP">Added project reference to source description</change>
 
         </revisionDesc>
 

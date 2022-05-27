@@ -30,7 +30,7 @@
                 <pubPlace>College Park, MD USA</pubPlace>
             </publicationStmt>
             <sourceDesc>
-                <p>Born digital</p>
+                <p>Born digital <ptr target="https://github.com/umd-mith/sga"/></p>
             </sourceDesc>
         </fileDesc>
         <revisionDesc>
@@ -47,6 +47,7 @@
             <change when="2012-03-24" who="tmunoz">Removed about 40 unused elements</change>
             <change when="2012-05-15" who="tmunoz">Added some schematron tests</change>
             <change when="2014-01-21" who="rviglian">Grouped main specs for inclusion in master ODD. Reintroduced xml:base, removed duplicate @target on metamark</change>
+            <change when="2022-05-27" resp="ATOP">Added project reference to source description</change>           
         </revisionDesc>
     </teiHeader>
     <text>

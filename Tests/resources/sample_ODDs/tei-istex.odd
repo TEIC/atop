@@ -21,9 +21,12 @@
                 <note type="ns">http://www.istex.fr</note>
             </notesStmt>
             <sourceDesc>
-                <p>created on Tuesday 04th April 2017 08:45:30 AM</p>
+                <p>created on Tuesday 04th April 2017 08:45:30 AM <ptr target="https://github.com/istex/odd-istex/blob/master/tei-istex.odd"/></p>                
             </sourceDesc>
         </fileDesc>
+        <revisionDesc>
+            <change when="2022-05-25" resp="ATOP">Added repo link to source description</change>
+        </revisionDesc>
     </teiHeader>
     <text>
         <front>

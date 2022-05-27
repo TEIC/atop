@@ -11,9 +11,12 @@
 				<p>Publication Information</p>
 			</publicationStmt>
 			<sourceDesc>
-				<p>Information about the source</p>
+				<p><ptr target="https://lodel.org/ns/odd/tei.openedition.1.6.2.odd.xml"/></p>
 			</sourceDesc>
 		</fileDesc>
+		<revisionDesc>
+			<change when="2022-05-27" resp="ATOP">Added project reference to source description</change>			
+		</revisionDesc>
 	</teiHeader>
 	<text>
 		<body>

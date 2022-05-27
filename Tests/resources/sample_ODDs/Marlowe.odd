@@ -14,9 +14,12 @@
         <note type="ns">http://www.example.org/ns/nonTEI</note>
       </notesStmt>
       <sourceDesc>
-        <p>Born-digital document.</p>
+        <p>Born-digital document. <ptr target="https://raw.githubusercontent.com/scottphamlin/kitmarloweproject/master/Marlowe_odd.xml"/></p>
       </sourceDesc>
     </fileDesc>
+    <revisionDesc>
+      <change when="2022-05-27" resp="ATOP">Added repo link to source description</change>
+    </revisionDesc>
   </teiHeader>
   <text>
     <body>

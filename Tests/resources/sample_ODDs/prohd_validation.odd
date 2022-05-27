@@ -19,8 +19,12 @@
         <bibl>ODD basada en TEI U5 y <ref
             target="https://www.ediarum.org/docs/ediarum.BASE.manual/index.html"
           />ediarum.BASE.manual</bibl>
+        <bibl><ptr target="https://github.com/humboldtdigital/ediciones"/></bibl>
       </sourceDesc>
     </fileDesc>
+    <revisionDesc>
+      <change when="2022-05-25" resp="ATOP">Added repo link to source description</change>
+    </revisionDesc>
   </teiHeader>
   <text>
     <body>
