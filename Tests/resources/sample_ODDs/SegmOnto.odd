@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml"
+  schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:s="http://purl.oclc.org/dsdl/schematron"
+  xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:xi="http://www.w3.org/2001/XInclude"
+  xml:lang="en" xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title type="main">SegmOnto</title>
+        <title type="sub">A Controlled Vocabulary to Describe the Layout of Pages</title>
+        <author xml:id="SG">
+          <persName>Simon Gabay</persName>
+        </author>
+        <author xml:id="JBC">
+          <persName>Jean-Baptiste Camps</persName>
+        </author>
+        <author xml:id="AP">
+          <persName>Ariane Pinche</persName>
+        </author>
+      </titleStmt>
+      <editionStmt>
+        <edition n="0.9">Version 0.9</edition>
+      </editionStmt>
+      <publicationStmt>
+        <authority>SegmOnto working group</authority>
+        <date when="2021"/>
+        <ptr target="https://github.com/SegmOnto"/>
+      </publicationStmt>
+      <sourceDesc>
+        <p>born-digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <listChange>
+        <listChange n="0.9">
+          <change when="2021-11-01"></change>
+        </listChange>        
+      </listChange>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <divGen type="toc"/>
+    </front>
+    <body>
+      <div rend="toc" xml:id="intro">
+        <head>Introduction</head>
+        <div xml:id="why">
+          <head>Why SegmOnto?</head>
+          <p>SegmOnto offers a controlled vocabulary to describe the content of books or
+            manuscripts pages, in order to homogenise the data required by layout analysers.
+            This project follows a double objective:
+          <list>
+            <item>Mutualise data to train stronger models on various layouts.</item>
+            <item>Design a standardised pipeline for text extraction, from page scans
+              to structured documents</item>
+          </list>
+            SegmOnto is thought as a generalist description scheme, covering written  
+            documents produced since the apparition of the <hi rend="italic">codex</hi>, 
+            but it has been designed using mainly western and middle eastern documents.
+          </p>
+        </div>
+        <div xml:id="team">
+          <head>Team</head>
+          <p>SegmOnto was designed by a group of international researchers. The final
+            version of the guidelines has been carried by S. Gabay, J.-B. Camps and A.
+            Pinche.</p>
+          <p>
+            <figure>
+              <graphic url="media/people/sg.jpg"/>
+              <figDesc>portait Simon Gabay</figDesc>
+            </figure>
+            <hi rend="bold">Simon Gabay</hi> is Maître-assistant at the university of Geneva.
+            He holds a PhD in latin philology, defended at the university of Amsterdam on the
+            history of theatre in the early medieval documentation. His research now focuses
+            on romance philology, and especially 17th c. French, a period for which he creates 
+            the necessary tools for computational exploration. His areas of interests are
+            corpus building, diachronic linguistics, and the birth of the manuscript market
+            in 19th c. France.
+          </p>
+          <p>
+            <figure>
+              <graphic style="thumb" url="media/people/jbc.jpg"/>
+              <figDesc>portait Jean-Baptiste Camps</figDesc>
+            </figure>
+            <hi rend="bold">Jean-Baptiste Camps</hi>, a medievalist by training, is Maître de
+            conférences at the Ecole nationale des chartes | PSL in Paris. He received a PhD
+            for an edition of the <title level="m">Chanson d'Otinel</title> in 2016 at the
+            university Paris  IV-Sorbonne. As a specialist of computational philology, his
+            research include the  transmission of manuscripts over centuries, stylometry and
+            digital editing.
+          </p>
+          <p>
+            <figure>
+              <graphic url="media/people/ap.jpg"/>
+              <figDesc>portait Ariane Pinche</figDesc>
+            </figure>
+            <hi rend="bold">Ariane Pinche</hi> has a PhD in medieval language and literature.
+            She is currently  a postdoctoral fellow at the École nationale des chartes | PSL
+            and is particularly interested in digital editing. She won the Fortier Prize for
+            the best young researcher paper at the Digital Humanities 2019 conference in Utrecht
+            with her  two colleagues J. B. Camps and T. Clérice for the paper <title level="a">
+            Stylometry for Noisy Medieval Data: Evaluating Paul Meyer's Hagiographic Hypothesis</title>.
+            Today, her research interests focus on the construction of medieval corpora
+            for HTR (Handwritten Text Recognition) training.
+          </p>
+          <p>Additional contributors are:
+          <list>
+            <item>Daniel Stoekl</item>
+            <item>Claire Jahan</item>
+            <item>Peter Stokes</item>
+          </list>
+            We thank them for their constant help, their useful feedback and above all their time.
+          </p>
+        </div>
+        <div rend="toc" xml:id="howto">
+          <head>How to cite</head>
+          <p>Simon Gabay, Jean-Baptiste Camps, Ariane Pinche, <hi rend="italic">SegmOnto, A Controlled
+            Vocabulary to Describe the Layout of Pages</hi>, version 0.9, Paris/Genève, 2021,
+            <ref target="https://github.com/SegmOnto/examples">https://github.com/SegmOnto</ref>.</p>
+        </div>
+      </div>
+      <div rend="toc" xml:id="project">
+        <head>Project</head>
+        <div xml:id="idea">
+          <head>The idea</head>
+          <p>The intuition behind SegmOnto is the following: most of the documents containing texts
+          have a stable layout over time:</p>
+          <figure>
+            <graphic url="media/intro/btv1b84259980_f29_orig.jpg"/>
+            <figDesc>BNF, Fr. 412, f.10r.</figDesc>
+          </figure>
+          <figure>
+            <graphic url="media/intro/btv1b86070385_f140_orig.jpg"/>
+            <figDesc>La Bruyère, Les Caractères, 1688, p. 128.</figDesc>
+          </figure>
+          <p>At a low level, it is possible not only to find similarities, but to use the same
+          name in order to describe homogeneously large quantities of data. In blue we see the 
+          body in red the page number, in orange the running title, in green intermediary titles,
+          in pink drop capitals, in grey additional notes.</p>
+          <figure>
+            <graphic url="media/intro/btv1b84259980_f29_ann.jpg"/>
+            <figDesc>BNF, Fr. 412, f.10r.</figDesc>
+          </figure>
+          <figure>
+            <graphic url="media/intro/btv1b86070385_f140_ann.jpg"/>
+            <figDesc>La Bruyère, Les Caractères, 1688, p. 128.</figDesc>
+          </figure>
+          <p>SegmOnto follows (with exceptions) two critera in its description of the page:
+          <list>
+            <item>It follows a generalist approach rather than a specific one. It aims at representing
+              any document, and does not focus on any kind of source.</item>
+            <item>It follows a descriptive approach, but remains open to a more semantic annotation via
+              a system of subtypes.</item>
+          </list>
+          </p>
+          <p>It uses a two-tier description, following the two classification tasks required for any
+            layout analysis:
+          <list>
+            <item><hi rend="italic">Zones</hi>, for the different types of regions on the page (running title, main text...)</item>
+            <item><hi rend="italic">Lines</hi> for the different types of lines contained in the zones (interlinear lines,
+              staves, rubrics...)</item>
+          </list>
+          </p>
+          <p>In order to cope with the complexity of documents, two safety devices are offered:
+            <list>
+              <item>The main types of zones and lines are not open to any modification, but a
+                <hi rend="italic">Custom</hi> zone, which functions as a private zone, offers the possibility
+                to encode additional features that would have been forgotten.</item>
+              <item>A system of subtypes (using the following syntax: <hi>Type:Subtype</hi>) has been added
+              and offers only suggested values: it is possible to opt for personal subtypes, functioning at 
+              the level of a specific document only.</item>
+            </list>
+          </p>
+        </div>
+        <div xml:id="vocabulary">
+          <head>Vocabulary</head>
+          <p>SegmOnto is not the first attempt to offer a description of a page. Because of the nature of
+          the task, two different academic traditions have offered vocabularies that serve as a base:
+          <list>
+            <item>Computer vision, especially via the PAGE XML scheme, proposes a limited system
+            adapted to the needs of computer scientists.</item>
+            <item>Codicology, whose purpose precisely is the description of the old documents, 
+            offers a much more precise vocabulary to answer the needs of philologists.</item>
+          </list>
+            On the one hand, codicological vocabularies do not take into account the requirements of
+            computer-based solutions (such as a system of private zones or the articulation of types and 
+            subtypes) and usually does not address contemporary cases. On the other hand, the solution offered
+            by computer scientists is too poor and is incapable to offer a satisfactory description of a page
+            taken from an historical document. For all these reasons, SegmOnto offers a middle way, in between
+            these two.
+          </p>
+          <div xml:id="PAGEvoc">
+            <head>PAGE</head>
+            <p>PAGE XML (cf. <ref target="#Languages"><hi rend="italic">infra</hi></ref>) offers a simple,
+              short and generalist scheme to describe the page, with only fourteen categories:
+              <list>
+                <item><val>TextRegionType</val>. Pure text is represented as a text region. This
+                  includes drop capitals, but practically ornate text may be considered as a graphic.</item>
+                <item><val>ImageRegionType</val>. An image is considered to be more intricate and
+                  complex than a graphic. These can be photos or drawings.</item>
+                <item><val>LineDrawingRegionType</val>. A line drawing is a single colour illustration
+                  without solid areas.</item>
+                <item><val>GraphicRegionType</val>. Regions containing simple graphics, such as a
+                  company logo, should be marked as graphic regions.</item>
+                <item><val>TableRegionType</val>.  Tabular data in any form is represented with a
+                  table region. Rows and columns may or may not have separator lines; these lines are not separator
+                  regions.</item>
+                <item><val>ChartRegionType</val>. Regions containing charts or graphs of any type,
+                  should be marked as chart regions.</item>
+                <item><val>SeparatorRegionType</val>. Separators are lines that lie between columns
+                  and paragraphs and can be used to logically separate different articles from each other.</item>
+                <item><val>MathsRegionType</val>. Regions containing equations and mathematical symbols
+                  should be marked as maths regions.</item>
+                <item><val>ChemRegionType</val>. Regions containing chemical formulas.</item>
+                <item><val>MusicRegionType</val>. Regions containing musical notations.</item>
+                <item><val>AdvertRegionType</val>. Regions containing advertisements.</item>
+                <item><val>NoiseRegionType</val>. Noise regions are regions where no real data lies,
+                  only false data created by artifacts on the document or scanner noise.</item>
+                <item><val>UnknownRegionType</val>. To be used if the region type cannot be ascertained.</item>
+                <item><val>CustomRegionType</val>. Regions containing content that is not covered by
+                  the default types (text, graphic, image, line drawing, chart, table, separator, maths, map, music,
+                  chem, advert, noise, unknown).</item>
+              </list>
+            </p>
+          </div>
+          <div xml:id="CodicologiaVoc">
+            <head><hi rend="italic">Codicologia</hi></head>
+            <p>
+              Other vocabularies, designed by philologist specialised in codicology, offer an interesting alternative
+              to those designed by computer scientists. Under the supervision of the IRHT in Paris, several glossaries
+              have been gathered  in an online application called <ref target="#Codicologia"><hi rend="italic">Codicologia</hi></ref>.
+              It offers an extensive vocabulary in French, most of the time with English, German, Italian, Spanish
+              and Arabic translations, with precise definitions adapted to the need of academics specialised in the
+              humanities. Thanks to Georg Vogeler, a digital version is also available as a <ref target="#CodicologiaSKOS">SKOS
+                model</ref>, perfectly suited for digital purposes.
+            </p>
+          </div>
+          <div xml:id="MiddleWay">
+            <head>Towards a middle way</head>
+            <p>
+              Because PAGE offers too general a description, it has been been decided not to expand it,
+              but rather to reduce to the maximum the <ref target="#Codicologia"><hi rend="italic">Codicologia</hi></ref>
+              glossary. The reduction process has followed a simple criterion: unlike other vocabularies
+              (like the TEI), <hi rend="italic">SegmOnto</hi> focuses on the form rather than the content/meaning.
+              For instance, it uses <hi rend="italic">GraphicZone</hi>, without making the difference between
+              an illustration (which carries a semantic load) and an ornamentation (which is purely decorative).
+            </p>
+            <p>Because of this reduction process, elements and definitions may differ:
+              <list>
+                <item><hi rend="italic">GraphicZone</hi> does not exist in <ref target="#Codicologia"><hi rend="italic">Codicologia</hi></ref>:
+                  it aggregates <hi rend="italic">Illustration</hi> and <hi rend="italic">Ornamentation</hi> of
+                  <ref target="#Codicologia"><hi rend="italic">Codicologia</hi></ref>. On top of these two, it 
+                  aggregates a third type: figures (for schemas found in scientific works, for instance).</item>
+                <item><hi rend="italic">QuireMarksZone</hi> includes the <hi rend="italic">Signature</hi> (quire
+                  numbers) and the <hi rend="italic">Catchword</hi>, which are two different elements in
+                  <ref target="#Codicologia"><hi rend="italic">Codicologia</hi></ref>.</item>
+              </list>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div xml:id="Pipeline">
+        <head>Production pipeline</head>
+        <p>SegmOnto is language independent: it aims at describing the page, no matter the digital format.
+          This choice is necessary, because of the various needs of scholars and institutions: specialists
+          of OCR/HTR technologies use ALTO or PAGE XML documents, while specialists of texts expect TEI
+          files, and collections curator RDF data stored in a triplestore or IIIF manifests stored on a
+          server.</p>
+        <figure>
+          <graphic url="media/intro/pipeline.png"/>
+          <figDesc>Production pipeline</figDesc>
+        </figure>
+        <p>In order to cope with the multiplicity of the needs, it has been decided to choose TEI has a
+          pivot format.
+          <list>
+            <item>The data produced by the layout analyser and the HTR engine is in an ALTO format, one
+              per page.</item>
+            <item>All these ALTO files are concatenated into a single TEI-encoded document, with 
+              additional metadata (title, author, date of publication, shelfmark…).</item>
+            <item>This TEI file can be used to produce RDF data and IIIF manifests, but also ALTO
+              files, which will be used to (re)train models.</item>
+          </list>
+        </p>
+        <p>Most of our work has been done with the HTR engine <ref target="#Kraken2019">Kraken</ref>,
+          which includes an efficient layout analyser (<ref target="#Kiessling2020">Kiessling 2020</ref>).
+          Data has been prepared with the application <ref target="#eScriptorium2019">eScriptorium</ref>,
+          via the CREMMA infrastructure in Paris and its FoNDUE counterpart in Geneva. The data being
+          available in ALTO  (cf. <ref target="#XMLALTO"><hi rend="italic">infra</hi></ref>), it remains
+          useable with any platform or system accepting these two standard formats.
+        </p>
+        <div xml:id="XMLALTO">
+          <head>ALTO</head>
+          <p>The <ref target="#ALTO">ALTO (Analyzed Layout and Text Object)</ref> 
+            and <ref target="#PAGE">PAGE (Page Analysis and Ground truth Elements)</ref> 
+            are two open XML schemas, developed for the description of textual and layout information
+            of page scans. The objective is to describe both in order to reconstruct the original appearance
+            of the source document, based on the digitised information.</p>
+          <p>ALTO encoding is extremely simple. On top of metadata, it is structured as a tree with the
+            following elements:
+            <list>
+              <item><gi>Page</gi> for the page</item>
+              <item><gi>PrintSpace</gi> for the part of the aforementioned <gi>Page</gi> with printed information</item>
+              <item><gi>TextBlock</gi> for different zones within the <gi>PrintSpace</gi></item>
+              <item><gi>TextLine</gi> for each line in a given <gi>TextBlock</gi></item>
+              <item><gi>String</gi> for the text contained in the <gi>TextLine</gi>.</item>
+            </list>
+          </p>
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <alto>
+              <Description>
+                <MeasurementUnit/>
+                <sourceImageInformation/>
+                <Processing/>
+              </Description>
+              <Styles>
+                <TextStyle FONTSIZE="10.0"/>
+                <ParagraphStyle ALIGN="Left"/>
+              </Styles>
+              <Layout>
+                <Page ID="P1" WIDTH="123" HEIGHT="456">
+                  <PrintSpace WIDTH="123" HEIGHT="456" HPOS="789" VPOS="123">
+                    <TextBlock ID="ID_tb1" TAGREFS="BT1" WIDTH="123" HEIGHT="456" HPOS="789" VPOS="123">
+                      <Shape>
+                        <Polygon POINTS="123 456 789 123 456 789"/>
+                      </Shape>
+                      <TextLine  ID="ID_tb1" TAGREFS="BT1" BASELINE="123 456 789" WIDTH="123" HEIGHT="456" HPOS="789" VPOS="123">
+                        <Shape>
+                          <Polygon POINTS="123 456 789 123 456 789"/>
+                        </Shape>
+                        <String CONTENT="Un" WIDTH="123" HEIGHT="456" HPOS="789" VPOS="123"/>
+                      </TextLine>
+                    </TextBlock>
+                  </PrintSpace>
+                </Page>
+              </Layout>
+            </alto>
+          </egXML>
+          <p>PAGE XML is an alternative to ALTO, currently not supported by our pipeline. It follows a similar
+            structure than ALTO
+            <list>
+              <item><gi>TextRegion</gi> for the different zones</item>
+              <item><gi>Baseline</gi> for the posting line</item>
+              <item><gi>Word</gi> for word-level tokens</item>
+              <item><gi>Coords</gi> for the coordinates of the given zone or line.</item>
+              <item><gi>TextEquiv</gi> for the transcription</item>
+            </list>
+          </p>
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <PcGts>
+              <Metadata>
+                <Creator>John Doe</Creator>
+                <Created>2021-11-24T18:41:57.801+02:00</Created>
+              </Metadata>
+              <page>
+                <TextRegion type="paragraph" id="r_1">
+                  <Coords points="1474,486 3684,486 3684,900…">
+                    <TextLine id="l_1">
+                      <Coords points="1475,487 3683,487 3683,635…">
+                        <Baseline points="1475,635 1587,635 2061…">
+                          <Word id="w1">
+                            <Coords points="1475,497 1587,497 1587…"/>
+                            <TextEquiv>
+                              <Unicode>Un</Unicode>
+                            </TextEquiv>
+                          </Word>
+                          <Word id="w2">
+                            <Coords points="1935,497 2061,497 2061,619…"/>
+                            <TextEquiv>
+                              <Unicode>exemple</Unicode>
+                            </TextEquiv>
+                          </Word>
+                          <TextEquiv>
+                            <Unicode>Un exemple</Unicode>
+                          </TextEquiv>
+                        </Baseline>
+                      </Coords>
+                    </TextLine>
+                  </Coords>
+                </TextRegion>
+              </page>
+            </PcGts>
+          </egXML>
+        </div>
+        <div xml:id="XMLTEI">
+          <head>XML-TEI</head>
+          <p>The Text Encoding Initiative (TEI) is a consortium which collectively develops and maintains a
+            standard for the representation of texts in digital form. Its chief deliverable is a set of
+            <ref target="#TEIguidelines">Guidelines</ref> which specify encoding methods for machine-readable texts,
+            chiefly in the humanities, social sciences and linguistics.</p>
+          <p>The encoding scheme defined by these Guidelines is formulated as an application of the Extensible
+            Markup Language (XML). A minimal document contains metadata in the <gi>teiHeader</gi> and data in
+            the <gi>text</gi>.</p>
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <TEI>
+              <teiHeader>
+                <fileDesc>
+                  <titleStmt>
+                    <title>Title</title>
+                  </titleStmt>
+                  <publicationStmt>
+                    <p>Publication Information</p>
+                  </publicationStmt>
+                  <sourceDesc>
+                    <p>Information about the source</p>
+                  </sourceDesc>
+                </fileDesc>
+              </teiHeader>
+              <text>
+                <body>
+                  <p>Some text here, mentioning someone, like <persName>John Doe</persName>,
+                  living in a city, like <placeName>Geneva</placeName>.</p>
+                  <p>Another paragraph begins here.
+                    <l>it may contain a verse line</l>
+                  </p>
+                </body>
+              </text>
+            </TEI>
+          </egXML>
+          <p>A detailed explanation of a basic SegmOnto-compatible TEI document is given
+            <ref target="#guidelines">in our guidelines <hi rend="italic">infra</hi></ref>.</p>
+        </div>
+        <div xml:id="RDF">
+          <head>RDF</head>
+          <p>The Resource Description Framework (RDF) is a framework for representing information in the Web.
+            It uses an abstract syntax (a data model) which serves to link all RDF-based languages and
+            specifications. The abstract syntax has two key data structures: RDF graphs are sets of
+            subject-predicate-object triples, where the elements may be IRIs, blank nodes, or datatyped literals.
+            They are used to express descriptions of resources. RDF datasets are used to organize collections
+            of RDF graphs, and comprise a default graph and zero or more named graphs. It is a
+            <ref target="#RDFW3C">W3C recommendation</ref>.</p>
+          <eg xml:space="preserve"><![CDATA[
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+<Moliere>	   rdf:type	    foaf:Person .
+            ]]></eg>
+          <p>RDF can be expressed in XML:
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:foaf="http://xmlns.com/foaf/0.1/">
+                
+                <foaf:Person rdf:about="http://example.org/Moliere">
+                </foaf:Person>
+                
+              </rdf:RDF>
+            </egXML>
+          </p>
+        </div>
+        <div xml:id="IIIF">
+          <head>IIIF manifest</head>
+          <p>The <ref target="#IIIFapi">International Image Interoperability Framework (IIIF)</ref> defines several application programming
+            interfaces that provide a standardised method of describing and delivering images over the web,
+            as well as "presentation based metadata" (that is, structural metadata) about structured sequences
+            of images. It uses IIIF manifests, encoded in JSON.</p>
+          <p>The Manifest resource typically represents a single object and any intellectual work or works
+            embodied within that object. In particular it includes descriptive, rights and linking information
+            for the object. The Manifest embeds the Canvases that should be rendered as views of the object
+            and contains sufficient information for the client to initialize itself and begin to display
+            something quickly to the user.</p>
+          <p>A basic  IIIF would be as follows:</p>
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+{
+    "@context": "http://iiif.io/api/presentation/2/context.json",
+    "@id": "https://www.segmonto.ch/metadata/iiif/ADD_ID_DOC/manifest.json",
+    "@type": "sc:Manifest",
+    "label": "ADD_FULL_REFERCENCE",
+    "metadata": [
+        {
+            "label": "Location",
+            "value": "ADD_LOCATION"
+        },
+        {
+            "label": "Collection Name",
+            "value": "ADD_COLLECTION"
+        },
+        {
+            "label": "Shelfmark",
+            "value": "ADD_SHELFMARK"
+        },
+        {
+            "label": "Document Type",
+            "value": "ADD_TYPE"
+        },
+        {
+            "label": "Title (English)",
+            "value": "ADD_TITLE"
+        },
+        {
+            "label": "Text Language",
+            "value": "ADD_LANGUAGE"
+        }
+    ],
+    "description": [
+        {
+            "@value": "ADD_A_SUMMARY",
+            "@language": "en"
+        }
+    ],
+    "license": "http://creativecommons.org/licenses/by-nc/4.0/",
+    "attribution": "DH Portal, université de Genève",
+    "sequences": [
+        {
+            "@id": "https://www.segmonto.ch/metadata/iiif/ADD_ID_DOC/sequence/Sequence-3423.json",
+            "@type": "sc:Sequence",
+            "label": [
+                {
+                    "@value": "Normal Sequence",
+                    "@language": "en"
+                }
+            ],
+            "canvases": [
+                {
+                    "@id": "https://www.segmonto.ch/metadata/iiif/ADD_ID_DOC/canvas/ADD_ID_PAGE.json",
+                    "@type": "sc:Canvas",
+                    "label": "1r",
+                    "height": 8000,
+                    "width": 6000,
+                    "images": [
+                        {
+                            "@id": "https://www.segmonto.ch/metadata/iiif/ADD_ID_DOC/annotation/ADD_ID_PAGE.json",
+                            "@type": "oa:Annotation",
+                            "motivation": "sc:painting",
+                            "on": "https://www.segmonto.ch/metadata/iiif/ADD_ID_DOC/canvas/ADD_ID_PAGE.json",
+                            "resource": {
+                                "@id": "https://www.segmonto.ch/loris/ADD_ID_LIBRARY/ADD_ID_DOC/ADD_ID_PAGE.jp2/full/full/0/default/jpg",
+                                "@type": "dctypes:Image",
+                                "format": "image/jpeg",
+                                "height": 8000,
+                                "width": 6000
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+          </egXML>
+        </div>
+      </div>
+      <div rend="toc" xml:id="guidelines">
+        <head>Guidelines</head>
+        <p>We have distributed the elements of our vocabulary according to the tree-like tessellation of
+          a page:
+          <list>
+            <item>The page contains zones</item>
+            <item>A zone contains lines</item>
+          </list>
+        </p>
+        <p>The annotation uses:
+          <list>
+            <item><hi rend="italic">Types</hi>, which are mandatory and whose values are closed</item>
+            <item><hi rend="italic">Subtypes</hi>, which are optional and whose values are suggested
+              but open</item>
+            <item><hi rend="italic">Numbering</hi>, which are optional and whose values are suggested
+              but open</item>
+          </list>
+        </p>
+        <p>These three options are available for three reasons:
+          <list>
+            <item>Homogenise the data, to facilitate the exchange and the pooling of annotated data</item>
+            <item>Adapt to a maximum of possible scenarii, and offer, when needed, some semantic information
+              via the subtypes (types being potentially too poor).</item>
+            <item>Ease the training of models by differentiating zones or lines (<val>Main#1</val>
+              for the column on the left and <val>Main#2</val> for the column on the right might
+              be of a certain help).</item>
+          </list>
+        </p>
+        <p>The syntax is the following: <val>Region(:subtype)?(#\d)?</val>/<val>Type:Subtype#2</val>.
+          <eg xml:space="preserve"><![CDATA[
+Type:Subtype#Numbering
+GraphicZone:Decoration#1
+MusicZone:MusicLine
+Custom:Entry#2
+            ]]></eg>
+        </p>
+        <div rend="toc" xml:id="Zones">
+          <head>Zones</head>
+          <div xml:id="DamageZone">
+            <head><val>DamageZone</val></head>
+            <p><val>DamageZone</val> Caracterises any area containing damage to the source, such as
+              holes in the material (parchment, paper...), blots, etc.</p>
+            <figure>
+              <graphic url="media/zones/damage/BB57.png"/>
+              <figDesc>Lyon, AM, BB 57.</figDesc>
+            </figure>
+            <figure>
+              <graphic url="media/zones/damage/e-codices_Mslitt-0010-1.jpg"/>
+              <figDesc>Sion/Sitten, Archives de l'Etat du Valais/Staatsarchiv Wallis, Ms. litt. 10/1, f°1r.</figDesc>
+            </figure>
+          </div>
+        </div>
+        <div rend="toc" xml:id="Lines">
+          <head>Lines</head>
+          <p></p>
+        </div>
+      </div>
+      <div rend="toc" xml:id="Modelling">
+        <head>TEI Modelling</head>
+        <p>The SegmOnto guidelines is not a subset of the TEI: all elements remain available. However, it
+          recommends or requires the use of specific elements, which will be described below, and the most important
+          of which is the compulsory use of <gi>sourceDoc</gi> on top of the traditional <gi>teiHeader</gi> and 
+          <gi>text</gi>:
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <TEI>
+              <teiHeader>
+                Supplies descriptive and declarative metadata associated with a digital resource or set of resources.
+              </teiHeader>
+              <sourceDoc>
+                Contains a transcription or other representation of a single source document. 
+              </sourceDoc>
+              <text>
+                Contains a single text of any kind, whether unitary or composite
+              </text>
+            </TEI>
+          </egXML>
+        </p>
+        <p>SegmOnto tries to take advantage of previous work, such as <ref target="#TEIlex0">TEI Lex-0</ref>. Part
+        of their recommendations are therefore included in our guidelines, especially for the <gi>teiHeader</gi>.</p>
+        <div xml:id="header">
+          <head>Header</head>
+          <p>The composition of the <gi>teiHeader</gi> goes beyond the minimal <gi>fileDesc</gi> with its three
+            main compontents: <gi>titleStmt</gi>, <gi>publicationStmt</gi>, <gi>sourceDesc</gi>, and requires
+            the use of <gi>encodingDesc</gi> and <gi>profileDesc</gi>:
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <teiHeader>
+              <fileDesc>
+                Contains a full bibliographic description of an electronic file.
+              </fileDesc>
+              <encodingDesc>
+                Documents the relationship between an electronic text and the source or sources from which it was derived
+              </encodingDesc>
+              <profileDesc>
+                Provides a detailed description of non-bibliographic aspects of a text, specifically the languages and sublanguages used, the situation in which it was produced, the participants and their setting.
+              </profileDesc>
+            </teiHeader>
+          </egXML>
+          </p>
+          <div xml:id="titleStmt">
+            <head>Title statement</head>
+            <p>There is no additional requirements to the TEI, but the following recommendations:
+              <list>
+                <item>SegmOnto <hi rend="italic">recommends</hi> the use of <att>type</att> on <gi>title</gi>
+                  (with values either <val>full</val> or <val>abbr</val>) to record both the full bibliographic
+                  title of the lexicographic resource and the preferred abbreviated title for easy reference,
+                  should one exist.</item>
+                <item>In <gi>titleStmt</gi>, SegmOnto <hi rend="italic">recommends</hi> the use of
+                  <gi>persName</gi> and <gi>orgName</gi> to distinguish between the names of persons and
+                  organizations. This is especially important since in some cases, the name of an institution is
+                  used to take up the collective authorship of a work.</item>
+                <item>When using <gi>persName</gi>, SegmOnto <hi rend="italic">recommends</hi> to further structure
+                  the name with elements <gi>forename</gi> and <gi>surname</gi>.</item>
+              </list>
+            </p>
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <titleStmt>
+                <title>Title</title>
+                <author xml:id="JM">
+                  <persName>
+                    <forename>Jean</forename>
+                    <surname>Martin</surname>
+                  </persName>
+                </author>
+                <editor xml:id="MM">
+                  <persName>
+                    <forename>Micheline</forename>
+                    <surname>Martin</surname>
+                  </persName>
+                </editor>
+                <respStmt xml:id="JD1">
+                  <resp>annotated by</resp>
+                  <persName>
+                    <forename>John</forename>
+                    <surname>Doe</surname>
+                  </persName>
+                </respStmt>
+                <respStmt xml:id="JD2">
+                  <resp>restructured by</resp>
+                  <persName>
+                    <forename>Jane</forename>
+                    <surname>Doe</surname>
+                  </persName>
+                </respStmt>
+              </titleStmt>
+            </egXML>
+          </div>
+          <div xml:id="publicationStmt">
+            <head>Publication Statement</head>
+            <p>There is no additional requirements to the TEI, but the following recommendations:
+              <list>
+                <item>In <gi>publicationStmt</gi>, SegmOnto <hi rend="italic">requires</hi> the use of
+                  <gi>availability</gi> to record the <gi>licence</gi> of the given lexicographic
+                  resource. In other words, a SegmOnto <hi rend="italic">must</hi> include explicit
+                  information on the conditions under which the given resource can be used. </item>
+                <item>In addition to <gi>publisher</gi> and <gi>distributor</gi>, the
+                  <gi>publicationStmt</gi> in SegmOnto <hi rend="italic">may</hi> include
+                  information on any other <gi>authority</gi> responsible for creating or making the
+                  resource available. </item>
+                <item>If using <gi>authority</gi>, SegmOnto <hi rend="italic">requires</hi> the use of
+                  <att>role</att> with values <val>funder</val>, <val>sponsor</val> or
+                  <val>rightsHolder</val>.</item>
+              </list>
+            </p>
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <publicationStmt>
+                <publisher>SegmOnto project</publisher>
+                <authority role="funder">Institution</authority>
+                <availability status="restricted" n="cc-by">
+                  <licence target="https://creativecommons.org/licenses/by/4.0/"/>
+                </availability>
+                <date when="2020-11-10"/>
+              </publicationStmt>
+            </egXML>
+          </div>
+          <div xml:id="sourceDesc">
+            <head>Source Description</head>
+            <p>Because a transcription is taken from a specific source, SgemOnto requires, possibly together
+              with a <gi>bibl</gi> element, the use of <gi>msDesc</gi>, which provides precise metadata to
+              identify the source of the transcription.</p>
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <sourceDesc>
+                <bibl>
+                  <author>author</author>
+                  <title>title</title>
+                  <pubPlace>place of publication</pubPlace>
+                  <publisher>publisher</publisher>
+                  <date when="2020-11-10">date</date>
+                </bibl>
+                <msDesc>
+                  <msIdentifier>
+                    <country>Country</country>
+                    <settlement>City</settlement>
+                    <repository>Library/archive</repository>
+                    <idno>Shelfmark</idno>
+                  </msIdentifier>
+                </msDesc>
+              </sourceDesc>
+            </egXML>
+          </div>
+          <div xml:id="encodingDesc">
+            <head>Encoding description</head>
+            <p>Because a mechanical transcription is produced by a tool, and because tools can produce
+            slightly different data (height of the baseline, etc.), it is crucial to indicate which one
+            was used with <gi>appInfo</gi>.
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <appInfo>
+                  <application ident="eScriptorium" version="1">
+                    <label>eScriptorium</label>
+                    <ptr target="https://gitlab.inria.fr/scripta/escriptorium"/>
+                  </application>
+                  <application ident="Kraken" version="3.0.5">
+                    <label>Kraken</label>
+                    <ptr target="https://github.com/mittagessen/kraken"/>
+                  </application>
+                </appInfo>
+              </egXML>
+            </p>
+            <p>Because SegmOnto uses precisely defined zones, it is important to provide a link for each of
+              them via the <gi>taxonomy</gi> element in <gi>classDecl</gi>.
+              <egXML xmlns="http://www.tei-c.org/ns/Examples">
+                <classDecl>
+                  <taxonomy xml:id="SegmOnto">
+                    <bibl>
+                      <title>SegmOnto</title>
+                      <ptr target="https://github.com/segmonto"/>
+                    </bibl>
+                    <category xml:id="SegmOntoZones">
+                      <catDesc xml:id="DamageZone">
+                        <title>DamageZone</title>
+                        <ptr target="https://github.com/SegmOnto/examples/blob/main/zones/DamageZone/DamageZone.md"/>
+                      </catDesc>
+                    </category>
+                    <category xml:id="SegmOntoLines">
+                      <catDesc xml:id="DefaultLine">
+                        <title>DefaultLine</title>
+                        <ptr target="https://github.com/SegmOnto/examples/blob/main/lines/DefaultLine/DefaultLine.md"/>
+                      </catDesc>
+                    </category>
+                  </taxonomy>
+                </classDecl>
+              </egXML>
+            </p>
+          </div>
+          <div xml:id="profileDesc">
+            <head>Profile Description</head>
+            <p>In plain TEI, <gi>profileDesc</gi> is an optional element, whereas in SegmOnto, it is
+              required. This is because the nature of transcriptions is such that it is essential
+              to identify and record the language(s) used as part of the resource metadata. </p>
+            <p>That's why <gi>profileDesc</gi> requires <gi>langUsage</gi> and <gi>langUsage</gi> requires
+              at least one <gi>language</gi> element.</p>
+            <egXML xmlns="http://www.tei-c.org/ns/Examples">
+              <profileDesc>
+                <langUsage>
+                  <language ident="fr"/>
+                </langUsage>
+              </profileDesc>
+            </egXML>
+          </div>
+        </div>
+        <div rend="toc" xml:id="sourceDoc">
+          <head>Source Document</head>
+          <p>In <gi>sourceDoc</gi>, the structure follows a strict order:
+            <list>
+              <item><gi>surface</gi>, following the definition of the guidelines, is used to describe the
+              page.</item>
+              <item><gi>zone</gi> can be used to describe both SegmOnto's zones and lines.</item>
+              <item>When the <gi>zone</gi> corresponds to a line in SegmOnto, the <att>points</att> are
+                those of the mask, and it is composed of a <gi>path</gi> for the baseline, and a <gi>line</gi>
+                for the transcription.</item>
+            </list>
+          </p>
+          <p>Regarding the <att>attributes</att>:
+            <list>
+              <item>An <att>xml:id</att> is compulsory on each element, to allow stand-off annotation in
+              the <gi>text</gi>.</item>
+              <item>The use of <att>corresp</att> points to SegmOnto's definitions, detailed in the
+                <ref target="#encodingDesc">encoding description</ref>.</item>
+              <item>The attribute <att>source</att> is used to provide the coordinates of the <gi>zone</gi>
+                or the <gi>path</gi>. The value of <att>points</att>, which should give the x,y coordinates
+                of a point on a line enclosing the area (<val>x1,y1 x2,y2, x3,y3</val>), has been modified
+                to accept series of numbers without a comma (<val>1, 2, 3, 4, 5</val>). The <val>x1,y1</val>
+                scheme corresponds to older devices, only offering rectangles and not polygons, which now
+                are the norm.</item>
+              <item>Finally, the <att>source </att> attribute is used to point to a URI, such as an online
+              <ref target="#IIIF">IIIF manifest</ref>.</item>
+            </list>
+          </p>
+          <egXML xmlns="http://www.tei-c.org/ns/Examples">
+            <sourceDoc xml:id="automaticTranscription">
+              <!-- Page -->
+              <surface xml:id="p1"
+                type="page"
+                source="uri">
+                <!-- Zone -->
+                <zone xml:id="p1z1"
+                  corresp="#segmOntoZone"
+                  points="1 2 3 4 5 6"
+                  source="uri">
+                  <!-- Line -->
+                  <!-- mask -->
+                  <zone xml:id="p1l1"
+                    corresp="#segmOntoLine"
+                    points="1 2 3 4 5 6"
+                    source="uri">
+                    <!-- baseline -->
+                    <path xml:id="p1b1"
+                      type="baseline"
+                      points="1 2 3 4 5 6"/>
+                    <!-- transcription -->
+                    <line>Some text</line>
+                  </zone>
+                </zone>
+                <zone xml:id="p1z2"
+                  corresp="#segmOntoZone"
+                  points="1 2 3 4 5 6"
+                  source="uri">
+                  <zone xml:id="p1l2"
+                    corresp="#segmOntoLine"
+                    points="1 2 3 4 5 6"
+                    source="uri">
+                    <path xml:id="p1b2"
+                      type="baseline"
+                      points="1 2 3 4 5 6"/>
+                    <line>Some text</line>
+                  </zone>
+                </zone>
+              </surface>
+              <surface xml:id="p2"
+                type="#segmOntoZone"
+                source="uri">
+                <!-- decoration without baseline -->
+                <zone cert="high" xml:id="p2z1"
+                  corresp="#segmOntoZone"
+                  points="1 2 3 4 5 6"
+                  source="uri">
+                </zone>
+              </surface>
+            </sourceDoc>
+          </egXML>
+        </div>
+        <div rend="toc" xml:id="text">
+          <head>Text</head>
+          <p>The content of <gi>text</gi> is kept open. Thanks to SegmOnto, it is however possible to
+          pre-annotate the content with the following mapping:</p>
+          <table rend="boxed" rows="6" cols="2">
+            <row role="data">
+              <cell role="SegmOnto">SegmOnto</cell>
+              <cell role="TEI">TEI</cell>
+            </row>
+            <row role="data">
+              <cell role="SegmOnto"><val>Numbering</val></cell>
+              <cell role="TEI"><gi>fw</gi></cell>
+            </row>
+            <row role="data">
+              <cell role="SegmOnto"><val>QuireMarks</val></cell>
+              <cell role="TEI"><gi>fw</gi></cell>
+            </row>
+            <row role="data">
+              <cell role="SegmOnto"><val>Main</val></cell>
+              <cell role="TEI"><gi>p</gi></cell>
+            </row>
+            <row role="data">
+              <cell role="SegmOnto"><val>GraphicZone</val></cell>
+              <cell role="TEI"><gi>figure</gi></cell>
+            </row>
+            <row role="data">
+              <cell role="SegmOnto"><val>MusicZone</val></cell>
+              <cell role="TEI"><gi>musicNotation</gi></cell>
+            </row>
+          </table>
+        </div>
+      </div>
+      <div rend="toc" xml:id="bibliography">
+        <head>Bibliography</head>
+        <listBibl>
+          <bibl xml:id="Kraken2019">
+            <author>Benjamin Kiessling</author>
+            <title level="a">Kraken - an Universal Text Recognizer for the Humanities</title>
+            <title level="m">Digital Humanities 2019 Conference Abstracts</title>
+            <date when="2019-07">July 2019</date>
+            <pubPlace>Utrecht, The Netherlands</pubPlace>
+            <ref target="https://dev.clariah.nl/files/dh2019/boa/0673.html">https://dev.clariah.nl/files/dh2019/boa/0673.html</ref>
+          </bibl>
+          <bibl xml:id="segmonto2021">
+            <author>Simon Gabay, Jean-Baptiste Camps, Ariane Pinche, Claire Jahan</author>
+            <title level="a">SegmOnto: common vocabulary and practices for analysing the layout of manuscripts (and more)</title>
+            <title level="m">1st International Workshop on Computational Paleography (IWCP@ICDAR 2021)</title>
+            <date when="2021-09">Sep. 2021</date>
+            <pubPlace>Lausanne, Switzerland</pubPlace>
+            <ref target="https://hal.archives-ouvertes.fr/hal-03336528">https://hal.archives-ouvertes.fr/hal-03336528</ref>
+          </bibl>
+          <bibl xml:id="Kiessling2020">
+            <author>Benjamin Kiessling</author>
+            <title level="a">A Modular Region and Text Line Layout Analysis System</title>
+            <title level="m">17th International Conference on Frontiers in Handwriting Recognition (ICFHR)</title>
+            <date when="2020-09">Sep. 2020</date>
+            <pubPlace>Dortmund, Germany</pubPlace>
+            <ref target="https://ieeexplore.ieee.org/document/9257770">https://ieeexplore.ieee.org/document/9257770</ref>
+          </bibl>
+          <bibl xml:id="eScriptorium2019">
+            <author>Benjamin Kiessling, Robin Tissot, Daniel Stökl Ben Ezra, Peter Stokes</author>
+            <title level="a">A Modular Region and Text Line Layout Analysis System</title>
+            <title level="m">Proceedings of the 15th International Conference on Document Analysis and Recognition</title>
+            <date when="2019-09">Sep. 2019</date>
+            <pubPlace>Sydney, Australia</pubPlace>
+            <ref target="https://ieeexplore.ieee.org/document/8893029">https://ieeexplore.ieee.org/document/8893029</ref>
+          </bibl>
+          <bibl xml:id="PAGE">
+            <author>Stefan Pletschacher, Apostolos Antonacopoulos</author>
+            <title level="a">The PAGE (Page Analysis and Ground-Truth Elements) Format Framework</title>
+            <title level="m">Proceedings of the 20th International Conference on Pattern Recognition (ICPR2010)</title>
+            <date when="2010-08">Aug. 2010</date>
+            <pubPlace>Istanbul, Turkey</pubPlace>
+            <ref target="https://ieeexplore.ieee.org/document/5597587">https://ieeexplore.ieee.org/document/5597587</ref>
+          </bibl>
+          <bibl xml:id="ALTO">
+            <title level="m">ALTO Technical Metadata for Layout and Text Objects</title>
+            <ref target="https://www.loc.gov/standards/alto">ttps://www.loc.gov/standards/alto</ref>
+          </bibl>
+          <bibl xml:id="Codicologia">
+            <author>Marc Geoffroy, Anne-Marie Eddé, Denis Muzerelle, Philippe Bobichon, Marie-Geneviève Guesdon</author>
+            <title level="m">Codicologia: glossaires codicologiques</title>
+            <pubPlace>Paris</pubPlace>
+            <publisher>Institut de recherche et d'histoire des textes</publisher>
+            <date when="2011">2011</date>
+            <ref target="http://codicologia.irht.cnrs.fr">http://codicologia.irht.cnrs.fr</ref>
+          </bibl>
+          <bibl xml:id="CodicologiaSKOS">
+            <author>Georg Vogeler</author>
+            <title level="m">SKOS Vocabulaire International de la codicologie</title>
+            <pubPlace>Paris</pubPlace>
+            <publisher>Institut de recherche et d'histoire des textes</publisher>
+            <pubPlace>Graz</pubPlace>
+            <publisher>Geisteswissenschaftliches Asset Management System, Karl-Franzens-Universität Graz</publisher>
+            <date when="2021">2021</date>
+            <ref target="http://gams.uni-graz.at/archive/objects/o:voccod/methods/sdef:SKOS/get">http://gams.uni-graz.at/archive/objects/o:voccod/methods/sdef:SKOS/get</ref>
+          </bibl>
+          <bibl xml:id="TEIguidelines">
+            <editor>TEI Consortium</editor>
+            <title level="m">TEI Guidelines for Electronic Text Encoding and Interchange</title>
+            <ref target="https://tei-c.org/release/doc/tei-p5-doc/en/html/index.html">https://tei-c.org/release/doc/tei-p5-doc/en/html/index.html</ref>
+          </bibl>
+          <bibl xml:id="RDFW3C">
+            <editor>Richard Cyganiak, David Wood, Markus Lanthaler</editor>
+            <title level="m">RDF 1.1 Concepts and Abstract Syntax</title>
+            <ref target="https://www.w3.org/TR/rdf11-concepts">https://www.w3.org/TR/rdf11-concepts</ref>
+          </bibl>
+          <bibl xml:id="IIIFapi">
+            <title level="m">International Image Interoperability Framework - API Specifications</title>
+            <ref target="https://iiif.io/api/">https://iiif.io/api/</ref>
+          </bibl>
+          <bibl xml:id="TEIlex0">
+            <editor>Toma Tasovac, Laurent Romary, Piotr Banski, Jack Bowers, Jesse de Does, Katrien Depuydt, Tomaž Erjavec, Alexander Geyken, Axel Herold, Vera Hildenbrandt, Mohamed Khemakhem, Boris Lehečka, Snežana Petrović, Ana Salgado and Andreas Witt.</editor>
+            <title>TEI Lex-0: A baseline encoding for lexicographic data. Version 0.9.0</title>
+            <date when="2018">2018</date>
+            <publisher>DARIAH Working Group on Lexical Resources</publisher>
+            <ref target="https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html">https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html</ref>
+          </bibl>
+        </listBibl>
+      </div>
+      <div rend="toc" xml:id="specification" >
+        <head>Specification</head>
+        <schemaSpec ident="segmonto" docLang="en" prefix="tei_" start="TEI">
+          <moduleRef key="header" except=""/>
+          <moduleRef key="core" except=""/>
+          <moduleRef key="tei" except=""/>
+          <moduleRef key="textstructure" except=""/>
+          <moduleRef key="figures" except=""/>
+          <moduleRef key="transcr" except=""/>
+          <moduleRef key="namesdates" except=""/>
+          <moduleRef key="msdescription" except=""/>
+          <moduleRef key="linking" except=""/>
+          <moduleRef key="analysis" except=""/>
+          
+          <elementSpec ident="TEI" mode="change">
+            <constraintSpec ident="sourceDoc_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:TEI">
+                  <sch:assert test="./tei:sourceDoc">Element "TEI" incomplete; missing required element "sourceDoc".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>   
+            <attList>
+              <!-- Rajouter dans la description de l'ODD -->
+              <attDef ident="xml:id" mode="change" usage="req"/>
+            </attList>
+          </elementSpec>
+          
+          <elementSpec ident="teiHeader" mode="change">
+            <constraintSpec ident="encodingDesc_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:teiHeader[parent::tei:TEI]">
+                  <sch:assert test="./tei:encodingDesc">Element "teiHeader" incomplete; missing required element "encodingDesc".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>   
+            <constraintSpec ident="profileDesc_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:teiHeader[parent::tei:TEI]">
+                  <sch:assert test="./tei:profileDesc">Element "teiHeader" incomplete; missing required element "profileDesc".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>   
+          </elementSpec>
+          
+          <elementSpec ident="profileDesc" mode="change">
+            <constraintSpec ident="langUsage_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:profileDesc[parent::tei:teiHeader]">
+                  <sch:assert test="./tei:langUsage">Element "profileDesc" incomplete; missing required element "langUsage".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>   
+          </elementSpec>
+          
+          <elementSpec ident="authority" mode="change">
+            <attList>
+              <!-- Not valid against TEI all, but implemented in TEI lex-0 -->
+              <attDef ident="role" mode="add" usage="req">
+                <valList type="closed">
+                  <valItem ident="funder"/>
+                  <valItem ident="sponsor"/>
+                  <valItem ident="rightsHolder"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          
+          <!-- sourceDesc must give an msDesc with the shelfmark of the digitised document-->
+          
+          <elementSpec ident="sourceDesc" mode="change">
+            <constraintSpec ident="encodingDesc_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:sourceDesc[parent::tei:fileDesc]">
+                  <sch:assert test="./tei:msDesc">Element "sourceDesc" incomplete; missing required element "msDesc".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>  
+          </elementSpec>
+          
+          <elementSpec ident="msIdentifier" mode="change">
+            <constraintSpec ident="repository_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:msIdentifier[parent::tei:msDesc]">
+                  <sch:assert test="./tei:repository">Element "msIdentifier" incomplete; missing required element "repository".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>  
+          </elementSpec>
+          
+          <elementSpec ident="encodingDesc" mode="change">
+            <constraintSpec ident="encodingDesc_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:encodingDesc[parent::tei:teiHeader]">
+                  <sch:assert test="./tei:classDecl">Element "encodingDesc" incomplete; missing required element "classDecl".</sch:assert>
+                </sch:rule>
+                <!-- Should we force the description of the transcription too?
+                <sch:rule context="tei:encodingDesc[parent::tei:teiHeader]">
+                  <sch:assert test="./tei:editorialDecl">Element "encodingDesc" incomplete; missing required element "editorialDecl".</sch:assert>
+                </sch:rule>
+                 -->
+              </constraint>
+            </constraintSpec> 
+          </elementSpec>
+          
+          <elementSpec ident="classDecl" mode="change">
+            <!-- control content of taxonomy -->
+            <constraintSpec ident="taxonomy_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:taxonomy[parent::tei:classDecl][1]">
+                  <sch:assert test="@xml:id='SegmOnto'">Element "classDecl" incomplete; missing required element "bibl" containing element "taxonomy" with attribute "@xml:id" and value "SegmOnto".</sch:assert>
+                </sch:rule>
+                <sch:rule context="tei:bibl[parent::tei:taxonomy/@xml:id='SegmOnto']">
+                  <sch:assert test="./tei:title/text()='SegmOnto'">Element "classDecl" incomplete; missing required element "bibl" containing element "title" with content "SegmOnto".</sch:assert>
+                  <sch:assert test="./tei:edition/@n">Element "classDecl" incomplete; missing required element "bibl" containing element "edition" with attribute "@n".</sch:assert>
+                  <sch:assert test="./tei:ptr/@target='https://github.com/segmonto'">Element "classDecl" incomplete; missing required element "bibl" containing element "ptr" with attribute "@target" and value "https://github.com/segmonto".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>
+            <!-- appInfo check -->
+            <constraintSpec ident="appInfo_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:application[parent::tei:appInfo]">
+                  <sch:assert test="./tei:label">Element "classDecl" incomplete; missing required element "application" containing element "label".</sch:assert>
+                  <sch:assert test="./tei:ptr/@target">Element "classDecl" incomplete; missing required element "application" containing element "ptr" with attribute "@target".</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>
+          </elementSpec>
+          
+          <elementSpec ident="application" mode="change">
+            <attList>
+              <attDef ident="id" mode="change">
+                <valList type="semi" mode="change">
+                  <valItem ident="eScriptorium"/>
+                  <valItem ident="Transkribus"/>
+                  <valItem ident="OCR4all"/>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          
+          <elementSpec ident="surface" mode="change">
+            <!-- If a surface, it requires the graphic element in it -->
+            <constraintSpec ident="line_path_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:surface[parent::tei:sourceDoc]">
+                  <sch:assert test="./tei:graphic"
+                    >Element "surface" incomplete; missing element 'graphic'.</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>
+            <attList>
+              <attDef ident="xml:id" mode="change" usage="req"/>
+              <!-- @cert allows to tag pages that have been corrected -->
+              <attDef ident="cert" mode="change" usage="rec">
+                <valList type="closed" mode="change">
+                  <valItem ident="gold">
+                    <desc>Gold standard, corrected by a researcher</desc>
+                  </valItem>
+                  <valItem ident="silver">
+                    <desc>Silver standard, produced automatically</desc>
+                  </valItem>
+                  <valItem ident="other">
+                    <desc>Other standard</desc>
+                  </valItem>
+                </valList>
+              </attDef>
+            </attList>
+          </elementSpec>
+          
+          <elementSpec ident="zone" mode="change">
+            <!-- If a zone is in a zone, it is a SegmOntoLine, and it requires a path and a line elements -->
+            <constraintSpec ident="line_path_check" scheme="schematron">
+              <constraint>
+                <sch:rule context="tei:zone[parent::tei:zone]">
+                  <sch:assert test="./tei:path and ./tei:line"
+                    >Element "zone" incomplete; missing element 'path' and 'line'.</sch:assert>
+                </sch:rule>
+              </constraint>
+            </constraintSpec>
+            <attList>
+              <attDef ident="xml:id" mode="change" usage="req"/>
+              <attDef ident="type" mode="change" usage="req">
+                <valList type="closed" mode="change">
+                  <valItem ident="CustomZone"/>
+                  <valItem ident="DamageZone"/>
+                  <valItem ident="DigitizationArtefactZone"/>
+                  <valItem ident="DropCapitalZone"/>
+                  <valItem ident="GraphicZone"/>
+                  <valItem ident="MainZone"/>
+                  <valItem ident="MarginTextZone"/>
+                  <valItem ident="MusicZone"/>
+                  <valItem ident="NumberingZone"/>
+                  <valItem ident="QuireMarksZone"/>
+                  <valItem ident="RunningTitleZone"/>
+                  <valItem ident="SealZone"/>
+                  <valItem ident="StampZone"/>
+                  <valItem ident="TableZone"/>
+                  <valItem ident="TitlePageZone"/>
+                  <valItem ident="CustomLine"/>
+                  <valItem ident="DefaultLine"/>
+                  <valItem ident="DropCapitalLine"/>
+                  <valItem ident="HeadingLine"/>
+                  <valItem ident="InterlinearLine"/>
+                  <valItem ident="MusicLine"/>
+                </valList>
+              </attDef>
+              <attDef ident="subtype" mode="change" usage="req"/>
+              <attDef ident="points" mode="change" usage="req"/>
+              <attDef ident="source" mode="change" usage="req"/>
+            </attList>
+          </elementSpec>
+          
+          <elementSpec ident="path" mode="change">
+            <attList>
+              <attDef ident="xml:id" mode="change" usage="req"/>
+              <attDef ident="points" mode="change" usage="req"/>
+            </attList>
+          </elementSpec>          
+        </schemaSpec>
+        
+      </div>
+    </body>
+  </text>
+</TEI>
