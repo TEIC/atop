@@ -90,28 +90,28 @@ eventually gets you to a download of EVT, which includes
 
 ## References to GitHub repositories with ODD files that could have been included in this repo
 
-https://github.com/utkdigitalinitiatives/polk-correspondence-app
-https://github.com/stazh/briefedition-escher 
-https://github.com/Edirom/Quellenbeschreibung-mit-MEI 
-https://github.com/ArsGeo/CartulaireMSM
-https://github.com/fabrice-camus/UNIGE-DH-GPSR-TEI 
-https://github.com/BalduinLandolt/Masterarbeit-Marienwunder 
-https://github.com/dedekcom/elya_lang 
-https://github.com/earlyprint/epmetadata 
-https://github.com/acdh-oeaw/handke-app 
-https://github.com/acdh-oeaw/vicav-content
-https://github.com/joeytakeda/joeytakeda.github.io
-https://github.com/angelodel80/progettoCartoline 
-https://github.com/simar0at/tei-for-mecmua
-https://github.com/adjam/Constabaris 
-https://github.com/cceh/epidoc-c 
-https://github.com/thanneken/TheologicalQuestions
-https://github.com/JeremyLeiLiu/ProxLogPRF 
-https://github.com/ovetrov/File-Type-Sample-Repository
-https://github.com/milnegeneseo/digital-scholarly-editing
-https://github.com/Petrarchive/The-Petrarchive
-https://github.com/windauer/ws21-tp7-ws
-https://github.com/classicist/TAN-1-dev
-https://github.com/opsxcq/mirror-textfiles.com
-https://github.com/nevenjovanovic/modruski-temrezah 
-https://github.com/PierreSenellart/pdf-enrichment
+* https://github.com/utkdigitalinitiatives/polk-correspondence-app
+* https://github.com/stazh/briefedition-escher 
+* https://github.com/Edirom/Quellenbeschreibung-mit-MEI 
+* https://github.com/ArsGeo/CartulaireMSM
+* https://github.com/fabrice-camus/UNIGE-DH-GPSR-TEI 
+* https://github.com/BalduinLandolt/Masterarbeit-Marienwunder 
+* https://github.com/dedekcom/elya_lang 
+* https://github.com/earlyprint/epmetadata 
+* https://github.com/acdh-oeaw/handke-app 
+* https://github.com/acdh-oeaw/vicav-content
+* https://github.com/joeytakeda/joeytakeda.github.io
+* https://github.com/angelodel80/progettoCartoline 
+* https://github.com/simar0at/tei-for-mecmua
+* https://github.com/adjam/Constabaris 
+* https://github.com/cceh/epidoc-c 
+* https://github.com/thanneken/TheologicalQuestions
+* https://github.com/JeremyLeiLiu/ProxLogPRF 
+* https://github.com/ovetrov/File-Type-Sample-Repository
+* https://github.com/milnegeneseo/digital-scholarly-editing
+* https://github.com/Petrarchive/The-Petrarchive
+* https://github.com/windauer/ws21-tp7-ws
+* https://github.com/classicist/TAN-1-dev
+* https://github.com/opsxcq/mirror-textfiles.com
+* https://github.com/nevenjovanovic/modruski-temrezah 
+* https://github.com/PierreSenellart/pdf-enrichment
