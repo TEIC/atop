@@ -1,0 +1,12 @@
+<project>
+  <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
+
+  <target name="test.xspec" description="Run all XSpec tests">
+    <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
+    <xslt style="Tests/xspec-runner.xslt" in="build.xml" out="Tests/xspec-runner.xml">
+      <param name="files" expression="${xspec.files}"/>
+    </xslt>
+    <subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>
+  </target>
+
+</project>
