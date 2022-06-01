@@ -24,7 +24,7 @@
     </xd:doc>
     
     <xd:doc>
-        <xd:desc><ref name="atop:collapse-space">atop:norm-space-preserve-outer</ref>
+        <xd:desc><ref name="atop:collapse-space">atop:collapse-space</ref>
         takes an xs:string as input and returns a string in which space has been normalized, but
         any leading or trailing space is not stripped, but instead is reduced to a single space.</xd:desc>
         <xd:param name="pIn_string" as="xs:string">The input string.</xd:param>
@@ -34,4 +34,44 @@
         <xsl:param name="pIn_string" as="xs:string"/>
         <xsl:sequence select="replace($pIn_string, '\s+', ' ')"/>
     </xsl:function>
+
+    <xd:doc>
+      <xd:desc>
+        <xd:p>The attributes @minOccurs and @maxOccurs are (by definition) strings, but they
+          are defined as counts (a user should be able to enter minOccurs="02" and get the
+          same result as if she had entered minOccurs='2'). We need to be able to do calculations
+          on numbers, not strings. So this function takes as parameters the string values of
+          @minOccurs and @maxOccurs and returns a sequence of 2 integers representing the integer
+          values thereof, with -1 used to indicate "unbounded"</xd:p>
+      </xd:desc>
+      <xd:param name="pMinOccurs">Minimum number of occurences as a string; typically just @minOccurs.</xd:param>
+      <xd:param name="pMaxOccurs">Maximum number of occurences as a string; typically just @maxOccurs.</xd:param>
+      <xd:return>A sequence of 2 integers, the minimum number and the maximum number; except that a
+      maximum of -1 is used for "unbounded"</xd:return>
+    </xd:doc>
+    <xsl:function name="atop:minOmaxO" as="xs:integer+">
+      <xsl:param name="pMinOccurs" as="xs:string"/>
+      <xsl:param name="pMaxOccurs" as="xs:string"/>
+      <!-- get the value of @minOccurs, defaulting to "1" -->
+      <xsl:variable name="vMinOccurs" select="( $pMinOccurs, '1')[1]" as="xs:string"/>
+      <!-- get the value of @maxOccurs, defaulting to "1" -->
+      <xsl:variable name="vMaxOccurs" select="( $pMaxOccurs, '1')[1]" as="xs:string"/>
+      <!-- We now have two _string_ representations of the attrs, but -->
+      <!-- we need integers. So cast them, converting "unbounded" to  -->
+      <!-- a special flag value (-1): -->
+      <xsl:variable name="vMin" select="xs:integer( $vMinOccurs )" as="xs:integer"/>
+      <xsl:variable name="vMax"                                    as="xs:integer">
+        <xsl:choose>
+          <xsl:when test="$vMaxOccurs castable as xs:integer">
+            <xsl:sequence select="xs:integer( $vMaxOccurs )"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- Must be "unbounded". -->
+            <xsl:sequence select="-1"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:sequence select="( $vMin, $vMax )"/>
+    </xsl:function>
+  
 </xsl:stylesheet>
