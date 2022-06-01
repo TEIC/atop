@@ -49,7 +49,7 @@
       <xd:return>A sequence of 2 integers, the minimum number and the maximum number; except that a
       maximum of -1 is used for "unbounded"</xd:return>
     </xd:doc>
-    <xsl:function name="atop:minOmaxO" as="xs:integer+">
+    <xsl:function name="atop:min-max-to-int" as="xs:integer+">
       <xsl:param name="pMinOccurs" as="xs:string"/>
       <xsl:param name="pMaxOccurs" as="xs:string"/>
       <!-- get the value of @minOccurs, defaulting to "1" -->

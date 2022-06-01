@@ -20,66 +20,66 @@
     </x:scenario>
   </x:scenario>
 
-  <x:scenario label="Scenarios for testing function minOmaxO()">
-    <x:scenario label="calls to minOmaxO that should succeed">
+  <x:scenario label="Scenarios for testing function min-max-to-int()">
+    <x:scenario label="calls to min-max-to-int that should succeed">
       <x:scenario label="defaults: 0 and 1">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'00'"/>
           <x:param name="pMaxOccurs" select="' 1'"/>
         </x:call>
         <x:expect label="sequence of (0,1)" select="( 0, 1 )"/>
       </x:scenario>
       <x:scenario label="0 and sizable number">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'00'"/>
           <x:param name="pMaxOccurs" select="'17'"/>
         </x:call>
         <x:expect label="sequence of (0,17)" select="( 0, 17 )"/>
       </x:scenario>
       <x:scenario label="0 and unbounded">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'0'"/>
           <x:param name="pMaxOccurs" select="'unbounded'"/>
         </x:call>
         <x:expect label="sequence of (0,-1)" select="( 0, -1 )"/>
       </x:scenario>
       <x:scenario label="one and one">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'01'"/>
           <x:param name="pMaxOccurs" select="'1'"/>
         </x:call>
         <x:expect label="sequence of (1,1)" select="( 1, 1 )"/>
       </x:scenario>
       <x:scenario label="1 and sizable number">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select=" '1'"/>
           <x:param name="pMaxOccurs" select="'23'"/>
         </x:call>
         <x:expect label="sequence of (1,23)" select="( 1, 23 )"/>
       </x:scenario>
       <x:scenario label="1 and unbounded">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'01'"/>
           <x:param name="pMaxOccurs" select="'unbounded'"/>
         </x:call>
         <x:expect label="sequence of (1,-1)" select="( 1, -1 )"/>
       </x:scenario>
       <x:scenario label="5 and 7">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'5'"/>
           <x:param name="pMaxOccurs" select="'7'"/>
         </x:call>
         <x:expect label="sequence of (5,7)" select="( 5, 7 )"/>
       </x:scenario>
       <x:scenario label="5 and unbounded">
-        <x:call function="atop:minOmaxO">
+        <x:call function="atop:min-max-to-int">
           <x:param name="pMinOccurs" select="'05'"/>
           <x:param name="pMaxOccurs" select="'unbounded'"/>
         </x:call>
         <x:expect label="sequence of (5,-1)" select="( 5, -1 )"/>
       </x:scenario>
     </x:scenario>
-    <x:scenario label="calls to minOmaxO that should cause an error">
+    <x:scenario label="calls to min-max-to-int that should cause an error">
       <!-- Later. —Syd -->
     </x:scenario>
   </x:scenario>
