@@ -34,5 +34,11 @@
     </xd:doc>
     <xsl:variable name="atop:vTeiNs" as="xs:string" select="'http://www.tei-c.org/ns/1.0'"/>
 
+    <xd:doc>
+      <xd:desc>
+        <xd:p>TEI namespace URI provided as global variable to avoid using it as a magic string</xd:p>
+      </xd:desc>
+    </xd:doc>
+    <xsl:variable name="atop:vTEINamespaceUri" as="xs:string" select="'http://www.tei-c.org/ns/1.0'"/>
 
 </xsl:stylesheet>
