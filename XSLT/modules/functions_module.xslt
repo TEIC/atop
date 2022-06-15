@@ -113,7 +113,7 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p>Given an attribute specification, retunr QName of specified attribute.</xd:p>
+      <xd:p>Given an attribute specification, return QName of specified attribute.</xd:p>
     </xd:desc>
     <xd:param name="pAttDef">Attribute specification</xd:param>
     <xd:return>QName of specified attribute</xd:return>
