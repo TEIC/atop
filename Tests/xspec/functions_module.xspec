@@ -2,7 +2,7 @@
 <!-- XSpec file for testing ${pd}/XSLT/modules/functions_module.xslt. -->
 <!-- Each function should have at least one test. -->
 
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:tei="http://www.tei-c.org/ns/1.0"
   xmlns:atop="http://www.tei-c.org/ns/atop" stylesheet="../../XSLT/modules/functions_module.xslt">
 
   <x:scenario label="Scenarios for testing function collapse-space">
@@ -84,4 +84,96 @@
     </x:scenario>
   </x:scenario>
 
+  <x:scenario label="Scenarios for testing get-attribute-qname">
+    <x:scenario label="for an attDef with explicit @ns">
+      <x:call function="atop:get-attribute-qname">
+        <x:param name="attDef" as="element(tei:attDef)" select="/tei:attDef">
+          <tei:attDef ident="foobar" ns="http://example.com/ns"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a namespace URI part that equals the value of the @ns attribute"
+                test="namespace-uri-from-QName($x:result) eq 'http://example.com/ns'"/>
+    </x:scenario>
+    <x:scenario label="for an attDef without an explicit @ns">
+      <x:call function="atop:get-attribute-qname">
+        <x:param name="attDef" as="element(tei:attDef)" select="/tei:attDef">
+          <tei:attDef ident="foobar"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a namespace URI part that equals the empty string"
+                test="namespace-uri-from-QName($x:result) eq ''"/>
+    </x:scenario>
+    <x:scenario label="for an attDef with an alternate identifier">
+      <x:call function="atop:get-attribute-qname">
+        <x:param name="attDef" as="element(tei:attDef)" select="/tei:attDef">
+          <tei:attDef ident="foo">
+            <tei:altIdent>bar</tei:altIdent>
+          </tei:attDef>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a name part that equals the value of the altIdent child element"
+                test="local-name-from-QName($x:result) eq 'bar'"/>
+    </x:scenario>
+    <x:scenario label="for an attDef with no alternate identifier">
+      <x:call function="atop:get-attribute-qname">
+        <x:param name="attDef" as="element(tei:attDef)" select="/tei:attDef">
+          <tei:attDef ident="foo"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a name part that equals the value of the @ident attribute"
+                test="local-name-from-QName($x:result) eq 'foo'"/>
+    </x:scenario>
+  </x:scenario>
+
+  <x:scenario label="Scenarios for testing get-element-qname">
+    <x:scenario label="for an elementSpec with explicit @ns">
+      <x:call function="atop:get-element-qname">
+        <x:param name="elementSpec" as="element(tei:elementSpec)" select="/tei:elementSpec">
+          <tei:elementSpec ident="foobar" ns="http://example.com/ns"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a namespace URI part that equals the value of the @ns attribute"
+                test="namespace-uri-from-QName($x:result) eq 'http://example.com/ns'"/>
+    </x:scenario>
+    <x:scenario label="for an elementSpec with inherited @ns">
+      <x:call function="atop:get-element-qname">
+        <x:param name="elementSpec" as="element(tei:elementSpec)" select="/tei:schemaSpec/tei:elementSpec">
+          <tei:schemaSpec ns="http://example.com/ns">
+            <tei:elementSpec ident="foobar"/>
+          </tei:schemaSpec>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a namespace URI part that equals the value of the @ns attribute"
+                test="namespace-uri-from-QName($x:result) eq 'http://example.com/ns'"/>
+    </x:scenario>
+    <x:scenario label="for an elementSpec without @ns">
+      <x:call function="atop:get-element-qname">
+        <x:param name="elementSpec" as="element(tei:elementSpec)" select="/tei:elementSpec">
+          <tei:elementSpec ident="foobar"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a namespace URI part that equals TEI namespace URI"
+                test="namespace-uri-from-QName($x:result) eq 'http://www.tei-c.org/ns/1.0'"/>
+    </x:scenario>
+    <x:scenario label="for an elementSpec without an alternate identifier">
+      <x:call function="atop:get-element-qname">
+        <x:param name="elementSpec" as="element(tei:elementSpec)" select="/tei:elementSpec">
+          <tei:elementSpec ident="foobar"/>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a name part that equals the @ident attribute"
+                test="local-name-from-QName($x:result) eq 'foobar'"/>
+    </x:scenario>
+    <x:scenario label="for an elementSpec with an alternate identifier">
+      <x:call function="atop:get-element-qname">
+        <x:param name="elementSpec" as="element(tei:elementSpec)" select="/tei:elementSpec">
+          <tei:elementSpec ident="foo">
+            <tei:altIdent>bar</tei:altIdent>
+          </tei:elementSpec>
+        </x:param>
+      </x:call>
+      <x:expect label="returns a QName with a name part that equals the child altIdent element"
+                test="local-name-from-QName($x:result) eq 'bar'"/>
+    </x:scenario>
+  </x:scenario>
 </x:description>
