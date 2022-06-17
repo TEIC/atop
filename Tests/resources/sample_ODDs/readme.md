@@ -13,7 +13,7 @@ See below some notes concerning the gathering process of these ODD files.
 - eltec: https://github.com/COST-ELTeC/Schemas
 - TEILex0: https://github.com/DARIAH-ERIC/lexicalresources/tree/master/Schemas/TEILex0
 - mitford: https://github.com/DigitalMitford/DM_documentation/tree/master/MitfordODD
-- BestPractices: https://github.com/kshawkin/Best-Practices-for-TEI-in-Libraries/tree/master/BestPractices
+- [BestPractices](BestPractices): https://github.com/kshawkin/Best-Practices-for-TEI-in-Libraries/tree/master/BestPractices
 - songscapes: https://github.com/EarlyModernSongscapes/songscapes/tree/master/data/odd
 - WeGa: https://github.com/Edirom/WeGA-ODD
 
