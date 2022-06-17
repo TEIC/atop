@@ -8,10 +8,24 @@ a `<ptr/>` element to the repository/project was added to `<sourceDesc>` (togeth
 See below some notes concerning the gathering process of these ODD files.
 
 
+## Complex ODDs
+
+- eltec: https://github.com/COST-ELTeC/Schemas
+- TEILex0: https://github.com/DARIAH-ERIC/lexicalresources/tree/master/Schemas/TEILex0
+- mitford: https://github.com/DigitalMitford/DM_documentation/tree/master/MitfordODD
+- BestPractices: https://github.com/kshawkin/Best-Practices-for-TEI-in-Libraries/tree/master/BestPractices
+- songscapes: https://github.com/EarlyModernSongscapes/songscapes/tree/master/data/odd
+- WeGa: https://github.com/Edirom/WeGA-ODD
+
+
+
 ## ODDs gathered from 2022-05-18 request on TEI-L
 
  * wea.odd: Courtesy Joey Takeda
    https://github.com/winnifredeatonarchive/wea_data/blob/main/data/sch/wea.odd
+
+
+
 
 
 ## ODDs from the TEI Wiki

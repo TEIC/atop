@@ -1,0 +1,312 @@
+<?xml version="1.0"?>
+<?xml-model href="http://www.tei-c.org/Vault/P5/current/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+    xml:lang="en">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Early Modern Songscapes</title>
+                <author>Raffaele Viglianti</author>
+            </titleStmt>
+            <publicationStmt>
+                <authority>University of Maryland</authority>
+                <availability>
+                    <p><hi>Copyright 2017 University of Maryland</hi></p>
+                    <p>This is free software; you can redistribute it and/or modify it under the
+                        terms of the GNU General Public License as published by the Free Software
+                        Foundation; either version 2 of the License, or (at your option) any later
+                        version.</p>
+                    <p>This material is distributed in the hope that it will be useful, but
+                            <emph>without any warranty</emph>; without even the implied warranty of
+                            <emph>merchantability</emph> or <emph>fitness for a particular
+                            purpose.</emph> See the GNU General Public License for more details.</p>
+                    <p>A copy of the GNU General Public License is stored on the TEI web site along
+                        with this file; you can also contact the Free Software Foundation, Inc., 59
+                        Temple Place, Suite 330, Boston, MA 02111-1307, USA, for a copy.</p>
+
+                </availability>
+            </publicationStmt>
+            <sourceDesc>
+                <p>Born digital</p>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <div>
+                <head><title>Early Modern Songscapes</title></head>
+                <p>This customization customizes TEI for the Early Modern Songscapes project, as well as allowing MEI CMN as content of <gi>notatedMusic</gi>.</p>
+            </div>
+        </body>
+        <back>
+
+            <div>
+                <head>Appendix</head>
+                <p>This is the ODD customzation.</p>
+                <schemaSpec ident="songscapes" start="TEI" defaultExceptions="http://www.tei-c.org/ns/1.0 teix:egXML http://www.music-encoding.org/ns/mei">
+
+                    <!-- == TEI modules == -->
+
+                    <moduleRef key="tei"/>
+                    <!-- required -->
+                    <moduleRef key="core"/>
+                    <!-- required -->
+                    <moduleRef key="analysis" include="w"/>
+                    <!--<moduleRef key="certainty"/>-->
+                    <!--<moduleRef key="corpus"/>-->
+                    <!--<moduleRef key="dictionaries"/>-->
+                    <!--<moduleRef key="drama"/>-->
+                    <moduleRef key="figures" include="notatedMusic"/>
+                    <!--<moduleRef key="gaiji"/>-->
+                    <moduleRef key="header"/>
+                    <!-- required -->
+                    <!--<moduleRef key="iso-fs"/>-->
+                    <moduleRef key="linking" include="ab seg"/>
+                    <moduleRef key="msdescription"/>
+                    <!--<moduleRef key="namesdates"/>-->
+                    <!--<moduleRef key="nets"/>-->
+                    <!--<moduleRef key="spoken"/>-->
+                    <moduleRef key="textcrit" include="app rdg rdgGrp lem listWit witness"/>
+                    <moduleRef key="textstructure"/>
+                    <!-- required -->
+                    <moduleRef key="transcr" include="supplied subst"/>
+                    <!--<moduleRef key="verse"/>-->
+                    <!--<moduleRef key="tagdocs"/>-->
+                    
+                    <elementSpec ident="author" mode="change">
+                        <attList>
+                            <attDef ident="role" usage="req" mode="replace">
+                                <valList type="semi">
+                                    <valItem ident="composer"/>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="idno" mode="change">
+                        <attList>
+                            <attDef ident="type" usage="req" mode="replace">
+                                <valList type="closed">
+                                    <valItem ident="wing"/>
+                                    <valItem ident="call_number"/>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="title" mode="change">
+                        <attList>
+                            <attDef ident="type" usage="opt" mode="replace">
+                                <valList type="semi">
+                                    <valItem ident="first_line"/>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="supplied" mode="change">
+                        <attList>
+                            <attDef ident="reason" usage="req" mode="replace">
+                                <valList type="closed">
+                                    <valItem ident="underlay"/>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="lg" mode="change">
+                        <constraintSpec ident="refrainRules" scheme="schematron">
+                            <constraint>
+                                <sch:rule context="tei:lg">
+                                    <sch:assert role="error" test="
+                                        if (@type='refrain') 
+                                        then  if (@xml:id or @sameAs) 
+                                              then true() 
+                                              else false() 
+                                        else true()">A refrain should either have an @xml:id or a @sameAs.</sch:assert>
+                                </sch:rule>
+                            </constraint>                            
+                        </constraintSpec>
+                        <attList>
+                            <attDef ident="type" usage="req" mode="replace">
+                                <valList type="closed">
+                                    <valItem ident="stanza"/>
+                                    <valItem ident="refrain">
+                                        <desc>Groups lines of verse that form a refrain</desc>
+                                    </valItem>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="l" mode="change">
+                        <attList>
+                            <attDef ident="rend" usage="opt" mode="replace">
+                                <valList type="closed">
+                                    <valItem ident="indent1"/>
+                                    <valItem ident="indent2"/>
+                                    <valItem ident="indent3"/>
+                                    <valItem ident="indent4"/>
+                                    <valItem ident="indent5"/>
+                                    <valItem ident="indent6"/>
+                                    <valItem ident="indent7"/>
+                                    <valItem ident="indent8"/>
+                                    <valItem ident="indent9"/>
+                                    <valItem ident="indent10"/>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec ident="app" mode="change">
+                        <attList>
+                            <attDef ident="type" usage="opt" mode="replace">
+                                <valList type="closed">
+                                    <valItem ident="punct">
+                                        <desc>Indicates a variant in punctuation.</desc>
+                                    </valItem>
+                                    <valItem ident="stanza_break">
+                                        <desc>Indicates a variant in the presence / absence of a stanza.
+                                            <gi>rdg</gi>s should address the <gi>lg</gi> and <gi>l</gi>
+                                            where this happens.
+                                            <egXML xmlns="http://www.tei-c.org/ns/Examples">                                                
+                                                <!-- source A -->
+                                                <lg xml:id="sourceAvar1">
+                                                    <l>verse</l>
+                                                </lg>
+                                                <!-- source B -->
+                                                <l xml:id="sourceBvar1">verse</l>
+                                                <!-- collation -->
+                                                <app type="stanza_break">
+                                                    <rdg wit="#A">
+                                                        <ptr target="A.xml#sourceAvar1"/>
+                                                    </rdg>
+                                                    <rdg wit="#B">
+                                                        <ptr target="A.xml#sourceBvar1"/>
+                                                    </rdg>
+                                                </app>
+                                            </egXML>
+                                        </desc>
+                                    </valItem>
+                                </valList>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+                    
+                    <elementSpec xmlns="http://www.tei-c.org/ns/1.0" module="figures" ident="notatedMusic" mode="change">
+                        <content>
+                            <zeroOrMore xmlns="http://relaxng.org/ns/structure/1.0">
+                                <choice>
+                                    <ref name="model.labelLike"/>
+                                    <ref name="model.ptrLike"/>
+                                    <ref name="graphic"/>
+                                    <ref name="binaryObject"/>
+                                </choice>
+                            </zeroOrMore>
+                            <rng:optional>
+                                <rng:choice>
+                                    <rng:ref name="mei_mei"/>
+                                    <rng:ref name="mei_music"/>
+                                    <rng:ref name="mei_mdiv"/>
+                                    <rng:ref name="mei_layer"/>
+                                </rng:choice>
+                            </rng:optional>
+                        </content>
+                    </elementSpec>
+                    
+                    <!-- ==== MEI Modules ==== -->
+                    <!-- NB. @source *MUST* point to MEI's ODD source-->
+                    <moduleRef key="MEI" source="mei-source.xml"/>
+                    <moduleRef key="MEI.shared" source="mei-source.xml"/>
+                    <moduleRef key="MEI.header" source="mei-source.xml"/>
+                    <moduleRef key="MEI.cmn" source="mei-source.xml"/>
+                    <!--<moduleRef key="MEI.mensural" source="mei-source.xml"/>
+                    <moduleRef key="MEI.neumes" source="mei-source.xml"/>-->
+                    <moduleRef key="MEI.analysis" source="mei-source.xml"/>
+                    <moduleRef key="MEI.cmnOrnaments" source="mei-source.xml"/>
+                    <moduleRef key="MEI.corpus" source="mei-source.xml"/>
+                    <moduleRef key="MEI.critapp" source="mei-source.xml"/>
+                    <moduleRef key="MEI.edittrans" source="mei-source.xml"/>
+                    <moduleRef key="MEI.facsimile" source="mei-source.xml"/>
+                    <moduleRef key="MEI.figtable" source="mei-source.xml"/>
+                    <moduleRef key="MEI.frbr" source="mei-source.xml"/>
+                    <!--<moduleRef key="MEI.harmony" source="mei-source.xml"/>-->
+                    <moduleRef key="MEI.linkalign" source="mei-source.xml"/>
+                    <moduleRef key="MEI.lyrics" source="mei-source.xml"/>
+                    <!--<moduleRef key="MEI.midi" source="mei-source.xml"/>-->
+                    <moduleRef key="MEI.namesdates" source="mei-source.xml"/>
+                    <!--<moduleRef key="MEI.performance" source="mei-source.xml"/>-->
+                    <moduleRef key="MEI.ptrref" source="mei-source.xml"/>
+                    <!--<moduleRef key="MEI.tablature" source="mei-source.xml"/>-->
+                    <moduleRef key="MEI.text" source="mei-source.xml"/>
+                    <moduleRef key="MEI.usersymbols" source="mei-source.xml"/>
+                    
+                    <!-- Changes to MEI components -->
+                    
+                    <!-- Declare MEI and XLink namespaces for use in Schematron -->
+                    <constraintSpec ident="set_ns" scheme="isoschematron" mode="add">
+                        <constraint>
+                            <sch:ns prefix="mei"
+                                uri="http://www.music-encoding.org/ns/mei"/>
+                            <sch:ns prefix="xlink"
+                                uri="http://www.w3.org/1999/xlink"/>
+                        </constraint>
+                    </constraintSpec>
+                    
+                    <!-- Add TEI and TEI-ex namespace to macro.anyXML -->
+                    <macroSpec ident="mei_macro.anyXML" module="MEI.shared" type="pe" mode="change">
+                        <content>
+                            <rng:element>
+                                <rng:anyName>
+                                    <rng:except>
+                                        <rng:nsName ns="http://www.music-encoding.org/ns/mei"/>
+                                        <rng:nsName ns="http://www.w3.org/2000/svg"/>
+                                        <rng:nsName ns="http://www.tei-c.org/ns/1.0"/>
+                                        <rng:name ns="http://www.tei-c.org/ns/Examples">egXML</rng:name>
+                                    </rng:except>
+                                </rng:anyName>
+                                <rng:zeroOrMore>
+                                    <rng:attribute>
+                                        <rng:anyName/>
+                                    </rng:attribute>
+                                </rng:zeroOrMore>
+                                <rng:zeroOrMore>
+                                    <rng:choice>
+                                        <rng:text/>
+                                        <rng:ref name="mei_macro.anyXML"/>
+                                    </rng:choice>
+                                </rng:zeroOrMore>
+                            </rng:element>
+                        </content>
+                    </macroSpec>
+                    
+                    <!-- Make @source recommended. -->
+                    
+                    <!--<classSpec type="atts" module="MEI.shared" ident="mei_att.staffident" mode="replace">
+                        <desc>signifies the staff on which a notated event occurs or to
+                            which a control event applies.</desc>
+                        <attList>
+                            <attDef ident="staff" usage="rec"/>
+                        </attList>
+                        <remarks><p>The attribute is made mandatory when applicable instead of always mandatory to allow MEI fragments.</p></remarks>
+                    </classSpec>-->
+                    
+                    <!-- Add @xml:base for compliance with XInclude -->
+                    <elementSpec prefix="mei_" ident="mei" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+                        <attList>
+                            <attDef ident="xml:base" usage="opt">
+                                <desc>Provides a base URI reference with which applications can resolve relative URI
+                                    references into absolute URI references.</desc>
+                                <datatype>
+                                    <rng:ref name="mei_data.URI"/>
+                                </datatype>
+                            </attDef>
+                        </attList>
+                    </elementSpec>
+
+                </schemaSpec>
+            </div>
+
+        </back>
+    </text>
+</TEI>
