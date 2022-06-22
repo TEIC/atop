@@ -8,10 +8,25 @@ a `<ptr/>` element to the repository/project was added to `<sourceDesc>` (togeth
 See below some notes concerning the gathering process of these ODD files.
 
 
+## Complex ODDs
+
+More complex ODDs (those which may require specific build processes) are kept in their own folders with documentation and ancillary files. List of folders with the source they were downloaded from:
+
+- [eltec](eltec): [Main repo](https://github.com/COST-ELTeC/Schemas) | [Schemas](https://github.com/COST-ELTeC/Schemas/tree/master/ODD)
+- [TEILex0](TEILex0): [Main repo](https://github.com/DARIAH-ERIC/lexicalresources) | [Schemas](https://github.com/DARIAH-ERIC/lexicalresources/tree/master/Schemas/TEILex0)
+- [mitford](mitford): [Main repo](https://github.com/DigitalMitford/DM_documentation) | [Schemas](https://github.com/DigitalMitford/DM_documentation/tree/master/MitfordODD)
+- [BestPractices](BestPractices): [Main repo](https://github.com/kshawkin/Best-Practices-for-TEI-in-Libraries) | [Schemas](https://github.com/kshawkin/Best-Practices-for-TEI-in-Libraries/tree/master/BestPractices)
+- [songscapes](songscapes): [Main repo](https://github.com/EarlyModernSongscapes/songscapes) | [Schemas](https://github.com/EarlyModernSongscapes/songscapes/tree/master/data/odd)
+- [WeGa](WeGa): [Main repo / Schemas](https://github.com/Edirom/WeGA-ODD)
+
+
 ## ODDs gathered from 2022-05-18 request on TEI-L
 
  * wea.odd: Courtesy Joey Takeda
    https://github.com/winnifredeatonarchive/wea_data/blob/main/data/sch/wea.odd
+
+
+
 
 
 ## ODDs from the TEI Wiki

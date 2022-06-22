@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+ <teiHeader>
+  <fileDesc>
+   <titleStmt>
+    <title>Encoding Guidelines for the ELTeC: extended level</title>
+    <author>Cost Action CA16204 – WG1</author>
+   </titleStmt>
+   <publicationStmt>
+    <p>Unpublished draft for discussion</p>
+   </publicationStmt>
+   <sourceDesc>
+    <p>A born digital document drafted in TEI format by LB</p>
+   </sourceDesc>
+  </fileDesc>
+  <revisionDesc>
+   <change when="2018-03-16">Made file to include T0 as requested</change>
+   <change when="2018-03-16">Revised post-Prague</change>
+   <change when="2018-01-17">Expanded metadata section a bit; added comments from CO and BN</change>
+   <change when="2017-12-17">First (partial) discussion draft</change>
+  </revisionDesc>
+ </teiHeader>
+ <text>
+  <xi:include href="eltec-body.xml"/>
+  <back>
+   <div>
+    <head>Formal specifications</head>
+    <p>The ELTeC encoding scheme defined by this document is a TEI-conformant customization, from
+     which user documentation, and formal RELAXNG or DTD specifications are generated automatically. </p>
+    <p>This schema is based on ELTeC level-1, but adds the teiCorpus element, and changes
+     encodingDesc to include listPrefixDef. It is intended for use when validating the whole of an
+     ELTeC repository.</p>
+
+    <schemaSpec ident="eltec-repo" source="eltec-library.xml">
+     <moduleRef key="tei"/>
+     <moduleRef key="header"
+      include="availability change distributor encodingDesc extent fileDesc idno  keywords langUsage language  
+            licence profileDesc publicationStmt revisionDesc sourceDesc taxonomy teiHeader textClass titleStmt"/>
+     <elementRef key="teiCorpus" source="/home/lou/Public/TEI/P5/p5subset.xml"/>
+     <elementRef key="listPrefixDef" source="/home/lou/Public/TEI/P5/p5subset.xml"/>
+     <elementRef key="prefixDef" source="/home/lou/Public/TEI/P5/p5subset.xml"/>
+     <classRef key="att.patternReplacement" source="/home/lou/Public/TEI/P5/p5subset.xml"/>
+
+     <elementSpec ident="teiHeader" mode="change">
+      <content>
+       <sequence>
+        <elementRef key="fileDesc"/>
+        <elementRef key="encodingDesc"/>
+        <elementRef key="profileDesc" minOccurs="0"/>
+        
+        <!-- make profileDesc optional in header for repo -->
+          <!-- if we decide to add xenodata, it goes here -->
+        <elementRef key="revisionDesc"/>
+       </sequence>
+      </content>
+     </elementSpec>
+
+     <elementSpec ident="encodingDesc" mode="change">
+      <content>
+       <alternate>
+        <elementRef key="p"/>
+        <elementRef key="listPrefixDef"/>
+       </alternate>
+      </content>
+      <attList>
+       <attDef ident="n" mode="change" usage="req">
+        <datatype>
+         <dataRef key="teidata.enumerated"/>
+        </datatype>
+        <valList type="closed" mode="replace">
+         <valItem ident="eltec-0"/>
+         <valItem ident="eltec-1"/>
+         <valItem ident="eltec-2"/>
+        </valList>
+       </attDef>
+      </attList>
+      <exemplum>
+       <p>in a text, describes the level of encoding, either level 0, 1 or 2</p>
+       <egXML xmlns="http://www.tei-c.org/ns/Examples">
+        <encodingDesc n="eltec-0">
+         <p>Encoded to ELTeC level zero</p></encodingDesc>
+       </egXML>
+      </exemplum>
+      <exemplum>
+       <p>in the corpus header, provide prefix expansions used in URLs</p>
+       <egXML xmlns="http://www.tei-c.org/ns/Examples">
+        <encodingDesc n="eltec-1"><listPrefixDef>
+          <prefixDef ident="bod" matchPattern="([a-z0-9]+)"
+           replacementPattern="http://dbooks.bodleian.ox.ac.uk/books/PDFs/$1.pdf"/>
+          <prefixDef ident="gut" matchPattern="([a-z0-9]+)"
+           replacementPattern="http://www.gutenberg.org/files/$1/$1-h/$1-h.htm"/>
+          <prefixDef ident="ia" matchPattern="([a-z0-9]+)"
+           replacementPattern="http://archive.org/details/$1"/>
+          <prefixDef ident="viaf" matchPattern="([a-z0-9]+)"
+           replacementPattern="https://viaf.org/viaf/$1/"/>
+         </listPrefixDef></encodingDesc>
+       </egXML>
+      </exemplum>
+     </elementSpec>
+
+
+
+     <elementSpec ident="measure" mode="change">
+
+      <content>
+       <dataRef key="teidata.numeric"/>
+      </content>
+      <attList>
+       <attDef ident="type" mode="delete"/>
+       <attDef ident="unit" usage="req" mode="change">
+        <desc>specifies the units used for this measurement </desc>
+        <datatype>
+         <dataRef key="teidata.enumerated"/>
+        </datatype>
+        <valList type="closed" mode="replace">
+         <valItem ident="files">
+          <desc>number of files in a repo (available only in eltec-repo schema) </desc>
+         </valItem>
+         <valItem ident="pages">
+          <desc>number of pages in the whole of the source text</desc>
+         </valItem>
+         <valItem ident="words">
+          <desc>number of space delimited tokens in the transcribed source text, excluding the
+           header</desc>
+         </valItem>
+         <valItem ident="vols">
+          <desc>number of volumes in the original source text </desc>
+         </valItem>
+        </valList>
+       </attDef>
+      </attList>
+     </elementSpec>
+
+     <elementRef key="TEI"/>
+     <elementRef key="back"/>
+     <elementRef key="body"/>
+     <elementRef key="corr"/>
+     <!--*-->
+     <elementRef key="div"/>
+     <elementRef key="emph"/>
+     <!--*-->
+     <elementRef key="foreign"/>
+     <!--*-->
+     <elementRef key="front"/>
+     <elementRef key="gap"/>
+     <!--*-->
+     <elementRef key="head"/>
+     <elementRef key="hi"/>
+     <!--*-->
+     <elementRef key="l"/>
+     <elementRef key="label"/>
+     <!--*-->
+     <elementRef key="milestone"/>
+     <!--*-->
+     <classRef key="att.milestoneUnit"/>
+     <elementRef key="note"/>
+     <!--*-->
+     <elementRef key="p"/>
+     <elementRef key="pb"/>
+     <elementRef key="quote"/>
+     <!--*-->
+     <elementRef key="text"/>
+     <elementRef key="trailer"/>
+
+     <!-- the following are needed in header-->
+     <elementRef key="author"/>
+     <elementRef key="bibl"/>
+     <elementRef key="date"/>
+     <elementRef key="idno"/>
+     <elementRef key="measure"/>
+     <elementRef key="name"/>
+     <elementRef key="pubPlace"/>
+     <elementRef key="publisher"/>
+     <elementRef key="ref"/>
+     <!--  <elementRef key="relatedItem"/>
+    -->
+     <elementRef key="resp"/>
+     <elementRef key="respStmt"/>
+     <elementRef key="term"/>
+     <elementRef key="title"/>
+     <elementRef key="textDesc"/>
+     <elementRef key="authorGender"/>
+     <elementRef key="size"/>
+     <elementRef key="reprintCount"/>
+     <elementRef key="timeSlot"/>
+     <elementRef key="canonicity"/>
+
+
+     <!-- change class memberships for title to suppress some attributes but allow it to appear outside the header -->
+
+     <elementSpec ident="title" mode="change">
+      <classes mode="replace">
+       <memberOf key="att.global"/>
+       <memberOf key="model.biblPart"/>
+       <memberOf key="model.emphLike"/>
+       <memberOf key="att.canonical"/>
+      </classes>
+     </elementSpec>
+
+
+    </schemaSpec>
+   </div>
+  </back>
+
+
+ </text>
+</TEI>

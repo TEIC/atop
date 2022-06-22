@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xi="http://www.w3.org/2001/XInclude"
+   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+   xmlns:rng="http://relaxng.org/ns/structure/1.0"
+   version="2.9.1"
+   xml:lang="en">
+   <!-- 2018-08-08 ebb: BEGIN with mitfordPre-Editable.odd Canonicalize it to mitfordEditable.odd before beginning to edit. The full ODD file is mitfordODD.odd.
+      To make/edit/update the complete ODD: 
+      * Open mitfordPre-Editable.odd and run canonicalize in oXygen to pull in the latest rules on the <occupation> element encoding from the SI GitHub repo. Output as mitfordEditable.odd.
+      * Make any necessary edits to the document model (element modules from the TEI, general constraints, anything except Site Index updates) in the mitfordEditable.odd file.
+      * If updating the ODD because of new site index updates, 
+            1) be sure the new SI is posted at http://digitalmitford.org/si.xml. 
+            2) Generate elementSpecs for new named entity markup (persons, places, titles, etc) with attribute values for @ref and @corresp 
+      by running si-to-ODD.xsl over the current si.xml stored at http://digitalmitford.org/si.xml. Save the output file as MRMProsopRef.odd 
+     * Finally generate the full ODD file by running mitfordODD-Combiner.xsl on mitfordEditable.odd, which pulls in site index data stored in MRMProsopRef.odd. 
+     Save the output as mitfordODD.odd
+     * "Run the wrench" in oXygen to generate the new Relax-NG XML-syntax project schema and HTML documentation for the project.
+      2018-09-25 ebb: The canonical version of the Mitford ODD is stored in the DM_Documentation GitHub repo. Project schema lines should point to the ODD-generated Relax NG schema at https://digitalmitford.github.io/DM_documentation/MitfordODD/out/mitfordODD.rng 
+  -->
+  <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Digital Mitford ODD for Project Edition Files</title>
+            <author>Elisa Beshero-Bondar</author>
+         </titleStmt>
+        <!-- <xi:include href="MRMProsopRef.odd" xpointer="edition"/>-->
+         <publicationStmt>
+            <authority>Prepared in TEI P5 by Elisa Beshero-Bondar in the Digital Mitford GitHub repository: <ref target="https://github.com/DigitalMitford/DM_documentation"/>. Date last worked on: <date when="2019-05-18">18 May 2019</date></authority>
+            <availability><licence>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) approved for Free Cultural Works <ref target="https://creativecommons.org/licenses/by-sa/4.0/"/></licence></availability>
+         </publicationStmt>
+         <seriesStmt>
+            <p>This ODD customizes the TEI P5 for use in edition files, including drama, letters, poetry, plays. It indicates the modules and customizations of TEI encoding for manuscript transcription, and versioning and prosopography references for all files in the project except for the prosopography index file known as our <q>Site Index</q>, which holds a narrower range of elements. The elements of the site index are available here in the <q>back lists</q> of our files for proposing new entries to be added, but according to this ODD, only a narrow range of person, place, and document referencing are permitted in edition files in order to enforce consistent prosopography markup across all files. </p>
+         </seriesStmt>
+         <sourceDesc>
+            <p>Born digital, based on information presented in the Digital Mitford Codebook at <ref target="http://codebook.mitford.pitt.edu"/></p>
+         </sourceDesc>
+      </fileDesc>
+     <revisionDesc>
+        <listChange>
+           <change when="2018-09-25" who="#ebb">Moved official location of this ODD and generated Relax NG schema files to the DM_documentation GitHub repository. Refined Schematron constraints for checking bibl and bibl/title elements.</change>
+           <change when="2018-08-08" who="#ebb">Built Site Index Ids into this ODD, with si-to-ODD.xsl to build elementSpecs and attDef lists.</change>
+           <change when="2018-08-06" who="#ebb">Prepared this ODD file, working with the Digital Mitford Schematron files in place to this point, and the Digital Mitford codebook.</change>
+        </listChange>
+     </revisionDesc>
+  </teiHeader>
+  <text>
+      <body>
+         <schemaSpec ident="mitfordODD" start="TEI teiCorpus" prefix="tei">
+            <moduleRef key="tei"/>
+            <moduleRef key="core"/>
+            <moduleRef key="header"/> 
+            <moduleRef key="msdescription"/> 
+            <moduleRef key="namesdates"/>
+            <moduleRef key="analysis"/>
+            <moduleRef key="textstructure" except="div1 div2 div3 div4 div5 div6 div7"/>
+            <moduleRef key="drama" except="camera"/>
+            <moduleRef key="linking"/>
+            <moduleRef key="textcrit" except="lem "/>
+            <moduleRef key="transcr" except="line zone path"/>
+            <moduleRef key="figures"/><!--ebb: We may want to make a table of postmark images correlated to IDs in its own file. -->
+            <moduleRef key="gaiji"/><!--ebb: included for charDecl if we want to make a list of metamarks -->
+            
+            <!-- Checking general xml:id syntax and hashtags for referencing, plus checking witness attribute values where using critical apparatus (versioning) markup.-->
+ <constraintSpec scheme="schematron" ident="xmlIDs">
+               <constraint>
+                  <sch:rule context="tei:TEI//@xml:id">
+                     <sch:report test="matches(., '\s+')" role="fatal">
+                        @xml:id values must not contain white spaces!
+                     </sch:report>        
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="quotes">
+               <constraint>
+                  <sch:rule context="*/text()[matches(., '[A-z]+')]">
+                     <sch:let name="regexQuote" value="'&quot;'" />
+                     <sch:report test="matches(., $regexQuote)" role="warning">We see you’re typing in quotation marks. Please use a meaningful TEI element for these, instead, and do not duplicate quotation marks with a TEI element, because this may result in multiple sets of quotation marks on the website. If this is a cited quotation, use the cit and quote elements together (or just the quote element for an uncited quotation). If it is a spoken aloud passage, use the said element. If it is a title of a poem or other short work, use &lt;title level="a"&gt;. If it is a string of words in quotation marks and you are not sure what it is, use the q element.</sch:report>        
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="refsReq">
+               <constraint>
+                  <sch:rule context="tei:text//tei:persName[not(ancestor::tei:back)] | tei:text//tei:rs[not(ancestor::tei:back)] | tei:text//tei:placeName[not(ancestor::tei:back)] | tei:text//tei:orgName[not(ancestor::tei:back)] | tei:text//tei:name[not(ancestor::tei:back)] | tei:text//tei:title[not(ancestor::tei:back)][not(ancestor::tei:bibl)]">
+                     <sch:assert test="@ref" role="warning">
+                        If you're using this element, <sch:value-of select="name()"/>, in the main text of a Digital Mitford file, you'll need to apply an @ref attribute pointing to an xml:id of a named entity. This rule applies to persName, placeName, orgName, title, name, and rs elements.
+                        Named entity information and xml:ids are stored either in the main Site Index, or a proposed entry in the back of this document, or in a temporary si-Add file. 
+                     </sch:assert>  
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="correspReq">
+               <constraint>
+                  <sch:rule context="tei:text//tei:bibl[not(ancestor::tei:back)]">
+                     <sch:assert test="@corresp" role="warning">
+                        If you're using a bibl element in the main text of a Digital Mitford file, you'll need to apply an @corresp attribute pointing to an xml:id of a named entity for a written work. Named entity information and xml:ids are stored either in the main Site Index, or a proposed entry in the back of this document, or in a temporary si-Add file. 
+                     </sch:assert>  
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="hashtaggery">
+                 <constraint>
+                    <sch:rule context="tei:TEI//@ref | tei:TEI//@who | tei:TEI//@corresp | tei:TEI//@wit">
+                       <sch:assert test="starts-with(., '#')" role="fatal">
+                        Attributes @ref, @who, @corresp, and @wit must begin with a hashtag.
+                     </sch:assert>  
+                    </sch:rule>
+                 </constraint>
+              </constraintSpec>
+            <constraintSpec scheme="schematron" ident="listWitCheck">
+               <constraint>
+                  <sch:rule context="tei:TEI//@wit">
+                     <sch:let name="tokens"
+                              value="for $w in tokenize(., '\s+') return substring-after($w, '#')"/>
+                     <sch:assert test="every $token in $tokens satisfies $token = //tei:TEI//tei:listWit//@xml:id"
+                                 role="fatal">
+                        Every reading witness (@wit) after the hashtag must match an xml:id defined in the list of witnesses in this file!
+                     </sch:assert>
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="namedEntityRefencing">
+              <constraint>
+                 <sch:p>Many elements from the TEI names and places module are only permitted in back lists for proposed entries to the Digital Mitford site index.</sch:p>
+                 <sch:rule context="tei:text/tei:front//* | tei:text/tei:body//*">
+                    <sch:report test="self::tei:addName | self::tei:affiliation | self::tei:age | self::tei:birth |  self::tei:bloc | self::tei:climate | self::tei:country | self::tei:death | self::tei:district |  self::tei:education | self::tei:faith | self::tei:floruit | self::tei:forename | self::tei:genName | self::tei:geo | self::tei:geogFeat | self::tei:geogName | self::tei:langKnowledge | self::tei:langKnown | self::tei:listEvent | self::tei:listNym | self::tei:listOrg | self::tei:listPerson | self::tei:listPlace | self::tei:listRelation | self::tei:location | self::tei:nameLink | self::tei:nationality | self::tei:occupation | self::tei:offset | self::tei:org | self::tei:person | self::tei:personGrp | self::tei:persona | self::tei:place | self::tei:population | self::tei:region | self::tei:relation | self::tei:residence | self::tei:settlement | self::tei:sex | self::tei:socecStatus | self::tei:state | self::tei:surname | self::tei:terrain | self::tei:trait"
+                                 role="fatal">
+                       This element, <sch:value-of select="./name()"/> is not permitted in the main text of a Digital Mitford edition. The full informational encoding on people, places, and other named entities is available only in the "backlists" or the back element containing proposed new entries for our site index, and it's permitted in the Site Index itself.
+                    </sch:report>
+                 </sch:rule>
+              </constraint>
+           </constraintSpec>
+            <constraintSpec scheme="schematron" ident="respCheck">
+               <constraint>
+                  <sch:p>Ensure that the @resp values on note and other elements point to members of the Mitford Team or to Past Editors</sch:p>
+                  <sch:rule context="*/@resp">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:person/@xml:id"/><!--2019-05-19 ebb: Let's keep this one simple since people may not set the right divs in place in the backList -->
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:listPerson[@sortKey='Mitford_Team']/@xml:id | $siAddColl//tei:text//tei:listPerson[starts-with(@sortKey, 'Past')]/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:listPerson[@sortKey='Mitford_Team']/@xml:id | $siAddColl//tei:text//tei:listPerson[starts-with(@sortKey, 'Past')]/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="resps"
+                        value="for $i in tokenize(@resp, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $resp in $resps satisfies $resp = $everySiLocIDs" role="fatal">
+      A resp attribute must refer to a member of the Mitford team, past assistants, or past editors of MRM in the site index entries.
+                     </sch:assert>
+                  </sch:rule></constraint></constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsReferencing">
+               <constraint>
+                  <sch:p>Ensure that there are @ref values on rs</sch:p>
+                  <sch:rule context="tei:rs | tei:name">
+                     <sch:assert test="@ref">An @ref attribute is required on this element!</sch:assert>
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+                  <constraintSpec scheme="schematron" ident="rsEventcheck">
+                     <constraint>
+                        <sch:p>Ensure that the @ref values on rs of type event point to event site index entries across the project.</sch:p>
+                        <sch:rule context="tei:rs[@type='event'] | tei:name[@type='event']">
+
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                        <sch:let name="backIDs" value="//tei:back//tei:event/@xml:id"/>
+                        <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:event/@xml:id"/>
+                        <sch:let name="siFileIDs" value="$siFile//tei:text//tei:event/@xml:id"/>
+                        <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="event" must refer to an xml:id on an event element.
+                     </sch:assert>
+                  </sch:rule></constraint></constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsTitlecheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type title point to bibl site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='title'] | tei:name[@type='title']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:bibl/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:bibl/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:bibl/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="title" must refer to an xml:id on a bibl element.
+                     </sch:assert>      
+      </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsPlacecheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type place point to place site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='place'] | tei:name[@type='place']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:place/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:place/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:place/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="place" must refer to an xml:id on a place element.
+                     </sch:assert>
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsOrgcheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type org (organization) point to org site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='org'] | tei:name[@type='org']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:org/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:org/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:org/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="org" must refer to an xml:id on an org element.
+                     </sch:assert> 
+                  </sch:rule>
+               </constraint></constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsPersoncheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type person point to person site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='person'] | tei:name[@type='person']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:person/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:person/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:person/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="person" must refer to an xml:id on a person element.
+                     </sch:assert>
+                  </sch:rule>
+               </constraint></constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsPlantcheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type plant point to plant site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='plant'] | tei:name[@type='plant']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:list[@sortKey='plants']//tei:item/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:list[@sortKey='plants']//tei:item/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:list[@sortKey='plants']//tei:item/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="plant" must refer to an @xml:id on an item element in a list with sortKey="plants".
+                     </sch:assert>      
+                  </sch:rule>
+               </constraint></constraintSpec>
+                  <constraintSpec scheme="schematron" ident="rsAnimalcheck">
+                     <constraint>
+                        <sch:p>Ensure that the @ref values on rs of type animal point to animal site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='animal'] | tei:name[@type='animal']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:list[@sortKey='animals']//tei:item/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:list[@sortKey='animals']//tei:item/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:list[@sortKey='animals']//tei:item/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>     
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="animal" must refer to an @xml:id on an item element in a list with sortKey="animals".
+                     </sch:assert> 
+                  </sch:rule>
+                     </constraint></constraintSpec>
+            <constraintSpec scheme="schematron" ident="rsArtcheck">
+               <constraint>
+                  <sch:p>Ensure that the @ref values on rs of type art point to art site index entries across the project.</sch:p>
+                  <sch:rule context="tei:rs[@type='art'] | tei:name[@type='art']">
+                     <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                     <sch:let name="siAddColl" value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                     <sch:let name="backIDs" value="//tei:back//tei:list[@sortKey='art']//*/@xml:id"/>
+                     <sch:let name="siAddIDs" value="$siAddColl//tei:text//tei:list[@sortKey='art']//*/@xml:id"/>
+                     <sch:let name="siFileIDs" value="$siFile//tei:text//tei:list[@sortKey='art']//*/@xml:id"/>
+                     <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                     <sch:let name="everySiLocIDs" value="($tempIDs, $siFileIDs)"/>
+                     <sch:let name="refs"
+                        value="for $i in tokenize(@ref, '\s+') return substring-after($i,'#')"/>     
+                     <sch:assert test="every $ref in $refs satisfies $ref = $everySiLocIDs" role="fatal">
+                        An rs with type="art" must refer to an @xml:id on a figure element in a list with sortKey="art".
+                     </sch:assert>   
+                  </sch:rule>
+               </constraint>
+            </constraintSpec>
+            <constraintSpec scheme="schematron" ident="backListReferencing">
+              <constraint>
+                 <sch:pattern>
+                    <sch:p>Check whether ids point to &lt;back&gt; or to one of the temporary siAdd files.</sch:p>
+                    <sch:rule context="@ref | @corresp">
+                       <sch:let name="siFile" value="doc('https://digitalmitford.org/si.xml')"/>
+                       <sch:let name="siAddColl"
+                                 value="collection('https://digitalmitford.github.io/DM_SiteIndex/si_Add_Staged/catalogue.xml')"/>
+                       <sch:let name="backIDs" value="//tei:back//@xml:id"/>
+                       <sch:let name="siAddIDs" value="$siAddColl//@xml:id"/>
+                       <sch:let name="tempIDs" value="($backIDs, $siAddIDs)"/>
+                        <sch:let name="refs"
+                                 value="for $i in tokenize(., '\s+') return substring-after($i,'#')"/>
+                        <!-- ebb: formulated this way in case we have plural ref or corresp values.-->
+                       <sch:let name="backRefs" value="some $ref in $refs satisfies $ref = $tempIDs"/>
+                       <sch:let name="siRefs" value="some $ref in $refs satisfies $ref = $siFile//@xml:id"/>
+                       <!--2019-05-17 ebb: In the test attributes below, if the current value is $backRefs, it was in an earlier stage following perhaps poor advice on the oXygen-users list, not(empty($backRefs)); restoring to simpler original in case it's what's causing *everything* to fire to as backRef. -->
+                       <sch:report role="info" test="$backRefs">
+                          This referencing value, <sch:value-of select="."/>, points to &lt;back&gt; or to one of the temporary siAdd files. All is well, but the Digital Mitford prosopography team needs to review the proposed new entries.                
+                       </sch:report>
+                        <sch:report role="info" test="$backRefs and not($siRefs)">
+                       NOTE: This back or temporary siAdd reference is new and not currently listed in the official Digital Mitford Site Index.
+                    </sch:report>
+                       <sch:report role="warning" test="not($backRefs) and not($siRefs)">
+                          WARNING! This id value is not listed in the Site Index AND is not listed in the back or a temporary siAdd file. Check and see if this named entity already has an assigned id, and if not, please propose a new Site Index entry following our project rules.
+                       </sch:report>
+                       
+                     </sch:rule>
+                 </sch:pattern>
+              </constraint>
+           </constraintSpec>
+            <elementSpec ident="rs" module="core" mode="change">
+               <attList>
+                  <attDef ident="type" mode="replace" usage="req">
+                     <valList type="closed">
+                        <valItem ident="person">
+                           <gloss>Use only when you need to disambiguate unnamed references to people. When there is a name, use the persName element.</gloss>
+                        </valItem>
+                        <valItem ident="org">
+                           <gloss>Use only when you need to disambiguate unnamed references to organizations, families, collectives of people. When there is a name, use the orgName element.</gloss>
+                        </valItem>
+                        <valItem ident="place">
+                           <gloss>Use only when you need to disambiguate unnamed references to places. When there is a name, use the placeName element.</gloss>
+                        </valItem>
+                        <valItem ident="event">
+                           <gloss>Use only when you need to disambiguate unnamed references to events. When there is a name, use the name element with type="event".</gloss>
+                        </valItem>
+                        <valItem ident="letter">
+                           <gloss>Use to mark references to correspondence.</gloss>
+                        </valItem>
+                        <valItem ident="plant">
+                           <gloss>Use to mark references to plants by kind, variety, genus, and/or species. If you see a kind, variety, genus, and/or species name, use the name element with type="plant".</gloss>
+                        </valItem>
+                        <valItem ident="animal">
+                           <gloss>Use to mark references to animal types when they are unnamed by kind, variety, genus, and/or species. If you see a kind, variety, genus, and/or species name, use the name element with type="animal". </gloss>
+                        </valItem>
+                        <valItem ident="title">
+                           <gloss>Use only where necessary to mark unnamed references to documents, readings, texts in the absence of a title. If this is a title, use the title element with an @ref. If there is mention of an author, date, or other bibliographic information all together, like Scott's Midlothian, use a bibl element with @corresp around the full span of referencing text, wrapping the parts as you can with author and title elements (no @ref attributes needed inside, just @corresp on the outer bibl) .</gloss>
+                        </valItem>
+                        <valItem ident="art">
+                           <gloss>Use only where necessary to mark unnamed references to works of art in the absence of a title. If you have a title, use the title element with type="art".</gloss>
+                        </valItem>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <!-- Rules to help with writing "backlist" entries (or proposed new site index entries).-->
+       <constraintSpec ident="backList_only" scheme="schematron">
+          <constraint>
+             <sch:p>List elements holding sortKey attributes for proposed entries to the Site Index may only appear in the back portion of a Digital Mitford project TEI file.</sch:p>
+             <sch:rule context="*[@sortKey]">
+                <sch:assert test="ancestor::tei:back">List elements containing proposed new site index entries belong in the back element of the TEI file. They are not allowed in the body or the TEI header of a Digital Mitford project file.</sch:assert>
+             </sch:rule> 
+          </constraint>
+       </constraintSpec> 
+            <!-- The following rules (next ~400 lines or so) are drawn from the si_ODD.odd file. (Consider ODD chaining for this?) -->
+            <!--sortKey on SI list elements -->
+<elementSpec ident="listPerson" module="namesdates" mode="change">
+   <attList>
+      <attDef ident="sortKey" mode="replace" usage="req">
+         <valList type="closed">
+            <valItem ident="Mitford_Team"/>
+            <valItem ident="Past_Assistants"/>
+            <valItem ident="Past_Editors"/>
+            <valItem ident="histPersons"/>
+            <valItem ident="archPersons"/>
+            <valItem ident="fictPersons"/>
+         </valList>
+      </attDef>
+   </attList>
+</elementSpec>
+<elementSpec ident="listPlace" module="namesdates" mode="change">
+     <attList>
+         <attDef ident="sortKey" mode="replace" usage="req">
+             <valList type="closed">
+                 <valItem ident="histPlaces"/>
+                 <valItem ident="fictPlaces"/>
+              </valList>
+           </attDef>
+       </attList>
+</elementSpec>
+            <elementSpec ident="listOrg" module="namesdates" mode="change">
+               <attList>
+                  <attDef ident="sortKey" mode="replace" usage="req">
+                     <valList type="closed">
+                        <valItem ident="archives"/>
+                        <valItem ident="histOrgs"/>
+                        <valItem ident="fictOrgs"/>
+                        <valItem ident="archOrgs"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="listEvent" module="namesdates" mode="change">
+               <attList>
+                  <attDef ident="sortKey" mode="replace" usage="req">
+                     <valList type="closed">
+                        <valItem ident="histEvents"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="listBibl" module="core" mode="change">
+               <attList>
+                  <attDef ident="sortKey" mode="replace" usage="req">
+                     <valList type="closed">
+                        <valItem ident="work_MRM"/>
+                        <valItem ident="serial_MRM"/>
+                        <valItem ident="schol"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec> 
+            <elementSpec ident="list" module="core" mode="change">
+               <attList>
+                  <attDef ident="sortKey" mode="replace" usage="req">
+                     <valList type="closed">
+                        <valItem ident="plants"/>
+                        <valItem ident="animals"/>
+                        <valItem ident="art"/>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec> 
+            
+            <!--sex codes on person element: m, f, m f, and u -->           
+            <elementSpec ident="person" module="namesdates" mode="change">
+               <attList>
+                  <attDef ident="sex" mode="replace" usage="rec">
+                     <valList type="closed">
+                        <valItem ident="m"><gloss>for persons identified as male.</gloss></valItem>
+                        <valItem ident="f"><gloss>for persons identified as female.</gloss></valItem>
+                        <valItem ident="m f"><gloss>for persons identified as of transitional or multiple sexual identities.</gloss></valItem>
+                        <valItem ident="u"><gloss>for persons with unidentified or unknown sexual identity.</gloss></valItem>  
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <!-- X-Include Here: for elementSpec occupation. Edit the occupation element specs in the ODD_Includes directory, and then run Canonicalize in oXygen to include it. -->
+            <xi:include href="../../DM_SiteIndex/schemas/ODD_includes/occupationsElem.xml" parse="xml"/>
+            <!--Occupation coding: binding appropriate subtypes with types and permitting plural subtype values. Edit the occupation Schematron constraint specs in the ODD_Includes directory, and then run Canonicalize in oXygen to include it. -->
+            <!-- X-Include Here: for occupation Schematron constraints -->
+            <xi:include href="../../DM_SiteIndex/schemas/ODD_includes/occupationsSchem.xml" parse="xml"/>
+         <!--Occupation coding: binding appropriate subtypes with types and permitting plural subtype values. -->   
+           
+        <!--    <xi:include href="MRMProsopRef.odd" xpointer="prosop"/>-->
+         </schemaSpec>
+      </body>
+  </text>
+</TEI>
