@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <title>TEI file to test the processing of content</title>            
+            <title>Mandatory alternative title</title>
+        </fileDesc>
+        <revisionDesc/>        
+    </teiHeader>
+    <TEI>
+        <teiHeader>
+            <fileDesc>
+                <title>Something</title>                
+                <title>Mandatory alternative title</title>
+            </fileDesc>
+        </teiHeader>        
+        <text>Some text</text>
+        <text>Some other text</text>
+    </TEI>
+</TEI>

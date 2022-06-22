@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>In vitro ODD to test content</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>atop</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="test" start="TEI">
+        <elementSpec ident="TEI">
+          <desc>Element TEI must contain one <gi>teiHeader</gi> and then either one or more
+              <gi>text</gi> or <gi>TEI</gi> elements</desc>
+          <content>
+            <sequence>
+              <elementRef key="teiHeader"/>
+              <alternate>
+                <elementRef key="text" minOccurs="1" maxOccurs="unbounded"/>
+                <elementRef key="TEI" minOccurs="1" maxOccurs="unbounded"/>
+              </alternate>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="teiHeader">
+          <desc>Element <gi>teiHeader</gi> must contain a <gi>fileDesc</gi> element, and then
+              <gi>profileDesc</gi> and <gi>revisionDesc</gi> are optional</desc>
+          <content>
+            <sequence>
+              <elementRef key="fileDesc"/>
+              <elementRef key="revisionDesc" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="fileDesc">
+          <desc>Element <gi>fileDesc</gi> must contain at least two <gi>title</gi> elements and a maximum of tree</desc>
+          <content>
+            <elementRef key="title" minOccurs="2" maxOccurs="3"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="title">
+          <desc>Element <gi>title</gi> contains text nodes</desc>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="revisionDesc">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="text">
+          <desc>Element <gi>text</gi> may only contain text nodes</desc>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
