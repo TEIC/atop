@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>in vitro <gi>content</gi></title>
+        <author xml:id="sb">Syd</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Intended to be publicly available as part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2022-06-14" who="#sb">started w/ bare framework;
+      added tests for <gi>empty</gi> and just <gi>elementRef</gi>s</change>
+      <change when="2022-06-15" who="#sb">Finished first crack at
+      <gi>classRef</gi> and one-level of <gi>sequence</gi>, nothing
+      else.</change>
+      <change when="2022-06-21" who="#sb">Cleaned up a little (e.g.,
+      fixing typos, making comments more consistent) for showing to
+      other ATOPers.</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <head>ATOP in vitro <gi>content</gi> test suite</head>
+      <p>Lotsa different content models.</p>
+      <schemaSpec ident="vitro_content">
+        <desc>Various content models for testing ATOP. The element
+        name <abbr>act</abbr> stands for <expan>atop content
+        test</expan>, but I did not put in <gi>gloss</gi>s just
+        because it would be a pain. —Syd</desc>
+        <moduleRef key="tei"/>
+        <moduleRef key="core"/>
+        <moduleRef key="header"/>
+        <moduleRef key="textstructure"/>
+        <!-- ========= empty ========= -->
+        <elementSpec ident="act01" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content><empty/></content>
+        </elementSpec>
+        <!-- ========= <elementRef>s ========= -->
+        <elementSpec ident="act02" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act03" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="head"/>
+            <elementRef key="p"/>
+            <elementRef key="trailer"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act04" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p" minOccurs="3"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act05" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p" maxOccurs="10"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act06" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p" maxOccurs="unbounded"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act07" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p" minOccurs="3" maxOccurs="10"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act08" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="p" minOccurs="3" maxOccurs="unbounded"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act09" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="head" minOccurs="1"/>
+            <elementRef key="p" minOccurs="5" maxOccurs="5"/>
+            <elementRef key="trailer" minOccurs="0"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act10" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <elementRef key="head" minOccurs="1" maxOccurs="2"/>
+            <elementRef key="p" minOccurs="2" maxOccurs="unbounded"/>
+            <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+          </content>
+        </elementSpec>
+        <!-- ========= <classRef>s ========= -->
+        <elementSpec ident="act11" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act12" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.headLike"/>
+            <classRef key="model.pLike"/>
+            <elementRef key="trailer"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act13" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike" minOccurs="3"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act14" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike" maxOccurs="10"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act15" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike" maxOccurs="unbounded"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act16" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act17" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+          </content>
+        </elementSpec>
+        <elementSpec ident="act18" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.headLike" minOccurs="1"/>
+            <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+            <elementRef key="trailer" minOccurs="0"/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act19" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+            <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+            <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence> ========= -->
+        <elementSpec ident="act20" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act21" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act22" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act23" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act24" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act25" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act26" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act27" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act28" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence>
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence minOccurs="0"> (i.e., optional) ========= -->
+        <elementSpec ident="act29" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act30" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act31" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act32" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act33" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act34" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act35" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act36" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act37" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0">
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence minOccurs="2"> ========= -->
+        <elementSpec ident="act38" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act39" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act40" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act41" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act42" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act43" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act44" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act45" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act46" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="2">
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence minOccurs="1" maxOccurs="3"> ========= -->
+        <elementSpec ident="act47" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act48" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act49" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act50" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act51" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act52" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act53" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act54" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act55" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="3">
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence minOccurs="1" maxOccurs="unbounded"> (i.e., +, oneOrMore) ========= -->
+        <elementSpec ident="act56" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act57" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act58" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act59" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act60" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act61" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act62" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act63" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act64" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="1" maxOccurs="unbounded">
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= in <sequence minOccurs="0" maxOccurs="unbounded"> (i.e., *, zeroOrMore) -->
+        <elementSpec ident="act65" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act66" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.headLike"/>
+              <classRef key="model.pLike"/>
+              <elementRef key="trailer"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act67" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act68" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act69" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act70" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="10"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act71" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.pLike" minOccurs="3" maxOccurs="unbounded"/>            
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act72" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.headLike" minOccurs="1"/>
+              <classRef key="model.pLike" minOccurs="5" maxOccurs="5"/>
+              <elementRef key="trailer" minOccurs="0"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="act73" mode="add" ns="http://www.tei-c.org/ns/atop">
+          <content>
+            <sequence minOccurs="0" maxOccurs="unbounded">
+              <classRef key="model.headLike" minOccurs="1" maxOccurs="2"/>
+              <classRef key="model.pLike" minOccurs="2" maxOccurs="unbounded"/>
+              <elementRef key="trailer" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <!-- ========= ========= -->
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
