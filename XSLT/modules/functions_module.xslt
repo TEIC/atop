@@ -104,7 +104,6 @@
     <xsl:param name="pElementSpec" as="element(elementSpec)"/>
 
     <xsl:variable name="vName" as="xs:string" select="($pElementSpec/altIdent, $pElementSpec/@ident)[1]"/>
-    <!-- <xsl:variable name="vUri" as="xs:string" select="($pElementSpec/@ns, $atop:vTEINamespaceUri)[1]"/> -->
     <xsl:variable name="vUri" as="xs:string" select="($pElementSpec/@ns, $pElementSpec/ancestor::schemaSpec[1]/@ns, 'http://www.tei-c.org/ns/1.0')[1]"/>
 
     <xsl:sequence select="QName($vUri, $vName)"/>
