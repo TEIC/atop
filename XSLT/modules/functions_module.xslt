@@ -96,6 +96,8 @@
   <xd:doc>
     <xd:desc>
       <xd:p>Given an element specification, return QName of specified element.</xd:p>
+      <xd:p>The name part of the QName is taken from the first altIdent child element if present, the @ident attribute otherwise.</xd:p>
+      <xd:p>The namespace URI is taken from the @ns attribute of the element specification or the containing schema specification if present. It defaults to the TEI namespace URI otherwise.</xd:p>
     </xd:desc>
     <xd:param name="pElementSpec">Element specification</xd:param>
     <xd:return>QName of specified element</xd:return>
@@ -103,8 +105,7 @@
   <xsl:function name="atop:get-element-qname" as="xs:QName">
     <xsl:param name="pElementSpec" as="element(elementSpec)"/>
 
-    <xsl:variable name="vName" as="xs:string" select="($pElementSpec/altIdent, $pElementSpec/@ident)[1]"/>
-    <!-- <xsl:variable name="vUri" as="xs:string" select="($pElementSpec/@ns, $atop:vTEINamespaceUri)[1]"/> -->
+    <xsl:variable name="vName" as="xs:string" select="($pElementSpec/altIdent[1], $pElementSpec/@ident)[1]"/>
     <xsl:variable name="vUri" as="xs:string" select="($pElementSpec/@ns, $pElementSpec/ancestor::schemaSpec[1]/@ns, 'http://www.tei-c.org/ns/1.0')[1]"/>
 
     <xsl:sequence select="QName($vUri, $vName)"/>
@@ -114,6 +115,8 @@
   <xd:doc>
     <xd:desc>
       <xd:p>Given an attribute specification, return QName of specified attribute.</xd:p>
+      <xd:p>The name part of the QName is taken from the first altIdent child element if present, the @ident attribute otherwise.</xd:p>
+      <xd:p>The namespace URI is taken from the @ns attribute of the element specification if present. It defaults to the no-namespace empty string otherwise.</xd:p>
     </xd:desc>
     <xd:param name="pAttDef">Attribute specification</xd:param>
     <xd:return>QName of specified attribute</xd:return>
@@ -121,7 +124,7 @@
   <xsl:function name="atop:get-attribute-qname" as="xs:QName">
     <xsl:param name="pAttDef" as="element(attDef)"/>
 
-    <xsl:variable name="vName" as="xs:string" select="($pAttDef/altIdent, $pAttDef/@ident)[1]"/>
+    <xsl:variable name="vName" as="xs:string" select="($pAttDef/altIdent[1], $pAttDef/@ident)[1]"/>
     <xsl:variable name="vUri" as="xs:string" select="($pAttDef/@ns, '')[1]"/>
 
     <xsl:sequence select="QName($vUri, $vName)"/>
