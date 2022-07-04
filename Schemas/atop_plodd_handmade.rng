@@ -39,6 +39,7 @@
     
     <define name="att.hasIdent">
         <attribute name="ident">
+            <a:documentation>(ident) specifies the identifier for a specification element.</a:documentation>
             <data type="NCName"/>
         </attribute>
     </define>
@@ -46,23 +47,28 @@
     <!-- Elements. -->
     <define name="ref">
         <element name="ref">
+            <a:documentation>(ref) provides a target URI for another location, along with link text.</a:documentation>
             <attribute name="target">
-                <text/> <!-- Should be a pointer. -->
+                <data type="anyURI">
+                    <param name="pattern">\S+</param>
+                </data>
             </attribute>
             <ref name="att.global"/>
+            <text/>
         </element>
-        <text/>
     </define>
     
     <define name="code">
         <element name="code">
-        <ref name="att.global"/>
-        <text/>
+            <a:documentation>(code) contains literal code from some formal language such as a programming language.</a:documentation>
+            <ref name="att.global"/>
+            <text/>
         </element>
     </define>
     
     <define name="gloss">
         <element name="gloss">
+            <a:annotation>(gloss) provides a short characterization of the function of an element, attribute, or other schema component.</a:annotation>
             <zeroOrMore>
                 <choice>
                     <text/>
@@ -76,6 +82,7 @@
     
     <define name="desc">
         <element name="desc">
+            <a:annotation>(desc) provides a description of the function of an element, attribute, or other schema component.</a:annotation>
             <zeroOrMore>
                 <choice>
                     <text/>
@@ -89,6 +96,7 @@
     
     <define name="memberOf">
         <element name="memberOf">
+            <a:annotation>(memberOf) specifies that an element or class is a member of another class.</a:annotation>
             <ref name="att.hasKey"/>
             <ref name="att.global"/>
         </element>
@@ -96,6 +104,7 @@
     
     <define name="classes">
         <element name="classes">
+            <a:annotation>(classes) contains all the <code xmlns="http://www.w3.org/1999/xhtml">memberOf</code> elements specifying the class membership of the containing element or class.</a:annotation>
             <oneOrMore>
                 <ref name="memberOf"/>
             </oneOrMore>
@@ -105,6 +114,7 @@
     
     <define name="empty">
         <element name="empty">
+            <a:annotation>(empty) specifies that a content model may be empty.</a:annotation>
             <empty/>
         </element>
     </define>
