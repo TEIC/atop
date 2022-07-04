@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:teix="http://www.tei-c.org/ns/Examples"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    ns="http://www.tei-c.org/ns/1.0">
+    
+    <!-- Global attributes. -->
+    <define name="att.global">
+        <optional>
+            <attribute name="xml:lang">
+                <a:documentation>(language) indicates the language of the element content using a tag generated according to <a xmlns="http://www.w3.org/1999/xhtml"
+                href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>.</a:documentation>
+                <choice>
+                    <data type="language"/>
+                    <value/>
+                </choice>
+            </attribute>
+        </optional>
+        <optional>
+            <attribute name="xml:id">
+                <a:documentation>(identifier) provides a unique identifier for the element bearing the attribute.</a:documentation>
+                <data type="ID"/>
+            </attribute>
+        </optional>
+    </define>
+    
+    <!-- Non-global attribute classes. -->
+    <define name="att.hasKey">
+        <attribute name="key">
+            <a:documentation>(key) specifies the identifier (@ident) for another element or class.</a:documentation>
+            <data type="NCName"/>
+        </attribute>
+    </define>
+    
+    <define name="att.hasIdent">
+        <attribute name="ident">
+            <data type="NCName"/>
+        </attribute>
+    </define>
+    
+    <!-- Elements. -->
+    <define name="ref">
+        <element name="ref">
+            <attribute name="target">
+                <text/> <!-- Should be a pointer. -->
+            </attribute>
+            <ref name="att.global"/>
+        </element>
+        <text/>
+    </define>
+    
+    <define name="code">
+        <element name="code">
+        <ref name="att.global"/>
+        <text/>
+        </element>
+    </define>
+    
+    <define name="gloss">
+        <element name="gloss">
+            <zeroOrMore>
+                <choice>
+                    <text/>
+                    <ref name="ref"/>
+                    <ref name="code"/>
+                </choice>
+            </zeroOrMore>
+            <ref name="att.global"/>
+        </element>
+    </define>
+    
+    <define name="desc">
+        <element name="desc">
+            <zeroOrMore>
+                <choice>
+                    <text/>
+                    <ref name="ref"/>
+                    <ref name="code"/>
+                </choice>
+            </zeroOrMore>
+            <ref name="att.global"/>
+        </element>
+    </define>
+    
+    <define name="memberOf">
+        <element name="memberOf">
+            <ref name="att.hasKey"/>
+            <ref name="att.global"/>
+        </element>
+    </define>
+    
+    <define name="classes">
+        <element name="classes">
+            <oneOrMore>
+                <ref name="memberOf"/>
+            </oneOrMore>
+            <ref name="att.global"/>
+        </element>
+    </define>
+    
+    <define name="empty">
+        <element name="empty">
+            <empty/>
+        </element>
+    </define>
+    
+    <define name="content">
+        <element name="content">
+            <text/> <!-- for the moment...-->
+        </element>
+    </define>
+    
+    <define name="elementSpec">
+        <element name="elementSpec">
+            <group>
+                <zeroOrMore>
+                    <choice>
+                        <ref name="gloss"/>
+                        <ref name="desc"/>
+                    </choice>
+                </zeroOrMore>
+                <optional>
+                    <ref name="classes"/>
+                </optional>
+                <ref name="content"/>
+            </group>
+            <ref name="att.global"/>
+            <ref name="att.hasIdent"/>
+        </element>
+    </define>
+    
+    <define name="model.oddDecl">
+        <choice>
+            <!--<ref name="moduleSpec"/>-->
+            <!--<ref name="specGrp"/>-->
+            <ref name="elementSpec"/>
+            <!--<ref name="classSpec"/>
+            <ref name="dataSpec"/>
+            <ref name="macroSpec"/>
+            <ref name="constraintSpec"/>-->
+        </choice>
+    </define>
+    
+    <define name="schemaSpec">
+        <element name="schemaSpec">
+            <!-- Do we include documentation elements? -->
+            <zeroOrMore>
+                <choice>
+                    <ref name="gloss"/>
+                    <ref name="desc"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="model.oddDecl"/>
+                </choice>
+            </zeroOrMore>
+            
+            <!-- Attributes required: start, xml:lang, xml:id, prefix, defaultExceptions, ident.-->
+            
+            <ref name="att.global"/>
+            <ref name="att.hasIdent"/>
+        </element>
+    </define>
+    <start>
+        <ref name="schemaSpec"/>
+    </start>
+</grammar>
