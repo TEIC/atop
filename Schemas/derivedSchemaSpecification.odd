@@ -48,10 +48,32 @@
 	<!-- Modules! -->
 	<!-- ******** -->
         <moduleRef key="tei"/>
-        <moduleRef key="header" include="appInfo application creation fileDesc publicationStmt schemaRef sourceDesc teiHeader titleStmt "/>
+        <moduleRef key="header" include="appInfo application creation
+					 fileDesc publicationStmt schemaRef
+					 sourceDesc teiHeader titleStmt "/>
         <moduleRef key="textstructure" include="TEI body text"/>
-        <moduleRef key="core" include="abbr addrLine address analytic author bibl biblScope biblStruct choice cit citedRange date desc distinct email emph expan foreign gloss hi label list listBibl measure measureGrp mentioned monogr name note noteGrp num p postBox postCode ptr q quote ref relatedItem rs said series soCalled street term time title unit"/>
-        <moduleRef key="tagdocs" except="altIdent equiv exemplum listRef remarks model modelGrp modelSequence moduleSpec outputRendition param paramList paramSpec specDesc specGrp specGrpRef specList"/>
+        <moduleRef key="core" include="abbr addrLine address
+				       analytic author bibl
+				       biblScope biblStruct choice
+				       cit citedRange date
+				       desc distinct email
+				       emph expan foreign
+				       gloss hi label
+				       list listBibl measure
+				       measureGrp mentioned monogr
+				       name note noteGrp
+				       num p postBox
+				       postCode ptr q
+				       quote ref relatedItem
+				       rs said series
+				       soCalled street term
+				       time title unit"/>
+        <moduleRef key="tagdocs" except="altIdent equiv exemplum
+					 listRef remarks model
+					 modelGrp modelSequence moduleSpec
+					 moduleRef outputRendition param
+					 paramList paramSpec specDesc
+					 specGrp specGrpRef specList"/>
 
 	<!-- ******************************************** -->
 	<!-- General high-level constraint specifications -->
@@ -104,10 +126,8 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-	    <alternate minOccurs="0" maxOccurs="unbounded">
-              <classRef key="model.glossLike"/>
-              <classRef key="model.descLike"/>
-	    </alternate>
+            <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
+            <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
             <classRef key="model.oddDecl" minOccurs="1" maxOccurs="unbounded"/>
           </content>
           <constraintSpec ident="no_more_than_one_external_module_sans_prefix" scheme="schematron">
