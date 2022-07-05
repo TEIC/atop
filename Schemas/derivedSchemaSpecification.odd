@@ -48,10 +48,32 @@
 	<!-- Modules! -->
 	<!-- ******** -->
         <moduleRef key="tei"/>
-        <moduleRef key="header" include="appInfo application creation fileDesc publicationStmt schemaRef sourceDesc teiHeader titleStmt "/>
+        <moduleRef key="header" include="appInfo application creation
+					 fileDesc publicationStmt schemaRef
+					 sourceDesc teiHeader titleStmt "/>
         <moduleRef key="textstructure" include="TEI body text"/>
-        <moduleRef key="core" include="abbr addrLine address analytic author bibl biblScope biblStruct choice cit citedRange date desc distinct email emph expan foreign gloss hi label list listBibl measure measureGrp mentioned monogr name note noteGrp num p postBox postCode ptr q quote ref relatedItem rs said series soCalled street term time title unit"/>
-        <moduleRef key="tagdocs" except="altIdent equiv exemplum listRef remarks model modelGrp modelSequence moduleSpec outputRendition param paramList paramSpec specDesc specGrp specGrpRef specList"/>
+        <moduleRef key="core" include="abbr addrLine address
+				       analytic author bibl
+				       biblScope biblStruct choice
+				       cit citedRange date
+				       desc distinct email
+				       emph expan foreign
+				       gloss hi label
+				       list listBibl measure
+				       measureGrp mentioned monogr
+				       name note noteGrp
+				       num p postBox
+				       postCode ptr q
+				       quote ref relatedItem
+				       rs said series
+				       soCalled street term
+				       time title unit"/>
+        <moduleRef key="tagdocs" except="altIdent equiv exemplum
+					 listRef remarks model
+					 modelGrp modelSequence moduleSpec
+					 moduleRef outputRendition param
+					 paramList paramSpec specDesc
+					 specGrp specGrpRef specList"/>
 
 	<!-- ******************************************** -->
 	<!-- General high-level constraint specifications -->
@@ -104,19 +126,10 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-	    <alternate minOccurs="0" maxOccurs="unbounded">
-              <classRef key="model.glossLike"/>
-              <classRef key="model.descLike"/>
-	    </alternate>
+            <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
+            <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
             <classRef key="model.oddDecl" minOccurs="1" maxOccurs="unbounded"/>
           </content>
-          <constraintSpec ident="no_more_than_one_external_module_sans_prefix" scheme="schematron">
-            <constraint>
-              <sch:report test="count( .//tei:moduleRef ) - count( .//tei:moduleRef/@prefix ) gt 1" role="warn">
-                If there is more than one moduleRef element without a prefix attribute name collisions may occur.
-              </sch:report>
-            </constraint>
-          </constraintSpec>
 	  <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
 	    <constraint>
 	      <!-- generate sequence of the QName of each child <elementSpec> -->
@@ -151,29 +164,241 @@
                 <p>The current TEI ODD processor only handles 1 value as the value of <att>docLang</att>.</p>
               </remarks>
             </attDef>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
           </attList>
         </elementSpec>
 
-	<!-- *************************************** -->
-	<!-- Alterations to children of <schemaSPec> -->
-	<!-- *************************************** -->
-        <elementSpec ident="moduleRef" mode="change">
-          <constraintSpec scheme="schematron" ident="no-duplicate-modules">
-            <constraint>
-              <sch:let name="myuri" value="@uri"/>
-              <sch:report test="preceding-sibling::tei:moduleRef[ @uri eq $myuri ]">
-                The <sch:value-of select="@uri"/> module is included more than once
-              </sch:report>
-            </constraint>
-          </constraintSpec>
-          <attList>
-            <attDef ident="uri" mode="change" usage="req"/>
-            <attDef ident="key" mode="delete"/>
+	<!-- ********************************* -->
+	<!-- Alterations to other ODD elemetns -->
+	<!-- ********************************* -->
+	<elementSpec ident="alternate" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
           </attList>
-        </elementSpec>
+	</elementSpec>
+
+	<elementSpec ident="anyElement" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="attDef" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="attList" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="attRef" mode="change">
+	  <!-- Should <attRef> even be allowed in a PLODD? -->
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="classes" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="classRef" mode="change">
+	  <!-- Should <classRef> even be allowed in a PLODD? -->
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="classSpec" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="constraint" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="constraintSpec" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="content" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="dataFacet" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="dataRef" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="dataSpec" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="datatype" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="defaultVal" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="elementRef" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="elementSpec" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="empty" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="macroRef" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="macroSpec" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
 
 	<elementSpec ident="memberOf" mode="change">
 	  <content><empty/></content>
+	  <attList>
+            <attDef ident="mode"      mode="delete"/>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="schemaRef" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="sequence" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="textNode" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="valDesc" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="valItem" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
+	</elementSpec>
+
+	<elementSpec ident="valList" mode="change">
+	  <attList>
+	    <attDef ident="rend"      mode="delete"/>
+	    <attDef ident="style"     mode="delete"/>
+	    <attDef ident="rendition" mode="delete"/>
+          </attList>
 	</elementSpec>
 
 	<!-- ******************************** -->
