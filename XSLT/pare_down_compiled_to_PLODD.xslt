@@ -7,6 +7,7 @@
   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0"
   exclude-result-prefixes="#all"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   version="3.0">
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -17,6 +18,8 @@
     </xd:desc>
   </xd:doc>
   
+  <xsl:variable name="version" select="'0.1.2'"><!-- version # of this pgm --></xsl:variable>
+  <xsl:output method="xml" indent="yes"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
   <xd:doc>
@@ -41,12 +44,48 @@
   <xd:doc>
     <xd:desc>put &lt;schemaSpec> in &lt;body>, no matter where it was</xd:desc>
   </xd:doc>
+  <xsl:template match="body">
+    <xsl:copy>
+      <xsl:apply-templates select="//schemaSpec"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>make sure &lt;schemaSpec> has an @ns attr</xd:desc>
+  </xd:doc>
   <xsl:template match="schemaSpec">
-    <body>
-      <xsl:copy>
-        <xsl:apply-templates select="@*|node()"/>
-      </xsl:copy>
-    </body>
+    <xsl:copy>
+      <xsl:attribute name="ns" select="'http://www.tei-c.org/ns/1.0'"/>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xd:doc>
+    <xd:desc>Generate the PLODD metadata</xd:desc>
+  </xd:doc>
+  <xsl:template match="teiHeader">
+    <xsl:copy>
+      <fileDesc>
+        <titleStmt>
+          <title>PLODD of <xsl:apply-templates select="/*/teiHeader/fileDesc/titleStmt/title"/></title>
+          <title type="sub">an automatically generated file</title>
+        </titleStmt>
+        <publicationStmt>
+          <p>This is an unpupblished (and unpublishable) intermediate file.</p>
+        </publicationStmt>
+        <sourceDesc>
+          <p>Generated from a source ODD. See &lt;appInfo>.</p>
+        </sourceDesc>
+      </fileDesc>
+      <encodingDesc>
+        <appInfo>
+          <xsl:apply-templates select="/*/teiHeader/encodingDesc/appInfo/application"/>
+          <application ident="{(static-base-uri()=>tokenize('/'))[last()]}" version="{$version}">
+            <desc xsl:expand-text="yes">Input: {document-uri(/)}</desc>
+          </application>
+        </appInfo>
+      </encodingDesc>
+    </xsl:copy>
   </xsl:template>
   
   <xd:doc>
@@ -59,10 +98,12 @@
      @source
     |@module
     |@predeclare
+    |@validUntil
     |attDef/@mode
     |valList/@mode
     |valItem/@mode
     |constraintSpec/@mode
+    |elementSpec/@mode
     |memberOf/@mode
     |classes/@mode
     |classSpec/@mode
@@ -71,16 +112,18 @@
     |macroSpec/@type
     |editionStmt
     |notesStmt
-    |encodingDesc
     |front
-    |body
     |back
     |head
     |table
     |remarks
     |exemplum
     |listRef
-    |revisionDesc
+    |model
+    |modelGrp
+    |modelSequence
+    |outputRendition
+    |@xsi:*
     |elementSpec/@rend
     |classSpec/@rend
     |macroSpec/@rend
@@ -89,6 +132,7 @@
     
     |attList[not(child)]
     |@ref
+    |equiv
     "/>
   
 </xsl:stylesheet>

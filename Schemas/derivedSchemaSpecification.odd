@@ -49,8 +49,9 @@
 	<!-- ******** -->
         <moduleRef key="tei"/>
         <moduleRef key="header" include="appInfo application creation
-					 fileDesc publicationStmt schemaRef
-					 sourceDesc teiHeader titleStmt "/>
+					 fileDesc encodingDesc publicationStmt
+					 schemaRef sourceDesc teiHeader
+					 titleStmt "/>
         <moduleRef key="textstructure" include="TEI body text"/>
         <moduleRef key="core" include="abbr addrLine address
 				       analytic author bibl
