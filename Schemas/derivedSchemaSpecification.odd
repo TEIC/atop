@@ -56,18 +56,19 @@
 				       analytic author bibl
 				       biblScope biblStruct choice
 				       cit citedRange date
-				       desc distinct email
-				       emph expan foreign
-				       gloss hi label
-				       list listBibl measure
-				       measureGrp mentioned monogr
-				       name note noteGrp
-				       num p postBox
-				       postCode ptr q
-				       quote ref relatedItem
-				       rs said series
-				       soCalled street term
-				       time title unit"/>
+				       desc distinct editor
+				       email emph expan
+				       foreign gloss hi
+				       label list listBibl
+				       measure measureGrp mentioned
+				       monogr name note
+				       noteGrp num p
+				       postBox postCode ptr
+				       q quote ref
+				       relatedItem respStmt resp rs
+				       said series soCalled
+				       street term time
+				       title unit"/>
         <moduleRef key="tagdocs" except="altIdent equiv exemplum
 					 listRef remarks model
 					 modelGrp modelSequence moduleSpec
