@@ -17,8 +17,22 @@
       and try to convert it to a plausible PLODD.</xd:p>
     </xd:desc>
   </xd:doc>
+
+  <xd:doc>
+    <xd:param name="lang">the language of the &lt;gloss>es and &lt;desc>s we keep</xd:param>
+  </xd:doc>
+  <xsl:param name="lang" select="'en'"/>
   
-  <xsl:variable name="version" select="'0.1.2'"><!-- version # of this pgm --></xsl:variable>
+  <xd:doc>
+    <xd:desc>the language of the &lt;gloss>es and &lt;desc>s we keep</xd:desc>
+  </xd:doc>
+  <xsl:variable name="vLang" select="$lang"/>
+  
+  <xd:doc>
+    <xd:desc>Version number of this program</xd:desc>
+  </xd:doc>
+  <xsl:variable name="vVersion" select="'0.1.2'"/>
+  
   <xsl:output method="xml" indent="yes"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
@@ -42,7 +56,7 @@
   </xsl:template>
   
   <xd:doc>
-    <xd:desc>put &lt;schemaSpec> in &lt;body>, no matter where it was</xd:desc>
+    <xd:desc>put &lt;schemaSpec> into &lt;body>, no matter where it was</xd:desc>
   </xd:doc>
   <xsl:template match="body">
     <xsl:copy>
@@ -71,7 +85,7 @@
           <title type="sub">an automatically generated file</title>
         </titleStmt>
         <publicationStmt>
-          <p>This is an unpupblished (and unpublishable) intermediate file.</p>
+          <p>This is an unpublished (and unpublishable) intermediate file.</p>
         </publicationStmt>
         <sourceDesc>
           <p>Generated from a source ODD. See &lt;appInfo>.</p>
@@ -80,12 +94,36 @@
       <encodingDesc>
         <appInfo>
           <xsl:apply-templates select="/*/teiHeader/encodingDesc/appInfo/application"/>
-          <application ident="{(static-base-uri()=>tokenize('/'))[last()]}" version="{$version}">
-            <desc xsl:expand-text="yes">Input: {document-uri(/)}</desc>
+          <application ident="{(static-base-uri()=>tokenize('/'))[last()]}" version="{$vVersion}">
+            <desc xml:lang="en" xsl:expand-text="yes">Input: {document-uri(.)}</desc>
           </application>
         </appInfo>
       </encodingDesc>
     </xsl:copy>
+  </xsl:template>
+
+  <xd:doc>
+    <xd:desc>Ensure there is an appropriate language specification for &lt;gloss>,
+      &lt;desc>, and &lt;valDesc>. If the @xml:lang matches the parameter we were
+    given, take this one. </xd:desc>
+  </xd:doc>
+  <xsl:template match="desc|gloss|valDesc">
+    <xsl:choose>
+      <xsl:when test="@xml:lang eq $vLang">
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </xsl:when>
+      <xsl:when test="@xml:lang and ( @xml:lang ne $vLang )"/>
+      <xsl:when test="not( @xml:lang )
+                      and
+                      not( ../*[name(.) eq name(current())][ @xml:lang eq $vLang ] )">
+        <xsl:copy>
+          <xsl:attribute name="xml:lang" select="$vLang"/>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </xsl:when>
+    </xsl:choose>
   </xsl:template>
   
   <xd:doc>

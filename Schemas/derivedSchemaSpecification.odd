@@ -36,7 +36,17 @@
       <divGen type="toc"/>
     </front>
     <body>
-      <p> ... </p>
+      <p>One method of generating a test suite and validating it
+      against this schema:</p>
+      <eg xml:lang="x-bash">
+        $ cd /tmp/
+        $ mkdir -p CODDs PLODDs
+        $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
+        $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f ; rm $f ; done ; cd .. )
+        $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/pare_down_compiled_to_PLODD.xslt -o:PLODDs/
+        $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .odd.odd.xml`.plodd ; done )
+        $ for f in PLODDs/*.plodd ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/derivedSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
+      </eg>
     </body>
     <back>
       <schemaSpec ident="derivedSchemaSpecification" targetLang="en"
@@ -44,42 +54,42 @@
         <gloss>derived schema specification</gloss>
         <desc>the ATOP derived schema document type</desc>
 
-	<!-- ******** -->
-	<!-- Modules! -->
-	<!-- ******** -->
+        <!-- ******** -->
+        <!-- Modules! -->
+        <!-- ******** -->
         <moduleRef key="tei"/>
         <moduleRef key="header" include="appInfo application creation
-					 fileDesc encodingDesc publicationStmt
-					 schemaRef sourceDesc teiHeader
-					 titleStmt "/>
+                                         fileDesc encodingDesc publicationStmt
+                                         schemaRef sourceDesc teiHeader
+                                         titleStmt "/>
         <moduleRef key="textstructure" include="TEI body text"/>
         <moduleRef key="core" include="abbr addrLine address
-				       analytic author bibl
-				       biblScope biblStruct choice
-				       cit citedRange date
-				       desc distinct editor
-				       email emph expan
-				       foreign gloss hi
-				       label list listBibl
-				       measure measureGrp mentioned
-				       monogr name note
-				       noteGrp num p
-				       postBox postCode ptr
-				       q quote ref
-				       relatedItem respStmt resp rs
-				       said series soCalled
-				       street term time
-				       title unit"/>
-        <moduleRef key="tagdocs" except="altIdent equiv exemplum
-					 listRef remarks model
-					 modelGrp modelSequence moduleSpec
-					 moduleRef outputRendition param
-					 paramList paramSpec specDesc
-					 specGrp specGrpRef specList"/>
+                                       analytic author bibl
+                                       biblScope biblStruct choice
+                                       cit citedRange date
+                                       desc distinct editor
+                                       email emph expan
+                                       foreign gloss hi
+                                       label list listBibl
+                                       measure measureGrp mentioned
+                                       monogr name note
+                                       noteGrp num p
+                                       postBox postCode ptr
+                                       q quote ref
+                                       relatedItem respStmt resp
+                                       rs said series
+                                       soCalled street term
+                                       time title unit"/>
+        <moduleRef key="tagdocs" except="equiv exemplum listRef
+                                         remarks model modelGrp
+                                         modelSequence moduleSpec moduleRef
+                                         outputRendition param paramList
+                                         paramSpec specDesc specGrp
+                                         specGrpRef specList"/>
 
-	<!-- ******************************************** -->
-	<!-- General high-level constraint specifications -->
-	<!-- ******************************************** -->
+        <!-- ******************************************** -->
+        <!-- General high-level constraint specifications -->
+        <!-- ******************************************** -->
         <constraintSpec ident="no_XInclude" scheme="schematron">
           <desc>By this point in the pipeline, any and all XInclude
           processing should have already occurred. Note that this
@@ -94,31 +104,9 @@
           </constraint>
         </constraintSpec>
 
-        <constraintSpec scheme="schematron" ident="mode-child-sanity">
-          <constraint>
-            <sch:rule context="tei:*[ @mode eq 'delete' ]">
-              <sch:report test="child::*">The specification element ＜<sch:name/>＞ has both a
-              mode= of "delete" and child elements, which is incongruous</sch:report>
-            </sch:rule>
-            <sch:rule context="  tei:valList[ @mode = ('add','change','replace') ]
-                               | tei:schemaSpec[ @mode = ('add','change','replace') ]
-                               | tei:elementSpec[ @mode = ('add','change','replace') ]
-                               | tei:classSpec[ @mode = ('add','change','replace') ]
-                               | tei:macroSpec[ @mode = ('add','change','replace') ]
-                               | tei:constraintSpec[ @mode = ('add','change','replace') ]
-                               | tei:attDef[ @mode = ('add','change','replace') ]
-                               | tei:classes[ @mode = ('add','change','replace') ]">
-              <sch:assert test="child::* | (@* except (@mode, @ident))">The specification
-              element ＜<sch:name/>＞ has a mode= of "<sch:value-of select="@mode"/>", but
-              does not have any child elements or schema-changing attributes, which is
-              incongruous</sch:assert>
-            </sch:rule>
-          </constraint>
-        </constraintSpec>
-
-	<!-- ********************************************************** -->
-	<!-- Alterations to <schemaSpec> itself and elements “above” it -->
-	<!-- ********************************************************** -->
+        <!-- ********************************************************** -->
+        <!-- Alterations to <schemaSpec> itself and elements “above” it -->
+        <!-- ********************************************************** -->
         <elementSpec ident="body" mode="change">
           <desc>Contains a single schema specification</desc>
           <content>
@@ -132,26 +120,26 @@
             <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
             <classRef key="model.oddDecl" minOccurs="1" maxOccurs="unbounded"/>
           </content>
-	  <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
-	    <constraint>
-	      <!-- generate sequence of the QName of each child <elementSpec> -->
-	      <sch:let name="elementSpecs"
-		       value="for $e in ./tei:elementSpec
-			      return concat('{', ($e/ancestor-or-self::*/@ns)[last()], '}', $e/@ident )"/>
-	      <sch:assert test="count( $elementSpecs ) eq count(distinct-values( $elementSpecs ) )">
-		<!-- Oops. If the number of unique elementSpecs (by
-		     QName) is not the same as the number of
-		     elementSpecs, then there is at least one
-		     duplicate (maybe more) -->
-		Duplicate elementSpec(s); the element specifications
-		for the following each occur more than once: <sch:value-of select="string-join(
-		( for $qname in $unique_elementSpecs return if (count($elementSpecs[. eq $qname]) gt 1) then $qname else '' )[normalize-space(.)],
-		', ' ) "/>
-	      </sch:assert>
-	    </constraint>
-	  </constraintSpec>
+          <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
+            <constraint>
+              <!-- generate sequence of the QName of each child <elementSpec> -->
+              <sch:let name="elementSpecs"
+                       value="for $e in ./tei:elementSpec
+                              return concat('{', ($e/ancestor-or-self::*/@ns)[last()], '}', $e/@ident )"/>
+              <sch:assert test="count( $elementSpecs ) eq count(distinct-values( $elementSpecs ) )">
+                <!-- Oops. If the number of unique elementSpecs (by
+                     QName) is not the same as the number of
+                     elementSpecs, then there is at least one
+                     duplicate (maybe more) -->
+                Duplicate elementSpec(s); the element specifications
+                for the following each occur more than once: <sch:value-of select="string-join(
+                ( for $qname in $unique_elementSpecs return if (count($elementSpecs[. eq $qname]) gt 1) then $qname else '' )[normalize-space(.)],
+                ', ' ) "/>
+              </sch:assert>
+            </constraint>
+          </constraintSpec>
           <attList>
-	    <attDef ident="ns" mode="change" usage="req"/>
+            <attDef ident="ns" mode="change" usage="req"/>
             <attDef ident="docLang" mode="change">
               <desc versionDate="2022-04-03" xml:lang="en">
                 specifies which language to use when creating
@@ -166,304 +154,397 @@
                 <p>The current TEI ODD processor only handles 1 value as the value of <att>docLang</att>.</p>
               </remarks>
             </attDef>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
         </elementSpec>
 
-	<!-- ********************************* -->
-	<!-- Alterations to other ODD elemetns -->
-	<!-- ********************************* -->
-	<elementSpec ident="alternate" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <!-- ********************************* -->
+        <!-- Alterations to other ODD elemetns -->
+        <!-- ********************************* -->
+        <elementSpec ident="altIdent" mode="change">
+          <!-- Remove <altIdent> from model.glossLike, and require
+               content to be an XML name -->
+          <classes mode="replace">
+            <memberOf key="att.global"/>
+            <memberOf key="att.typed"/>
+          </classes>
+          <content><dataRef key="teidata.xmlName"/></content>
+        </elementSpec>
+        
+        <elementSpec ident="alternate" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="anyElement" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="anyElement" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="attDef" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="attDef" mode="change">
+          <content>
+            <sequence>      
+              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="datatype" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
+              <elementRef key="defaultVal" minOccurs="0" maxOccurs="1"/>
+              <alternate minOccurs="0" maxOccurs="1">
+                <elementRef key="valList" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="valDesc" minOccurs="1" maxOccurs="1"/>
+              </alternate>
+            </sequence>
+          </content>        
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="attList" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="attList" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="attRef" mode="change">
-	  <!-- Should <attRef> even be allowed in a PLODD? -->
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="attRef" mode="change">
+          <!-- Should <attRef> even be allowed in a PLODD? -->
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="classes" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="classRef" mode="change">
-	  <!-- Should <classRef> even be allowed in a PLODD? -->
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="classSpec" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="constraint" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="constraintSpec" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="content" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="dataFacet" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="dataRef" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="dataSpec" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="datatype" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="defaultVal" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="elementRef" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="elementSpec" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="empty" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="macroRef" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="macroSpec" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
-          </attList>
-	</elementSpec>
-
-	<elementSpec ident="memberOf" mode="change">
-	  <content><empty/></content>
-	  <attList>
+        <elementSpec ident="classes" mode="change">
+          <attList>
             <attDef ident="mode"      mode="delete"/>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="schemaRef" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="classRef" mode="change">
+          <!-- Should <classRef> even be allowed in a PLODD? -->
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="sequence" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="classSpec" mode="change">
+          <content>
+            <sequence>
+              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
+              <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="textNode" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="constraint" mode="change">
+          <content>
+            <anyElement minOccurs="1" maxOccurs="unbounded" require="http://purl.oclc.org/dsdl/schematron http://www.schematron-quickfix.com/validator/process"/>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="valDesc" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="constraintSpec" mode="change">
+          <content>
+            <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+            <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+            <elementRef key="constraint" minOccurs="0" maxOccurs="1"/>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="valItem" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="content" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<elementSpec ident="valList" mode="change">
-	  <attList>
-	    <attDef ident="rend"      mode="delete"/>
-	    <attDef ident="style"     mode="delete"/>
-	    <attDef ident="rendition" mode="delete"/>
+        <elementSpec ident="dataFacet" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
           </attList>
-	</elementSpec>
+        </elementSpec>
 
-	<!-- ******************************** -->
-	<!-- Deletion of unused model classes -->
-	<!-- ******************************** -->
-	<classSpec type="model" ident="model.divBottom"  mode="delete"/>
-	<classSpec type="model" ident="model.divBottomPart"  mode="delete"/>
-	<classSpec type="model" ident="model.divPart"  mode="delete"/>
-	<classSpec type="model" ident="model.divTop"  mode="delete"/>
-	<classSpec type="model" ident="model.divTopPart"  mode="delete"/>
-	<classSpec type="model" ident="model.placeStateLike"  mode="delete"/>
-	
-	<!-- ***************************** -->
-	<!-- Alterations to content models -->
-	<!-- ***************************** -->
-	<classSpec module="tei" type="model" ident="model.oddDecl" mode="change">
-	  <classes mode="replace"/>
-	</classSpec>
+        <elementSpec ident="dataRef" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+            <attDef ident="ref"       mode="delete"/>
+          </attList>
+        </elementSpec>
 
-	<!-- ********************************************************** -->
-	<!-- Scorched earth removal of attributes that should not occur -->
-	<!-- ********************************************************** -->
-	<classSpec type="atts" ident="att.combinable"  mode="delete"/>
-	<classSpec type="atts" ident="att.editLike"  mode="delete"/>
-	<classSpec type="atts" ident="att.fragmentable"  mode="delete"/>
+        <elementSpec ident="dataSpec" mode="change">
+          <content>
+            <sequence>
+              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <alternate minOccurs="0" maxOccurs="1">
+                <elementRef key="content"/>
+                <elementRef key="valList"/>
+              </alternate>
+              <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
 
-	<!-- ************************************************************************ -->
-	<!-- Scorched earth removal of attributes that would be ignored in processing -->
-	<!-- ************************************************************************ -->
-	<classSpec type="atts" ident="att.anchoring"  mode="delete"/>
-	<classSpec type="atts" ident="att.ascribed"  mode="delete"/>
-	<classSpec type="atts" ident="att.ascribed.directed"  mode="delete"/>
-	<classSpec type="atts" ident="att.cReferencing"  mode="delete"/>
-	<classSpec type="atts" ident="att.canonical"  mode="delete"/> <!--??-->
-	<classSpec type="atts" ident="att.datable"  mode="delete"/>
-	<classSpec type="atts" ident="att.datable.custom"  mode="delete"/>
-	<classSpec type="atts" ident="att.datable.iso"  mode="delete"/>
-	<classSpec type="atts" ident="att.datable.w3c"  mode="delete"/>
-	<classSpec type="atts" ident="att.declarable"  mode="delete"/>
-	<classSpec type="atts" ident="att.declaring"  mode="delete"/>
-	<classSpec type="atts" ident="att.deprecated"  mode="delete"/> <!--??-->
-	<classSpec type="atts" ident="att.dimensions"  mode="delete"/>
-	<classSpec type="atts" ident="att.docStatus"  mode="delete"/>
-	<classSpec type="atts" ident="att.global.responsibility"  mode="delete"/>
-	<classSpec type="atts" ident="att.global.source"  mode="delete"/>
-	<classSpec type="atts" ident="att.ranging"  mode="delete"/>
-	<classSpec type="atts" ident="att.internetMedia"  mode="delete"/>
-	<classSpec type="atts" ident="att.measurement"  mode="delete"/>
-	<classSpec type="atts" ident="att.naming"  mode="delete"/>
-	<classSpec type="atts" ident="att.notated"  mode="delete"/>
-	<classSpec type="atts" ident="att.personal"  mode="delete"/>
-	<classSpec type="atts" ident="att.placement"  mode="delete"/> <!--??-->
-	<classSpec type="atts" ident="att.predicate"  mode="delete"/>
-	<classSpec type="atts" ident="att.ranging"  mode="delete"/>
-	<classSpec type="atts" ident="att.sortable"  mode="delete"/>
-	<classSpec type="atts" ident="att.written"  mode="delete"/>
-	
-	<!-- ******************************** -->
-	<!-- Selective thinning of attributes -->
-	<!-- ******************************** -->
-	<classRef key="att.identified" except="predeclare module"/>
-	<classRef key="att.pointing" except="evaluate targetLang"/>
-	
+        <elementSpec ident="datatype" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="defaultVal" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="elementRef" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="elementSpec" mode="change">
+          <content>
+            <sequence>
+              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="content" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="valList" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
+              <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
+            </sequence>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="empty" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="macroRef" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="macroSpec" mode="change">
+          <content>
+            <sequence>
+              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <alternate minOccurs="0" maxOccurs="1">
+                <elementRef key="content" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="valList" minOccurs="1" maxOccurs="1"/>
+              </alternate>
+              <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="memberOf" mode="change">
+          <content><empty/></content>
+          <attList>
+            <attDef ident="mode"      mode="delete"/>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="schemaRef" mode="change">
+          <attList>
+            <!-- Has @url, but as it is descriptive it stays? -->
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="sequence" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="textNode" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="valDesc" mode="change">
+          <attList>
+            <attDef ident="xml:lang"  mode="change" usage="req"/>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="valItem" mode="change">
+          <content>
+            <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
+            <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+          </content>
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="valList" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="gloss" mode="change">
+          <attList>
+            <attDef ident="xml:lang"  mode="change" usage="req"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="desc" mode="change">
+          <attList>
+            <attDef ident="xml:lang"  mode="change" usage="req"/>
+          </attList>
+        </elementSpec>
+
+        <!-- ******************************** -->
+        <!-- Deletion of unused model classes -->
+        <!-- ******************************** -->
+        <classSpec type="model" ident="model.divBottom"  mode="delete"/>
+        <classSpec type="model" ident="model.divBottomPart"  mode="delete"/>
+        <classSpec type="model" ident="model.divPart"  mode="delete"/>
+        <classSpec type="model" ident="model.divTop"  mode="delete"/>
+        <classSpec type="model" ident="model.divTopPart"  mode="delete"/>
+        <classSpec type="model" ident="model.placeStateLike"  mode="delete"/>
+        
+        <!-- ***************************** -->
+        <!-- Alterations to content models -->
+        <!-- ***************************** -->
+        <classSpec module="tei" type="model" ident="model.oddDecl" mode="change">
+          <classes mode="replace"/>
+        </classSpec>
+
+        <!-- ********************************************************** -->
+        <!-- Scorched earth removal of attributes that should not occur -->
+        <!-- ********************************************************** -->
+        <classSpec type="atts" ident="att.combinable"  mode="delete"/>
+        <classSpec type="atts" ident="att.editLike"  mode="delete"/>
+        <classSpec type="atts" ident="att.fragmentable"  mode="delete"/>
+
+        <!-- ************************************************************************ -->
+        <!-- Scorched earth removal of attributes that would be ignored in processing -->
+        <!-- ************************************************************************ -->
+        <classSpec type="atts" ident="att.anchoring"  mode="delete"/>
+        <classSpec type="atts" ident="att.ascribed"  mode="delete"/>
+        <classSpec type="atts" ident="att.ascribed.directed"  mode="delete"/>
+        <classSpec type="atts" ident="att.cReferencing"  mode="delete"/>
+        <classSpec type="atts" ident="att.canonical"  mode="delete"/> <!--??-->
+        <classSpec type="atts" ident="att.datable"  mode="delete"/>
+        <classSpec type="atts" ident="att.datable.custom"  mode="delete"/>
+        <classSpec type="atts" ident="att.datable.iso"  mode="delete"/>
+        <classSpec type="atts" ident="att.datable.w3c"  mode="delete"/>
+        <classSpec type="atts" ident="att.declarable"  mode="delete"/>
+        <classSpec type="atts" ident="att.declaring"  mode="delete"/>
+        <classSpec type="atts" ident="att.deprecated"  mode="delete"/> <!--??-->
+        <classSpec type="atts" ident="att.dimensions"  mode="delete"/>
+        <classSpec type="atts" ident="att.docStatus"  mode="delete"/>
+        <classSpec type="atts" ident="att.global.responsibility"  mode="delete"/>
+        <classSpec type="atts" ident="att.global.source"  mode="delete"/>
+        <classSpec type="atts" ident="att.ranging"  mode="delete"/>
+        <classSpec type="atts" ident="att.internetMedia"  mode="delete"/>
+        <classSpec type="atts" ident="att.measurement"  mode="delete"/>
+        <classSpec type="atts" ident="att.naming"  mode="delete"/>
+        <classSpec type="atts" ident="att.notated"  mode="delete"/>
+        <classSpec type="atts" ident="att.personal"  mode="delete"/>
+        <classSpec type="atts" ident="att.placement"  mode="delete"/> <!--??-->
+        <classSpec type="atts" ident="att.predicate"  mode="delete"/>
+        <classSpec type="atts" ident="att.ranging"  mode="delete"/>
+        <classSpec type="atts" ident="att.sortable"  mode="delete"/>
+        <classSpec type="atts" ident="att.written"  mode="delete"/>
+        
+        <!-- ******************************** -->
+        <!-- Selective thinning of attributes -->
+        <!-- ******************************** -->
+        <classRef key="att.identified" except="predeclare module"/>
+        <classRef key="att.pointing" except="evaluate targetLang"/>
+        
       </schemaSpec>
     </back>
   </text>
