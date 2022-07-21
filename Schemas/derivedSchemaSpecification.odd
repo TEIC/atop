@@ -37,6 +37,13 @@
     <front>
       <head>Schema for derived (pruned, localized) ODD</head>
       <divGen type="toc"/>
+      <div type="section">
+	<head>TODO</head>
+	<list>
+	  <item>constraint <gi>altIdent</gi> so it can have no sibling
+	  <gi>altIdent</gi>s (i.e., only 1 child::altiDent).</item>
+	</list>
+      </div>
     </front>
     <body>
       <p>One method of generating a test suite and validating it
@@ -206,7 +213,8 @@
 
         <elementSpec ident="attDef" mode="change">
           <content>
-            <sequence>      
+            <sequence>
+	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
               <elementRef key="datatype" minOccurs="0" maxOccurs="1"/>
@@ -263,6 +271,7 @@
         <elementSpec ident="classSpec" mode="change">
           <content>
             <sequence>
+	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
@@ -372,6 +381,7 @@
         <elementSpec ident="elementSpec" mode="change">
           <content>
             <sequence>
+	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
               <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
@@ -453,7 +463,6 @@
             <attDef ident="include"   mode="delete"/>
             <attDef ident="except"    mode="delete"/>
             <attDef ident="key"       mode="delete"/>
-            <attDef ident="prefix"    mode="delete"/> <!--???-->
 	    <attDef ident="url" mode="replace" usage="req">
 	      <desc>must be a freakin’ dot</desc>
 	      <datatype minOccurs="1" maxOccurs="1">
