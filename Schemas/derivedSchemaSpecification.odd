@@ -183,7 +183,7 @@
         </elementSpec>
 
         <!-- ********************************* -->
-        <!-- Alterations to other ODD elemetns -->
+        <!-- Alterations to other ODD elements -->
         <!-- ********************************* -->
         <elementSpec ident="altIdent" mode="change">
           <!-- Remove <altIdent> from model.glossLike, and require
