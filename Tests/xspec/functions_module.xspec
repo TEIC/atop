@@ -3,7 +3,8 @@
 <!-- Each function should have at least one test. -->
 
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:tei="http://www.tei-c.org/ns/1.0"
-  xmlns:atop="http://www.tei-c.org/ns/atop" stylesheet="../../XSLT/modules/functions_module.xslt">
+  xmlns:atop="http://www.tei-c.org/ns/atop"
+  xmlns:map="http://www.w3.org/2005/xpath-functions/map" stylesheet="../../XSLT/modules/functions_module.xslt">
 
   <x:scenario label="Scenarios for testing function collapse-space">
     <x:scenario label="collapse-space with lots of spaces everywhere">
@@ -176,4 +177,16 @@
                 test="local-name-from-QName($x:result) eq 'bar'"/>
     </x:scenario>
   </x:scenario>
+  
+  <x:scenario label="Scenarios for testing atop:unique-ident">
+    <x:scenario label="Situation where no @ident is in scope" catch="yes">
+      <x:call function="atop:unique-ident">
+        <x:param name="pSpec">
+          <tei:elementSpec/>
+        </x:param>
+      </x:call>
+      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-noIdentInScope')"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>

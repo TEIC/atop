@@ -42,7 +42,7 @@
   <xsl:function name="atop:unique-ident" as="xs:string">
     <xsl:param name="pSpec" as="element()"/>
     <xsl:if test="not( $pSpec/self::tei:*[ancestor-or-self::*/@ident] )">
-      <xsl:message terminate="yes" select="'FATAL error: attempt to get unique identifier of an unidentified element.'"/>
+      <xsl:message terminate="yes" select="'FATAL error: attempt to get unique identifier of an unidentified element.'" error-code="atop:error-noIdentInScope"/>
     </xsl:if>
     <xsl:variable name="vAncestorsIdentified" as="xs:string*">
       <xsl:for-each select="$pSpec/ancestor-or-self::*[@ident]">
