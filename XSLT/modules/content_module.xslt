@@ -21,41 +21,5 @@
                 elements into their RELAX NG output.</xd:p>
         </xd:desc>
     </xd:doc>
-    
-    <xd:doc>
-        <xd:desc>
-            <xd:p>Given element content, an optional minimum, and an optional maximum occurrence, return a corresponding RelaxNG pattern.</xd:p>
-        </xd:desc>
-        <xd:param name="pContent">Element content</xd:param>
-        <xd:param name="pMinOccurrence">Minimum occurrence, defaults to 1.</xd:param>
-        <xd:param name="pMaxOccurrence">Maximum occurrence, defaults to 1.</xd:param>
-        <xd:return>RelaxNG pattern</xd:return>
-    </xd:doc>
-    <xsl:template name="atop:repeat-content" as="element()*">
-        <xsl:param name="pContent" as="element()*"/>
-        <xsl:param name="pMinOccurrence" as="xs:integer?"/>
-        <xsl:param name="pMaxOccurrence" as="xs:string?"/>
-        <xsl:if test="exists($pContent)">
-            <xsl:variable name="vMinOccurrence" as="xs:integer" select="($pMinOccurrence, 1)[1]"/>
-            <xsl:variable name="vMaxOccurrence" as="xs:string" select="($pMaxOccurrence, '1')[1]"/>
-            <xsl:for-each select="1 to $vMinOccurrence">
-                <xsl:sequence select="$pContent"/>
-            </xsl:for-each>
-            <xsl:choose>
-                <xsl:when test="$pMaxOccurrence eq 'unbounded'">
-                    <rng:zeroOrMore>
-                        <xsl:sequence select="$pContent"/>
-                    </rng:zeroOrMore>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:for-each select="($vMinOccurrence + 1) to xs:integer($vMaxOccurrence)">
-                        <rng:optional>
-                            <xsl:sequence select="$pContent"/>
-                        </rng:optional>
-                    </xsl:for-each>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
-    </xsl:template>
 
 </xsl:stylesheet>
