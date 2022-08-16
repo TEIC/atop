@@ -131,6 +131,26 @@
 
   </xsl:function>
 
+  <xsl:function name="atop:get-element-pattern-name" as="xs:string">
+    <xsl:param name="pElementSpec" as="element(elementSpec)"/>
+    <xsl:value-of select="concat($pElementSpec/ancestor::schemaSpec[1]/@prefix, $pElementSpec/@prefix, $pElementSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-pattern-name" as="xs:string">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:value-of select="concat($pClassSpec/ancestor::schemaSpec[1]/@prefix, $pClassSpec/@prefix, $pClassSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-macro-pattern-name" as="xs:string">
+    <xsl:param name="pMacroSpec" as="element(macroSpec)"/>
+    <xsl:value-of select="concat($pMacroSpec/ancestor::schemaSpec[1]/@prefix, $pMacroSpec/@prefix, $pMacroSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
+    <xsl:param name="pDataSpec" as="element(dataSpec)"/>
+    <xsl:value-of select="concat($pDataSpec/ancestor::schemaSpec[1]/@prefix, $pDataSpec/@prefix, $pDataSpec/@ident)"/>
+  </xsl:function>
+
   <xd:doc>
     <xd:desc>
       <xd:p>Given element content, an optional minimum, and an optional maximum occurrence, return a corresponding RelaxNG pattern.</xd:p>
