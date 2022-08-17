@@ -223,7 +223,20 @@ ignored and the members of the value list are provided.
   </xsl:template>
 
   <xsl:template match="classRef" as="element()+">
-    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
+    <xsl:variable name="vClassSpec" as="element(classSpec)*" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
+
+    <xsl:if test="empty($vClassSpec)">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is no class '{@key}' in the current schema {ancestor::schemaSpec/@ident}.</xsl:text>
+      </xsl:message>
+    </xsl:if>
+
+    <xsl:if test="count($vClassSpec) > 1">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is more then one class '{@key}' in the current schema {ancestor::schemaSpec/@ident}.</xsl:text>
+      </xsl:message>
+    </xsl:if>
+
     <!-- Create a reference to all class attribute patterns -->
     <xsl:for-each select="($vClassSpec, key('atop:classMembers', $vClassSpec, ancestor::schemaSpec)[self::classSpec])">
       <xsl:if test="attList">
