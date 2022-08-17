@@ -19,10 +19,12 @@
   <xsl:include href="modules/functions_module.xslt"/>
 
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
+    <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
+                  select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
       <rng:start>
-        <xsl:for-each select="if (@start) then tokenize(@start, '\s+') else 'TEI'">
-          <rng:ref name="{.}"/>
+        <xsl:for-each select="$vStartElementSpecs">
+          <rng:ref name="{atop:get-element-pattern-name(.)}"/>
         </xsl:for-each>
       </rng:start>
       <xsl:apply-templates mode="atop:anyElement">
