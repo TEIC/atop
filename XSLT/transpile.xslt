@@ -26,7 +26,7 @@
         </xsl:for-each>
       </rng:start>
       <xsl:apply-templates mode="atop:anyElement">
-        <xsl:with-param name="pDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
+        <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
       </xsl:apply-templates>
       <xsl:apply-templates/>
     </rng:grammar>
@@ -88,7 +88,7 @@
     </rng:choice>
   </xsl:template>
 
-  <xsl:template match="attList" priority="-10">
+  <xsl:template match="attList" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
       <xsl:text>The attribute list type '{@org}' is not supported. This version of only supports the types 'choice' and 'group'.</xsl:text>
     </xsl:message>
@@ -178,14 +178,16 @@ ignored and the members of the value list are provided.
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="valList" priority="-10">
+  <xsl:template match="valList" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
       <xsl:text>The value list type '{@type}' is not supported. This version of atop only supports the types 'open', 'semi', and 'closed'.</xsl:text>
     </xsl:message>
   </xsl:template>
 
   <xsl:template match="valItem" as="element(rng:value)">
-    <rng:value>{@ident}</rng:value>
+    <rng:value>
+      <xsl:text>{@ident}</xsl:text>
+    </rng:value>
   </xsl:template>
 
   <!-- Process members of model.contentPart -->
@@ -274,7 +276,7 @@ ignored and the members of the value list are provided.
   <xsl:mode name="atop:anyElement" on-no-match="shallow-skip"/>
 
   <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
-    <xsl:param name="pDefaultExceptions" as="xs:string*" tunnel="yes"/>
+    <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
     <xsl:variable name="vPatternName" as="xs:string" select="generate-id()"/>
     <xsl:variable name="vInScopePrefixes" as="xs:string*" select="in-scope-prefixes(.)"/>
@@ -284,11 +286,13 @@ ignored and the members of the value list are provided.
         <rng:anyName>
           <xsl:where-populated>
             <rng:except>
-              <xsl:for-each select="if (@except) then tokenize(@except, '\s+') else $pDefaultExceptions">
+              <xsl:for-each select="if (@except) then tokenize(@except, '\s+') else $tpDefaultExceptions">
                 <!-- Nota bene: teidata.namespaceOrName is ambiguous! -->
                 <xsl:choose>
                   <xsl:when test="(. castable as xs:Name) and contains(., ':') and (substring-before(., ':') = $vInScopePrefixes)">
-                    <rng:name>{.}</rng:name>
+                    <rng:name>
+                      <xsl:text>{.}</xsl:text>
+                    </rng:name>
                   </xsl:when>
                   <xsl:otherwise>
                     <rng:nsName ns="{.}"/>
@@ -326,14 +330,18 @@ ignored and the members of the value list are provided.
   <xsl:template match="dataRef[@name]" as="element(rng:data)">
     <rng:data type="{@name}">
       <xsl:if test="@restriction">
-        <rng:param name="pattern">{@restriction}</rng:param>
+        <rng:param name="pattern">
+          <xsl:text>{@restriction}</xsl:text>
+        </rng:param>
       </xsl:if>
       <xsl:apply-templates/>
     </rng:data>
   </xsl:template>
 
   <xsl:template match="dataFacet" as="element(rng:param)">
-    <rng:param name="{@name}">{@value}</rng:param>
+    <rng:param name="{@name}">
+      <xsl:text>{@value}</xsl:text>
+    </rng:param>
   </xsl:template>
 
   <xsl:template match="dataRef[@key]" as="element(rng:ref)">
