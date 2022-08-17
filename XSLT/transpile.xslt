@@ -211,7 +211,7 @@ ignored and the members of the value list are provided.
     <rng:text/>
   </xsl:template>
 
-  <xsl:template match="elementRef" as="element(rng:ref)">
+  <xsl:template match="elementRef" as="element()+">
     <xsl:variable name="vElementSpec" as="element(elementSpec)" select="key('atop:elementSpec', @key)"/>
     <xsl:call-template name="atop:repeat-content">
       <xsl:with-param name="pContent" as="element()*">
