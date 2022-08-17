@@ -21,6 +21,7 @@
   <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
   <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
+  <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
   <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
 
   <xd:doc>
