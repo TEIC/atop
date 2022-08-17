@@ -370,4 +370,8 @@ ignored and the members of the value list are provided.
     </xsl:message>
   </xsl:template>
 
+  <xsl:template match="rng:*" as="element()">
+    <xsl:sequence select="."/>
+  </xsl:template>
+
 </xsl:transform>
