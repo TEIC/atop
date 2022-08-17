@@ -270,9 +270,11 @@ ignored and the members of the value list are provided.
 
   </xsl:template>
 
-  <!-- anyElement is special. The special mode 'atop:anyElement' creates a
-       recursive RelaxNG pattern. We reference this pattern when
-       processing. -->
+  <xd:doc>
+    <xd:desc>
+      <xd:p>The tei:anyElement content model item is special as it creates a recursive RelaxNG pattern.</xd:p>
+    </xd:desc>
+  </xd:doc>
   <xsl:mode name="atop:anyElement" on-no-match="shallow-skip"/>
 
   <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
