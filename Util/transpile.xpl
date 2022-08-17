@@ -44,7 +44,7 @@
                        xpath-default-namespace="http://www.tei-c.org/ns/1.0">
           <xsl:mode on-no-match="shallow-copy"/>
           <xsl:key name="specItem" match="classSpec | dataSpec | elementSpec | macroSpec" use="@ident"/>
-          <xsl:template match="classRef | dataRef | elementRef | macroRef">
+          <xsl:template match="classRef | dataRef[@key] | elementRef | macroRef">
             <xsl:if test="key('specItem', @key)">
               <xsl:copy>
                 <xsl:apply-templates select="@* | node()"/>
