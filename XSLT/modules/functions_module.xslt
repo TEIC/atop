@@ -18,6 +18,11 @@
     </xd:desc>
   </xd:doc>
 
+  <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
+  <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
+  <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
+  <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
+
   <xd:doc>
     <xd:desc><ref name="atop:collapse-space">atop:collapse-space</ref> takes an xs:string as input
       and returns a string in which space has been normalized, but any leading or trailing space is
@@ -149,6 +154,32 @@
   <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
     <xsl:param name="pDataSpec" as="element(dataSpec)"/>
     <xsl:value-of select="concat($pDataSpec/ancestor::schemaSpec[1]/@prefix, $pDataSpec/@prefix, $pDataSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
+    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, ())"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
+    <xsl:param name="pElementSpec" as="element(elementSpec)*"/>
+
+    <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
+      <xsl:choose>
+        <xsl:when test="self::elementSpec and not(. = $pElementSpec)">
+          <xsl:sequence select="($pElementSpec, .)"/>
+        </xsl:when>
+        <xsl:when test="self::classSpec">
+          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message terminate="yes"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:function>
 
   <xd:doc>
