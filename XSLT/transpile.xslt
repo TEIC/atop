@@ -351,7 +351,7 @@ ignored and the members of the value list are provided.
     <rng:ref name="{atop:get-datatype-pattern-name($vDataSpec)}"/>
   </xsl:template>
 
-  <xsl:template match="dataRef[@ref]" as="empty-sequence()">
+  <xsl:template match="dataRef" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
       <xsl:text>Unsupported datatype specification reference. This version of atop only supports references to XML Schema datatypes (@name) and ODD datatype specifications (@key).</xsl:text>
     </xsl:message>
