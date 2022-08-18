@@ -400,4 +400,9 @@ ignored and the members of the value list are provided.
     <xsl:sequence select="."/>
   </xsl:template>
 
+  <xsl:template match="moduleRef[@url]" as="element()+">
+    <rng:externalRef href="{@url}"/>
+    <xsl:apply-templates/>
+  </xsl:template>
+
 </xsl:transform>
