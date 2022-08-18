@@ -154,7 +154,7 @@
 
   <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
     <xsl:param name="pDataSpec" as="element(dataSpec)"/>
-    <xsl:value-of select="concat($pDataSpec/ancestor::schemaSpec[1]/@prefix, $pDataSpec/@prefix, $pDataSpec/@ident)"/>
+    <xsl:value-of select="$pDataSpec/@ident"/>
   </xsl:function>
 
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
