@@ -53,7 +53,7 @@
         $ mkdir -p CODDs PLODDs
         $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
         $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f ; rm $f ; done ; cd .. )
-        $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/pare_down_compiled_to_PLODD.xslt -o:PLODDs/
+        $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
         $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .odd.odd.xml`.plodd ; done )
         $ for f in PLODDs/*.plodd ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/derivedSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
       </eg>
@@ -581,14 +581,13 @@
         <classSpec type="atts" ident="att.ascribed"  mode="delete"/>
         <classSpec type="atts" ident="att.ascribed.directed"  mode="delete"/>
         <classSpec type="atts" ident="att.cReferencing"  mode="delete"/>
-        <classSpec type="atts" ident="att.canonical"  mode="delete"/> <!--??-->
+        <classSpec type="atts" ident="att.canonical"  mode="delete"/>
         <classSpec type="atts" ident="att.datable"  mode="delete"/>
         <classSpec type="atts" ident="att.datable.custom"  mode="delete"/>
         <classSpec type="atts" ident="att.datable.iso"  mode="delete"/>
         <classSpec type="atts" ident="att.datable.w3c"  mode="delete"/>
         <classSpec type="atts" ident="att.declarable"  mode="delete"/>
         <classSpec type="atts" ident="att.declaring"  mode="delete"/>
-        <classSpec type="atts" ident="att.deprecated"  mode="delete"/> <!--??-->
         <classSpec type="atts" ident="att.dimensions"  mode="delete"/>
         <classSpec type="atts" ident="att.docStatus"  mode="delete"/>
         <classSpec type="atts" ident="att.global.responsibility"  mode="delete"/>
@@ -599,7 +598,7 @@
         <classSpec type="atts" ident="att.naming"  mode="delete"/>
         <classSpec type="atts" ident="att.notated"  mode="delete"/>
         <classSpec type="atts" ident="att.personal"  mode="delete"/>
-        <classSpec type="atts" ident="att.placement"  mode="delete"/> <!--??-->
+        <classSpec type="atts" ident="att.placement"  mode="delete"/>
         <classSpec type="atts" ident="att.predicate"  mode="delete"/>
         <classSpec type="atts" ident="att.ranging"  mode="delete"/>
         <classSpec type="atts" ident="att.sortable"  mode="delete"/>
