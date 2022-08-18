@@ -50,8 +50,8 @@
   <p:xslt>
     <p:documentation>
       As of 2022-08-17 the odds/odd2odd.xsl of the current ODD
-      processor specification items but does *not* remove references
-      to those items.
+      processor removes specification items but does *not* remove
+      references to those items.
     </p:documentation>
     <p:with-input port="stylesheet">
       <p:inline>
@@ -77,7 +77,7 @@
     </p:with-input>
   </p:xslt>
 
-  <p:validate-with-relax-ng>
+  <p:validate-with-relax-ng assert-valid="false">
     <p:with-input port="schema" href="../Schemas/relaxng.rnc"/>
   </p:validate-with-relax-ng>
 
