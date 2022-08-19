@@ -1,5 +1,6 @@
 <xsl:transform version="3.0" expand-text="yes"
                xpath-default-namespace="http://www.tei-c.org/ns/1.0"
+               xmlns:teix="http://www.tei-c.org/ns/Examples"
                xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                xmlns:atop="http://www.tei-c.org/ns/atop"
                xmlns:rng="http://relaxng.org/ns/structure/1.0"
@@ -8,7 +9,7 @@
                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xd:doc scope="stylesheet">
     <xd:desc>
-      <xd:p>Experimental Purified ODD to RelaxNG transpiler</xd:p>
+      <xd:p>Experimental Pruned, Localised ODD to RelaxNG transpiler</xd:p>
     </xd:desc>
   </xd:doc>
 
@@ -18,36 +19,68 @@
 
   <xsl:include href="modules/functions_module.xslt"/>
 
+  <xsl:param name="atop:pPatternPrefix" as="xs:string">
+    <xsl:choose>
+      <xsl:when test="//schemaSpec/@prefix"><xsl:sequence select="normalize-space( //schemaSpec/@prefix )"/></xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="normalize-space( ( //schemaSpec/@ident, //schemaSpec/@xml:id, 'tei')[1]||'_')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:param>
+
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
+    <xsl:variable name="vSchemaSpec" select="." as="element(schemaSpec)"/>
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
-                  select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
+                  select="key('atop:elementSpec', if (@start) then tokenize( @start ) else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+      <xsl:message select="'DEBUG: on schemaSpec #'||count(preceding::schemaSpec|ancestor-or-self::schemaSpec)||' pPatternPrefix='||$atop:pPatternPrefix"/>
+      <xsl:text>&#x0A;</xsl:text>
+      <xsl:comment> *** This is a derived schema, DO NOT EDIT! </xsl:comment>
+      <xsl:text>&#x0A;</xsl:text>
+      <xsl:comment> * To make changes … blah-blah-blah ⇐ TO BE IMPROVED </xsl:comment>
+      <xsl:text>&#x0A;</xsl:text>
+      <xsl:comment expand-text="yes"> * Derived from: {base-uri(.)} </xsl:comment>
+      <xsl:text>&#x0A;</xsl:text>
+      <xsl:comment expand-text="yes"> * Title: {/TEI/teiHeader/fileDesc/titleStmt/title[1]} </xsl:comment>
+      <xsl:text>&#x0A;</xsl:text>
+      <xsl:comment expand-text="yes"> * Created: {current-dateTime()} </xsl:comment>
+      <xsl:text>&#x0A;</xsl:text>
       <rng:start>
-        <xsl:for-each select="$vStartElementSpecs">
-          <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-        </xsl:for-each>
+        <xsl:choose>
+          <xsl:when test="count($vStartElementSpecs) gt 1">
+            <rng:choice>
+              <xsl:for-each select="$vStartElementSpecs">
+                <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name(.)}"/>
+              </xsl:for-each>
+            </rng:choice>
+          </xsl:when>
+          <xsl:otherwise>
+            <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name($vStartElementSpecs)}"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </rng:start>
       <xsl:apply-templates mode="atop:anyElement">
-        <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
+        <xsl:with-param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"
+                        select="tokenize( (@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1] )"/>
       </xsl:apply-templates>
       <xsl:apply-templates/>
     </rng:grammar>
   </xsl:template>
 
   <xsl:template match="macroSpec" as="element(rng:define)">
-    <rng:define name="{atop:get-macro-pattern-name(.)}">
+    <rng:define name="{$atop:pPatternPrefix||atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
 
   <xsl:template match="dataSpec" as="element(rng:define)">
-    <rng:define name="{atop:get-datatype-pattern-name(.)}">
+    <rng:define name="{$atop:pPatternPrefix||atop:get-datatype-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
 
   <xsl:template match="classSpec[attList]" as="element(rng:define)">
-    <rng:define name="{atop:get-class-pattern-name(.)}">
+    <rng:define name="{$atop:pPatternPrefix||atop:get-class-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
@@ -60,7 +93,7 @@
       <xsl:apply-templates/>
     </xsl:variable>
 
-    <rng:define name="{atop:get-element-pattern-name(.)}">
+    <rng:define name="{$atop:pPatternPrefix||atop:get-element-pattern-name(.)}">
       <rng:element name="{local-name-from-QName($vQName)}"
                    ns="{namespace-uri-from-QName($vQName)}">
         <xsl:choose>
@@ -76,24 +109,17 @@
   </xsl:template>
 
   <!-- An attribute list transpiles to the sequence or alternate
-       pattern. A fallback template catches unsupported attribute list
-       types. -->
-  <xsl:template match="attList[empty(@org) or @org = 'group']" as="element(rng:group)">
+       pattern. -->
+  <xsl:template match="attList[empty(@org) or @org eq 'group']" as="element(rng:group)">
     <rng:group>
       <xsl:apply-templates/>
     </rng:group>
   </xsl:template>
 
-  <xsl:template match="attList[@org = 'choice']" as="element(rng:choice)">
+  <xsl:template match="attList[@org eq 'choice']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
-  </xsl:template>
-
-  <xsl:template match="attList" priority="-10" as="empty-sequence()">
-    <xsl:message terminate="yes">
-      <xsl:text>The attribute list type '{@org}' is not supported. This version of only supports the types 'choice' and 'group'.</xsl:text>
-    </xsl:message>
   </xsl:template>
 
   <!-- An attribute specifcation transpiles to an (optional) attribute
@@ -128,7 +154,7 @@ ignored and the members of the value list are provided.
 
       -->
       <xsl:choose>
-        <xsl:when test="valList[empty(@type) or @type = 'open']">
+        <xsl:when test="valList[empty(@type) or @type eq 'open']">
           <a:documentation>
             <xsl:variable name="vSampleValues" as="xs:string*">
               <xsl:for-each select="valList/valItem">
@@ -139,12 +165,12 @@ ignored and the members of the value list are provided.
           </a:documentation>
           <xsl:apply-templates select="datatype"/>
         </xsl:when>
-        <xsl:when test="valList[@type = ('semi')]">
+        <xsl:when test="valList[@type eq ('semi')]">
           <rng:choice>
             <xsl:apply-templates/>
           </rng:choice>
         </xsl:when>
-        <xsl:when test="valList[@type = ('closed')]">
+        <xsl:when test="valList[@type eq ('closed')]">
           <xsl:apply-templates select="valList"/>
         </xsl:when>
         <xsl:otherwise>
@@ -168,22 +194,16 @@ ignored and the members of the value list are provided.
     </rng:list>
   </xsl:template>
 
-  <xsl:template match="valList[empty(@type) or @type = 'open']" as="empty-sequence()"/>
+  <xsl:template match="valList[empty(@type) or @type eq 'open']" as="empty-sequence()"/>
 
-  <xsl:template match="valList[@type = ('closed')]" as="element(rng:choice)">
+  <xsl:template match="valList[@type eq 'closed']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
   </xsl:template>
 
-  <xsl:template match="valList[@type = ('semi')]" as="element(rng:value)+">
+  <xsl:template match="valList[@type eq 'semi']" as="element(rng:value)+">
     <xsl:apply-templates/>
-  </xsl:template>
-
-  <xsl:template match="valList" priority="-10" as="empty-sequence()">
-    <xsl:message terminate="yes">
-      <xsl:text>The value list type '{@type}' is not supported. This version of atop only supports the types 'open', 'semi', and 'closed'.</xsl:text>
-    </xsl:message>
   </xsl:template>
 
   <xsl:template match="valItem" as="element(rng:value)">
@@ -217,7 +237,7 @@ ignored and the members of the value list are provided.
     <xsl:variable name="vElementSpec" as="element(elementSpec)" select="key('atop:elementSpec', @key)"/>
     <xsl:call-template name="atop:repeat-content">
       <xsl:with-param name="pContent" as="element()*">
-        <rng:ref name="{atop:get-element-pattern-name($vElementSpec)}"/>
+        <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name($vElementSpec)}"/>
       </xsl:with-param>
       <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
       <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
@@ -242,7 +262,7 @@ ignored and the members of the value list are provided.
     <!-- Create a reference to all class attribute patterns -->
     <xsl:for-each select="($vClassSpec, key('atop:classMembers', $vClassSpec, ancestor::schemaSpec)[self::classSpec])">
       <xsl:if test="attList">
-        <rng:ref name="{atop:get-class-pattern-name(.)}"/>
+        <rng:ref name="{$atop:pPatternPrefix||atop:get-class-pattern-name(.)}"/>
       </xsl:if>
     </xsl:for-each>
 
@@ -269,16 +289,16 @@ ignored and the members of the value list are provided.
                 <xsl:choose>
                   <xsl:when test="$vExpand eq 'sequenceRepeatable'">
                     <rng:oneOrMore>
-                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                      <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name(.)}"/>
                     </rng:oneOrMore>
                   </xsl:when>
                   <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
                     <rng:zeroOrMore>
-                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                      <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name(.)}"/>
                     </rng:zeroOrMore>
                   </xsl:when>
                   <xsl:otherwise>
-                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                    <rng:ref name="{$atop:pPatternPrefix||atop:get-element-pattern-name(.)}"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
@@ -319,7 +339,7 @@ ignored and the members of the value list are provided.
   <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
     <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
-    <xsl:variable name="vPatternName" as="xs:string" select="generate-id()"/>
+    <xsl:variable name="vPatternName" as="xs:string" select="$atop:pPatternPrefix||generate-id()"/>
     <xsl:variable name="vInScopePrefixes" as="xs:string*" select="in-scope-prefixes(.)"/>
 
     <rng:define name="{$vPatternName}">
@@ -327,7 +347,7 @@ ignored and the members of the value list are provided.
         <rng:anyName>
           <xsl:where-populated>
             <rng:except>
-              <xsl:for-each select="if (@except) then tokenize(@except, '\s+') else $tpDefaultExceptions">
+              <xsl:for-each select="if (@except) then tokenize(@except) else $tpDefaultExceptions">
                 <!-- Nota bene: teidata.namespaceOrName is ambiguous! -->
                 <xsl:choose>
                   <xsl:when test="(. castable as xs:Name) and contains(., ':') and (substring-before(., ':') = $vInScopePrefixes)">
@@ -360,12 +380,12 @@ ignored and the members of the value list are provided.
   </xsl:template>
 
   <xsl:template match="anyElement" as="element(rng:ref)">
-    <rng:ref name="{generate-id()}"/>
+    <rng:ref name="{$atop:pPatternPrefix||generate-id()}"/>
   </xsl:template>
 
   <xsl:template match="macroRef" as="element(rng:ref)">
     <xsl:variable name="vMacroSpec" as="element(macroSpec)" select="key('atop:macroSpec', @key, ancestor::schemaSpec)"/>
-    <rng:ref name="{atop:get-macro-pattern-name($vMacroSpec)}"/>
+    <rng:ref name="{$atop:pPatternPrefix||atop:get-macro-pattern-name($vMacroSpec)}"/>
   </xsl:template>
 
   <xsl:template match="dataRef[@name]" as="element(rng:data)">
@@ -387,10 +407,11 @@ ignored and the members of the value list are provided.
 
   <xsl:template match="dataRef[@key]" as="element(rng:ref)">
     <xsl:variable name="vDataSpec" as="element(dataSpec)" select="key('atop:dataSpec', @key, ancestor::schemaSpec)"/>
-    <rng:ref name="{atop:get-datatype-pattern-name($vDataSpec)}"/>
+    <rng:ref name="{$atop:pPatternPrefix||atop:get-datatype-pattern-name($vDataSpec)}"/>
   </xsl:template>
 
   <xsl:template match="dataRef" priority="-10" as="empty-sequence()">
+    <!-- i.e., dataRef[@ref], or (bizzarely) dataRef[not(@name|@key|@ref)] -->
     <xsl:message terminate="yes">
       <xsl:text>Unsupported datatype specification reference. This version of atop only supports references to XML Schema datatypes (@name) and ODD datatype specifications (@key).</xsl:text>
     </xsl:message>
