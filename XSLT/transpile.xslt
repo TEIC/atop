@@ -17,6 +17,7 @@
   <xsl:output indent="yes"/>
 
   <xsl:include href="modules/functions_module.xslt"/>
+  <xsl:include href="assemble-relaxng.xslt"/>
 
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
@@ -396,8 +397,29 @@ ignored and the members of the value list are provided.
     </xsl:message>
   </xsl:template>
 
+  <xsl:template match="rng:define/@name | rng:ref/@name" as="attribute(name)">
+    <xsl:param name="tpNamePrefix" tunnel="yes" as="xs:string?"/>
+    <xsl:attribute name="name" select="concat($tpNamePrefix, .)"/>
+  </xsl:template>
+
   <xsl:template match="rng:*" as="element()">
-    <xsl:sequence select="."/>
+    <xsl:copy>
+      <xsl:sequence select="@*"/>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+
+  <xsl:template match="moduleRef[@url]/content" as="element(content)">
+    <xsl:variable name="vInclusion" as="node()">
+      <xsl:apply-templates mode="atop:rngCombine" select="doc(../@url)"/>
+    </xsl:variable>
+    <xsl:copy>
+      <xsl:sequence select="@*"/>
+      <xsl:apply-templates select="$vInclusion">
+        <xsl:with-param name="tpPrefix" as="xs:string" select="../@prefix"/>
+      </xsl:apply-templates>
+      <xsl:apply-templates select="node()"/>
+    </xsl:copy>
   </xsl:template>
 
 </xsl:transform>
