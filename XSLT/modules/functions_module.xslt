@@ -18,10 +18,27 @@
     </xd:desc>
   </xd:doc>
 
+  <xd:doc>
+    <xd:desc>
+      <xd:ref name="atop:dataSpec"/>,
+      <xd:ref name="atop:classSpec"/>,
+      <xd:ref name="atop:elementSpec"/>,
+      <xd:ref name="atop:macroSpec"/>:
+      Keys for rapid lookup of *Spec elements in the schema by their 
+      @idents.
+    </xd:desc>
+  </xd:doc>
   <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
   <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
   <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:classMembers">atop:classMembers</xd:ref>: Key for 
+    rapid lookup of elementSpecs or classSpecs by their class membership.
+    NOTE: This doesn't yet handle nested membership (x is a member of y which is a 
+    member of z, giving x membership of z). This might be better handled by a map.
+    </xd:desc>
+  </xd:doc>
   <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
 
   <xd:doc>

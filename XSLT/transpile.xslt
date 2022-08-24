@@ -18,6 +18,9 @@
 
   <xsl:include href="modules/functions_module.xslt"/>
 
+  <xd:doc>
+    <xd:desc>This</xd:desc>
+  </xd:doc>
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
                   select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
