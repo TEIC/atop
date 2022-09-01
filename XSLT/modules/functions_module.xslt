@@ -23,6 +23,9 @@
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
   <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
   <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
+  <xsl:key name="atop:prefixDef" match="prefixDef" use="@ident"/>
+
+  <xsl:variable name="atop:pUriSchemeRegex" as="xs:string">^[a-z][a-z0-9+\-.]*:</xsl:variable>
 
   <xd:doc>
     <xd:desc><ref name="atop:collapse-space">atop:collapse-space</ref> takes an xs:string as input
@@ -154,19 +157,20 @@
 
   <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
     <xsl:param name="pDataSpec" as="element(dataSpec)"/>
-    <xsl:value-of select="concat($pDataSpec/ancestor::schemaSpec[1]/@prefix, $pDataSpec/@prefix, $pDataSpec/@ident)"/>
+    <xsl:value-of select="$pDataSpec/@ident"/>
   </xsl:function>
 
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
-    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, ())"/>
+    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, (), ())"/>
   </xsl:function>
 
   <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
     <xsl:param name="pElementSpec" as="element(elementSpec)*"/>
+    <xsl:param name="pSeenClassSpec" as="element(classSpec)*"/>
 
     <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
       <xsl:choose>
@@ -174,7 +178,12 @@
           <xsl:sequence select="($pElementSpec, .)"/>
         </xsl:when>
         <xsl:when test="self::classSpec">
-          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec)"/>
+          <xsl:if test=". = $pSeenClassSpec">
+            <xsl:message terminate="yes">
+              <xsl:text>Circular class membership reference</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec, ($pSeenClassSpec, .))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes"/>
@@ -218,5 +227,37 @@
       </xsl:choose>
     </xsl:if>
   </xsl:template>
+
+  <xsl:function name="atop:resolve-private-uri" as="xs:string">
+    <xsl:param name="pUri" as="xs:string"/>
+    <xsl:param name="pContext" as="node()"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($pUri, 'tei:')">
+        <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
+          <xsl:message terminate="yes">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+        </xsl:if>
+        <xsl:value-of select="concat('http://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
+      </xsl:when>
+      <xsl:when test="matches($pUri, $atop:pUriSchemeRegex)">
+        <xsl:variable name="vPrefix" as="xs:string" select="substring-before($pUri, ':')"/>
+        <xsl:variable name="vPath" as="xs:string" select="substring-after($pUri, ':')"/>
+        <xsl:variable name="vDef" as="element(prefixDef)?" select="key('atop:prefixDef', $vPrefix, $pContext)"/>
+        <xsl:choose>
+          <xsl:when test="empty($vDef)">
+            <xsl:value-of select="$pUri"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="vUri" as="xs:string" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern)"/>
+            <xsl:value-of select="atop:resolve-private-uri($vUri, $pContext)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$pUri"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:function>
 
 </xsl:stylesheet>
