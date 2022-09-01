@@ -163,13 +163,14 @@
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
-    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, ())"/>
+    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, (), ())"/>
   </xsl:function>
 
   <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
     <xsl:param name="pElementSpec" as="element(elementSpec)*"/>
+    <xsl:param name="pSeenClassSpec" as="element(classSpec)*"/>
 
     <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
       <xsl:choose>
@@ -177,7 +178,12 @@
           <xsl:sequence select="($pElementSpec, .)"/>
         </xsl:when>
         <xsl:when test="self::classSpec">
-          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec)"/>
+          <xsl:if test=". = $pSeenClassSpec">
+            <xsl:message terminate="yes">
+              <xsl:text>Circular class membership reference</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec, ($pSeenClassSpec, .))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes"/>
