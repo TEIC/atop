@@ -189,4 +189,63 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Scenarios for testing class membership retrieval">
+    <x:scenario label="Infinite recursion test">
+      <!-- Here we test a situation in which the input schemaSpec is broken in that it
+      has circular class membership references. -->
+      <x:variable name="schemaSpec" as="element(tei:schemaSpec)">
+        <schemaSpec xmlns="http://www.tei-c.org/ns/1.0">
+          <classSpec ident="att.hasOne" type="atts">
+            <classes>
+              <memberOf key="att.hasTwo"/>
+            </classes>
+            <attList>
+              <attDef ident="one">
+                <datatype>
+                  <dataRef name="token"/>
+                </datatype>
+              </attDef>
+            </attList>
+          </classSpec>
+          <classSpec ident="att.hasTwo" type="atts">
+            <classes>
+              <memberOf key="att.hasOne"/>
+            </classes>
+            <attList>
+              <attDef ident="two">
+                <datatype>
+                  <dataRef name="token"/>
+                </datatype>
+              </attDef>
+            </attList>
+          </classSpec>
+          <elementSpec ident="thing">
+            <gloss>a thing</gloss>
+            <classes>
+              <memberOf key="att.hasOne"/>
+            </classes>
+            <content>
+              <textNode/>
+            </content>
+          </elementSpec>
+        </schemaSpec>
+      </x:variable>
+      <x:call function="atop:get-class-members">
+        <x:param name="classSpec" select="$schemaSpec/tei:classSpec[@ident='att.hasTwo']"/>
+        <x:param name="schemaSpec" select="$schemaSpec"/>
+      </x:call>
+      <x:expect label="Single element return">
+        <elementSpec xmlns="http://www.tei-c.org/ns/1.0" ident="thing">
+          <gloss>a thing</gloss>
+          <classes>
+            <memberOf key="att.hasOne"/>
+          </classes>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+      </x:expect>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>
