@@ -179,7 +179,7 @@
         </xsl:when>
         <xsl:when test="self::classSpec">
           <xsl:if test=". = $pSeenClassSpec">
-            <xsl:message terminate="yes">
+            <xsl:message terminate="yes" select="'FATAL error: circular class reference.'" error-code="atop:error-circularClassReference">
               <xsl:text>Circular class membership reference</xsl:text>
             </xsl:message>
           </xsl:if>
