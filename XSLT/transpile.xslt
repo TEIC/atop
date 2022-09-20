@@ -135,12 +135,12 @@ ignored and the members of the value list are provided.
           </a:documentation>
           <xsl:apply-templates select="datatype"/>
         </xsl:when>
-        <xsl:when test="valList[@type = ('semi')]">
+        <xsl:when test="valList[@type eq 'semi']">
           <rng:choice>
             <xsl:apply-templates/>
           </rng:choice>
         </xsl:when>
-        <xsl:when test="valList[@type = ('closed')]">
+        <xsl:when test="valList[@type eq 'closed']">
           <xsl:apply-templates select="valList"/>
         </xsl:when>
         <xsl:otherwise>
@@ -166,13 +166,13 @@ ignored and the members of the value list are provided.
 
   <xsl:template match="valList[empty(@type) or @type = 'open']" as="empty-sequence()"/>
 
-  <xsl:template match="valList[@type = ('closed')]" as="element(rng:choice)">
+  <xsl:template match="valList[@type eq 'closed']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
   </xsl:template>
 
-  <xsl:template match="valList[@type = ('semi')]" as="element(rng:value)+">
+  <xsl:template match="valList[@type eq 'semi']" as="element(rng:value)+">
     <xsl:apply-templates/>
   </xsl:template>
 
