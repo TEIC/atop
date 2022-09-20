@@ -79,8 +79,7 @@
   </xsl:template>
 
   <!-- An attribute list transpiles to the sequence or alternate
-       pattern. A fallback template catches unsupported attribute list
-       types. -->
+       pattern. -->
   <xsl:template match="attList[empty(@org) or @org = 'group']" as="element(rng:group)">
     <rng:group>
       <xsl:apply-templates/>
@@ -91,12 +90,6 @@
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
-  </xsl:template>
-
-  <xsl:template match="attList" priority="-10" as="empty-sequence()">
-    <xsl:message terminate="yes">
-      <xsl:text>The attribute list type '{@org}' is not supported. This version of only supports the types 'choice' and 'group'.</xsl:text>
-    </xsl:message>
   </xsl:template>
 
   <!-- An attribute specifcation transpiles to an (optional) attribute
