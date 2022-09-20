@@ -8,7 +8,7 @@
                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xd:doc scope="stylesheet">
     <xd:desc>
-      <xd:p>Experimental Purified ODD to RelaxNG transpiler</xd:p>
+      <xd:p>Experimental Pruned, Localized ODD to RelaxNG transpiler</xd:p>
     </xd:desc>
   </xd:doc>
 
