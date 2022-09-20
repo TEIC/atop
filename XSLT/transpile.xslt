@@ -25,7 +25,9 @@
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
       <rng:start>
         <xsl:for-each select="$vStartElementSpecs">
-          <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+          <rng:choice>
+            <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+          </rng:choice>
         </xsl:for-each>
       </rng:start>
       <xsl:apply-templates mode="atop:anyElement">
