@@ -1,4 +1,9 @@
 <project>
+
+  <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+    <classpath location="Lib/jing.jar"/>
+  </taskdef>
+
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
 
   <target name="test.xspec" description="Run all XSpec tests">
@@ -7,6 +12,17 @@
       <param name="files" expression="${xspec.files}"/>
     </xslt>
     <subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>
+  </target>
+
+  <target name="transpile" description="Run the experimental transpiler">
+    <tempfile destDir="${java.io.tmpdir}" suffix=".rng" property="transpile.odd.rng"/>
+    <xslt style="XSLT/transpile.xslt" in="Tests/resources/in_vitro_ODDS/transpile.odd"
+          out="${transpile.odd.rng}">
+      <classpath location="lib/saxon-he-11.jar"/>
+    </xslt>
+    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
+      <fileset file="${transpile.odd.rng}"/>
+    </jing>
   </target>
 
 </project>

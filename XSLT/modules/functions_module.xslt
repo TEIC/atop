@@ -18,6 +18,15 @@
     </xd:desc>
   </xd:doc>
 
+  <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
+  <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
+  <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
+  <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
+  <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
+  <xsl:key name="atop:prefixDef" match="prefixDef" use="@ident"/>
+
+  <xsl:variable name="atop:pUriSchemeRegex" as="xs:string">^[a-z][a-z0-9+\-.]*:</xsl:variable>
+
   <xd:doc>
     <xd:desc><ref name="atop:collapse-space">atop:collapse-space</ref> takes an xs:string as input
       and returns a string in which space has been normalized, but any leading or trailing space is
@@ -128,6 +137,126 @@
     <xsl:variable name="vUri" as="xs:string" select="($pAttDef/@ns, '')[1]"/>
 
     <xsl:sequence select="QName($vUri, $vName)"/>
+
+  </xsl:function>
+
+  <xsl:function name="atop:get-element-pattern-name" as="xs:string">
+    <xsl:param name="pElementSpec" as="element(elementSpec)"/>
+    <xsl:value-of select="concat($pElementSpec/ancestor::schemaSpec[1]/@prefix, $pElementSpec/@prefix, $pElementSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-pattern-name" as="xs:string">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:value-of select="concat($pClassSpec/ancestor::schemaSpec[1]/@prefix, $pClassSpec/@prefix, $pClassSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-macro-pattern-name" as="xs:string">
+    <xsl:param name="pMacroSpec" as="element(macroSpec)"/>
+    <xsl:value-of select="concat($pMacroSpec/ancestor::schemaSpec[1]/@prefix, $pMacroSpec/@prefix, $pMacroSpec/@ident)"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
+    <xsl:param name="pDataSpec" as="element(dataSpec)"/>
+    <xsl:value-of select="$pDataSpec/@ident"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
+    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, (), ())"/>
+  </xsl:function>
+
+  <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
+    <xsl:param name="pClassSpec" as="element(classSpec)"/>
+    <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
+    <xsl:param name="pElementSpec" as="element(elementSpec)*"/>
+    <xsl:param name="pSeenClassSpec" as="element(classSpec)*"/>
+
+    <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
+      <xsl:choose>
+        <xsl:when test="self::elementSpec and not(. = $pElementSpec)">
+          <xsl:sequence select="($pElementSpec, .)"/>
+        </xsl:when>
+        <xsl:when test="self::classSpec">
+          <xsl:if test=". = $pSeenClassSpec">
+            <xsl:message terminate="yes" select="'FATAL error: circular class reference.'" error-code="atop:error-circularClassReference">
+              <xsl:text>Circular class membership reference</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec, ($pSeenClassSpec, .))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message terminate="yes"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
+  </xsl:function>
+
+  <xd:doc>
+    <xd:desc>
+      <xd:p>Given element content, an optional minimum, and an optional maximum occurrence, return a corresponding RelaxNG pattern.</xd:p>
+    </xd:desc>
+    <xd:param name="pContent">Element content</xd:param>
+    <xd:param name="pMinOccurrence">Minimum occurrence, defaults to 1.</xd:param>
+    <xd:param name="pMaxOccurrence">Maximum occurrence, defaults to 1.</xd:param>
+    <xd:return>RelaxNG pattern</xd:return>
+  </xd:doc>
+  <xsl:template name="atop:repeat-content" as="element()*">
+    <xsl:param name="pContent" as="element()*"/>
+    <xsl:param name="pMinOccurrence" as="xs:integer?"/>
+    <xsl:param name="pMaxOccurrence" as="xs:string?"/>
+    <xsl:if test="exists($pContent)">
+      <xsl:variable name="vMinOccurrence" as="xs:integer" select="($pMinOccurrence, 1)[1]"/>
+      <xsl:variable name="vMaxOccurrence" as="xs:string" select="($pMaxOccurrence, '1')[1]"/>
+      <xsl:for-each select="1 to $vMinOccurrence">
+        <xsl:sequence select="$pContent"/>
+      </xsl:for-each>
+      <xsl:choose>
+        <xsl:when test="$pMaxOccurrence eq 'unbounded'">
+          <rng:zeroOrMore>
+            <xsl:sequence select="$pContent"/>
+          </rng:zeroOrMore>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:for-each select="($vMinOccurrence + 1) to xs:integer($vMaxOccurrence)">
+            <rng:optional>
+              <xsl:sequence select="$pContent"/>
+            </rng:optional>
+          </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:function name="atop:resolve-private-uri" as="xs:string">
+    <xsl:param name="pUri" as="xs:string"/>
+    <xsl:param name="pContext" as="node()"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($pUri, 'tei:')">
+        <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
+          <xsl:message terminate="yes">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+        </xsl:if>
+        <xsl:value-of select="concat('http://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
+      </xsl:when>
+      <xsl:when test="matches($pUri, $atop:pUriSchemeRegex)">
+        <xsl:variable name="vPrefix" as="xs:string" select="substring-before($pUri, ':')"/>
+        <xsl:variable name="vPath" as="xs:string" select="substring-after($pUri, ':')"/>
+        <xsl:variable name="vDef" as="element(prefixDef)?" select="key('atop:prefixDef', $vPrefix, $pContext)"/>
+        <xsl:choose>
+          <xsl:when test="empty($vDef)">
+            <xsl:value-of select="$pUri"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="vUri" as="xs:string" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern)"/>
+            <xsl:value-of select="atop:resolve-private-uri($vUri, $pContext)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$pUri"/>
+      </xsl:otherwise>
+    </xsl:choose>
 
   </xsl:function>
 
