@@ -125,6 +125,7 @@
                 test="local-name-from-QName($x:result) eq 'foo'"/>
     </x:scenario>
   </x:scenario>
+  
 
   <x:scenario label="Scenarios for testing get-element-qname">
     <x:scenario label="for an elementSpec with explicit @ns">
@@ -175,6 +176,15 @@
       </x:call>
       <x:expect label="returns a QName with a name part that equals the child altIdent element"
                 test="local-name-from-QName($x:result) eq 'bar'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Scenarios for testing atop:get-element-pattern-name">
+    <x:scenario label="Situation where both element and schemaSpec have @prefix">
+      <x:call function="atop:get-element-pattern-name">
+        <x:param name="pSpec" as="element(tei:elementSpec)" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='generic']/tei:elementSpec[@ident='hi']"/>
+      </x:call>
+      <x:expect label="Constructed pattern name." select="'generichi'"/>
     </x:scenario>
   </x:scenario>
   

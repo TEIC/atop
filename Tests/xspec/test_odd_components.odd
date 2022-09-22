@@ -21,6 +21,13 @@
    </teiHeader>
    <text>
       <body>
+         <schemaSpec ident="generic" prefix="gen">
+            <elementSpec ident="hi" prefix="eric">
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+         </schemaSpec>
          <schemaSpec ident="circularClassReference">
             <classSpec ident="att.ccrHasOne" type="atts">
                <classes>
