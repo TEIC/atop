@@ -18,14 +18,32 @@
     </xd:desc>
   </xd:doc>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:dataSpec"/>, <xd:ref name="atop:classSpec"/>, 
+      <xd:ref name="atop:elementSpec"/>, and <xd:ref name="atop:macroSpec"/> are
+      handy keys for accessing elements by their idents.</xd:desc> 
+  </xd:doc>
   <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
   <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
   <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:classMembers"/> is a key for accessing elementSpecs and classSpecs
+    by the idents of the classes they are direct members of.</xd:desc>
+  </xd:doc>
   <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:prefixDef"/> is a key to prefixDef elements by their idents.</xd:desc>
+  </xd:doc>
   <xsl:key name="atop:prefixDef" match="prefixDef" use="@ident"/>
 
-  <xsl:variable name="atop:pUriSchemeRegex" as="xs:string">^[a-z][a-z0-9+\-.]*:</xsl:variable>
+  <xd:doc>
+    <xd:desc><ref name="atop:vUriSchemeRegex"/>: a regular expression for matching the prefixes
+    of Private Uri Schemes.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vUriSchemeRegex" as="xs:string">^[a-z][a-z0-9+\-.]*:</xsl:variable>
 
   <xd:doc>
     <xd:desc><ref name="atop:collapse-space">atop:collapse-space</ref> takes an xs:string as input
@@ -239,7 +257,7 @@
         </xsl:if>
         <xsl:value-of select="concat('http://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
-      <xsl:when test="matches($pUri, $atop:pUriSchemeRegex)">
+      <xsl:when test="matches($pUri, $atop:vUriSchemeRegex)">
         <xsl:variable name="vPrefix" as="xs:string" select="substring-before($pUri, ':')"/>
         <xsl:variable name="vPath" as="xs:string" select="substring-after($pUri, ':')"/>
         <xsl:variable name="vDef" as="element(prefixDef)?" select="key('atop:prefixDef', $vPrefix, $pContext)"/>

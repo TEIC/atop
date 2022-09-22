@@ -91,9 +91,11 @@
 
     <pattern id="no-literal-text">
         <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:doc)]">
-            <assert test="parent::xsl:text">
+            <assert test="parent::xsl:text or parent::xsl:variable or parent::xsl:param">
                 ERROR: Literal text should always be in an xsl:text
                 element or in the @select attribute of xsl:sequence.
+                Exceptions are variables and parameters, where literal
+                text allows us to avoid confusing escape-character requirements.
             </assert>
         </rule>
     </pattern>
