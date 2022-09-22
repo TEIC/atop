@@ -193,59 +193,11 @@
     <x:scenario label="Infinite recursion test" catch="yes">
       <!-- Here we test a situation in which the input schemaSpec is broken in that it
       has circular class membership references. -->
-      <x:variable name="schemaSpec" as="element(tei:schemaSpec)">
-        <schemaSpec xmlns="http://www.tei-c.org/ns/1.0">
-          <classSpec ident="att.hasOne" type="atts">
-            <classes>
-              <memberOf key="att.hasTwo"/>
-            </classes>
-            <attList>
-              <attDef ident="one">
-                <datatype>
-                  <dataRef name="token"/>
-                </datatype>
-              </attDef>
-            </attList>
-          </classSpec>
-          <classSpec ident="att.hasTwo" type="atts">
-            <classes>
-              <memberOf key="att.hasOne"/>
-            </classes>
-            <attList>
-              <attDef ident="two">
-                <datatype>
-                  <dataRef name="token"/>
-                </datatype>
-              </attDef>
-            </attList>
-          </classSpec>
-          <elementSpec ident="thing">
-            <gloss>a thing</gloss>
-            <classes>
-              <memberOf key="att.hasOne"/>
-            </classes>
-            <content>
-              <textNode/>
-            </content>
-          </elementSpec>
-        </schemaSpec>
-      </x:variable>
       <x:call function="atop:get-class-members">
-        <x:param name="classSpec" select="$schemaSpec/tei:classSpec[@ident='att.hasTwo']"/>
-        <x:param name="schemaSpec" select="$schemaSpec"/>
+        <x:param name="classSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='circularClassReference']/tei:classSpec[@ident='att.ccrHasTwo']"/>
+        <x:param name="schemaSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='circularClassReference']"/>
       </x:call>
-      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-circularClassReference')"/><!--
-      <x:expect label="Single element return">
-        <elementSpec xmlns="http://www.tei-c.org/ns/1.0" ident="thing">
-          <gloss>a thing</gloss>
-          <classes>
-            <memberOf key="att.hasOne"/>
-          </classes>
-          <content>
-            <textNode/>
-          </content>
-        </elementSpec>
-      </x:expect>-->
+      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-circularClassReference')"/>
     </x:scenario>
   </x:scenario>
   

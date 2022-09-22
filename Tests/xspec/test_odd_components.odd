@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>ODD file containing components used for ATOP XSpec tests</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Free to anyone for any purpose</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Born-digital.</p>
+            <p>This file contains individual components used as input to XSpec
+            tests. We store them here to keep large inputs separate from the XSpec
+            scenarios for easier debugging and reuse.</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <schemaSpec ident="circularClassReference">
+            <classSpec ident="att.ccrHasOne" type="atts">
+               <classes>
+                  <memberOf key="att.ccrHasTwo"/>
+               </classes>
+               <attList>
+                  <attDef ident="ccrOne">
+                     <datatype>
+                        <dataRef name="token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.ccrHasTwo" type="atts">
+               <classes>
+                  <memberOf key="att.ccrHasOne"/>
+               </classes>
+               <attList>
+                  <attDef ident="ccrhasTwo">
+                     <datatype>
+                        <dataRef name="token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            <elementSpec ident="ccrThing">
+               <gloss>a thing</gloss>
+               <classes>
+                  <memberOf key="att.ccrHasOne"/>
+               </classes>
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
