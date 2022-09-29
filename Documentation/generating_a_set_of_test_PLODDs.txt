@@ -1,0 +1,10 @@
+$ mkdir -p /tmp/ATOPtst/DIRA /tmp/ATOPtst/DIRB /tmp/ATOPtst/DIRC
+$ cp -p `find . -name '*.odd'` ~/Documents/textbase/schema/wwp-store.odd ~/Documents/WWPweb/research/projects/manuscripts/emerson/schema/mme.odd /tmp/ATOPtst/DIRA
+$ cd /tmp/ATOPtst/DIRA
+$ time for f in * ; do echo "---------$f:" ; ~/Documents/Stylesheets/bin/teitoodd --localsource=/home/syd/Documents/Stylesheets/source/p5subset.xml --debug $f ; done
+$ cd ..
+$ for f in DIRA/*.odd.odd ; do echo "---------$f:" ; mv $f DIRB/`basename $f .odd.odd`.cmpodd ; done
+$ time saxon -s:DIRB/ -xsl:/home/syd/Documents/atop/XSLT/pare_down_compiled_to_PLODD.xslt -o:DIRC/
+$ for f in DIRC/*.cmpodd.xml ; do echo "---------$f:" ; mv $f DIRC/`basename $f .cmpodd.xml`.plodd ; done
+$ cd DIRC
+$ time for f in *.pldd; do echo "---------$f:" ; jing -ci ~/Documents/atop/Schemas/derivedSchemaSpecification.rnc $f ; echo "" ; done > ../relaxng_validation_report.txt
