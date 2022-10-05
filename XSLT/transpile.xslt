@@ -12,6 +12,9 @@
     </xd:desc>
   </xd:doc>
 
+  <xd:doc>
+    <xd:desc>This is essentially an identity transform.</xd:desc>
+  </xd:doc>
   <xsl:mode on-no-match="shallow-skip"/>
 
   <xsl:output indent="yes"/>
@@ -19,7 +22,11 @@
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble-relaxng.xslt"/>
 
+  <xd:doc>
+    <xd:desc>The TEI schemaSpec becomes the rng:grammar.</xd:desc>
+  </xd:doc>
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
+    <!-- We assume that if there is no @start attribute, the start element is TEI. -->
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
                   select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
@@ -319,6 +326,12 @@ ignored and the members of the value list are provided.
   </xd:doc>
   <xsl:mode name="atop:anyElement" on-no-match="shallow-skip"/>
 
+  <xd:doc>
+    <xd:desc></xd:desc>
+    <xd:param name="tpDefaultExceptions" as="xs:string" tunnel="yes">A list of namespaces and/or prefixed
+    element names to be excluded by default from anyName in the schema; this is taken from 
+    schemaSpec/@defaultExceptions.</xd:param>
+  </xd:doc>
   <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
     <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
