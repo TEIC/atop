@@ -341,24 +341,46 @@ ignored and the members of the value list are provided.
 
     <rng:define name="{$vPatternName}">
       <rng:element>
-        <rng:anyName>
-          <xsl:where-populated>
-            <rng:except>
-              <xsl:for-each select="$vExceptions">
-                <xsl:choose>
-                  <xsl:when test="atop:namespace-or-name-is-name(., $vScope)">
-                    <rng:name>
-                      <xsl:text>{.}</xsl:text>
-                    </rng:name>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <rng:nsName ns="{.}"/>
-                  </xsl:otherwise>
-                </xsl:choose>
+        <xsl:choose>
+          <xsl:when test="@require">
+            <rng:choice>
+              <xsl:for-each select="tokenize(@require)">
+                <xsl:variable name="vNamespaceUri" as="xs:string" select="."/>
+                <rng:nsName ns="{$vNamespaceUri}">
+                  <xsl:where-populated>
+                    <rng:exclude>
+                      <xsl:for-each select="$vExceptions[atop:namespace-or-name-is-name(., $vScope)]">
+                        <xsl:if test="$vNamespaceUri eq namespace-uri-for-prefix(substring-before(., ':'), $vScope)">
+                          <rng:name>{.}</rng:name>
+                        </xsl:if>
+                      </xsl:for-each>
+                    </rng:exclude>
+                  </xsl:where-populated>
+                </rng:nsName>
               </xsl:for-each>
-            </rng:except>
-          </xsl:where-populated>
-        </rng:anyName>
+            </rng:choice>
+          </xsl:when>
+          <xsl:otherwise>
+            <rng:anyName>
+              <xsl:where-populated>
+                <rng:except>
+                  <xsl:for-each select="$vExceptions">
+                    <xsl:choose>
+                      <xsl:when test="atop:namespace-or-name-is-name(., $vScope)">
+                        <rng:name>
+                          <xsl:text>{.}</xsl:text>
+                        </rng:name>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <rng:nsName ns="{.}"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:for-each>
+                </rng:except>
+              </xsl:where-populated>
+            </rng:anyName>
+          </xsl:otherwise>
+        </xsl:choose>
         <rng:zeroOrMore>
           <rng:attribute>
             <rng:anyName/>
