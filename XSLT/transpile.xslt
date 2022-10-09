@@ -345,7 +345,6 @@ ignored and the members of the value list are provided.
           <xsl:where-populated>
             <rng:except>
               <xsl:for-each select="$vExceptions">
-                <!-- Nota bene: teidata.namespaceOrName is ambiguous! -->
                 <xsl:choose>
                   <xsl:when test="atop:namespace-or-name-is-name(., $vScope)">
                     <rng:name>
