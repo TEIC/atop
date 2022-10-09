@@ -336,6 +336,7 @@ ignored and the members of the value list are provided.
     <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
     <xsl:variable name="vPatternName" as="xs:string" select="generate-id()"/>
+    <xsl:variable name="vExceptions" as="xs:string*" select="if (@except) then tokenize(@except, '\s+') else $tpDefaultExceptions"/>
     <xsl:variable name="vScope" as="element(anyElement)" select="."/>
 
     <rng:define name="{$vPatternName}">
@@ -343,7 +344,7 @@ ignored and the members of the value list are provided.
         <rng:anyName>
           <xsl:where-populated>
             <rng:except>
-              <xsl:for-each select="if (@except) then tokenize(@except, '\s+') else $tpDefaultExceptions">
+              <xsl:for-each select="$vExceptions">
                 <!-- Nota bene: teidata.namespaceOrName is ambiguous! -->
                 <xsl:choose>
                   <xsl:when test="atop:namespace-or-name-is-name(., $vScope)">
