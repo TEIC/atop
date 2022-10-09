@@ -278,4 +278,34 @@
 
   </xsl:function>
 
+  <xsl:function name="atop:namespace-or-name-is-name" as="xs:boolean">
+    <xsl:param name="pValue" as="xs:string"/>
+    <xsl:param name="pContext" as="node()"/>
+
+    <xsl:choose>
+      <xsl:when test="($pValue castable as xs:Name) and contains($pValue, ':') and (substring-before($pValue, ':') = in-scope-prefixes($pContext))">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:function>
+
+  <xsl:function name="atop:namespace-or-name-is-namespace-uri" as="xs:boolean">
+    <xsl:param name="pValue" as="xs:string"/>
+    <xsl:param name="pContext" as="node()"/>
+
+    <xsl:choose>
+      <xsl:when test="($pValue castable as xs:anyURI) and not(atop:namespace-or-name-is-name($pValue, $pContext))">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </xsl:function>
+
 </xsl:stylesheet>
