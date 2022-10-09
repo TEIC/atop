@@ -336,7 +336,7 @@ ignored and the members of the value list are provided.
     <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
     <xsl:variable name="vPatternName" as="xs:string" select="generate-id()"/>
-    <xsl:variable name="vInScopePrefixes" as="xs:string*" select="in-scope-prefixes(.)"/>
+    <xsl:variable name="vScope" as="element(anyElement)" select="."/>
 
     <rng:define name="{$vPatternName}">
       <rng:element>
@@ -346,7 +346,7 @@ ignored and the members of the value list are provided.
               <xsl:for-each select="if (@except) then tokenize(@except, '\s+') else $tpDefaultExceptions">
                 <!-- Nota bene: teidata.namespaceOrName is ambiguous! -->
                 <xsl:choose>
-                  <xsl:when test="(. castable as xs:Name) and contains(., ':') and (substring-before(., ':') = $vInScopePrefixes)">
+                  <xsl:when test="atop:namespace-or-name-is-name(., $vScope)">
                     <rng:name>
                       <xsl:text>{.}</xsl:text>
                     </rng:name>
