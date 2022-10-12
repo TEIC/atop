@@ -1,6 +1,7 @@
 <p:declare-step version="3.0" type="atop:transpile"
                 xmlns:atop="http://www.tei-c.org/ns/atop"
-                xmlns:p="http://www.w3.org/ns/xproc">
+                xmlns:p="http://www.w3.org/ns/xproc"
+                xmlns:tei="http://www.tei-c.org/ns/1.0">
 
   <p:documentation>Run the transpiler for the corresponding ODD and validate the result as valid RelaxNG.</p:documentation>
 
