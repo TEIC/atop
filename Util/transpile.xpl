@@ -8,20 +8,11 @@
   <p:output port="result" serialization="map{'indent': true()}"/>
   <p:input  port="source"/>
 
-  <p:xslt>
+  <p:delete match="tei:attList[empty(*)]">
     <p:documentation>
       As of 2022-08-17 some ODDs contain empty attLists.
     </p:documentation>
-    <p:with-input port="stylesheet">
-      <p:inline>
-        <xsl:transform version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                       xpath-default-namespace="http://www.tei-c.org/ns/1.0">
-          <xsl:mode on-no-match="shallow-copy"/>
-          <xsl:template match="attList[empty(*)]"/>
-        </xsl:transform>
-      </p:inline>
-    </p:with-input>
-  </p:xslt>
+  </p:delete>
 
   <p:xslt>
     <p:documentation>
