@@ -13,7 +13,9 @@
   </xd:doc>
 
   <xd:doc>
-    <xd:desc>This is essentially an identity transform.</xd:desc>
+    <xd:desc>Ignore things that we're not expecting. This might change when 
+    the PLODD specification is clearer and we have strategies for responding
+    to unexpected content.</xd:desc>
   </xd:doc>
   <xsl:mode on-no-match="shallow-skip"/>
 
