@@ -1,0 +1,790 @@
+Change log:
+MorganaXProc-IIIse 1.0
+- Fixed bug in p:http-request sending binary documents. Thanks to Axel for reporting it and
+  suggesting the fix.
+- Improved error messaging for XD0019: Allowed values are now listed in error message.
+- Updated to jing-20220510.
+- Updated to XMLResolver 4.5.1
+
+MorganaXProc-IIIse 0.9.19
+- Internal revision of classes to differentiate XMLValidators from JsonValidators.
+- Implemented new step p:validate-with-json-schema.
+- Updated to XMLResolver 4.5.0.
+- Fixed some edge case bugs in XML to JSON conversion and JSON parsing.
+- Implemented support of @lang and @case-order for p:text-sort.
+- Implemented partial support for The Unicode Collation Algorithm  in XPath expression and p:text-sort.
+- Lots of minor changes in XPath implementation, compliance bow up to 99%.
+
+MorganaXProc-IIIse 0.9.18
+- New simplified interface for implementing atomic steps: InstallableStepImplementation.
+- In EE-only: Users can name Java classes as implementation for external steps.
+- Fixed a problem with p:directory-list where hidden files are not correctly reported on Linux.
+- p:directory-list now also reports "mox:executable".
+- Fixed bugs in some file-steps where fail-on-error is applied to the wrong errors.
+- Fixed a bug in some file steps, where some c:error/@code are not namespaced.
+- Fixed a minor serialization problem where an extra blank is emitted before "xmlns".
+- Improved information on c:error document produced by fail-on-error=true in file steps.
+- Fixed a bug in p:file-touch where a non existing resource is not created.
+- Fixed a bug in p:file-touch where time zones are not correctly handled.
+- Fixed a bug in p:file-mkdir where no error is raised although the folder couldn't be created.
+- Fixed a minor bug in p:file-create-tempfile where the temp file does not have the right name.
+- Fixed a bug in p:file-move where a wrong error code is raised.
+- Fixed a bug where an XDM array is not correctly serialized.
+- Fixed a bug where Maps and Arrays are allowed as results in AVT/TVT. Should be XD0051.
+- Fixed a bug where the values provided for an option on command line were not checked against
+  possible value restrictions via option's @values.
+- Improved mechanism for supplying AVT to steps: As AVT are xs:untypedAtomic and the values
+  in option's @values have typically another type, option values had to be given with p:with-option
+  until now. The new mechanism does some implicit type conversion before checking values. 
+- Fixed a bug where XC0050 is raised in p:file-copy even though fail-on-error is false.
+- Rewrote a bit of the file system so that resource copying completely relies on java.nio.
+- Fixed a strange bug in p:file-copy where an error message raises an exception for an invalid URI.   
+
+MorganaXProc-IIIse 0.9.17
+- Saxon10 is now the default implementation for p:xslt and p:xquery.
+- Fixed a bug in handling default xquery version when none is explicitly mentioned.
+- Saxon10XQueryConnector's handling of collection() and uri-collection() now aligns with
+  Saxon10XSLTConnector. Thanks to Martin for suggesting this.
+- Adding new switch "-error-stream" to select std:out/std:err for error results of 
+  pipeline run.
+- Fixed a bug where processing errors in p:xslt could lead to a NullPointerException. Thanks
+  to Geert for reporting.
+- Default value for XSLTValidationMode in config.xml is now Lax.
+- Implemented a workaround around a problem with a validating XSLT-processor which raises
+  a NullPointerException when a document without schema-hint appears on port "source". Thanks
+  to Geert  for hinting at this.
+- Fixed a bug where extension attributes raise an error instead of being ignored. 
+- Fixed a bug where XD0062 is not raised although document's content-type and entry and
+  document-properties contradict.
+- Implemented serialization of arrays in JSON. New serialization option "mox:indent-arrays" (default true)
+  can be used to control this feature.
+- Fixed ticket #89: Catalog is not used with p:unarchive. Thanks to David for reporting.
+- Fixed a bug in HTML serialization where  &#x00A0; is written instead of &nbsp; Thanks to Thorsten for
+  finding this.
+- Changed handling of p:xslt result tree: Processing instructions "javax.xml.transform.disable-output-escaping" 
+  and "javax.xml.transform.enable-output-escaping" caused by @disable-output-escaping in XSLT are now
+  removed from the result tree. Again thanks to Thorsten.
+- p:load/@parameters and consequently p:document/@parameters now accepts key 'mox:remove-ignorable-whitespace'.
+  If DTD validation is performed, ignorable whitespace is removed if the key is associated with true().
+
+MorganaXProc-IIIse 0.9.16
+- Fixed ticket #86: Shell script now is compatible with Ubuntu. Thanks to Ari for reporting.
+- Added "application/x-www-form-urlencoded" to recognized Text media types.
+- Fixed issue #98: Handling of p:urify(x,y) was wrong on Windows, iff x is relative and y not a
+  valid URI. Thanks to Thorsten for reporting this.
+- Removed code to detect XS0116. It's no longer an error to use p:step-available() in 
+  @use-when with the name of a step under construction. (XProc 3.0-specification PR #1068)
+- Fixed issue # 99: last() in p:split-sequence returns the wrong value. Thanks to Ari for reporting.
+- Changed p:unwrap as a result of xproc/3.0-steps/#500: A result with an empty document node now has
+  content-type "application/xml" and no longer "text/plain". Attention: This change may break existing
+  pipelines.
+- Fixed issue #100/ticket #88: p:import with XMLCatalog does not resolve pipeline/library correctly.
+  Thanks again to Ari for reporting. 
+- Removed error condition XC0129 (unknown/unsupported HTTP version) as a result of pr #499.  
+
+MorganaXProc-IIIse 0.9.15
+- Fixed issue #96: Step declarations from different imports leak into each other resulting
+  in wrong scoping.
+- Fix issue #97: @fix-xml-lang is now supported.
+- Improved error message for defective URIs in p:http-request.
+- Fixed a bug where p:set-attributes might produce a document where an element has two
+  attributes with the same name.
+
+MorganaXProc-IIIse 0.9.14
+- Changed algorithm for the use of fragments in URIs: (1) Its no longer an error to use
+  a fragment on an URI with scheme file. (2) If the document's content-type is xml, the
+  processor will use the fragment to identify an xml:id in doc. 
+- Fixed bug in p:xinclude returning wrong results if fixup-xml-base="true" and xpointer is used.
+- Fixed a bug where a reference to a missing DTD reference leads to XD0011, now it is XD0049.
+- DTD-References in documents can now be resolved using xmlcatalog.
+- Fixed an issue where the default directory is not correctly resolved. This eliminates "//" in
+  pipeline-uri in error message. ATTENTION: If you start MorganaXProc-III with a relative uri to
+  configuration file, you might get "Unable to load configuration ..." error now. Fix your URI please.
+- Minor speed improvements while loading schemas in p:validate-with-xml-schema.
+- Fixed issue #95 where in p:validate-with-xml-schema (using SaxonEE) a location hint is used, 
+  although this should not happen.
+
+MorganaXProc-IIIse 0.9.13
+- Changed signature of p:www-form-urlencode as in issue #491: Type of parameters changed from
+  "map(xs:string,xs:untypedAtomic+)" to "map(xs:string,xs:anyAtomicType+)"
+- Changed signature of p:insert, p:json-merge, and p:namespace-rename, so that option with
+  restricted value range is not xs:token anymore, but xs:anyAtomic*. (Issue #490)
+- Fix a potential problem in XSLT based Schematron processing: Non validating XSLT processor
+  is used now to do schematron validation.
+- New function in CE and EE: mox:is-well-formed-document(item()) as xs:boolean return true
+  iff item is a document-node that has exactly one element child, potentially preceded or
+  followed by empty text nodes.
+- Fixed bug in Saxon 9/Saxon 10 implementation where a returned empty document node 
+  might lead to NullpointerException.
+
+MorganaXProc-IIIse 0.9.12
+- Fixed ticket #84: A "&lt;!DOCT" in a text node is serialized to a non valid document.
+  Thanks to David for finding this.
+
+MorganaXProc-IIIse 0.9.11
+- Fixed a bug, where an extension attribute (Spec 14.8) was not ignored, but raised XS0031.
+- Fixed a bug in p:catch/@code where an unbound QName raised a NullPointerException.
+- Fixed a bug where certain [p:]message were not correctly handled. 
+- Slightly improved error handling for DTD-validation on p:load: If a document refers to a non
+  existing DTD file, XD0045 is now raised, which is clearer than XD0010 raised before.
+- Fixed a bug in bash script "Morgana.sh": Using "$@" now to handle blanks in option values correctly.
+- Modified Bash-Scripts to allow symlinks. Thanks to Eirik for suggesting this.
+- Fixed a bug in the Java 8 implementation leading to a NullPointerException. Thanks to Thorsten for
+  reporting it.
+- Finally: Changed to XML Resolver v4.2.0 (Thanks NDW for your work!) 
+
+MorganaXProc-IIIse 0.9.10
+- Fixed issue #93: A bug where XD0007 is raised for a p:group's anonymous output port, when its not consumed.
+- Added a schema resolver to Saxon10Connector: Catalogs registered for MorganaXProc are now used.
+- Added for p:system-property: 'Q{http://www.xml-project.com/morganaxproc}java-version' return used java version.
+- Fixed issue #94: Bug with multiple pipe connections on an input port of p:try, p:catch, and p:finally.
+- Improved handling for setting static options from command line: Handling is now in line with handling
+  of dynamic options, e.g. typing of static options is now used to interpret given value.
+
+MorganaXProc-IIIse 0.9.9.9
+- Completely rewritten lexer (now in two phases) to detect deadlocks in @use-when (XS0115) and
+  forbidden use of p:step-available to test steps currently under declaration (issue #1057).
+- Tested with SaxonHE-10.7J
+- MorganaCE only: Updated licence related error messages. Thanks for Geert for this hint.
+- Implementing mechanism to detect XS0116 (use of p:step-available(x) in use-when where x is
+  a step currently under declaration.
+- Fixed a bug where an empty subpipeline of an inner step is not detected.
+- Improved detection for XS0097: Attribute in XProc namespace not allowed on element in XProc namespace.
+- Fixed a bug in XProcFileSystem.guessContentType for URI raised NullPointerException when URI has no path.
+- Tested with SaxonHE-10.8J
+- Fixed issue #82: Unrecognized use-when/step-available deadlock now raises XS0115 correctly.
+- Fixed issue #91: Character maps were used for the serialization of processing instruction values,
+  but the spec says: Do not use character maps here. Thanks to Thorsten for finding.
+- Fixed a bug where microseconds in a serialized xs:time (and xs:dateTime) had the wrong format.
+- Fixed issue #92: xml-schema is now correctly handled in Saxon10 adapter (when EE is used.)
+- Static error XS0107 is now used for error in XPath expressions in static options.  
+
+MorganaXProc-IIIse 0.9.9.8
+- Fixed issue #89: Bug in serialization of mixed content with indent=true().
+- Added serialization option mox:indent-spaces.
+
+MorganaXProc-IIIse 0.9.9.7
+- Fixed a bug where XS0036 is wrongly raised: Step A imports B and C and B imports C.
+- Added some recognized media types for image files.
+- MorganaCE only: Fixed bug in interface of mox:convert-image. Thanks to Geert for reporting. content-type is
+  now optional.
+
+MorganaXProc-IIIse 0.9.9.6
+- Fixed various step signatures, where "map(xs:QName, item()*)?" is defined, but "map(xs:QName, item()*)" was implemented.
+- MorganaCE only: Added support for mox:profile-image and mox:convert-image.
+- Unified namespace: Previous versions bound "mox" either to "http://www.xml-project.com/morgana" or to
+  "http://xml-project.com/morganaxproc". Now only the later is used.
+
+MorganaXProc-IIIse 0.9.9.5
+- Fixed issue #84: Nested p:documentation, p:pipeinfo are now handled correctly.
+- Fixed a bug where an attempt to import a (non-XProc) xml document, returns "internal error". Now its XS0052.
+- Fixed a bug preventing import in a step declared in a library.
+- Improved error messages for errors in attributes: URL, line and column are now reported correctly.
+- Fixed ticket#82: A queryBinding of a schematron document is not correctly identified, if the schematron
+  document is a child of p:inline. Thanks to David for reporting this.
+- Fixed ticket#81: Validation errors (p:validate-with-schematron) raised with "sch:report" are
+  not reported correctly. Thanks again to David.  
+
+MorganaXProc-IIIse 0.9.9.4
+- Fixed issue #85: @use-when on p:inline on elements in XProc's namespace are now handled correctly.
+- Fixed a bug where a DTD-declaration in pipeline document results in a NullPointerException.
+- Fixed bugs in importing libraries declaring static options.
+
+MorganaXProc-IIIse 0.9.9.3
+- Fixed a bug in p:archive with invalid URIs: %5B and %5D are decoded correctly now. c:entry/@href is checked
+  to be a valid URI.
+
+MorganaXProc-IIIse 0.9.9.2
+- Fixed issue #86: A bug in p:unarchive and p:archive-manifest where a zip-entry with "[" or "]" (as contained
+  in Office-documents) raises an XD0064 (Invalid-URI).
+  
+MorganaXProc-IIIse 0.9.9.1
+- Changed mechanism for generating QName from step's type attribute to prevent possible NullPointerException.
+- For CE: Fixed a bug in certificate testing.
+- Improved memory management for imported pipelines.
+- Fixed a bug resulting in a NullPointerException for <p:declare-step type="some-name" />, which is correct,
+  but rather unusual.
+
+MorganaXProc-IIIse 0.9.9
+- Implemented new error code XS0114 for an attempt to bind an undeclared port.
+- Changed as-attribute of option "duplicates" in p:json-merge as proposed to xs:string.
+- Implemented specification pull request #1043: TVTs not requiring the context item do not
+  create a loop.
+- Fixed implementation so a typing error in p:option/@select doesn't raise XS0107 anymore. Now
+  a dynamic error XD0030 is raised, if the option is used (with the default value).
+- Implemented 3.0-specification/pr#1042. Attention: This may break existing pipelines.
+- Fixed bug in error code: Trying to scope static option is XS0088, not XS0091. Thanks Norm!
+- Fixed issue #81: Use of p:use-when() in (implicit) inlines is now implemented.
+- Implemented specification/issue#1050: In p:library new syntax is p:option* p:declare-step*.
+  Attention: This may break existing pipelines.
+- Fixed a bug in scope-testing for steps: No step may not declare a child step
+  b and have a sibling step named b.
+- Fixed a bug where an XS0044 (step not known) was raised, where an XS0100 is required.
+- Fixed ticket #79: A p:load call to a certain web service returns HTTP 400. Many thanks to David for
+  reporting this bug and finding the solution as well.
+- Recoded evaluation of XPath expression on p:variable/p:option. Dynamic errors are now reported
+  even if the variable/option is not used. Lazy evaluation preventing these errors can be turned on
+  with XProcConfiguration.setLazyEvaluation. Attention: This may break existing pipelines.
+- Fixed a bug where lazy evaluation for an options default select did raise an error even if
+  option is not used.
+- Internal change to get rid of memory not used anymore and thereby enable garbage collection.
+- Improved error messaging for step types violation scoping rules.
+- Fixed issue #73: p:step-available() returns true even if step is declared with use-when=false.
+
+MorganaXProc-IIIse 0.9.8
+- Fixed ticket #75: A NullPointerException is raised by p:archive if a resource mentioned in 
+  c:archive/c:entry/@href can not be resolved. Now a proper XD0011 is raised. Thanks again to Pascal
+  for finding this.
+- p:xsl-formatter now recognizes content-type "text/plain" and produces a text document on
+  port "result". (CE only)
+- p:xsl-formatter now raises XC0204 for requesting an unsupported content type. (CE-only)
+- Fixed bugs in bat and sh file appearing on Java 8. Already fixed in 0.9.7.1a. Thanks to Erik! 
+- Fixed a potential error condition when JVM can not create any XMLSchemaFactory.
+- Fixed a bug, where an IllegalArgumentException is raised when @inline-expand-text does not
+  have a boolean value. Now it is corrected to XS0113.
+- Changed error code for @expand-text where the value is not a boolean literal. It is now XS0113.
+- Fixed a bug in discovery of java version, where a release number with a subrelease (like 13 in opposition
+  to "13.0.1") raises an "Unsupported java version"-exception.
+- Fixed a bug in a very special situation when a step uses option's default value and has a [p:]depend.
+- Implemented proposed solution to 3.0-specification/issue#1040.
+- Fixed a bug where a connection loop resulting from an XPath depending on context item in a
+  TVT is not correctly detected.
+
+
+MorganaXProc-IIIse 0.9.7.1
+- Fixed error message if pipeline file could not be loaded correctly. Also improved behaviour if
+  no pipeline source could be identified. (Thanks to Martin for reporting this)
+- Reworked handling in command line interface for Windows to improve usability: Relative window paths
+  are now resolved against the URI of the current working directory.
+
+MorganaXProc-IIIse 0.9.7
+- Fixed handling of build-tree for p:xslt 3.0. Result tree is created normally, unless build-tree 
+  is explicitly false.
+- Internal revision of classes.
+- Fixed a bug in sh- and bat-scripts preventing Saxon 10.6 editions to be found. (Ticket #73)
+- Fixed a bug in p:store where the wrong error code is emitted for an invalid uri in href. (Thanks ndw!)
+- Fixed a bug where uniqueness of step names in p:choose and p:try was not correctly checked.
+- Changed error code for missing or unknown collation in p:test-sort to XC0098.
+- Changed algorithm for p:urify() according to §8.9 of editors edition. Since this function is
+  also used in the command line interface, you might experience changes also there. Also related are
+  p:unarchive and p:archive-manifest.
+- Fixed a bug in p:unarchive where the @href-path does not include the zip file name. 
+- Fixed a bug (introduced with 0.9.6.1) where the @href-path in the result of p:archive-manifest 
+  does not include the name of the zip file. (Ticket #74. Thanks to Pascal for reporting this).
+- Modified XProcFileSystem, so that the mapping of file extensions to media types is now
+  case-insensitive. Thanks to Pascal for suggesting this.
+
+MorganaXProc-IIIse 0.9.6.1
+- Internal revisions
+- Modified handling for areatree content-type in p:xsl-formatter. (CE only)
+- Fixed a bug in p:file-copy where an existing file in the target folder is not overwritten by a
+  folder with the same name in the source folder.
+- Fixed implementation of p:www-form-urldecode, so it completely conforms to 
+  https://url.spec.whatwg.org/#urlencoded-parsing
+- Parameter "send-body-anyway" on p:http-request is now implemented. Thanks to ndw for pointing 
+  me in the right direction.
+- Implemented checking boundary content for multipart http requests.
+- Fixed error code for p:import or p:declaration on an atomic step declaration.
+- XS0029 is now raised, if a connection is provided on a p:output of an atomic step declaration.
+- Fixed a bug in analysis of AVT/TVTs: Sequence inside "{" and "}" must not be empty, because an empty
+  string is not a valid XPath expression. Thanks to ndw for making me aware of this.
+- Fixed a bug in p:archive-manifest were the href-attribute was not correctly resolved in some cases.
+- Improved error messaging for XPath expressions in AVTs /TVTs.
+- Improved cookie handling in p:http-request, so cookie don't leak to other run with the same config
+  anymore.
+- Improved error message in p:http-request.
+- Implemented PR #487 in 3.0-steps repo: base-uri is in report output of p:http-request.
+- Fixed a bug in p:http-request's handling of multipart requests.
+- Fixed a bug where an 'encoding' in serialization map is not taken as part of the content-type
+  in p:http-request.
+- Checked with SaxonHE 10.6
+
+MorganaXProc-IIIse 0.9.6
+- New "linear" runner to run pipelines with Java 11+.
+- Removed deprecated Java methods/constructors from MorganaIII-XPath
+- Adapted build.xml to build for Java 8 and 11+. build-4j11.xml removed.
+- Updated shell/batch-files: Unified batch for Java 8 and Java 11+. Classpath is now set for easy adaption.
+- Fixed issue #80 leading to an EmptyStackException for complex sequences of [p:]use-when. Thanks to 
+  Geert for finding this.
+- Fixed a bug where inscope namespace bindings of inline created documents are not correct.
+- Fixed ticket #71: Bug on wrap-sequence with @group-adjacent. Thanks to Martin for finding this.
+- Fixed a bug where a namespace declared on an element might be visible on a sibling element.
+- Fixed ticket #69: Added missing implementation for p:www-form-encode and p:www-form-decode. Thanks to Boris
+  for finding this.
+- Implemented rules specified in section "11.5 Implicit casting" of Editor's Draft as of 24 July 2021.
+- Implemented change of specs: @depend is not allowed on p:when, p:otherwise, p:catch, and p:finally.
+- Implemented change of specs: p:unwrap now produces a text document if empty document node is returned. (PR #471).
+- Recoded Saxon10Connector to prevent a presumptive race condition situation discovered by Geert. Thank you.
+- Implemented change of specs: @collection is not an AVT anymore, but a static boolean.
+
+
+MorganaXProc-IIIse 0.9.5.9
+- Fixed a bug where the type of the outer most pipeline was not found, preventing recursive calls.
+- Slight improvements in the XPath implementation. Compliance now:  98,5%
+
+MorganaXProc-IIIse 0.9.5.8
+- Fixed a bug where a reference to another option in p:option/@select might not be resolved properly.
+- Improved error messages for static options not matching the given sequence type.
+- Fixed a bug introduced with 0.9.5.6 which prevents an option on a compound step can not be used
+  as value for an option of a contained step. Thanks to Geert for this help locating it.
+- Added support for Saxon 10.5 (any edition).
+- Improved error message XS0044 to give more hints about the cause: Thanks to Geert for suggesting this.
+
+MorganaXProc-IIIse 0.9.5.6
+- Fixed a bug in p:option/@select: when another option is referred an error message were written out. 
+- Fixed a bug where AVTs are typed as xs:string, while the specs say it is xs:untypedAtomic.
+- Fixed a bug where the values of options/variables were casted to the expected type, but specs
+  says: Use function conversion rule. CAUTION: This fix might break existing pipeline relying on casting.
+- Improved error messages on Saxon 10 interface.
+- Fixed bug in conversion of nodes in map "parameters" to Saxon (XSLT and XQuery). Many thanks for Geert
+  for reporting and helping fix it.
+
+MorganaXProc-IIIse 0.9.5.5
+- Minor bug fixes
+- Added support for XML Schema 1.1 validation via "xerces-2_12_1-xml-schema-1.1" or SaxonEE. (Ticket #67)
+
+MorganaXProc-IIIse 0.9.5.4
+- Fixed ticket #65: Non document nodes in arrays/maps are now serialized correctly. Thanks again 
+  to Martin for raising this error.
+- Fixed a bug where a sequence type test for nodes in arrays/maps does not raise an error.
+- Fixed a bug in sequence type testing for maps.
+- Improved error messages for non matching sequence types in p:variable, p:option and p:with-option.
+
+MorganaXProc-IIIse 0.9.5.3
+- Fixed a bug in the implementation of xs:time, where "11:11:11." is accepted without error.
+- Fixed Ticket #64 (issue #71): Nodes returned in an array/map from p:xslt/p:xquery are not wrapped
+  in a document anymore. Thanks to Martin for raising this point.
+
+MorganaXProc-IIIse 0.9.5.2
+- Added support for Saxon 10.3.
+- Fixed a bug where a JSON document produces by p:with-input/@select cannot be casted to a variable with
+  an atomic type.
+- Adapted XSLT error handler to changed Saxon API.
+
+MorganaXProc-IIIse 0.9.5.1
+- Changes in the XPath implementation to ensure thread stability for expressions using variables.
+- Fixed ticket #61: Whitespace-separated list in @pipe is not correctly implemented. Thanks to Erik for reporting.
+- Fixed a bug where whitespace-separated list in @exclude-inline-prefixes and
+  content-types is not correctly implemented.
+- Fixed a bug in the call of user-defined step where in an edge case documents do not appear in the right order.
+
+MorganaXProc-IIIse 0.9.5
+- Fixed a bug in XPath implementation which might lead to NullPointerException when running unchecked MoPL
+  pipelines in parallel.
+- Fixed a bug in the implementation of p:unwrap taking @match as required.
+- Fixed a potential problem when calling XPath expressions with variables/options within user defined XProc steps.
+- Tested with Saxon HE 9.9.1.8
+
+MorganaXProc-IIIse 0.9.4.9:
+- Improved error message from a p:finally.
+- Fixed issue #70: Using of a variable/option in p:viewport/@match results in an 
+  "java.lang.RuntimeException: Unable to find step '!matcher-variables'." 
+
+MorganaXProc-IIIse 0.9.4.8
+- Completed implementation of "suppress-indentation" when serializing XHTML and HTML.
+
+MorganaXProc-IIIse 0.9.4.7
+- Improved error message when default binding for pipeline's option is defective.
+- Fixed a bug in the implementation of @depends on p:try.
+- Fixed a bug in the implementation of @depends on p:group.
+- Improved error messages raised in p:try.
+- Fixed a bug where the document(s) appearing on p:viewport's inner output port are not checked for
+  cardinality and content-type.
+- Fixed ticket #57: p:xinclude raises error when XML document is included with parse="text". Thanks to
+  David M. for reporting this.
+- Fixed ticket #58: Missing DOCTYPE when serializing with method=html and html-version=5.0. Again: Thanks to
+  David M. for reporting it. 
+- Changed CLI: A -config not in the first position on CLI is no longer silently ignored, but raised an error.
+- Fixed a bug where the XSLTSchematron adapter raises a NullPointer exception instead of reporting the correct
+  error from the XSLT transformation. Thanks for David B. for reporting it.
+- Fixed ticket #59: CData-Sections marked in p:xslt were not properly handled. Thanks for Martin for 
+  reporting it.
+- Implemented serialization option "suppress-indentation" for XML completely and for XHTML and HTML mostly
+  (The third equation rule for qnames for the later two is not available yet.)
+
+MorganaXProc-IIIse 0.9.4.6
+- Fixed issue #69 (ticket #53): Namespace declarations moved to parent via p:xslt using Saxon. Thanks
+  to Erik for finding this.
+- MorganaXProc's CLI cannot resolve pipeline in file with "#" or "?" in path (Ticket #54). Thanks to
+  Peter for reporting it.
+- Fixed a bug in p:urify() where percent encoding is not performed correctly (Ticket #55). Thanks to
+  Peter for reporting it.
+
+
+MorganaXProc-IIIse 0.9.4.5
+- Added CLI switch "no-run": Use it to do just a static analysis of your pipeline (Suggested by Erik).
+- Added CLI switch "indent-errors" (also suggested by Erik): Will turn on indentation for dynamic
+  errors printed on the console.
+- Fixed issue #68 (ticket #52): No QName-check was performed when an arbitrary xs:string is
+  forced to a QName. Thanks to Martin for reporting this.
+- Connector short cuts for XSLT, XQuery and Schematron are now case insensitive to avoid problems. 
+  Thanks to Joel for pointing this out to me.
+- Adapted Manifest class path for Saxon 10.2 usages.
+- Tested with Saxon 10.2.
+
+MorganaXProc-IIIse 0.9.4.4
+- Added entityResolver to JingValidator.
+- Fixed ticket #51: No line and column numbers = 0 in XVRL report. Thanks to Erik for finding this.
+- Changed Morgana.bat to cover paths containing blanks. Thanks to Joel for suggesting this.
+- Fixed a bug in p:directory-list resulting in a NullPointer if the file system is not able
+  be return a requested value for last-modified.
+- Fixed a bug where attribute "expand-text" on a step call in non XProc namespace was
+  not correctly handled.
+- Recoded p:directory-list for speed improvement.
+- Fixed a bug Catalog preventing files on Windows to be move with p:file-move. Thanks to Joel again.
+
+MorganaXProc-IIIse 0.9.4.3
+- First attempt to implement XHTML serialization with html-method=5.0.
+- Fixes a bug where a charset in @content-type of p:document/p:load is ignored.
+- Fixes a bug where the encoding setting in the XML declaration is ignored and UTF-8 is
+  wrongly assumed. Thanks to Erik for finding this.
+
+MorganaXProc-IIIse 0.9.4.2
+- Improved performance of XPath evaluation with large (intermediate) node lists.
+- Improved error messaging from XSLT: Underlying XSLT error is now exposed in c:error/@cause.
+- Additional performance improvements by rewriting "//…" expressions.
+- Reduced memory footprint of intermediate node lists in XPath.
+- NameTest in most cases rewritten as KindTest to speed up XPath evaluation.
+- Added support for printing xsl:message info to XProc's message stream for Saxon 9.9 and Saxon 10.x.
+- Added CLI option -messages to (re-) direct messages from step and stylesheets.
+- Implementation of p:file-move is now in synch with latest changes to spec.
+  (https://github.com/xproc/3.0-steps/pull/438)
+- Implemented additional XSLTConnector to support XSLT 1.0 transformations with
+  processors supporting javax.xml.transform.TransformerFactory. 
+
+MorganaXProc-IIIse 0.9.4.1
+- Massive speed improvement by removing a bottleneck in simple mapping operator aka !.
+- Output of @message is now prefix by a time stamp.
+- Text of @message attribute is now written to Standard.err (was Standard.out before).
+- Reverted change to p:file-move: Value for option "overwrite" is currently ignored, so
+  target is always overwritten.
+- Reimplemented collection resolver for Saxon 9.9 and Saxon 10, so that advanced Saxon
+  features are available in p:xslt.
+  
+MorganaXProc-IIIse 0.9.4
+- The c:result element of p:file-delete and p:mkdir now has an attribute "mox:resource-deleted"
+  resp. "mox:directory-created" with a boolean value to indicate whether the action has
+  actually been performed.
+- Optimized graph calculation for steps with AVT: If the XPath expression(s) in AVT do not
+  rely on the context item, no connection to the step with the default readable port is 
+  constructed anymore. As the consequence the two steps now can run parallel (provided there
+  is no other connection between them).
+- Improved handling of schematron validation error: The error document associated to XC0054
+  now has either the SVRL or the XVRL report as its child.  
+- Fixed bug in p:json-merge / p:json-join: When XML documents are packed into the array or
+  map, node related XPath expressions can not be performed on them. (Ticket #47). Thanks to
+  Martin for finding it.
+- Updated XVRL reports to new grammar (Ticket #48). Thanks to Erik for making me aware of the changes.
+- Fixed a bug in the implementation of p:variable and p:when with collection=true, when the same output
+  port is piped more than once.
+- Fixed a bug in the implementation of p:choose/p:with-input with collection=true.
+- Fixed a bug in p:filter where the step type is not correctly set.
+- Fixed ticket #65: A bug prevents externally provided values for static options to override
+  default values.
+
+MorganaXProc-IIIse 0.9.3.9
+- Improved error message if a defective uri/path is provided on CLI. (Ticket #44)
+- Recoded interfaces to make sure, supporting engines like Saxon etc. are not instantiated
+  twice from concurrent steps.
+- Fixed a bug concerning xml:* attributes. Now all attributes in XML namespace are allowed
+  on any element.
+- Fixed issue #64 (ticket #43): Unable to resolve imported schema in p:validate-with-xml-schema.
+- Added new errors to validation steps so an invalid schema/grammar is reported correctly.
+- Revised errors for validation failure with p:validate-with-relax-ng and 
+  p:validate-with-xml-schema as a consequence of latest spec change.
+- Fixed feature request ticket #45: Serialization properties for secondary results of p:xslt
+  are now correctly discovered when Saxon 9.9 and Saxon 10 is used.
+- Changed Saxon10Connector, so that Saxon 10.1 is now also supported.
+- Implemented revised version of p:file-copy (PR https://github.com/xproc/3.0-steps/pull/435)
+- Implemented revised version of p:file-move (PR https://github.com/xproc/3.0-steps/pull/436)
+
+MorganaXProc-IIIse 0.9.3.8
+- Fixed bug (Ticket #42) where no error is raised if p:inline/@content-type is used with
+  an invalid content-type.
+- Fixed bug where element exclusion with [p:]use-when does not handle excluded text
+  nodes correctly.
+- Significant improvement of speed for XPath expressions. (Thanks to Syd for pointing it
+  out to me)
+
+MorganaXProc-IIIse 0.9.3.7
+- Switched from TagSoup to nu.validator.htmlparser for HTML parsing.
+- Implemented new creation rule for Content-Type header for a single document on
+  source port of p:http-request. (See XProc steps change log [13])
+- Added checks of @content-type for p:load, p:http-request and p:document (See XProc steps 
+  change log[14]) 
+- Redefined port "result" of p:load as "sequence=false" (See XProc steps change log [15])
+- Fixed a bug in the text value processor where an attribute node is added to the parent
+  element although there a preceding non attribute nodes.
+
+MorganaXProc-IIIse 0.9.3.6
+- Fixed a bug where an attempt to compile p:library stand-alone is not correctly flagged
+  as "Not implemented yet."
+- Error XS0043 is now used for @port on p:with-input of p:for-each, p:viewport, p:choose,
+  p:when, and p:if. [See: https://github.com/xproc/3.0-specification/pull/982].
+- Fixed a bug in HTML serializer where prefixed end elements where not correctly shortened when
+  HTML namespace is used.
+- Fixed ticket #37: A html should not be serialized with xmlns:html="http://www.w3.org/1999/xhtml"
+  namespace declaration. Thanks again to Martin for finding this.
+- Fixed bug in HTML 5 serialization.
+- Error is now raised for XHTML serialization with 'html-version' = 5.0. This combination
+  is not supported yet. htm-version setting was silently ignored before.
+
+MorganaXProc-IIIse 0.9.3.5
+- Fixed a bug in time arithmetics resulting in a weird entry for microseconds in @last-modified
+  (p:directory-list & p:file-info) for Windows systems in time zones with a positive offset to UTC.
+  (Ticket #35)
+- Implemented feature request (Ticket #36): If an XMLResolver is now used as DTD resolver
+  also.
+- Fixed a bug in p:load/@content-type: It is now xs:string?, was xs:string.
+- Implemented change [12] of step library: p:xslt now has a new option 
+  "populate-default-collection" to control whether docs on port 'source' appear
+  in the default collection (or not).
+
+MorganaXProc-IIIse 0.9.3.4
+- Improved handling of binary documents appearing as result of the ran pipeline. By default
+  now document's content-type is written to standard output. Using -dump-binary replace this
+  behavior by actually dumping the document's bytes to standard output.
+- Writing binary documents to file using command lines "-output:portname=uri" is now implemented.
+- Fixed a bug when non UTF-8 documents are stored by CLI (on non UTF-8 system).
+- Fixed a bug when a sequence of documents appearing on one port is stored by CLI.
+- A sequence of documents appearing on an output port bound with -output:result= in CLI
+  are now written to a series of files if switch "-split-sequence" is used.
+- Fixed a bug in p:archive where XML serialization is not set to new default values. 
+- Improved error message when using a defective URI with scheme 'file:' (Ticket #34)
+
+MorganaXProc-IIIse 0.9.3.3
+- Fixed a bug where a syntactic shortcut for an option declared as "array(*)" is not correctly
+  interpreted as an XPath expression, but wrongly as an AVT.
+- Improved serialization of nested maps.
+- Charset encoding when sending documents is now correct in p:http-request.
+- Method "PUT" now sends a request body in p:http-request.
+- Improved error messages for configuration errors with XSLT based Schematron.
+- Changed behavior of p:http-request in case of a connection timeout AND
+  parameter "fail-on-timeout" = true AND @assert renders false for HTTP response
+  code "408" (Connection timeout). Now err:XC0078 is raised (not XC0126 as before.)
+- Recoded p:archive so it is now longer an error for commands 'update' and 'freshen' if
+  the any /c:archive/c:entry/@href cannot be resolved. 
+  (See https://spec.xproc.org/master/head/steps/#changelog [11]) 
+- Improved error messages for resource access in p:archive.
+- Fixed an error message with missing text when presenting non-existent resources on 
+  Windows CLI.
+- Files with extension ".md" are now recognized as text documents (text/markdown).
+- Adapted behavior of p:xslt version 3: "If there is a single document on the source port, 
+  this document will become the value of the global-context-item option." 
+  (See https://spec.xproc.org/master/head/steps/#changelog [9])
+
+MorganaXProc-IIIse 0.9.3.2
+- Fixed issue #59: Encoding of archived XML documents is not correct.
+
+MorganaXProc-IIIse 0.9.3.1
+- Improved error messages in ZIP processing steps. Thanks for Colin for pointing this out to me.
+- Fixed a problem occurring when (some?) Windows created ZIP are updated. (Thanks again to Colin)
+- Fixed issue #54: Using a variable/option more then once in a p:viewport results in an error. (Thanks, Geert.)
+- Fixed issue #55: Supplying an empty sequence as value for an xs:QName raises 
+  NullPointerException. (Thanks to Geert).
+- Fixed issue #56: unparsed-text() and unparsed-text-lines() now react correctly to a provided 
+  encoding and uses UTF-8 as default.
+- Improved error message for a invalid configuration file.
+- Fixed ticket #32: Bug when XSLT based schematron implementations are used with queryBinding="xslt2". (Thanks Joost)
+- Fixed a bug when reading text files (in non UTF-8 environments) breaks non-ascii chars. (Thanks Geert)
+- Fixed a bug preventing catalog resolving to work in some cases.
+- Fixed a bug in handling JSON strings (in non UTF-8 environments) with non-ascii chars.
+- Fixed a bug in decoding base64 text document (in non UTF-8 environments) with non ascii chars.
+- Fixed a bug in handling special case of p:use-when="false".
+
+MorganaXProc-IIIse 0.9.3
+- Connection XProc filesystem to XPath for use in fn:unparsed-text() etc.
+- Fixed a bug when [p:] messages relies on context item which is not provided.
+- Recoded file system, so URIs with scheme "file" and authority component are treated correct on UNIX.
+- Fixed issue #51 (ticket #29): Elements with @xml:base resolve wrong in fn:base-uri().
+- Slightly improved error messages from parsing XML.
+
+MorganaXProc-IIIse 0.9.2.9
+- Implemented XPath arrow operator.
+- Fixed an error in Unary Lookup on arrays.
+- Implementing Unary Lookup operator.
+- Fixed some minor error in XPath implementation.
+- Implemented fn:parse-ietf-date()
+- Reworked mechanism for copyright messages and running mode "-silent"
+- SchematronAdapters using XSLT are now more robust against errors.
+- Improved adapter for Schematron validation with Skeleton-implementation.
+- New adapter for Schematron validation using SchXSLT.
+- Fixed issue #48: standalone serialization par is not correctly converted from xslt stylesheet.
+- Fixed issue #49: No stack trace for socket time out anymore. Error code is now correct.
+- Fixed issue #50: No more stack trace, correct error for file URI with authority.
+- Update to more flexible shell scripts for Windows (Thanks to Erik) and for SH (Thanks to Christophe).
+- Fixed a bug p:validate-with-schematron where the report document had serialization properties.
+- Lots of minor fixes in XPath implementation. Compliance is now up to 98.5%.
+- Implemented spec change [8]: p:split-sequence now accepts and produces ANY document.
+- Implemented Schematron connector for SchXslt (https://github.com/schxslt/schxslt) SchXSLT is now the 
+  default Schematron validator. Please see instructions for details.
+
+MorganaXProc-IIIse 0.9.2.8
+- Fixed issue #43: A NullPointer expection was raised if output and input port of a compound step are connected. (Thanks, Erik!)
+- Fixed a bug where a pipe shortcut in p:output does not recognize steps primary input port.
+- Fixed a bug where an ancestor's input port could not be piped in a steps output port.
+- Fixed a bug where "current" input port could not be piped in an output port of a descendant step.
+- Implemented fn:analyze-string
+- Fixes issue #46: The event stream was not correctly reset for recurrent import. (Thanks to Erik.)
+
+MorganaXProc-IIIse 0.9.2.7
+- Some changes in the APIs.
+- Updated build for Java 11.
+- Fixed issue #42: Missing default for match in p:unwrap (Thanks to Erik for finding it.)
+- Fixed ticket #27: Call document("") in p:xslt does not return the correct result. (Thanks to Martin for finding it.)
+- Introduced a caching mechanism to speed up node conversion when calling Saxonica products.
+
+MorganaXProc-IIIse 0.9.2.6
+- Fixed Issue #39 (Ticket #26): An extra XSLT namespace on the result is removed. Thanks to Martin for reporting it.
+- Serialization properties are now reconstructed from an xquery (with Saxon). Thanks to Martin for giving me the hint
+  how to do this. (Ticket #25).
+- Fixed issue #38: All documents on p:viewport now have a base-uri. (PR #970)
+- Fixed issue #37: Implemented PR #969.
+
+MorganaXProc-IIIse 0.9.2.5
+- Even more improved recovery after not allowed element.
+- Fixed issue #29 (Ticket #20) where rooted expressions in XSLT match pattern are implemented
+  wrong. (Thanks to Martin for finding this.)
+- Fixed a bug in p:insert where an exception resulting from adding a child to a now parent node (text etc.)
+  did not correctly bubble up.
+- Fixed bug in XSLT 3.0 patterns where "intersect" and "except" were not correctly handled.
+- Fixed issue #36 (ticket #23): An error is now raised for a step requiring PSVI.
+
+MorganaXProc-IIIse 0.9.2.4
+- Fixed issue #33: a strange error message when converting function parameters. Found by Erik. Thank for this.
+- Fixed issue #34: a bug where a document created for the inner block of p:viewport does not have a base-uri
+  although the specs say it should have one, because it is created from an element or a document. 
+  (Thanks Erik)
+- Fixed issue #35: Improved recovery for not allowed elements on step call. (Thanks to Geert for suggesting)
+- Fixed a bug where the base uri of an element is not correctly evaluated for documents
+  created with a p:inline/@document-properties setting the URI. 
+
+MorganaXProc-IIIse 0.9.2.3
+- Fixed a bug where pipe connections on the inner output port of a p:viewport are not
+  correctly resolved resulting in an XS0001.
+- Fixed issue #27: Fixed a bug in p:viewport appearing when a step in the viewport's 
+  subpipeline has more than one connection to another step and one connection is 
+  a pipe to viewport's port current.
+- Completely recoded handling of AVTs.
+- Fixed issue #28 (Ticket #27): Bug when the evaluation of a variable part of an AVT yields 
+  to a sequence.
+- Fixed a bug in the implementation of XSLT match pattern, where the right side of a union,
+  intersect or except expression is not correctly handled if a position filter is used.
+- Fixed issue #30: Fixed a bug in p:filter when @select-result is not a node. Thanks to Geert.
+- Fixed issue #31: Fixed a bug in map serialization when key is xs:untypedAtomic. Thanks for Geert again!
+
+MorganaXProc-IIIse 0.9.2.2
+- Added "override-content-types" to p:directory-list and p:file-info.
+- Fixed issue # 24 (Thanks, Erik!)
+- Implemented changes in https://spec.xproc.org/master/head/steps/#changelog [7]
+- Fixed implementation of p:archive-manifest and p:unarchive so that a trailing '/'
+  of the archive entry's name is no longer removed.
+- Fixed issue #25 (Big thanks, Erik!)
+- An XML representation of the http-response headers is now included in the c:error for
+  XC0126. 
+- Fixed a bug in p:file-create-tempfile appearing if value for prefix has less than 3 chars.
+- Fixed a bug where a cycle caused by AVT or p:with-option is not correctly detected.
+- [p:]depends now contributes to the graph and establish an extra connection between steps.
+
+MorganaXProc-IIIse 0.9.2.1
+- Fixed a bug where a wrong static error code is written for illegal attributes on p:for-each.
+- Fixed a bug resulting in a NullPointerException if request with a uri with 'http(s)' does not return a content-type header.
+- Completely recoded handling of attribute "[p:]depends" 
+- Fixed issue #23: Cycles in complex steps are now correctly detected.
+
+
+MorganaXProc-IIIse 0.9.2
+- Fixed problem in constructing the graph resulting in a wrong error for cycles.
+- Fixed a bug in MoPL checking when consumer precedes producer. 
+- Improved error message when loading a resource fails.
+- Fixed HTML serializer: version="5.0" now outputs a doctype. (Thanks Geert.)
+
+MorganaXProc-IIIse 0.9.1.9
+- Issue #17: Fixed a bug in fn:serialize() where the attempt to serialize a map with method="xml" did not 
+  raise an error. Thanks to Erik.
+- Issue # 19: Improved an error message when an option has a required="true" and a select attribute. 
+  Thanks to Erik for suggesting something better.
+- Issue #18: Fixed bug where parsing in AVT-TVTs was not correct. Thanks to Erik again.
+- Issue #16: Fixed a bug when running on Windows: A file lock was not released preventing
+  a file from being deleted. (Thanks Erik)
+- Fixed Issue #20 (Ticket #19): Since namespace axis is not supported, an error is now raised. Thanks to Martin.
+- Fixed Issue #21 (Ticket #18): Namespaces are not correctly supplied to Saxon 10. A big thanks to Martin for
+  reporting it and directing me on the right way to fix it.
+- Added option "override-content-types" to p:archive-manifest and p:unarchive. See
+  https://spec.xproc.org/master/head/steps/#changelog [5]
+- Recoded regex-handling, so XPath rule's for regex are correctly followed.
+- Changed error code for invalid regex to XC0147 in all steps using them.
+
+
+MorganaXProc-IIIse 0.9.1.8
+- Fixed displayed step type for p:file-delete (was p:file-mkdir before). Thanks Erik.
+- Implemented @static-parameters on p:xslt for version = 3.0. See See 
+  https://spec.xproc.org/master/head/steps/#changelog [4]
+- Improved error messages for Saxon on p:xquery
+- Fixed a bug where the queries base-uri is not correctly set on p:xquery.
+- Fixed a bug in module uri resolver for Saxon in p:xquery.
+- Minor improvements in memory management in MoPL.
+
+MorganaXProc-IIIse 0.9.1.7
+- Fixed issue #1 (Ticket #4): Counting on the descendant-axis in XProc's match-attributes now works as defined by XSLT 3.0.
+- Fixed a bug where a resource is not closed properly in p:try. Thanks to Erik for finding it.
+- Fixed a bug where a p:try without a catch-step raises a NullPointerException.
+- Improved error message on the CLI if the pipelineURI is defective or couldn't be resolved.
+- Fixed a bug in p:http-request's header construction, where case-insensiveness is not correctly handled.
+- Changed algorithm in p:http-request's header construction to spec change. See 
+  https://spec.xproc.org/master/head/steps/#changelog [2]
+- Fixed a bug: Key name 'preemptive-auth' in p:http-request's auth map was renamed to "send-authorization" a while ago,
+  but was not changed in MorganaXProc-IIIse. This is fixed now. Thanks Norm.
+- Fixed a bug (Issue #14, Tickets #15 and #16) when p:xslt or p:xquery creates a map key from a node resulting 
+  in an xs:untypedAtomic key. Thanks for Martin for reporting them.
+- Improved error messages for errors in p:xquery resulting conversions of Saxon's XDM model.
+- Changed p:archive-manifest: Now every c:entry has an attribute "content-type". See 
+  https://spec.xproc.org/master/head/steps/#changelog [3]
+- Reworked configuration process. Extended Switches and controls. They can now be set either on CLI or via configuration file.
+- Added support for Saxon10 for p:xslt, p:validate-with-schematron and p:xquery.
+- New configuration controls: xslt-config and xquery-config specifiy a path with a configuration file for the selected
+  XSLT- or XQuery processor. Relative paths are resolved against base#dir for CLI, against base-uri for configuration 
+  file. Exception for Saxon: If a SaxonConnector is used, configuration is for XQuery AND XSLT. Last one wins.
+- Added support for XMLResolver: Setting catalogs (paths separated by ';') via CLI or configuration file.
+  Entries in catalogs are resolved against base#dir or config file base URI.    
+
+MorganaXProc-IIIse 0.9.1.6
+- Changed spelling of Saxon editions on classpath, so they are exactly the same as delivered 
+  (uppercase/lowercase). Thanks to Ari for reporting this problem.
+- Fixed issue #12: Corrected content-type of p:wrap to "application/xml" (was "same as input" before).
+- Fixed issue #13:  where the empty sequence as a result of an AVT is not correctly handled but raises an error condition.
+- Fixed an issue where an implicitly created output port and a output port with no-name have different name, which might
+  result in an XS0102.
+- Possible fix for ticket #12: Explicitly using "UTF-8" encoding to extract string from documents to calculate hash.
+- Changed result map of p:cast-content-type with content-type="application/json" with a c:param-set document to
+  map(xs:QName, xs:string).
+- p:unarchive now supports an entry "mox:content-types" in parameters. It expects an array where each entry is itself
+  an array with two entries: a regular expression and a content-type. If present, the regular expressions are considered
+  in order, if matched, the content-type is used to unarchive the document. If none of the regex matches, the build
+  in default guess for content-type is used. Note: The regex are not auto-anchored.
+- For p:unarchive and p:directory-list it seems to be implementation defined whether the regex are auto-anchor. In
+  MorganaXProc-IIIse 0.9.1.6 they are NOT auto-anchored ANYMORE.
+
+MorganaXProc-IIIse 0.9.1.5
+- Removed @visibility from p:variable. See Change Log in core specs.
+- Reworked command line interface for setting atomic values to options. If an option is marked as + or *,
+- Added command line setter "-static" to set values for static options on the command line,
+  the given value is first interpreted as an XPath expression. If that fails, a single value casting is performed.
+- Added command line setter "-statics:uri". See statics-defs.xml for an example.
+- Reworked configuration of Xerxes parser so you do not get the annoying message 
+  "[Fatal Error]  Content is not allowed in prolog." anymore. [Thanks to Erik for pointing this out to me.]
+- Fixed a bug in calculating the graph for an explicit connection from within a compound step to an ancestor/sibling.
+- Fixed isuse #11: A bug in the graph for p:catch resulting in "Problem found checking '..'.  1 expected, but '0' delivered.". 
+  [Thank you Erik for finding it.]
+
+MorganaXProc-IIIse 0.9.1.
+- Fixed Ticket #8 (issue #6)
+- Fixed issue #5
+- Fixed ticket #9 (issue #8)
+- Fixed issue #3 (issue #2)
+- New feature: On the command line use switch "-cp" to enable full path creation for -output: targets.
+- Fixed an issue were an empty line appears between xml-declaration/doc-type and the first element when indent="true".
+- Fixed an issue in node serialization where doctype declaration might be emitted after trailing comment etc.
+- Fixed an issue where indent is missing between a trailing comment/pi and the start element.
+- Changed conversion of XSLT serialization parameters -> XProc serialization method. omit-xml-declaration is 
+  no longer false() for XML documents created in XSLT.
