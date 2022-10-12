@@ -5,8 +5,7 @@
   <p:documentation>Run the transpiler for the corresponding ODD and validate the result as valid RelaxNG.</p:documentation>
 
   <p:output port="result" serialization="map{'indent': true()}"/>
-
-  <p:load content-type="application/xml" href="../Tests/resources/in_vitro_ODDS/example.odd"/>
+  <p:input  port="source"/>
 
   <p:xslt>
     <p:documentation>
