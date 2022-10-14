@@ -68,8 +68,4 @@
     </p:with-input>
   </p:xslt>
 
-  <p:validate-with-relax-ng assert-valid="false">
-    <p:with-input port="schema" href="../Schemas/relaxng.rnc"/>
-  </p:validate-with-relax-ng>
-
 </p:declare-step>
