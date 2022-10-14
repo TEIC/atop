@@ -5,6 +5,7 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <p:import href="transpile.xpl"/>
+  <p:import href="prune.xpl"/>
 
   <p:option name="teiOddSpecification" as="xs:string" required="true"/>
 
@@ -12,9 +13,10 @@
 
   <p:load href="{p:urify($teiOddSpecification)}" content-type="application/tei+xml"/>
 
+  <atop:prune/>
   <atop:transpile/>
 
-  <p:validate-with-relax-ng assert-valid="false">
+  <p:validate-with-relax-ng assert-valid="true">
     <p:with-input port="schema" href="../Schemas/relaxng.rnc"/>
   </p:validate-with-relax-ng>
 
