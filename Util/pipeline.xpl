@@ -4,6 +4,7 @@
                 xmlns:p="http://www.w3.org/ns/xproc"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+  <p:import href="legacy-odd2odd.xpl"/>
   <p:import href="transpile.xpl"/>
   <p:import href="prune.xpl"/>
 
@@ -13,6 +14,7 @@
 
   <p:load href="{p:urify($teiOddSpecification)}" content-type="application/tei+xml"/>
 
+  <atop:legacy-odd2odd/>
   <atop:prune/>
   <atop:transpile/>
 
