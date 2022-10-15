@@ -191,7 +191,7 @@
     |content/@rend
     |schemaSpec/desc
     
-    |attList[not(child)]
+    |attList[not(*)]
     |@ref
     |equiv
     "/>
