@@ -4,9 +4,9 @@
                 xmlns:p="http://www.w3.org/ns/xproc"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <p:import href="legacy-odd2odd.xpl"/>
-  <p:import href="transpile.xpl"/>
-  <p:import href="prune.xpl"/>
+  <p:import href="steps/legacy-odd2odd.xpl"/>
+  <p:import href="steps/transpile.xpl"/>
+  <p:import href="steps/prune.xpl"/>
 
   <p:option name="teiOddSpecification" as="xs:string" required="true"/>
 

@@ -7,7 +7,7 @@
 
   <p:xslt>
     <p:with-input port="stylesheet">
-      <p:document content-type="application/xsl+xml" href="../XSLT/prune_compiled_to_PLODD.xslt"/>
+      <p:document content-type="application/xsl+xml" href="../../XSLT/prune_compiled_to_PLODD.xslt"/>
     </p:with-input>
   </p:xslt>
   

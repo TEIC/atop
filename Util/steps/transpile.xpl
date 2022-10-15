@@ -64,7 +64,7 @@
 
   <p:xslt>
     <p:with-input port="stylesheet">
-      <p:document content-type="application/xml" href="../XSLT/transpile.xslt"/>
+      <p:document content-type="application/xml" href="../../XSLT/transpile.xslt"/>
     </p:with-input>
   </p:xslt>
 
