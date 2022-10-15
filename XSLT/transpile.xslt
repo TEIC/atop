@@ -13,7 +13,7 @@
   </xd:doc>
 
   <xd:doc>
-    <xd:desc>Ignore things that we're not expecting. This might change when 
+    <xd:desc>Ignore things that we're not expecting. This might change when
     the PLODD specification is clearer and we have strategies for responding
     to unexpected content.</xd:desc>
   </xd:doc>
@@ -32,6 +32,11 @@
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
                   select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+      <xsl:variable name="context" as="element(schemaSpec)" select="."/>
+      <xsl:for-each select="in-scope-prefixes($context)">
+        <xsl:namespace name="{.}" select="namespace-uri-for-prefix(., $context)"/>
+      </xsl:for-each>
+
       <rng:start>
         <xsl:for-each select="$vStartElementSpecs">
           <rng:choice>
@@ -331,7 +336,7 @@ ignored and the members of the value list are provided.
   <xd:doc>
     <xd:desc></xd:desc>
     <xd:param name="tpDefaultExceptions" as="xs:string" tunnel="yes">A list of namespaces and/or prefixed
-    element names to be excluded by default from anyName in the schema; this is taken from 
+    element names to be excluded by default from anyName in the schema; this is taken from
     schemaSpec/@defaultExceptions.</xd:param>
   </xd:doc>
   <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
