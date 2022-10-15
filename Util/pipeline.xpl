@@ -10,7 +10,8 @@
 
   <p:option name="teiOddSpecification" as="xs:string" required="true"/>
 
-  <p:output port="result" serialization="map{'indent': true()}"/>
+  <p:output port="result" serialization="map{'indent': true()}" pipe="result@validate"/>
+  <p:output port="report" serialization="map{'indent': true()}" pipe="report@validate"/>
 
   <p:load href="{p:urify($teiOddSpecification)}" content-type="application/tei+xml"/>
 
@@ -18,7 +19,7 @@
   <atop:prune/>
   <atop:transpile/>
 
-  <p:validate-with-relax-ng assert-valid="true">
+  <p:validate-with-relax-ng assert-valid="false" name="validate">
     <p:with-input port="schema" href="../Schemas/relaxng.rnc"/>
   </p:validate-with-relax-ng>
 
