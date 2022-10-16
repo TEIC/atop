@@ -38,11 +38,11 @@
       </xsl:for-each>
 
       <rng:start>
-        <xsl:for-each select="$vStartElementSpecs">
-          <rng:choice>
+        <rng:choice>
+          <xsl:for-each select="$vStartElementSpecs">
             <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-          </rng:choice>
-        </xsl:for-each>
+          </xsl:for-each>
+        </rng:choice>
       </rng:start>
       <xsl:apply-templates mode="atop:anyElement">
         <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
