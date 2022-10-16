@@ -129,11 +129,20 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>Expand module references that point to external schemas</xd:desc>
+    <xd:desc>Expand module references that point to external
+    schemas. Module references that do not point to external schemas
+    should already have been resolved at this point. Thus in a PLODD
+    the only <gi>moduleRef</gi>s should have a <att>url</att> of
+    <val>.</val> and single child <gi>content</gi> that has PureODD or
+    RELAX NG (or both). The use of the value <val>.</val> for
+    <att>url</att> is not strictly necessary, but ATOP uses it to
+    signify that the content is here and now, and no longer
+    external.</xd:desc>
   </xd:doc>
   <xsl:template match="moduleRef[@url]" as="element(moduleRef)">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
+      <!-- Use a value of ‘.’ on @url to signify that the content is here and now, not external. -->
       <xsl:attribute name="url" select="'.'"/>
       <content>
         <xsl:apply-templates select="content/@*"/>
