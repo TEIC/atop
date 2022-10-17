@@ -32,9 +32,9 @@
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
                   select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-      <xsl:variable name="context" as="element(schemaSpec)" select="."/>
-      <xsl:for-each select="in-scope-prefixes($context)">
-        <xsl:namespace name="{.}" select="namespace-uri-for-prefix(., $context)"/>
+      <xsl:variable name="vContext" as="element(schemaSpec)" select="."/>
+      <xsl:for-each select="in-scope-prefixes($vContext)">
+        <xsl:namespace name="{.}" select="namespace-uri-for-prefix(., $vContext)"/>
       </xsl:for-each>
 
       <rng:start>
@@ -51,6 +51,14 @@
     </rng:grammar>
   </xsl:template>
 
+  <!-- NOTE FOR DM: Is there any reason that this and the following
+       two templates could not be combined into one? e.g.: -->
+  <!--<xsl:template match="macroSpec | dataSpec | classSpec[attList]" as="element(rng:define)">
+    <rng:define name="{atop:get-macro-pattern-name(.)}">
+      <xsl:apply-templates/>
+    </rng:define>
+  </xsl:template>-->
+  
   <xsl:template match="macroSpec" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
