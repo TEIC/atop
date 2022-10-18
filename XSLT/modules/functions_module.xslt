@@ -58,7 +58,8 @@
   </xsl:function>
 
   <xd:doc>
-    <xd:desc>Given a specification element, return a unique identifier for the construct that
+    <xd:desc><xd:ref name="atop:unique-ident"/>: 
+      Given a specification element, return a unique identifier for the construct that
     element defines. This is <xd:i>not</xd:i> just the @ident, because severel different kinds
     of construct might have the same @ident (e.g., &lt;ref> vs @ref), and because several
     of the same kind of construct might have the same @ident with different namespaces (i.e.,
@@ -81,7 +82,8 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p>The attributes @minOccurs and @maxOccurs are (by definition) strings, but they are
+      <xd:p><xd:ref name="atop:min-max-to-int"/>:
+        The attributes @minOccurs and @maxOccurs are (by definition) strings, but they are
         defined as counts (a user should be able to enter minOccurs="02" and get the same result as
         if she had entered minOccurs='2'). We need to be able to do calculations on numbers, not
         strings. So this function takes as parameters the string values of @minOccurs and @maxOccurs
@@ -122,7 +124,8 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p>Given an element specification, return QName of specified element.</xd:p>
+      <xd:p><xd:ref name="atop:get-element-qname"/>:
+        Given an element specification, return QName of specified element.</xd:p>
       <xd:p>The name part of the QName is taken from the first altIdent child element if present, the @ident attribute otherwise.</xd:p>
       <xd:p>The namespace URI is taken from the @ns attribute of the element specification or the containing schema specification if present. It defaults to the TEI namespace URI otherwise.</xd:p>
     </xd:desc>
@@ -141,7 +144,8 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p>Given an attribute specification, return QName of specified attribute.</xd:p>
+      <xd:p><xd:ref name="atop:get-attribute-qname"/>:
+        Given an attribute specification, return QName of specified attribute.</xd:p>
       <xd:p>The name part of the QName is taken from the first altIdent child element if present, the @ident attribute otherwise.</xd:p>
       <xd:p>The namespace URI is taken from the @ns attribute of the element specification if present. It defaults to the no-namespace empty string otherwise.</xd:p>
     </xd:desc>
@@ -158,32 +162,81 @@
 
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-element-pattern-name"/>: Construct a viable pattern
+    name for a RNG element definition by concatenating the schemaSpec's prefix attribute,
+    the elementSpec's own prefix, and the elementSpec's ident.</xd:desc>
+    <xd:param name="pElementSpec">The elementSpec element for which a pattern name is required.</xd:param>
+    <xd:return>A string value suitable for a pattern name.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-element-pattern-name" as="xs:string">
     <xsl:param name="pElementSpec" as="element(elementSpec)"/>
     <xsl:value-of select="concat($pElementSpec/ancestor::schemaSpec[1]/@prefix, $pElementSpec/@prefix, $pElementSpec/@ident)"/>
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-class-pattern-name"/>: Construct a viable pattern
+      name for an RNG pattern created from a TEI class by concatenating the schemaSpec's 
+      prefix attribute, the classSpec's own prefix, and the classSpec's ident.</xd:desc>
+    <xd:param name="pClassSpec">The classSpec element for which a pattern name is required.</xd:param>
+    <xd:return>A string value suitable for a pattern name.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-class-pattern-name" as="xs:string">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:value-of select="concat($pClassSpec/ancestor::schemaSpec[1]/@prefix, $pClassSpec/@prefix, $pClassSpec/@ident)"/>
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-macro-pattern-name"/>: Construct a viable pattern
+      name for an RNG pattern created from a TEI macro by concatenating the schemaSpec's 
+      prefix attribute, the macroSpec's own prefix, and the classSpec's ident.</xd:desc>
+    <xd:param name="pMacroSpec">The macroSpec element for which a pattern name is required.</xd:param>
+    <xd:return>A string value suitable for a pattern name.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-macro-pattern-name" as="xs:string">
     <xsl:param name="pMacroSpec" as="element(macroSpec)"/>
     <xsl:value-of select="concat($pMacroSpec/ancestor::schemaSpec[1]/@prefix, $pMacroSpec/@prefix, $pMacroSpec/@ident)"/>
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-datatype-pattern-name"/>: Construct a viable pattern
+      name for an RNG pattern created from a TEI dataSpec element. Currently this simply
+    uses the dataSpec's own @ident attribute.</xd:desc>
+    <xd:param name="pDataSpec">The dataSpec element for which a pattern name is required.</xd:param>
+    <xd:return>A string value suitable for a pattern name.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-datatype-pattern-name" as="xs:string">
     <xsl:param name="pDataSpec" as="element(dataSpec)"/>
     <xsl:value-of select="$pDataSpec/@ident"/>
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-class-members"/>: Return a list of elementSpec
+    elements which are members of the parameter class. It does this by calling 
+    the recursive function atop:get-class-members-recursive.</xd:desc>
+    <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
+    <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
+    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
     <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, (), ())"/>
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-class-members-recursive"/>: Return a list of elementSpec
+      elements which are members of the parameter class. In working through nested classes, it
+      keeps track of classes already seen in order to fail with an error if circular class
+      references are found.</xd:desc>
+    <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
+    <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
+    <xd:param name="pElementSpec">The sequence of elementSpecs built through recursive calls 
+      to this function.</xd:param>
+    <xd:param name="pSeenClassSpec">The sequence of classSpecs already seen through recursive calls 
+      to this function.</xd:param>
+    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
@@ -212,7 +265,9 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p>Given element content, an optional minimum, and an optional maximum occurrence, return a corresponding RelaxNG pattern.</xd:p>
+      <xd:p><xd:ref name="atop:repeat-content"/>: 
+        Given element content, an optional minimum, and an optional maximum occurrence, 
+        return a corresponding RelaxNG pattern.</xd:p>
     </xd:desc>
     <xd:param name="pContent">Element content</xd:param>
     <xd:param name="pMinOccurrence">Minimum occurrence, defaults to 1.</xd:param>
@@ -246,6 +301,20 @@
     </xsl:if>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>
+      <xd:p><xd:ref name="atop:resolve-private-uri"/>: 
+        Given a private URI and a context node, convert the private URI to 
+        a fully-qualified URI. URIs using the tei: prefix and conforming to 
+      TEI version patterns are treated as special, and resolved to point to
+      the appropriate p5subset.xml. Other prefixes are resolved using any in-scope
+      tei prefixDef elements.</xd:p>
+    </xd:desc>
+    <xd:param name="pUri">The private URI string</xd:param>
+    <xd:param name="pContext">The context node</xd:param>
+    <xd:return>A fully-qualified URI, if the process succeeds, or the original
+    string if it isn't possible to resolve the URI with the resources available.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:resolve-private-uri" as="xs:string">
     <xsl:param name="pUri" as="xs:string"/>
     <xsl:param name="pContext" as="node()"/>
@@ -253,7 +322,7 @@
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
-          <xsl:message terminate="yes">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+          <xsl:message terminate="yes" expand-text="yes">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
         </xsl:if>
         <xsl:value-of select="concat('http://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
@@ -278,6 +347,14 @@
 
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:namespace-or-name-is-name"/>: Given a string value which may 
+      be a namespace or a name, along with a context node, determine whether it is a name 
+      using one of the in-scope prefixes.</xd:desc>
+    <xd:param name="pValue">The string value to be tested.</xd:param>
+    <xd:param name="pContext">The context node for in-scope prefixes.</xd:param>
+    <xd:return>True if it's a name, or false.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:namespace-or-name-is-name" as="xs:boolean">
     <xsl:param name="pValue" as="xs:string"/>
     <xsl:param name="pContext" as="node()"/>
@@ -293,6 +370,14 @@
 
   </xsl:function>
 
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:namespace-or-name-is-namespace-uri"/>: Given a string value which may 
+      be a namespace or a name, along with a context node, determine whether it is a namespace and 
+      not a name.</xd:desc>
+    <xd:param name="pValue">The string value to be tested.</xd:param>
+    <xd:param name="pContext">The context node for in-scope prefixes.</xd:param>
+    <xd:return>True if it's a namespace and not a name, or false.</xd:return>
+  </xd:doc>
   <xsl:function name="atop:namespace-or-name-is-namespace-uri" as="xs:boolean">
     <xsl:param name="pValue" as="xs:string"/>
     <xsl:param name="pContext" as="node()"/>
