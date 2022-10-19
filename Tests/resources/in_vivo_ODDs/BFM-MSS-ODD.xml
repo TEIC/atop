@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?oxygen RNGSchema="tei_odds.rnc" type="compact"?>
-<?xml-stylesheet type="text/css" href="Oxygen%20CSS/tei_oxygen.css"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:xtei="http://www.tei-c.org/ns/Examples"
     xmlns:me="http:// www.menota.org/ns/1.0" xmlns:bfm="http://bfm.ens-lsh.fr/ns/1.0"
     xmlns:rng="http://relaxng.org/ns/structure/1.0">
 
-    <teiHeader xml:lang="fr" type="text">
+    <teiHeader xml:lang="fr">
         <fileDesc>
             <titleStmt>
                 <title type="normal">Manuel d’encodage XML-TEI étendu des transcriptions de

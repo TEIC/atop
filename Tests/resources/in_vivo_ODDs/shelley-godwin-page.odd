@@ -482,7 +482,7 @@
                             </sequence>
                         </content>
                         
-                        <constraintSpec scheme="isoschematron" ident="add-ns-for-schema-fragment">
+                        <constraintSpec scheme="schematron" ident="add-ns-for-schema-fragment">
                             <constraint>
                                 <sch:ns uri="http://www.tei-c.org/ns/1.0" prefix="tei"/>
                             </constraint>
@@ -815,7 +815,7 @@
                                 <classRef key="model.global"/>
                             </alternate>
                         </content>
-                        <constraintSpec scheme="isoschematron" ident="modContents">
+                        <constraintSpec scheme="schematron" ident="modContents">
                             <constraint>
                                 <sch:rule context="tei:mod">
                                     <sch:report test="not(@spanTo) and not(tei:restore) and not(count(node()) gt 1)">The mod element is
