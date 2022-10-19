@@ -199,7 +199,7 @@
     |attDef/@rend
     |content/@rend
     |schemaSpec/desc
-    
+    |paramList
     |attList[not(*)]
     |@ref
     |equiv
