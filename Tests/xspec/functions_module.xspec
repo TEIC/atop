@@ -199,16 +199,4 @@
     </x:scenario>
   </x:scenario>
   
-  <x:scenario label="Scenarios for testing class membership retrieval">
-    <x:scenario label="Infinite recursion test" catch="yes">
-      <!-- Here we test a situation in which the input schemaSpec is broken in that it
-      has circular class membership references. -->
-      <x:call function="atop:get-class-members">
-        <x:param name="classSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='circularClassReference']/tei:classSpec[@ident='att.ccrHasTwo']"/>
-        <x:param name="schemaSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='circularClassReference']"/>
-      </x:call>
-      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-circularClassReference')"/>
-    </x:scenario>
-  </x:scenario>
-  
 </x:description>
