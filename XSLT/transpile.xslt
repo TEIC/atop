@@ -81,6 +81,7 @@
           <rng:notAllowed/>
         </xsl:when>
         <xsl:otherwise>
+          <xsl:comment><xsl:value-of select="serialize(*)"/></xsl:comment>
           <xsl:sequence select="$vContent"/>
         </xsl:otherwise>
       </xsl:choose>
@@ -89,20 +90,7 @@
 
   <xsl:template match="classes/memberOf" as="element(rng:ref)*">
     <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
-    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
-    <xsl:choose>
-      <xsl:when test="empty($vClassMembers)">
-        <!-- Not sure if this should be an error? A class that defines no attributes and that does not have a member. -->
-        <xsl:message>
-          <xsl:text>WARNING: Reference to class '{@key}' with no members</xsl:text>
-        </xsl:message>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:for-each select="$vClassMembers">
-          <rng:ref name="{atop:get-pattern-name(.)}"/>
-        </xsl:for-each>
-      </xsl:otherwise>
-    </xsl:choose>
+    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
   </xsl:template>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
