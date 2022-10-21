@@ -305,6 +305,7 @@ ignored and the members of the value list are provided.
         <xsl:message>
           <xsl:text>WARNING: Reference to class '{@key}' with no members</xsl:text>
         </xsl:message>
+        <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
       </xsl:when>
 
       <xsl:otherwise>
