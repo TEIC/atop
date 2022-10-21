@@ -211,6 +211,35 @@
   </xsl:function>
 
   <xd:doc>
+    <xd:desc><xd:ref name="atop:get-pattern-name"/>: Construct a viable pattern
+      name for an RNG pattern created from a TEI classSpec, dataSpec, elementSpec, or macroSpec element. Delegates to <xd:ref name="atop:get-class-pattern-name"/>, <xd:ref name="atop:get-datatype-pattern-name"/>, <xd:ref name="atop:get-element-pattern-name"/>, or <xd:ref name="atop:get-macro-pattern-name"/> respectively.</xd:desc>
+    <xd:param name="pDataSpec">The dataSpec element for which a pattern name is required.</xd:param>
+    <xd:return>A string value suitable for a pattern name.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-pattern-name" as="xs:string">
+    <xsl:param name="pSpec" as="element()"/>
+    <xsl:choose>
+      <xsl:when test="$pSpec instance of element(elementSpec)">
+        <xsl:value-of select="atop:get-element-pattern-name($pSpec)"/>
+      </xsl:when>
+      <xsl:when test="$pSpec instance of element(classSpec)">
+        <xsl:value-of select="atop:get-class-pattern-name($pSpec)"/>
+      </xsl:when>
+      <xsl:when test="$pSpec instance of element(dataSpec)">
+        <xsl:value-of select="atop:get-datatype-pattern-name($pSpec)"/>
+      </xsl:when>
+      <xsl:when test="$pSpec instance of element(macroSpec)">
+        <xsl:value-of select="atop:get-macro-pattern-name($pSpec)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message terminate="yes">
+          <xsl:text>Unsupport specification element: {serialize($pSpec)}</xsl:text>
+        </xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xd:doc>
     <xd:desc><xd:ref name="atop:get-class-members"/>: Return a list of elementSpec and classSpec
     elements which are members of the parameter class.</xd:desc>
     <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
