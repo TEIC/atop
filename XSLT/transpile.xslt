@@ -249,16 +249,28 @@ ignored and the members of the value list are provided.
   </xsl:template>
 
   <!-- Process members of model.contentPart -->
-  <xsl:template match="alternate" as="element(rng:choice)">
-    <rng:choice>
-      <xsl:apply-templates/>
-    </rng:choice>
+  <xsl:template match="alternate" as="element()*">
+    <xsl:call-template name="atop:repeat-content">
+      <xsl:with-param name="pContent" as="element()*">
+        <rng:choice>
+          <xsl:apply-templates/>
+        </rng:choice>
+      </xsl:with-param>
+      <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
+      <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
+    </xsl:call-template>
   </xsl:template>
 
-  <xsl:template match="sequence" as="element(rng:group)">
-    <rng:group>
-      <xsl:apply-templates/>
-    </rng:group>
+  <xsl:template match="sequence" as="element()*">
+    <xsl:call-template name="atop:repeat-content">
+      <xsl:with-param name="pContent" as="element()*">
+        <rng:group>
+          <xsl:apply-templates/>
+        </rng:group>
+      </xsl:with-param>
+      <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
+      <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
+    </xsl:call-template>
   </xsl:template>
 
   <xsl:template match="empty" as="element(rng:empty)">
