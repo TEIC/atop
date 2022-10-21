@@ -73,7 +73,20 @@
 
   <xsl:template match="classSpec" as="element(rng:define)">
     <xsl:variable name="vContent" as="element()*">
-      <xsl:apply-templates/>
+      <xsl:choose>
+        <xsl:when test="exists(attList | content/*)">
+          <xsl:apply-templates/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:where-populated>
+            <rng:choice>
+              <xsl:for-each select="atop:get-class-members(., ancestor::schemaSpec)">
+                <rng:ref name="{atop:get-pattern-name(.)}"/>
+              </xsl:for-each>
+            </rng:choice>
+          </xsl:where-populated>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <rng:define name="{atop:get-class-pattern-name(.)}">
       <xsl:choose>
@@ -85,11 +98,6 @@
         </xsl:otherwise>
       </xsl:choose>
     </rng:define>
-  </xsl:template>
-
-  <xsl:template match="classes/memberOf" as="element(rng:ref)*">
-    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
-    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
   </xsl:template>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
