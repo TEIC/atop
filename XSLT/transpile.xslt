@@ -58,7 +58,7 @@
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>-->
-  
+
   <xsl:template match="macroSpec" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
@@ -71,10 +71,38 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec[attList]" as="element(rng:define)">
-    <rng:define name="{atop:get-class-pattern-name(.)}">
+  <xsl:template match="classSpec" as="element(rng:define)">
+    <xsl:variable name="vContent" as="element()*">
       <xsl:apply-templates/>
+    </xsl:variable>
+    <rng:define name="{atop:get-class-pattern-name(.)}">
+      <xsl:choose>
+        <xsl:when test="empty($vContent)">
+          <rng:notAllowed/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$vContent"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </rng:define>
+  </xsl:template>
+
+  <xsl:template match="classes/memberOf" as="element(rng:ref)*">
+    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
+    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
+    <xsl:choose>
+      <xsl:when test="empty($vClassMembers)">
+        <!-- Not sure if this should be an error? A class that defines no attributes and that does not have a member. -->
+        <xsl:message>
+          <xsl:text>WARNING: Reference to class '{@key}' with no members</xsl:text>
+        </xsl:message>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:for-each select="$vClassMembers">
+          <rng:ref name="{atop:get-pattern-name(.)}"/>
+        </xsl:for-each>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
@@ -272,9 +300,17 @@ ignored and the members of the value list are provided.
     </xsl:for-each>
 
     <!-- Create reference to class members -->
-    <!-- TODO: Clarify the relationship between classRef/@expand and classSpec/@generate? -->
     <xsl:variable name="vExpand" as="xs:string" select="(@expand, 'alternation')[1]"/>
-    <xsl:variable name="vClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
+    <xsl:if test="exists(tokenize($vClassSpec/@generate))">
+      <xsl:if test="not($vExpand = tokenize($vClassSpec/@generate))">
+        <xsl:message terminate="yes">
+          <xsl:text>ERROR: Cannot expand members of the class '{@key}' as '{$vExpand}' because the class only allows </xsl:text>
+          <xsl:value-of select='for $token in tokenize($vClassSpec/@generate) return concat("&apos;", $token, "&apos;")'/>
+        </xsl:message>
+      </xsl:if>
+    </xsl:if>
+
+    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
 
     <xsl:choose>
       <xsl:when test="empty($vClassMembers)">
@@ -294,16 +330,16 @@ ignored and the members of the value list are provided.
                 <xsl:choose>
                   <xsl:when test="$vExpand eq 'sequenceRepeatable'">
                     <rng:oneOrMore>
-                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                      <rng:ref name="{atop:get-pattern-name(.)}"/>
                     </rng:oneOrMore>
                   </xsl:when>
                   <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
                     <rng:zeroOrMore>
-                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                      <rng:ref name="{atop:get-pattern-name(.)}"/>
                     </rng:zeroOrMore>
                   </xsl:when>
                   <xsl:otherwise>
-                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                    <rng:ref name="{atop:get-pattern-name(.)}"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
