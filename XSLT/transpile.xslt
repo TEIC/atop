@@ -294,10 +294,6 @@ ignored and the members of the value list are provided.
 
     <xsl:choose>
       <xsl:when test="empty($vClassMembers)">
-        <!-- Not sure if this should be an error? A class that defines no attributes and that does not have a member. -->
-        <xsl:message>
-          <xsl:text>WARNING: Reference to class '{@key}' with no members</xsl:text>
-        </xsl:message>
         <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
       </xsl:when>
 
