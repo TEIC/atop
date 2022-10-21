@@ -456,7 +456,7 @@ ignored and the members of the value list are provided.
 
   <xsl:template match="rng:*" as="element()">
     <xsl:copy>
-      <xsl:sequence select="@*"/>
+      <xsl:apply-templates select="@*"/>
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
