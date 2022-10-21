@@ -81,7 +81,6 @@
           <rng:notAllowed/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:comment><xsl:value-of select="serialize(*)"/></xsl:comment>
           <xsl:sequence select="$vContent"/>
         </xsl:otherwise>
       </xsl:choose>
