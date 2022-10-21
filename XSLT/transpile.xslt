@@ -279,13 +279,6 @@ ignored and the members of the value list are provided.
       </xsl:message>
     </xsl:if>
 
-    <!-- Create a reference to all class attribute patterns -->
-    <xsl:for-each select="($vClassSpec, key('atop:classMembers', $vClassSpec, ancestor::schemaSpec)[self::classSpec])">
-      <xsl:if test="attList">
-        <rng:ref name="{atop:get-class-pattern-name(.)}"/>
-      </xsl:if>
-    </xsl:for-each>
-
     <!-- Create reference to class members -->
     <xsl:variable name="vExpand" as="xs:string" select="(@expand, 'alternation')[1]"/>
     <xsl:if test="exists(tokenize($vClassSpec/@generate))">
