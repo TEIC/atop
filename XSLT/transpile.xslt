@@ -203,18 +203,25 @@ ignored and the members of the value list are provided.
     </rng:attribute>
   </xsl:template>
 
-  <xsl:template match="datatype" as="element(rng:list)">
+  <xsl:template match="datatype" as="element()">
     <xsl:variable name="vDatatypeContent" as="element()+">
       <xsl:apply-templates/>
     </xsl:variable>
 
-    <rng:list>
-      <xsl:call-template name="atop:repeat-content">
-        <xsl:with-param name="pContent" as="element()*" select="$vDatatypeContent"/>
-        <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
-        <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
-      </xsl:call-template>
-    </rng:list>
+    <xsl:choose>
+      <xsl:when test="$vDatatypeContent/self::rng:text">
+        <xsl:sequence select="$vDatatypeContent"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <rng:list>
+          <xsl:call-template name="atop:repeat-content">
+            <xsl:with-param name="pContent" as="element()*" select="$vDatatypeContent"/>
+            <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
+            <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
+          </xsl:call-template>
+        </rng:list>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="valList[empty(@type) or @type = 'open']" as="empty-sequence()"/>
@@ -460,9 +467,9 @@ ignored and the members of the value list are provided.
     </rng:param>
   </xsl:template>
 
-  <xsl:template match="dataRef[@key]" as="element(rng:ref)">
+  <xsl:template match="dataRef[@key]" as="element()">
     <xsl:variable name="vDataSpec" as="element(dataSpec)" select="key('atop:dataSpec', @key, ancestor::schemaSpec)"/>
-    <rng:ref name="{atop:get-datatype-pattern-name($vDataSpec)}"/>
+    <xsl:apply-templates select="$vDataSpec/*"/>
   </xsl:template>
 
   <xsl:template match="dataRef" priority="-10" as="empty-sequence()">
