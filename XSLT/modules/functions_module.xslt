@@ -211,56 +211,16 @@
   </xsl:function>
 
   <xd:doc>
-    <xd:desc><xd:ref name="atop:get-class-members"/>: Return a list of elementSpec
-    elements which are members of the parameter class. It does this by calling 
-    the recursive function atop:get-class-members-recursive.</xd:desc>
+    <xd:desc><xd:ref name="atop:get-class-members"/>: Return a list of elementSpec and classSpec
+    elements which are members of the parameter class.</xd:desc>
     <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
     <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
-    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
+    <xd:return>A sequence of zero or more classSpec or elementSpecs elements.</xd:return>
   </xd:doc>
-  <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
+  <xsl:function name="atop:get-class-members" as="element()*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
-    <xsl:sequence select="atop:get-class-members-recursive($pClassSpec, $pSchemaSpec, (), ())"/>
-  </xsl:function>
-
-  <xd:doc>
-    <xd:desc><xd:ref name="atop:get-class-members-recursive"/>: Return a list of elementSpec
-      elements which are members of the parameter class. In working through nested classes, it
-      keeps track of classes already seen in order to fail with an error if circular class
-      references are found.</xd:desc>
-    <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
-    <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
-    <xd:param name="pElementSpec">The sequence of elementSpecs built through recursive calls 
-      to this function.</xd:param>
-    <xd:param name="pSeenClassSpec">The sequence of classSpecs already seen through recursive calls 
-      to this function.</xd:param>
-    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
-  </xd:doc>
-  <xsl:function name="atop:get-class-members-recursive" as="element(elementSpec)*">
-    <xsl:param name="pClassSpec" as="element(classSpec)"/>
-    <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
-    <xsl:param name="pElementSpec" as="element(elementSpec)*"/>
-    <xsl:param name="pSeenClassSpec" as="element(classSpec)*"/>
-
-    <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
-      <xsl:choose>
-        <xsl:when test="self::elementSpec and not(. = $pElementSpec)">
-          <xsl:sequence select="($pElementSpec, .)"/>
-        </xsl:when>
-        <xsl:when test="self::classSpec">
-          <xsl:if test=". = $pSeenClassSpec">
-            <xsl:message terminate="yes" select="'FATAL error: circular class reference.'" error-code="atop:error-circularClassReference">
-              <xsl:text>Circular class membership reference</xsl:text>
-            </xsl:message>
-          </xsl:if>
-          <xsl:sequence select="atop:get-class-members-recursive(., $pSchemaSpec, $pElementSpec, ($pSeenClassSpec, .))"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:message terminate="yes"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:for-each>
+    <xsl:sequence select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)"/>
   </xsl:function>
 
   <xd:doc>
