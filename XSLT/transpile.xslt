@@ -72,33 +72,31 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec" as="element(rng:define)">
-    <xsl:variable name="vContent" as="element()*">
-      <xsl:choose>
-        <xsl:when test="exists(attList | content/*)">
-          <xsl:apply-templates/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:where-populated>
-            <rng:choice>
-              <xsl:for-each select="atop:get-class-members(., ancestor::schemaSpec)">
-                <rng:ref name="{atop:get-pattern-name(.)}"/>
-              </xsl:for-each>
-            </rng:choice>
-          </xsl:where-populated>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+  <xsl:template match="classSpec[@type = 'model']" as="element(rng:define)">
+    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members(., ancestor::schemaSpec)"/>
     <rng:define name="{atop:get-class-pattern-name(.)}">
       <xsl:choose>
-        <xsl:when test="empty($vContent)">
+        <xsl:when test="empty($vClassMembers)">
           <rng:notAllowed/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:sequence select="$vContent"/>
+          <xsl:for-each select="$vClassMembers">
+            <rng:ref name="{atop:get-pattern-name(.)}"/>
+          </xsl:for-each>
         </xsl:otherwise>
       </xsl:choose>
     </rng:define>
+  </xsl:template>
+
+  <xsl:template match="classSpec[@type = 'atts']" as="element(rng:define)">
+    <rng:define name="{atop:get-class-pattern-name(.)}">
+      <xsl:apply-templates/>
+    </rng:define>
+  </xsl:template>
+
+  <xsl:template match="classes/memberOf" as="element()">
+    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key)"/>
+    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
   </xsl:template>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
