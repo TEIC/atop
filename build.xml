@@ -18,7 +18,7 @@
     <tempfile destDir="${java.io.tmpdir}" suffix=".rng" property="transpile.odd.rng"/>
     <xslt style="XSLT/transpile.xslt" in="Tests/resources/in_vitro_ODDS/transpile.odd"
           out="${transpile.odd.rng}">
-      <classpath location="lib/saxon-he-11.jar"/>
+      <classpath location="Lib/saxon-he-11.jar"/>
     </xslt>
     <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="${transpile.odd.rng}"/>
