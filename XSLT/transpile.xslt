@@ -19,7 +19,8 @@
   </xd:doc>
   <xsl:mode on-no-match="shallow-skip"/>
 
-  <xsl:output indent="yes"/>
+  <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
+              exclude-result-prefixes="#all"/>
 
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble-relaxng.xslt"/>

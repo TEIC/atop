@@ -30,7 +30,8 @@
   </xd:doc>
   <xsl:param name="atop:pLang" select="'en'" as="xs:string"/>
   
-  <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"
+              exclude-result-prefixes="#all"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
   <xd:doc>

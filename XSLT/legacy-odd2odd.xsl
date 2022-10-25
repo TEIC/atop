@@ -53,7 +53,8 @@ of this software, even if advised of the possibility of such damage.
     </desc>
   </doc>
 
-  <xsl:output encoding="utf-8" indent="no"/>
+  <xsl:output indent="no" encoding="UTF-8" normalization-form="NFC"
+              exclude-result-prefixes="#all"/>
   <xsl:param name="autoGlobal">false</xsl:param>
   <xsl:param name="configDirectory"/>
   <xsl:param name="currentDirectory"/>

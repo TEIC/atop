@@ -1,4 +1,12 @@
 <project>
+  <description>
+    This is the base ant build file for the ATOP project. Eventually it will
+    provide one access method for all build and test functionality. At 
+    present it just has a few targets we are using in the early development
+    phase of ATOP.
+    
+    
+  </description>
 
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
     <classpath location="Lib/jing.jar"/>
@@ -10,14 +18,23 @@
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
 
   <target name="test.xspec" description="Run all XSpec tests">
+    <description>
+      TARGET test.xspec
+      This target is intended to run all XSpec tests by creating an ant build
+      file which then runs the XSpec project's build file passing the parameter
+      files containing our tests. [Note: this is not working as of 2022-10-25,
+      possibly because of the switch to Saxon 11.]
+    </description>
     <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
     <xslt style="Tests/xspec-runner.xslt" in="build.xml" out="Tests/xspec-runner.xml">
+      <classpath location="Lib/saxon-he-11.jar"/>
       <param name="files" expression="${xspec.files}"/>
     </xslt>
     <subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>
   </target>
 
   <target name="transpile" description="Run the experimental transpiler">
+    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
     <xslt style="XSLT/transpile.xslt" in="${inputTestOdd}"
       out="output/${oddName}.rng">
       <classpath location="Lib/saxon-he-11.jar"/>
