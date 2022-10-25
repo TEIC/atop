@@ -130,7 +130,7 @@
         </elementSpec>
         <elementSpec ident="element-5">
           <content>
-            <classRef key="class-model" expand="sequenceRepeatable"/>
+            <classRef key="class-model" expand="sequenceOptionalRepeatable"/>
           </content>
         </elementSpec>
       </schemaSpec>
