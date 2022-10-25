@@ -3,6 +3,9 @@
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
     <classpath location="Lib/jing.jar"/>
   </taskdef>
+  
+  <property name="inputTestOdd" value="Tests/resources/in_vitro_ODDs/transpile.odd"/>
+  <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
 
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
 
@@ -15,13 +18,25 @@
   </target>
 
   <target name="transpile" description="Run the experimental transpiler">
-    <tempfile destDir="${java.io.tmpdir}" suffix=".rng" property="transpile.odd.rng"/>
-    <xslt style="XSLT/transpile.xslt" in="Tests/resources/in_vitro_ODDS/transpile.odd"
-          out="${transpile.odd.rng}">
+    <xslt style="XSLT/transpile.xslt" in="${inputTestOdd}"
+      out="output/${oddName}.rng">
       <classpath location="Lib/saxon-he-11.jar"/>
     </xslt>
     <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="${transpile.odd.rng}"/>
+      <fileset file="output/${oddName}.rng"/>
+    </jing>
+  </target>
+  
+  <target name="transpileMorgana" description="Run the experimental transpiler through Morgana">
+    <mkdir dir="output"/>
+    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
+    <exec executable="Lib/morgana/Morgana.sh">
+      <arg value="Util/pipeline.xpl"/>
+      <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
+      <arg value="-output:result=output/${oddName}.rng"/>
+    </exec>
+    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
+      <fileset file="output/${oddName}.rng"/>
     </jing>
   </target>
 
