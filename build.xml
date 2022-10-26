@@ -4,8 +4,6 @@
     provide one access method for all build and test functionality. At 
     present it just has a few targets we are using in the early development
     phase of ATOP.
-    
-    
   </description>
 
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
