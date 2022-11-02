@@ -4,7 +4,7 @@
   <teiHeader>
     <fileDesc>
       <titleStmt>
-	<title>PLODD</title>
+        <title>PLODD</title>
         <author xml:id="SB">Syd Bauman</author>
         <editor xml:id="MH">Martin Holmes</editor>
         <editor xml:id="HBS">Helena Bermúdez Sabel</editor>
@@ -38,11 +38,11 @@
       <head>Schema for derived (pruned, localized) ODD</head>
       <divGen type="toc"/>
       <div type="section">
-	<head>TODO</head>
-	<list>
-	  <item>constraint <gi>altIdent</gi> so it can have no sibling
-	  <gi>altIdent</gi>s (i.e., only 1 child::altiDent).</item>
-	</list>
+        <head>TODO</head>
+        <list>
+          <item>constraint <gi>altIdent</gi> so it can have no sibling
+          <gi>altIdent</gi>s (i.e., only 1 child::altiDent).</item>
+        </list>
       </div>
     </front>
     <body>
@@ -52,15 +52,18 @@
         $ cd /tmp/
         $ mkdir -p CODDs PLODDs
         $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
-        $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f ; rm $f ; done ; cd .. )
+        $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ; done ; cd .. )
+        $ rm CODDs/*.odd
         $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
-        $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .odd.odd.xml`.plodd ; done )
-        $ for f in PLODDs/*.plodd ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/derivedSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
+        $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .derodd.xml`.xml ; done )  # wish I could use .plodd, but Morgana objects
+        $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
+        $ cd /path/to/atop/Lib/morgana
+        $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
       </eg>
     </body>
     <back>
-      <schemaSpec ident="derivedSchemaSpecification" targetLang="en"
-                  docLang="en" prefix="dS_" start="TEI schemaSpec">
+      <schemaSpec ident="ploddSchemaSpecification" targetLang="en"
+                  docLang="en" prefix="plodd_" start="TEI schemaSpec">
         <gloss>derived schema specification</gloss>
         <desc>the ATOP derived schema document type</desc>
 
@@ -93,20 +96,20 @@
         <moduleRef key="tagdocs" except="equiv exemplum listRef
                                          remarks model modelGrp
                                          modelSequence moduleSpec param
-					 paramList paramSpec specDesc
-					 specGrp specGrpRef specList"/>
+                                         paramList paramSpec specDesc
+                                         specGrp specGrpRef specList"/>
 
         <!-- ******************************************** -->
         <!-- General high-level constraint specifications -->
         <!-- ******************************************** -->
-	<constraintSpec ident="define_RNG_annotation_namespace" scheme="schematron">
-	  <desc>We will be testing for <tag>a:*</tag> elements as
-	  allowed children of <gi>content</gi> in
-	  <gi>moduleRef</gi>.</desc>
+        <constraintSpec ident="define_RNG_annotation_namespace" scheme="schematron">
+          <desc>We will be testing for <tag>a:*</tag> elements as
+          allowed children of <gi>content</gi> in
+          <gi>moduleRef</gi>.</desc>
           <constraint>
             <sch:ns prefix="a" uri="http://relaxng.org/ns/compatibility/annotations/1.0"/>
-	  </constraint>
-	</constraintSpec>
+          </constraint>
+        </constraintSpec>
         <constraintSpec ident="no_XInclude" scheme="schematron">
           <desc>By this point in the pipeline, any and all XInclude
           processing should have already occurred. Note that this
@@ -121,6 +124,29 @@
           </constraint>
         </constraintSpec>
 
+        <!--  -->
+        <macroSpec ident="gloss_amper_desc" mode="add">
+          <desc>interleave of <gi>gloss</gi> &amp; <gi>desc</gi></desc>
+          <content>
+            <alternate minOccurs="0" maxOccurs="1">
+              <sequence minOccurs="1" maxOccurs="1">
+                <classRef minOccurs="1" maxOccurs="1" key="model.glossLike"/>
+                <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
+              </sequence>
+              <sequence minOccurs="1" maxOccurs="1">
+                <classRef minOccurs="1" maxOccurs="1" key="model.descLike"/>
+                <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
+              </sequence>
+            </alternate>
+          </content>
+          <remarks>
+            <p>Macro of PureODD code that is the equivalent of a RELAX
+              NG pattern that is the interleave of 0 or 1 <gi>gloss</gi>
+              and 0 or 1 <gi>desc</gi>, i.e. <code>( gloss? &amp; desc?
+              )</code>.</p>
+          </remarks>
+        </macroSpec>
+        
         <!-- ********************************************************** -->
         <!-- Alterations to <schemaSpec> itself and elements “above” it -->
         <!-- ********************************************************** -->
@@ -133,12 +159,11 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-            <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
-            <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
-	    <alternate minOccurs="1" maxOccurs="unbounded">
+            <macroRef key="gloss_amper_desc"/>
+            <alternate minOccurs="1" maxOccurs="unbounded">
               <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
               <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
-	    </alternate>
+            </alternate>
           </content>
           <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
             <constraint>
@@ -146,8 +171,8 @@
               <sch:let name="elementSpecs"
                        value="for $e in ./tei:elementSpec
                               return concat('{', ($e/ancestor-or-self::*/@ns)[last()], '}', $e/@ident )"/>
-	      <sch:let name="unique_elementSpecs"
-		       value="distinct-values( $elementSpecs )"/>
+              <sch:let name="unique_elementSpecs"
+                       value="distinct-values( $elementSpecs )"/>
               <sch:assert test="count( $elementSpecs ) eq count( $unique_elementSpecs )">
                 <!-- Oops. If the number of unique elementSpecs (by
                      QName) is not the same as the number of
@@ -187,7 +212,9 @@
         <!-- ********************************* -->
         <elementSpec ident="altIdent" mode="change">
           <!-- Remove <altIdent> from model.glossLike, and require
-               content to be an XML name -->
+               content to be an XML name. These changes should no
+               longer be necessary after #2049 (and thus #2334) are
+               solved. -->
           <classes mode="replace">
             <memberOf key="att.global"/>
             <memberOf key="att.typed"/>
@@ -214,9 +241,8 @@
         <elementSpec ident="attDef" mode="change">
           <content>
             <sequence>
-	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="datatype" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="defaultVal" minOccurs="0" maxOccurs="1"/>
@@ -271,9 +297,8 @@
         <elementSpec ident="classSpec" mode="change">
           <content>
             <sequence>
-	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
@@ -299,8 +324,7 @@
 
         <elementSpec ident="constraintSpec" mode="change">
           <content>
-            <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-            <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+            <macroRef key="gloss_amper_desc"/>
             <elementRef key="constraint" minOccurs="0" maxOccurs="1"/>
           </content>
           <attList>
@@ -338,8 +362,7 @@
         <elementSpec ident="dataSpec" mode="change">
           <content>
             <sequence>
-              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <alternate minOccurs="0" maxOccurs="1">
                 <elementRef key="content"/>
                 <elementRef key="valList"/>
@@ -381,9 +404,8 @@
         <elementSpec ident="elementSpec" mode="change">
           <content>
             <sequence>
-	      <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="content" minOccurs="0" maxOccurs="1"/>
               <elementRef key="valList" minOccurs="0" maxOccurs="1"/>
@@ -417,8 +439,7 @@
         <elementSpec ident="macroSpec" mode="change">
           <content>
             <sequence>
-              <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-              <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <alternate minOccurs="0" maxOccurs="1">
                 <elementRef key="content" minOccurs="1" maxOccurs="1"/>
                 <elementRef key="valList" minOccurs="1" maxOccurs="1"/>
@@ -443,19 +464,19 @@
           </attList>
         </elementSpec>
 
-	<elementSpec ident="moduleRef" mode="change">
-	  <content>
-	    <elementRef key="content" minOccurs="1" maxOccurs="1"/>
-	  </content>
-	  <constraintSpec ident="only_rng_in_moduleRef_content" scheme="schematron">
-	    <constraint>
-	      <sch:report test="tei:content/*[ not( self::rng:* or self::a:* ) ]">
-		The content of an ATOP PLODD module reference needs to
-		be RELAX NG and RELAX NG *only*.
-	      </sch:report>
-	    </constraint>
-	  </constraintSpec>
-	  <attList>
+        <elementSpec ident="moduleRef" mode="change">
+          <content>
+            <elementRef key="content" minOccurs="1" maxOccurs="1"/>
+          </content>
+          <constraintSpec ident="only_rng_in_moduleRef_content" scheme="schematron">
+            <constraint>
+              <sch:report test="tei:content/*[ not( self::rng:* or self::a:* ) ]">
+                The content of an ATOP PLODD module reference needs to
+                be RELAX NG and RELAX NG *only*.
+              </sch:report>
+            </constraint>
+          </constraintSpec>
+          <attList>
             <attDef ident="mode"      mode="delete"/>
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
@@ -463,26 +484,26 @@
             <attDef ident="include"   mode="delete"/>
             <attDef ident="except"    mode="delete"/>
             <attDef ident="key"       mode="delete"/>
-	    <attDef ident="url" mode="replace" usage="req">
-	      <desc>must be a freakin’ dot</desc>
-	      <datatype minOccurs="1" maxOccurs="1">
-		<dataRef key="teidata.enumerated"/>
-	      </datatype>
-	      <valList type="closed">
-		<valItem ident=".">
-		  <gloss>here, this file, local</gloss>
-		  <desc>In an ATOP PLODD each <gi>moduleRef</gi>
-		  should have a <att>url</att> with the value
-		  <val>.</val> both so that it is clear and explicit
-		  that the reference has been resolved, only the
-		  content is to be copied over to the RELAX NG; and so
-		  that the <gi>moduleRef</gi> is valid against vanilla
-		  tei_all or tei_odds.</desc>
-		</valItem>
-	      </valList>
-	    </attDef>
-	  </attList>
-	</elementSpec>
+            <attDef ident="url" mode="replace" usage="req">
+              <desc>must be a freakin’ dot</desc>
+              <datatype minOccurs="1" maxOccurs="1">
+                <dataRef key="teidata.enumerated"/>
+              </datatype>
+              <valList type="closed">
+                <valItem ident=".">
+                  <gloss>here, this file, local</gloss>
+                  <desc>In an ATOP PLODD each <gi>moduleRef</gi>
+                  should have a <att>url</att> with the value
+                  <val>.</val> both so that it is clear and explicit
+                  that the reference has been resolved, only the
+                  content is to be copied over to the RELAX NG; and so
+                  that the <gi>moduleRef</gi> is valid against vanilla
+                  tei_all or tei_odds.</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
 
         <elementSpec ident="schemaRef" mode="change">
           <attList>
@@ -520,8 +541,7 @@
 
         <elementSpec ident="valItem" mode="change">
           <content>
-            <classRef key="model.glossLike" minOccurs="0" maxOccurs="1"/>
-            <classRef key="model.descLike" minOccurs="0" maxOccurs="1"/>
+            <macroRef key="gloss_amper_desc"/>
           </content>
           <attList>
             <attDef ident="rend"      mode="delete"/>
