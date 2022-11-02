@@ -10,7 +10,7 @@
     <classpath location="Lib/jing.jar"/>
   </taskdef>
   
-  <property name="inputTestOdd" value="Tests/resources/in_vitro_ODDs/transpile.odd"/>
+  <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
   <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
 
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
