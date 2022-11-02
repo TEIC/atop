@@ -20,13 +20,20 @@
   <xsl:template match="/" as="element(project)">
     <project>
       <include file="../Lib/xspec/build.xml"/>
+      
+      <!-- Set the classpath -->
+      <path id="saxon.classpath">
+        <fileset dir="../Lib/">
+          <include name="saxon/saxon-he-11.jar"/>
+        </fileset>
+      </path>  
       <target name="xspec-runner">
         <!-- For each of our XSpec files. -->
         <xsl:for-each select="tokenize($files)">
           <!-- call the xspec target in the build file. -->
           <antcall target="xspec.xspec" inheritall="false">
             <!-- Pass the location of the XSpec file we want to run. -->
-            <param name="xspec.xml" location="{.}"/>
+            <param name="xspec.xml" location="{.}"  classpathref="saxon.classpath"/>
             <!-- Pass the target test type: t = XSLT, s = Schematron. -->
             <param name="test.type" value="{if (doc(.)/xspec:description/@stylesheet) then 't' else 's'}"/>
             <param name="clean.output.dir" value="true"/>
