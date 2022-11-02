@@ -18,6 +18,13 @@
           https://github.com/xspec/xspec/wiki/Running-with-Oxygen
   ]]></description>
 
+<!-- atop addition: set path to saxon -->
+  <path id="saxon.classpath">
+    <fileset dir="..">
+      <include name="saxon/saxon-he-11.jar"/>
+    </fileset>
+  </path>
+
   <!-- "xspec.project.dir" property: Documented in Wiki. DO NOT RENAME.
     Directory where XSpec repository is cloned. -->
   <dirname property="xspec.project.dir" file="${ant.file.xspec}" />
@@ -193,7 +200,7 @@
         </and>
       </condition>
 
-      <xslt in="@{in}" out="@{out}" style="@{style}" force="true">
+      <xslt in="@{in}" out="@{out}" style="@{style}" force="true"  classpathref="saxon.classpath">
         <factory name="net.sf.saxon.TransformerFactoryImpl">
           <factory-elements />
 
@@ -440,7 +447,7 @@
 
     <!-- Can't specify saxon.custom.options with <xslt> task so have to
       fall back to running Saxon as Java app. -->
-    <java classname="net.sf.saxon.Transform" fork="true" failonerror="true">
+    <java classname="net.sf.saxon.Transform" fork="true" failonerror="true" classpathref="saxon.classpath">
       <!-- Saxon should be included in the classpath -->
       <classpath>
         <pathelement path="${java.class.path}" />
