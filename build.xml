@@ -1,4 +1,4 @@
-<project>
+<project basedir=".">
   <description>
     This is the base ant build file for the ATOP project. Eventually it will
     provide one access method for all build and test functionality. At 
@@ -59,7 +59,7 @@
     <mkdir dir="output"/>
     <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
     <java failonerror="true" fork="true" jar="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar" dir="${basedir}">
-      <jvmarg value="-javaagent:${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/quasar-core-0.7.9.jar"/>
+      <!--<jvmarg value="-javaagent:${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/quasar-core-0.7.9.jar"/>-->
       <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
       <arg value="${basedir}/Util/pipeline.xpl"/>
       <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
