@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron">
     <teiHeader>
         <fileDesc>
@@ -7,31 +9,31 @@
                 <title type="main">ODD file for the DTA 'Base Format' for manuscripts (DTABf-M)</title>
             		<title type="sub">Version 1.1.0</title>
                 <editor corresp="#DTACorpusPublisher">
-                    <persName ref="http://d-nb.info/gnd/115266127"><surname>Geyken</surname><forename>Alexander</forename></persName>
-                    <persName ref="http://d-nb.info/gnd/1018099549"><surname>Haaf</surname><forename>Susanne</forename></persName>
-                    <persName ref="http://d-nb.info/gnd/1019062681"><surname>Jurish</surname><forename>Bryan</forename></persName>
-                    <persName><surname>Boenig</surname><forename>Matthias</forename></persName>
-                    <persName><surname>Thomas</surname><forename>Christian</forename></persName>
-                    <persName><surname>Wiegand</surname><forename>Frank</forename></persName>
+                    <name ref="http://d-nb.info/gnd/115266127">Geyken, Alexander</name>
+                    <name ref="http://d-nb.info/gnd/1018099549">Haaf, Susanne</name>
+                    <name ref="http://d-nb.info/gnd/1019062681">Jurish, Bryan</name>
+                    <name>Boenig, Matthias</name>
+                    <name>Thomas, Christian</name>
+                    <name>Wiegand, Frank</name>
                 </editor>
                 <respStmt>
-                    <persName ref="http://d-nb.info/gnd/1018099549"><surname>Haaf</surname><forename>Susanne</forename></persName>
+                    <name ref="http://d-nb.info/gnd/1018099549">Haaf, Susanne</name>
                     <resp>Creation of the DTABf ODDs; Maintenance and updates of the DTABf components (ODD, RNG, documentation)</resp>
                 </respStmt>
 	            	<respStmt>
 	            		<resp>Further development of the format</resp>
-	            		<orgName>DTABf Steering Committee</orgName>
-	            		<persName>Matthias Boenig</persName><persName>Daniel Burckhardt</persName><persName>Stefan Dumont</persName><persName>Alexander Geyken</persName><persName>Martina Gödel</persName><persName>Susanne Haaf</persName><persName>Axel Herold</persName><persName>Christian Thomas</persName>
+	            		<name>DTABf Steering Committee</name>
+	            		<name>Matthias Boenig</name><name>Daniel Burckhardt</name><name>Stefan Dumont</name><name>Alexander Geyken</name><name>Martina Gödel</name><name>Susanne Haaf</name><name>Axel Herold</name><name>Christian Thomas</name>
 	            	</respStmt>
 	            	<respStmt>
 	            		<resp>Format development until 2017</resp>
-	            		<persName>Matthias Boenig</persName><persName>Alexander Geyken</persName><persName>Susanne Haaf</persName><persName>Christian Thomas</persName><persName>Frank Wiegand</persName>
+	            		<name>Matthias Boenig</name><name>Alexander Geyken</name><name>Susanne Haaf</name><name>Christian Thomas</name><name>Frank Wiegand</name>
 	            	</respStmt>
             </titleStmt>
             <publicationStmt>
                 <publisher xml:id="DTACorpusPublisher">
-                    <orgName type="project" xml:lang="de">Deutsches Textarchiv</orgName>
-                    <orgName type="project" xml:lang="en">German Text Archive</orgName>
+                    <name type="project" xml:lang="de">Deutsches Textarchiv</name>
+                    <name type="project" xml:lang="en">German Text Archive</name>
                     <email>dta@bbaw.de</email>
                     <address><addrLine>Jägerstr. 22/23, 10117 Berlin</addrLine></address>
                 </publisher>
