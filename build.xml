@@ -1,20 +1,41 @@
-<project basedir=".">
+<project basedir="." xmlns:if="ant:if"
+  xmlns:unless="ant:unless">
   <description>
     This is the base ant build file for the ATOP project. Eventually it will
     provide one access method for all build and test functionality. At 
     present it just has a few targets we are using in the early development
     phase of ATOP.
   </description>
-
+  
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
     <classpath location="Lib/jing.jar"/>
   </taskdef>
   
+  <!-- We need to know the OS. -->
+  
+  <condition property="onNix" value="true">
+    <os family="unix" />
+  </condition>
+  
+  <condition property="onMac" value="true">
+    <os family="mac" />
+  </condition>
+  
+  <condition property="onWin" value="true">
+    <os family="windows" />
+  </condition>
+  
+  <condition property="notWin" value="true">
+    <not>
+      <os family="windows"/>    
+    </not>
+  </condition>
+  
   <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
   <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
-
+  
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
-
+  
   <target name="test.xspec" description="Run all XSpec tests">
     <description>
       TARGET test.xspec
@@ -30,9 +51,10 @@
     </xslt>
     <subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>
   </target>
-
+  
   <target name="transpile" description="Run the experimental transpiler">
     <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
+    <echo message="Running on ${os.name}."/>
     <xslt style="XSLT/transpile.xslt" in="${inputTestOdd}"
       out="output/${oddName}.rng">
       <classpath location="Lib/saxon/saxon-he-11.jar"/>
@@ -42,7 +64,17 @@
     </jing>
   </target>
   
-  <target name="transpileMorgana" description="Run the experimental transpiler through Morgana">
+  <target name="transpileMorganaWin" if="onWin">
+    <mkdir dir="output"/>
+    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
+    <exec executable="Lib/morgana/Morgana.bat">
+      <arg value="Util/pipeline.xpl"/>
+      <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
+      <arg value="-output:result=output/${oddName}.rng"/>
+    </exec>
+  </target>
+  
+  <target name="transpileMorganaNix" if="notWin">
     <mkdir dir="output"/>
     <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
     <exec executable="Lib/morgana/Morgana.sh">
@@ -50,6 +82,9 @@
       <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
       <arg value="-output:result=output/${oddName}.rng"/>
     </exec>
+  </target>
+  
+  <target name="transpileMorgana" description="Run the experimental transpiler through Morgana" depends="transpileMorganaWin, transpileMorganaNix">
     <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="output/${oddName}.rng"/>
     </jing>
@@ -69,5 +104,5 @@
       <fileset file="output/${oddName}.rng"/>
     </jing>
   </target>
-
+  
 </project>
