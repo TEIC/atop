@@ -94,11 +94,6 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classes/memberOf" as="element()">
-    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key)"/>
-    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
-  </xsl:template>
-
   <!-- An element specification transpiles to a named RelaxNG pattern
        w/ defining the element. -->
   <xsl:template match="elementSpec" as="element(rng:define)">
