@@ -72,27 +72,7 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec[@type = 'model']" as="element(rng:define)">
-    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members(., ancestor::schemaSpec)"/>
-    <rng:define name="{atop:get-class-pattern-name(.)}">
-      <xsl:choose>
-        <xsl:when test="empty($vClassMembers)">
-          <rng:notAllowed/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$vClassMembers">
-            <rng:ref name="{atop:get-pattern-name(.)}"/>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </rng:define>
-  </xsl:template>
-
-  <xsl:template match="classSpec[@type = 'atts']" as="element(rng:define)">
-    <rng:define name="{atop:get-class-pattern-name(.)}">
-      <xsl:apply-templates/>
-    </rng:define>
-  </xsl:template>
+  <xsl:template match="classSpec" as="empty-sequence()"/>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
        w/ defining the element. -->
