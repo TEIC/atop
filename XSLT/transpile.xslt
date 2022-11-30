@@ -323,7 +323,7 @@ ignored and the members of the value list are provided.
               </xsl:variable>
 
               <xsl:choose>
-                <xsl:when test="$vExpand = ('sequenceOptional', 'sequenceOptionalRepeatable')">
+                <xsl:when test="$vExpand = ('sequenceOptional')">
                   <rng:optional>
                     <xsl:sequence select="$vReference"/>
                   </rng:optional>
