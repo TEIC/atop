@@ -54,6 +54,11 @@
 
   <!-- NOTE FOR DM: Is there any reason that this and the following
        two templates could not be combined into one? e.g.: -->
+  <!-- DM, 2022-12-07: Having separate templates for macroSpec,
+       dataSpec, classSpec[attList] is a scaffold. We can merge them
+       once we are convinced that translating to a named pattern is
+       the right thing in both cases. See classSpec[atttList]: Turns
+       out we don't define a pattern. -->
   <!--<xsl:template match="macroSpec | dataSpec | classSpec[attList]" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
