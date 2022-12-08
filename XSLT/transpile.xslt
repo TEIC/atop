@@ -296,11 +296,13 @@ ignored and the members of the value list are provided.
       </xsl:if>
     </xsl:if>
 
-    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
+    <xsl:variable name="vClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
 
     <xsl:choose>
       <xsl:when test="empty($vClassMembers)">
-        <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
+        <xsl:message terminate="no">
+          <xsl:text>WARNING: Reference to an empty class. The class '{@key}' does not have members.</xsl:text>
+        </xsl:message>
       </xsl:when>
 
       <xsl:otherwise>
