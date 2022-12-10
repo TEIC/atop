@@ -298,60 +298,52 @@ ignored and the members of the value list are provided.
 
     <xsl:variable name="vClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
 
-    <xsl:choose>
-      <xsl:when test="empty($vClassMembers)">
-        <xsl:message terminate="no">
-          <xsl:text>WARNING: Reference to an empty class. The class '{@key}' does not have members.</xsl:text>
-        </xsl:message>
-      </xsl:when>
+    <xsl:if test="exists($vClassMembers)">
 
-      <xsl:otherwise>
+      <xsl:variable name="vContent" as="element()">
+        <xsl:element name="{if ($vExpand eq 'alternation') then 'rng:choice' else 'rng:group'}">
 
-        <xsl:variable name="vContent" as="element()">
-          <xsl:element name="{if ($vExpand eq 'alternation') then 'rng:choice' else 'rng:group'}">
-
-            <xsl:for-each select="$vClassMembers">
-              <xsl:variable name="vReference" as="element()">
-                <xsl:choose>
-                  <xsl:when test="$vExpand eq 'sequenceRepeatable'">
-                    <rng:oneOrMore>
-                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-                    </rng:oneOrMore>
-                  </xsl:when>
-                  <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
-                    <rng:zeroOrMore>
-                      <rng:ref name="{atop:get-pattern-name(.)}"/>
-                    </rng:zeroOrMore>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
+          <xsl:for-each select="$vClassMembers">
+            <xsl:variable name="vReference" as="element()">
               <xsl:choose>
-                <xsl:when test="$vExpand = ('sequenceOptional')">
-                  <rng:optional>
-                    <xsl:sequence select="$vReference"/>
-                  </rng:optional>
+                <xsl:when test="$vExpand eq 'sequenceRepeatable'">
+                  <rng:oneOrMore>
+                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                  </rng:oneOrMore>
+                </xsl:when>
+                <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
+                  <rng:zeroOrMore>
+                    <rng:ref name="{atop:get-pattern-name(.)}"/>
+                  </rng:zeroOrMore>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:sequence select="$vReference"/>
+                  <rng:ref name="{atop:get-element-pattern-name(.)}"/>
                 </xsl:otherwise>
               </xsl:choose>
+            </xsl:variable>
 
-            </xsl:for-each>
-          </xsl:element>
-        </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="$vExpand = ('sequenceOptional')">
+                <rng:optional>
+                  <xsl:sequence select="$vReference"/>
+                </rng:optional>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:sequence select="$vReference"/>
+              </xsl:otherwise>
+            </xsl:choose>
 
-        <xsl:call-template name="atop:repeat-content">
-          <xsl:with-param name="pContent" as="element()*" select="$vContent"/>
-          <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
-          <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
-        </xsl:call-template>
+          </xsl:for-each>
+        </xsl:element>
+      </xsl:variable>
 
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:call-template name="atop:repeat-content">
+        <xsl:with-param name="pContent" as="element()*" select="$vContent"/>
+        <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
+        <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
+      </xsl:call-template>
+
+    </xsl:if>
 
   </xsl:template>
 
