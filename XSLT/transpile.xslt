@@ -315,7 +315,7 @@ ignored and the members of the value list are provided.
                 <xsl:choose>
                   <xsl:when test="$vExpand eq 'sequenceRepeatable'">
                     <rng:oneOrMore>
-                      <rng:ref name="{atop:get-pattern-name(.)}"/>
+                      <rng:ref name="{atop:get-element-pattern-name(.)}"/>
                     </rng:oneOrMore>
                   </xsl:when>
                   <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
@@ -324,7 +324,7 @@ ignored and the members of the value list are provided.
                     </rng:zeroOrMore>
                   </xsl:when>
                   <xsl:otherwise>
-                    <rng:ref name="{atop:get-pattern-name(.)}"/>
+                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </xsl:variable>
