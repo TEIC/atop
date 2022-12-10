@@ -19,21 +19,21 @@
   </xd:doc>
 
   <xd:doc>
-    <xd:desc><xd:ref name="atop:dataSpec"/>, <xd:ref name="atop:classSpec"/>, 
+    <xd:desc><xd:ref name="atop:dataSpec"/>, <xd:ref name="atop:classSpec"/>,
       <xd:ref name="atop:elementSpec"/>, and <xd:ref name="atop:macroSpec"/> are
-      handy keys for accessing elements by their idents.</xd:desc> 
+      handy keys for accessing elements by their idents.</xd:desc>
   </xd:doc>
   <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
   <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
   <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
-  
+
   <xd:doc>
     <xd:desc><xd:ref name="atop:classMembers"/> is a key for accessing elementSpecs and classSpecs
     by the idents of the classes they are direct members of.</xd:desc>
   </xd:doc>
   <xsl:key name="atop:classMembers" match="elementSpec[classes/memberOf] | classSpec[classes/memberOf]" use="classes/memberOf/@key"/>
-  
+
   <xd:doc>
     <xd:desc><xd:ref name="atop:prefixDef"/> is a key to prefixDef elements by their idents.</xd:desc>
   </xd:doc>
@@ -58,7 +58,7 @@
   </xsl:function>
 
   <xd:doc>
-    <xd:desc><xd:ref name="atop:unique-ident"/>: 
+    <xd:desc><xd:ref name="atop:unique-ident"/>:
       Given a specification element, return a unique identifier for the construct that
     element defines. This is <xd:i>not</xd:i> just the @ident, because severel different kinds
     of construct might have the same @ident (e.g., &lt;ref> vs @ref), and because several
@@ -176,7 +176,7 @@
 
   <xd:doc>
     <xd:desc><xd:ref name="atop:get-class-pattern-name"/>: Construct a viable pattern
-      name for an RNG pattern created from a TEI class by concatenating the schemaSpec's 
+      name for an RNG pattern created from a TEI class by concatenating the schemaSpec's
       prefix attribute, the classSpec's own prefix, and the classSpec's ident.</xd:desc>
     <xd:param name="pClassSpec">The classSpec element for which a pattern name is required.</xd:param>
     <xd:return>A string value suitable for a pattern name.</xd:return>
@@ -188,7 +188,7 @@
 
   <xd:doc>
     <xd:desc><xd:ref name="atop:get-macro-pattern-name"/>: Construct a viable pattern
-      name for an RNG pattern created from a TEI macro by concatenating the schemaSpec's 
+      name for an RNG pattern created from a TEI macro by concatenating the schemaSpec's
       prefix attribute, the macroSpec's own prefix, and the classSpec's ident.</xd:desc>
     <xd:param name="pMacroSpec">The macroSpec element for which a pattern name is required.</xd:param>
     <xd:return>A string value suitable for a pattern name.</xd:return>
@@ -246,16 +246,33 @@
     <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
     <xd:return>A sequence of zero or more classSpec or elementSpecs elements.</xd:return>
   </xd:doc>
-  <xsl:function name="atop:get-class-members" as="element()*">
+  <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
-    <xsl:sequence select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)"/>
+    <xsl:param name="pClassSpecSeen" as="element(classSpec)*"/>
+
+    <xsl:for-each select="key('atop:classMembers', $pClassSpec/@ident, $pSchemaSpec)">
+      <xsl:choose>
+        <xsl:when test=". instance of element(classSpec)">
+          <xsl:if test=". = $pClassSpecSeen">
+            <xsl:message terminate="yes">
+              <xsl:text>ERROR: Circular class reference.</xsl:text>
+              <xsl:value-of select="$pClassSpecSeen/@ident"/>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="atop:get-class-members(., $pSchemaSpec, (., $pClassSpecSeen))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:function>
 
   <xd:doc>
     <xd:desc>
-      <xd:p><xd:ref name="atop:repeat-content"/>: 
-        Given element content, an optional minimum, and an optional maximum occurrence, 
+      <xd:p><xd:ref name="atop:repeat-content"/>:
+        Given element content, an optional minimum, and an optional maximum occurrence,
         return a corresponding RelaxNG pattern.</xd:p>
     </xd:desc>
     <xd:param name="pContent">Element content</xd:param>
@@ -292,9 +309,9 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p><xd:ref name="atop:resolve-private-uri"/>: 
-        Given a private URI and a context node, convert the private URI to 
-        a fully-qualified URI. URIs using the tei: prefix and conforming to 
+      <xd:p><xd:ref name="atop:resolve-private-uri"/>:
+        Given a private URI and a context node, convert the private URI to
+        a fully-qualified URI. URIs using the tei: prefix and conforming to
       TEI version patterns are treated as special, and resolved to point to
       the appropriate p5subset.xml. Other prefixes are resolved using any in-scope
       tei prefixDef elements.</xd:p>
@@ -337,8 +354,8 @@
   </xsl:function>
 
   <xd:doc>
-    <xd:desc><xd:ref name="atop:namespace-or-name-is-name"/>: Given a string value which may 
-      be a namespace or a name, along with a context node, determine whether it is a name 
+    <xd:desc><xd:ref name="atop:namespace-or-name-is-name"/>: Given a string value which may
+      be a namespace or a name, along with a context node, determine whether it is a name
       using one of the in-scope prefixes.</xd:desc>
     <xd:param name="pValue">The string value to be tested.</xd:param>
     <xd:param name="pContext">The context node for in-scope prefixes.</xd:param>
@@ -360,8 +377,8 @@
   </xsl:function>
 
   <xd:doc>
-    <xd:desc><xd:ref name="atop:namespace-or-name-is-namespace-uri"/>: Given a string value which may 
-      be a namespace or a name, along with a context node, determine whether it is a namespace and 
+    <xd:desc><xd:ref name="atop:namespace-or-name-is-namespace-uri"/>: Given a string value which may
+      be a namespace or a name, along with a context node, determine whether it is a namespace and
       not a name.</xd:desc>
     <xd:param name="pValue">The string value to be tested.</xd:param>
     <xd:param name="pContext">The context node for in-scope prefixes.</xd:param>
