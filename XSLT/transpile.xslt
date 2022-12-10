@@ -296,7 +296,36 @@ ignored and the members of the value list are provided.
       </xsl:if>
     </xsl:if>
 
-    <xsl:variable name="vClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
+    <xsl:variable name="vAllClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec, ())"/>
+    <xsl:variable name="vClassMembers" as="element(elementSpec)*">
+      <xsl:choose>
+        <xsl:when test="@except">
+          <xsl:variable name="vExcept" as="xs:string*" select="tokenize(@except)"/>
+          <xsl:if test="$vExcept[not(. = $vAllClassMembers/@ident)]">
+            <xsl:message terminate="yes">
+              <xsl:text>ERROR: The elements </xsl:text>
+              <xsl:value-of select="$vExcept[not(. = $vAllClassMembers/@ident)]"/>
+              <xsl:text> should be excluded but are not members of the class '{@key}'.</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="$vAllClassMembers[not(@ident = $vExcept)]"/>
+        </xsl:when>
+        <xsl:when test="@include">
+          <xsl:variable name="vInclude" as="xs:string*" select="tokenize(@include)"/>
+          <xsl:if test="$vInclude[not(. = $vAllClassMembers/@ident)]">
+            <xsl:message terminate="yes">
+              <xsl:text>ERROR: The elements </xsl:text>
+              <xsl:value-of select="$vInclude[not(. = $vAllClassMembers/@ident)]"/>
+              <xsl:text> should be included but are not members of the class '{@key}'.</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="$vAllClassMembers[@ident = $vInclude]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$vAllClassMembers"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:if test="exists($vClassMembers)">
 
