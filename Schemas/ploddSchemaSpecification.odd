@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" version="4.4.0"
+<TEI xmlns="http://www.tei-c.org/ns/1.0" version="4.5.0"
      xmlns:sch="http://purl.oclc.org/dsdl/schematron">
   <teiHeader>
     <fileDesc>
@@ -28,6 +28,8 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2022-12-21">Per today’s meeting, allow a
+      PLODD to have <gi>front</gi> and <gi>revisionDesc</gi>.</change>
       <change who="#SB" when="2022-07-15">Per recent meeting, allow a
       limited version of <gi>moduleRef</gi>.</change>
       <change who="#SB" when="2022-06-24">Started from scratch.</change>
@@ -37,29 +39,50 @@
     <front>
       <head>Schema for derived (pruned, localized) ODD</head>
       <divGen type="toc"/>
-      <div type="section">
-        <head>TODO</head>
-        <list>
-          <item>constraint <gi>altIdent</gi> so it can have no sibling
-          <gi>altIdent</gi>s (i.e., only 1 child::altiDent).</item>
-        </list>
-      </div>
     </front>
     <body>
-      <p>One method of generating a test suite and validating it
-      against this schema:</p>
-      <eg xml:lang="x-bash">
-        $ cd /tmp/
-        $ mkdir -p CODDs PLODDs
-        $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
-        $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ; done ; cd .. )
-        $ rm CODDs/*.odd
-        $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
-        $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .derodd.xml`.xml ; done )  # wish I could use .plodd, but Morgana objects
-        $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
-        $ cd /path/to/atop/Lib/morgana
-        $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
-      </eg>
+      <div type="section">
+        <head>Purpose</head>
+	<p>This schema serves two distinct but <emph>very</emph>
+	closely related purposes. First and foremost, it expresses
+	constraints on the ODD that serves as input to transpilation,
+	i.e. the final derived ODD produced from the last ODD in an
+	ODD-derivation chain. It is pruned (i.e., has no prose bits
+	like <gi>remarks</gi> or <gi>exemplum</gi>) and localized
+	(i.e., there is at most one <gi>gloss</gi> and one <gi>desc</gi> child
+	of any given specification element, presumably in the
+	appropriate natural language).</p>
+	<p>Second, it expresses the constraints on our files used in
+	testing the transpiler before we have built the odd-chaining
+	software. This set of constraints is <emph>exactly</emph> like
+	those for the first purpose, but <gi>front</gi> and
+	<gi>revisionDesc</gi> are also permitted to allow documenting
+	our test procedures.</p>
+      </div>
+      <div type="section">
+	<head>Usage</head>
+	<p>The schemas derived from this ODD are used to validate
+	PLODDs. Generating test PLODDs for the ATOP system without
+	using the ATOP ODD-chaining software (which is necessary
+	before we build the ATOP ODD-chaining software) can be done
+	by either <name type="cmd">generate_test_PLODDs.bash</name>
+	or by <name type="cmd">ant</name> with the <name
+	type="file">build_test_PLODDs.xml</name> build file.</p>
+	<p>That bash program does essentially the following.
+	<eg xml:lang="x-bash">
+          $ cd /tmp/
+          $ mkdir -p CODDs PLODDs
+          $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
+          $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ; done ; cd .. )
+          $ rm CODDs/*.odd
+          $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
+          $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .derodd.xml`.xml ; done )  # wish I could use .plodd, but Morgana objects
+          $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
+          $ cd /path/to/atop/Lib/morgana
+          $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
+	</eg>
+	</p>	
+      </div>
     </body>
     <back>
       <schemaSpec ident="ploddSchemaSpecification" targetLang="en"
@@ -73,9 +96,9 @@
         <moduleRef key="tei"/>
         <moduleRef key="header" include="appInfo application creation
                                          fileDesc encodingDesc publicationStmt
-                                         schemaRef sourceDesc teiHeader
-                                         titleStmt "/>
-        <moduleRef key="textstructure" include="TEI body text"/>
+                                         revisionDesc schemaRef sourceDesc
+                                         teiHeader titleStmt "/>
+        <moduleRef key="textstructure" include="TEI body front text"/>
         <moduleRef key="core" include="abbr addrLine address
                                        analytic author bibl
                                        biblScope biblStruct choice
