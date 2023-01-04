@@ -11,21 +11,29 @@
       Note: We expect the 4 ATOP developers to have ant-contrib
       installed. If & when an ant build process is delivered to users,
       we should consider including the ant-contrib library in our Lib/
-      so that users do not have to download it.
+      so that users do not have to download it; or we could rewrite 
+      targets to avoid ant-contrib components.
   -->
   <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
   <!-- We validate against closed schema with Jing. -->
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
-    <classpath location="Lib/jing.jar"/>
+    <classpath location="${basedir}/Lib/jing.jar"/>
   </taskdef>
+  
+  <!-- Local version of Saxon. -->
+  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
   
   <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
   <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
   
+  <!-- We expect a local installation of the TEI Stylesheets for this early 
+       testing; the default must be overridden with -DstylesheetsPath=... 
+       unless you are Syd. -->
   <property name="stylesheetsPath" value="/home/syd/Documents/Stylesheets"/>
 
-  <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
+
+  <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
 
   <condition property="isWindows">
     <os family="windows" />
@@ -52,8 +60,8 @@
       possibly because of the switch to Saxon 11.]
     </description>
     <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
-    <xslt style="Tests/xspec-runner.xslt" in="build.xml" out="Tests/xspec-runner.xml">
-      <classpath location="${basedir}/Lib/saxon/saxon-he-11.jar"/>
+    <xslt style="${basedir}/Tests/xspec-runner.xslt" in="build.xml" out="${basedir}/Tests/xspec-runner.xml">
+      <classpath location="${saxon}"/>
       <param name="files" expression="${xspec.files}"/>
     </xslt>
     <!--<subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>-->
@@ -88,23 +96,23 @@
        PLODD-to-RNG process before we have actually written the
        customization-to-PLODD process. I.e., this chunk is not
        intended to be permanent or user-facing. (Although it might
-       grow up in the futuire.)
+       grow up in the future.)
   -->
 
   <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
 
   <target name="preplodd">
     <echo>=== Sweepy, sweepy, sweepy</echo>
-    <delete dir="/tmp/CODDs"/>
-    <delete dir="/tmp/PLODDs"/>
+    <delete dir="${basedir}/tmp/CODDs"/>
+    <delete dir="${basedir}/tmp/PLODDs"/>
   </target>
 
   <target name="copy_ODDs">
     <echo>=== Copying ODDs ...</echo>
-    <mkdir dir="/tmp/CODDs"/>
-    <mkdir dir="/tmp/PLODDs"/>
-    <copy todir="/tmp/CODDs">
-      <fileset dir="." includes="**/*.odd"/>
+    <mkdir dir="${basedir}/tmp/CODDs"/>
+    <mkdir dir="${basedir}/tmp/PLODDs"/>
+    <copy todir="${basedir}/tmp/CODDs">
+      <fileset dir="." includes="${basedir}/resources/**/*.odd"/>
       <flattenmapper/>
     </copy>
   </target>
@@ -113,7 +121,7 @@
     <echo>=== derive all</echo>
     <foreach target="derive" param="inFile" parallel="true">
       <path>
-        <fileset dir="/tmp/CODDs" includes="*.odd"/>
+        <fileset dir="${basedir}/tmp/CODDs" includes="*.odd"/>
       </path>
     </foreach>
   </target>
@@ -121,7 +129,7 @@
     <echo message="deriving ${inFile}"/>
     <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
     <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
-    <property name="outFile" value="/tmp/CODDs/${plainFileName}.derodd"/>
+    <property name="outFile" value="${basedir}/tmp/CODDs/${plainFileName}.derodd"/>
     <exec executable="${stylesheetsPath}/bin/teitoodd">
       <arg value="--odd"/>
       <!-- arg value="- - debug"/-->
@@ -134,23 +142,23 @@
     <echo>=== transform all</echo>
     <foreach target="transform" param="inFile" parallel="true">
       <path>
-        <fileset dir="/tmp/CODDs" includes="*.derodd"/>
+        <fileset dir="${basedir}/tmp/CODDs" includes="*.derodd"/>
       </path>
     </foreach>
   </target>
   <target name="transform">
     <echo message="pruning ${inFile}"/>
     <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
-    <property name="outFile" value="/tmp/PLODDs/${plainFileName}.odd"/>
-    <xslt style="XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
-      <classpath location="Lib/saxon/saxon-he-11.jar"/>
+    <property name="outFile" value="${basedir}/tmp/PLODDs/${plainFileName}.odd"/>
+    <xslt style="${basedir}/XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
+      <classpath location="${saxon}"/>
     </xslt>
   </target>
   
   <target name="validateResults">
     <echo>=== validate output files</echo>
-    <jing rngfile="Schemas/ploddSchemaSpecification.rng">
-      <fileset dir="/tmp/PLODDs" includes="*.odd"/>
+    <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng">
+      <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
     </jing>
   </target>
 
