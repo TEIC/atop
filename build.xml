@@ -125,6 +125,7 @@
       </path>
     </foreach>
   </target>
+  
   <target name="derive">
     <echo message="deriving ${inFile}"/>
     <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
@@ -157,6 +158,18 @@
   
   <target name="validateResults">
     <echo>=== validate output files</echo>
+    <if>
+      <not>
+        <available file="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
+      </not>
+      <then>
+        <exec executable="${stylesheetsPath}/bin/teitorelaxng">
+          <arg value="${basedir}/Schemas/ploddSchemaSpecification.odd"/>
+          <arg value="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
+        </exec>
+      </then>
+    </if>
+    
     <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng">
       <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
     </jing>
