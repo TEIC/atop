@@ -112,7 +112,7 @@
     <mkdir dir="${basedir}/tmp/CODDs"/>
     <mkdir dir="${basedir}/tmp/PLODDs"/>
     <copy todir="${basedir}/tmp/CODDs">
-      <fileset dir="." includes="${basedir}/resources/**/*.odd"/>
+      <fileset dir="${basedir}/Tests/resources/" includes="**/*.odd"/>
       <flattenmapper/>
     </copy>
   </target>
