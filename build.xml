@@ -23,7 +23,7 @@
   <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
   <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
   
-  <property name="stylesheetsPath" value="/home/syd/Documents/Stylesheets/home/syd/Documents/Stylesheets"/>
+  <property name="stylesheetsPath" value="/home/syd/Documents/Stylesheets"/>
 
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
 
@@ -91,16 +91,7 @@
        grow up in the futuire.)
   -->
 
-    <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
-
-  <!--
-    This method of doing things (copy ODDs to /tmp/CODDs/, run old stylesheets
-    on those ODDs to produce derived ODDs in the same dir, then convert them into
-    PLODDs in a different directory (/tmp/PLODDs/) was how I originally did this
-    in bash, and my not be the “right” way to do this in ant. I did this in order
-    to transform an entire directory at once in Saxon, thus saving dramatically
-    on Java spin-up time. But that is not necessary in ant, is it? —Syd, 2022-12-07    
-  -->
+  <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
 
   <target name="preplodd">
     <echo>=== Sweepy, sweepy, sweepy</echo>
