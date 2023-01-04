@@ -22,6 +22,8 @@
   
   <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
   <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
+  
+  <property name="stylesheetsPath" value="/home/syd/Documents/Stylesheets/home/syd/Documents/Stylesheets"/>
 
   <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
 
@@ -129,7 +131,7 @@
     <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
     <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
     <property name="outFile" value="/tmp/CODDs/${plainFileName}.derodd"/>
-    <exec executable="/home/syd/Documents/Stylesheets/bin/teitoodd">
+    <exec executable="${stylesheetsPath}/bin/teitoodd">
       <arg value="--odd"/>
       <!-- arg value="- - debug"/-->
       <arg value="${inFile}"/>
