@@ -6,6 +6,16 @@
     phase of ATOP.
   </description>
 
+  <!-- We need ant-contrib to do foreach.   -->
+  <!--
+      Note: We expect the 4 ATOP developers to have ant-contrib
+      installed. If & when an ant build process is delivered to users,
+      we should consider including the ant-contrib library in our Lib/
+      so that users do not have to download it.
+  -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
+  <!-- We validate against closed schema with Jing. -->
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
     <classpath location="Lib/jing.jar"/>
   </taskdef>
@@ -69,6 +79,85 @@
     </java>
     <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="output/${oddName}.rng"/>
+    </jing>
+  </target>
+
+  <!-- targets for generating PLODD test files to test the
+       PLODD-to-RNG process before we have actually written the
+       customization-to-PLODD process. I.e., this chunk is not
+       intended to be permanent or user-facing. (Although it might
+       grow up in the futuire.)
+  -->
+
+    <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
+
+  <!--
+    This method of doing things (copy ODDs to /tmp/CODDs/, run old stylesheets
+    on those ODDs to produce derived ODDs in the same dir, then convert them into
+    PLODDs in a different directory (/tmp/PLODDs/) was how I originally did this
+    in bash, and my not be the “right” way to do this in ant. I did this in order
+    to transform an entire directory at once in Saxon, thus saving dramatically
+    on Java spin-up time. But that is not necessary in ant, is it? —Syd, 2022-12-07    
+  -->
+
+  <target name="preplodd">
+    <echo>=== Sweepy, sweepy, sweepy</echo>
+    <delete dir="/tmp/CODDs"/>
+    <delete dir="/tmp/PLODDs"/>
+  </target>
+
+  <target name="copy_ODDs">
+    <echo>=== Copying ODDs ...</echo>
+    <mkdir dir="/tmp/CODDs"/>
+    <mkdir dir="/tmp/PLODDs"/>
+    <copy todir="/tmp/CODDs">
+      <fileset dir="." includes="**/*.odd"/>
+      <flattenmapper/>
+    </copy>
+  </target>
+
+  <target name="deriveAll">
+    <echo>=== derive all</echo>
+    <foreach target="derive" param="inFile" parallel="true">
+      <path>
+        <fileset dir="/tmp/CODDs" includes="*.odd"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="derive">
+    <echo message="deriving ${inFile}"/>
+    <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
+    <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
+    <property name="outFile" value="/tmp/CODDs/${plainFileName}.derodd"/>
+    <exec executable="/home/syd/Documents/Stylesheets/bin/teitoodd">
+      <arg value="--odd"/>
+      <!-- arg value="- - debug"/-->
+      <arg value="${inFile}"/>
+      <arg value="${outFile}"/>
+    </exec>
+  </target>
+
+  <target name="transformAll">
+    <echo>=== transform all</echo>
+    <foreach target="transform" param="inFile" parallel="true">
+      <path>
+        <fileset dir="/tmp/CODDs" includes="*.derodd"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="transform">
+    <echo message="pruning ${inFile}"/>
+    <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
+    <property name="outFile" value="/tmp/PLODDs/${plainFileName}.odd"/>
+    <xslt style="XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
+      <classpath location="Lib/saxon/saxon-he-11.jar"/>
+    </xslt>
+  </target>
+  
+  <target name="validateResults">
+    <echo>=== validate output files</echo>
+    <jing rngfile="Schemas/ploddSchemaSpecification.rng">
+      <fileset dir="/tmp/PLODDs" includes="*.odd"/>
     </jing>
   </target>
 
