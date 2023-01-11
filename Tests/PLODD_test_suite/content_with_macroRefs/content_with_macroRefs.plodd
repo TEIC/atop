@@ -19,6 +19,7 @@
     </front>
     <body>
       <schemaSpec ident="macroRef_content" prefix="cum_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
+        <!-- "cum" is short for content using macroRefs -->
  	<macroSpec ident="Macr1">
 	  <content>
 	    <elementRef key="alfa"/>

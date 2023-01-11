@@ -18,7 +18,8 @@
       <p></p>
     </front>
     <body>
-      <schemaSpec ident="elementRef_content" prefix="eSc_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
+      <schemaSpec ident="elementRef_content" prefix="cue_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
+        <!-- "cue" is short for content using elementRefs -->
 	<elementSpec ident="test_elements">
 	  <content>
 	    <sequence>

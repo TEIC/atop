@@ -28,11 +28,22 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
-      <change who="#SB" when="2022-12-21">Per today’s meeting, allow a
-      PLODD to have <gi>front</gi> and <gi>revisionDesc</gi>.</change>
-      <change who="#SB" when="2022-07-15">Per recent meeting, allow a
-      limited version of <gi>moduleRef</gi>.</change>
-      <change who="#SB" when="2022-06-24">Started from scratch.</change>
+      <change who="#SB" when="2023-01-11">
+	Per today’s meeting, disallow <gi>gloss</gi> and <gi>desc</gi>
+	from each of <gi>classSpec</gi>, <gi>elementSpec</gi>, and
+	<gi>macroSpec</gi>.
+      </change>
+      <change who="#SB" when="2022-12-21">
+	Per today’s meeting, allow a PLODD to have <gi>front</gi> and
+	<gi>revisionDesc</gi>.
+      </change>
+      <change who="#SB" when="2022-07-15">
+	Per recent meeting, allow a limited version of
+	<gi>moduleRef</gi>.
+      </change>
+      <change who="#SB" when="2022-06-24">
+	Started from scratch.
+      </change>
     </revisionDesc>
   </teiHeader>
   <text>
@@ -182,7 +193,6 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-            <macroRef key="gloss_amper_desc"/>
             <alternate minOccurs="1" maxOccurs="unbounded">
               <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
               <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
@@ -322,7 +332,6 @@
           <content>
             <sequence>
               <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
-              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
@@ -463,7 +472,6 @@
         <elementSpec ident="macroSpec" mode="change">
           <content>
             <sequence>
-              <macroRef key="gloss_amper_desc"/>
               <alternate minOccurs="0" maxOccurs="1">
                 <elementRef key="content" minOccurs="1" maxOccurs="1"/>
                 <elementRef key="valList" minOccurs="1" maxOccurs="1"/>
