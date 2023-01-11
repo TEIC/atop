@@ -87,7 +87,7 @@
       <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
       <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
     </java>
-    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
+    <jing rngfile="${basedir}/Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="${ploddDir}/${ploddName}.rng"/>
     </jing>
   </target>
