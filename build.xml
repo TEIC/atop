@@ -24,8 +24,8 @@
   <!-- Local version of Saxon. -->
   <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
   
-  <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
-  <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
+  <property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>
+  <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
   
   <!-- We expect a local installation of the TEI Stylesheets for this early 
        testing; the default must be overridden with -DstylesheetsPath=... 
@@ -75,8 +75,8 @@
   </target>
 
   <target name="transpile" description="Run the experimental transpiler through Morgana">
-    <mkdir dir="output"/>
-    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
+    <dirname property="ploddDir" file="${inputTestPlodd}"/>
+    <echo message="Processing ${ploddName}.odd to ${ploddDir}/${ploddName}.rng"/>
     <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
       <classpath>
         <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
@@ -84,11 +84,11 @@
       </classpath>
       <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
       <arg value="${basedir}/Util/pipeline.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
-      <arg value="-output:result=${basedir}/output/${oddName}.rng"/>
+      <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
+      <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
     </java>
     <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="output/${oddName}.rng"/>
+      <fileset file="${ploddDir}/${ploddName}.rng"/>
     </jing>
   </target>
 
