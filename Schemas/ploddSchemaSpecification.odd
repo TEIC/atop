@@ -227,6 +227,7 @@
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
+            <attDef ident="start" mode="change" usage="req"/>
           </attList>
         </elementSpec>
 
