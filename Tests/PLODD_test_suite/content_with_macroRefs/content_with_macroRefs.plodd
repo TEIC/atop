@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+	<title>test of various <gi>content</gi> using <gi>macroRef</gi></title>
+      </titleStmt>
+      <publicationStmt>
+	<p>part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+	<p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change/>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <p></p>
+    </front>
+    <body>
+      <schemaSpec ident="macroRef_content" prefix="cum_" ns="http://www.tei-c.org/ns/atop/test_suite">
+	<desc/>
+ 	<macroSpec ident="Macr1">
+	  <content>
+	    <elementRef key="alfa"/>
+	  </content>
+	</macroSpec>
+ 	<macroSpec ident="Macr2">
+	  <content>
+	    <sequence>
+	      <elementRef key="bravo"/>
+	      <elementRef key="charlie"/>
+	      <elementRef key="delta"/>
+	    </sequence>
+	  </content>
+	</macroSpec>
+ 	<macroSpec ident="Macr3">
+	  <content>
+	    <alternate>
+	      <elementRef key="echo"/>
+	      <elementRef key="foxtrot"/>
+	      <elementRef key="golf"/>
+	    </alternate>
+	  </content>
+	</macroSpec>
+ 	<macroSpec ident="Macr4">
+	  <content>
+	    <sequence>
+	      <alternate>
+		<elementRef key="hotel"/>
+		<elementRef key="india"/>
+		<elementRef key="juliett"/>
+	      </alternate>
+	      <alternate>
+		<elementRef key="kilo"/>
+		<elementRef key="lima"/>
+		<elementRef key="mike"/>
+	      </alternate>
+	      <alternate>
+		<elementRef key="november"/>
+		<elementRef key="oscar"/>
+		<elementRef key="papa"/>
+	      </alternate>
+	    </sequence>
+	  </content>
+	</macroSpec>
+ 	<macroSpec ident="Macr5">
+	  <content>
+	    <alternate>
+	      <sequence>
+		<elementRef key="quebec"/>
+		<elementRef key="romeo"/>
+		<elementRef key="sierra"/>
+	      </sequence>
+	      <sequence>
+		<elementRef key="tango"/>
+		<elementRef key="uniform"/>
+		<elementRef key="victor"/>
+	      </sequence>
+	      <sequence>
+		<elementRef key="whisky"/>
+		<elementRef key="x-ray"/>
+		<elementRef key="yankeee"/>
+	      </sequence>
+	    </alternate>
+	  </content>
+	</macroSpec>
+ 	<macroSpec ident="Macr6">
+	  <content>
+	    <elementRef key="zulu"/>
+	  </content>
+	</macroSpec>
+	<elementSpec ident="test_elements">
+	  <content>
+	    <sequence>
+	      <elementRef key="IAmSequence"/>
+	      <elementRef key="IAmAlternate"/>
+	      <elementRef key="IAmSequenceOfAlternates"/>
+	      <elementRef key="IAmAlternateOfSequences"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="alfa">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="bravo">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="charlie">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="echo">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="foxtrot">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="golf">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="hotel">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="india">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="juliett">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="kilo">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="lima">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="mike">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="november">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="oscar">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="papa">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="quebec">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="romeo">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="sierra">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="tango">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="uniform">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="victor">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="whisky">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="x-ray">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="yankee">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="zulu">
+	  <content><empty/></content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="IAmSequence">
+	  <content>
+	    <sequence>
+	      <classRef key="Macr1"/>
+	      <classRef key="Macr2"/>
+	      <classRef key="Macr3"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternate">
+	  <content>
+	    <alternate>
+	      <classRef key="Macr1"/>
+	      <classRef key="Macr2"/>
+	      <classRef key="Macr3"/>
+	    </alternate>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmSequenceOfAlternates">
+	  <content>
+	    <sequence>
+	      <alternate>
+		<classRef key="Macr1"/>
+		<classRef key="Macr2"/>
+		<classRef key="Macr3"/>
+	      </alternate>
+	      <alternate>
+		<classRef key="Macr4"/>
+		<classRef key="Macr5"/>
+		<classRef key="Macr6"/>
+	      </alternate>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternateOfSequences">
+	  <content>
+	    <alternate>
+	      <sequence>
+		<classRef key="Macr1"/>
+		<classRef key="Macr2"/>
+		<classRef key="Macr3"/>
+	      </sequence>
+	      <sequence>
+		<classRef key="Macr4"/>
+		<classRef key="Macr5"/>
+		<classRef key="Macr6"/>
+	      </sequence>
+	    </alternate>
+	  </content>
+	</elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

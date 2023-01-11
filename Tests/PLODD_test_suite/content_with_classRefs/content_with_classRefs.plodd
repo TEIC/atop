@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+	<title>test of various <gi>content</gi> using <gi>classRef</gi></title>
+      </titleStmt>
+      <publicationStmt>
+	<p>part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+	<p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change/>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <p></p>
+    </front>
+    <body>
+      <schemaSpec ident="classRef_content" prefix="cuc_" ns="http://www.tei-c.org/ns/atop/test_suite">
+	<classSpec ident="MC1" type="model">
+	  <gloss>model class one</gloss>
+	</classSpec>
+	<classSpec ident="MC2" type="model">
+	  <gloss>model class two</gloss>
+	</classSpec>
+	<classSpec ident="MC3" type="model">
+	  <gloss>model class three</gloss>
+	</classSpec>
+	<elementSpec ident="test_elements">
+	  <content>
+	    <sequence>
+	      <elementRef key="IAmSequence"/>
+	      <elementRef key="IAmAlternate"/>
+	      <elementRef key="IAmSequenceOfAlternates"/>
+	      <elementRef key="IAmAlternateOfSequences"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="in_MC1_A">
+	  <classes>
+	    <memberOf key="MC1"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC1_B">
+	  <classes>
+	    <memberOf key="MC1"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC1_C">
+	  <classes>
+	    <memberOf key="MC1"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC1_D">
+	  <classes>
+	    <memberOf key="MC1"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC1_E">
+	  <classes>
+	    <memberOf key="MC1"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="in_MC2_A">
+	  <classes>
+	    <memberOf key="MC2"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC2_B">
+	  <classes>
+	    <memberOf key="MC2"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC2_C">
+	  <classes>
+	    <memberOf key="MC2"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC2_D">
+	  <classes>
+	    <memberOf key="MC2"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC2_E">
+	  <classes>
+	    <memberOf key="MC2"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="in_MC3_A">
+	  <classes>
+	    <memberOf key="MC3"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC3_B">
+	  <classes>
+	    <memberOf key="MC3"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC3_C">
+	  <classes>
+	    <memberOf key="MC3"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC3_D">
+	  <classes>
+	    <memberOf key="MC3"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="in_MC3_E">
+	  <classes>
+	    <memberOf key="MC3"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="IAmSequence">
+	  <content>
+	    <sequence>
+	      <classRef key="MC1"/>
+	      <classRef key="MC2"/>
+	      <classRef key="MC3"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternate">
+	  <content>
+	    <alternate>
+	      <classRef key="MC1"/>
+	      <classRef key="MC2"/>
+	      <classRef key="MC3"/>
+	    </alternate>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmSequenceOfAlternates">
+	  <content>
+	    <sequence>
+	      <alternate>
+		<classRef key="MC1"/>
+		<classRef key="MC2"/>
+		<classRef key="MC3"/>
+	      </alternate>
+	      <alternate>
+		<classRef key="MC4"/>
+		<classRef key="MC5"/>
+		<classRef key="MC6"/>
+	      </alternate>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternateOfSequences">
+	  <content>
+	    <alternate>
+	      <sequence>
+		<classRef key="MC1"/>
+		<classRef key="MC2"/>
+		<classRef key="MC3"/>
+	      </sequence>
+	      <sequence>
+		<classRef key="MC4"/>
+		<classRef key="MC5"/>
+		<classRef key="MC6"/>
+	      </sequence>
+	    </alternate>
+	  </content>
+	</elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
