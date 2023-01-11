@@ -18,7 +18,7 @@
       <p></p>
     </front>
     <body>
-      <schemaSpec ident="classRef_content" prefix="cuc_" ns="http://www.tei-c.org/ns/atop/test_suite">
+      <schemaSpec ident="classRef_content" prefix="cuc_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
 	<classSpec ident="MC1" type="model">
 	  <!-- model class one -->
 	</classSpec>

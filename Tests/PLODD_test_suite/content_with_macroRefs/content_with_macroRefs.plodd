@@ -18,7 +18,7 @@
       <p></p>
     </front>
     <body>
-      <schemaSpec ident="macroRef_content" prefix="cum_" ns="http://www.tei-c.org/ns/atop/test_suite">
+      <schemaSpec ident="macroRef_content" prefix="cum_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
  	<macroSpec ident="Macr1">
 	  <content>
 	    <elementRef key="alfa"/>
@@ -179,18 +179,18 @@
 	<elementSpec ident="IAmSequence">
 	  <content>
 	    <sequence>
-	      <classRef key="Macr1"/>
-	      <classRef key="Macr2"/>
-	      <classRef key="Macr3"/>
+	      <macroRef key="Macr1"/>
+	      <macroRef key="Macr2"/>
+	      <macroRef key="Macr3"/>
 	    </sequence>
 	  </content>
 	</elementSpec>
 	<elementSpec ident="IAmAlternate">
 	  <content>
 	    <alternate>
-	      <classRef key="Macr1"/>
-	      <classRef key="Macr2"/>
-	      <classRef key="Macr3"/>
+	      <macroRef key="Macr1"/>
+	      <macroRef key="Macr2"/>
+	      <macroRef key="Macr3"/>
 	    </alternate>
 	  </content>
 	</elementSpec>
@@ -198,14 +198,14 @@
 	  <content>
 	    <sequence>
 	      <alternate>
-		<classRef key="Macr1"/>
-		<classRef key="Macr2"/>
-		<classRef key="Macr3"/>
+		<macroRef key="Macr1"/>
+		<macroRef key="Macr2"/>
+		<macroRef key="Macr3"/>
 	      </alternate>
 	      <alternate>
-		<classRef key="Macr4"/>
-		<classRef key="Macr5"/>
-		<classRef key="Macr6"/>
+		<macroRef key="Macr4"/>
+		<macroRef key="Macr5"/>
+		<macroRef key="Macr6"/>
 	      </alternate>
 	    </sequence>
 	  </content>
@@ -214,14 +214,14 @@
 	  <content>
 	    <alternate>
 	      <sequence>
-		<classRef key="Macr1"/>
-		<classRef key="Macr2"/>
-		<classRef key="Macr3"/>
+		<macroRef key="Macr1"/>
+		<macroRef key="Macr2"/>
+		<macroRef key="Macr3"/>
 	      </sequence>
 	      <sequence>
-		<classRef key="Macr4"/>
-		<classRef key="Macr5"/>
-		<classRef key="Macr6"/>
+		<macroRef key="Macr4"/>
+		<macroRef key="Macr5"/>
+		<macroRef key="Macr6"/>
 	      </sequence>
 	    </alternate>
 	  </content>
