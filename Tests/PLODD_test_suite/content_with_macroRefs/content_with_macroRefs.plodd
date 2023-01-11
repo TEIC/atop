@@ -12,9 +12,6 @@
 	<p>born digital</p>
       </sourceDesc>
     </fileDesc>
-    <revisionDesc>
-      <change/>
-    </revisionDesc>
   </teiHeader>
   <text>
     <front>
@@ -22,7 +19,6 @@
     </front>
     <body>
       <schemaSpec ident="macroRef_content" prefix="cum_" ns="http://www.tei-c.org/ns/atop/test_suite">
-	<desc/>
  	<macroSpec ident="Macr1">
 	  <content>
 	    <elementRef key="alfa"/>

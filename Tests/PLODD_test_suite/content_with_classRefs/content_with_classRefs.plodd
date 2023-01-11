@@ -12,9 +12,6 @@
 	<p>born digital</p>
       </sourceDesc>
     </fileDesc>
-    <revisionDesc>
-      <change/>
-    </revisionDesc>
   </teiHeader>
   <text>
     <front>
@@ -23,13 +20,13 @@
     <body>
       <schemaSpec ident="classRef_content" prefix="cuc_" ns="http://www.tei-c.org/ns/atop/test_suite">
 	<classSpec ident="MC1" type="model">
-	  <gloss>model class one</gloss>
+	  <!-- model class one -->
 	</classSpec>
 	<classSpec ident="MC2" type="model">
-	  <gloss>model class two</gloss>
+	  <!-- model class two -->
 	</classSpec>
 	<classSpec ident="MC3" type="model">
-	  <gloss>model class three</gloss>
+	  <!-- model class three -->
 	</classSpec>
 	<elementSpec ident="test_elements">
 	  <content>
