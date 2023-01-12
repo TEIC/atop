@@ -28,6 +28,10 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-01-12">
+	Per yesterday’s meeting, require values of <att>start</att> of
+	<gi>schemaSpec</gi> to be the identifier of a defined element.
+      </change>
       <change who="#SB" when="2023-01-11">
 	Per today’s meeting, disallow <gi>gloss</gi> and <gi>desc</gi>
 	from each of <gi>classSpec</gi>, <gi>elementSpec</gi>, and
@@ -237,7 +241,25 @@
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
-            <attDef ident="start" mode="change" usage="req"/>
+            <attDef ident="start" mode="change" usage="req">
+	      <constraintSpec ident="only_defined_elements_can_be_starter" scheme="schematron">
+		<constraint>
+		  <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
+		  <!-- Note: this is not really a list of GIs, since
+		       some of the GIs may be created from
+		       <altIdent>. But it is what we want, the list of
+		       patterns, without @prefix, used to refer to
+		       those elements. -->
+		  <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
+		    Each value of @start must be the GI of a defined
+		    element (i.e., equal elementSpec/@ident); one of these
+		    ("<sch:value-of select="."/>") does not. The list
+		    of valid values is "<sch:value-of
+		    select="$GIs"/>".
+		  </sch:assert>
+		</constraint>
+	      </constraintSpec>
+	    </attDef>
           </attList>
         </elementSpec>
 
