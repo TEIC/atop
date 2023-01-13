@@ -77,19 +77,26 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec" as="empty-sequence()"/>
+  <xsl:template match="classSpec[@type = 'atts']" as="element(rng:define)">
+    <rng:define name="{atop:get-class-pattern-name(.)}">
+      <xsl:apply-templates/>
+    </rng:define>
+  </xsl:template>
+
+  <xsl:template match="classSpec" as="empty-sequence()" priority="-10"/>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
        w/ defining the element. -->
   <xsl:template match="elementSpec" as="element(rng:define)">
     <xsl:variable name="vQName" as="xs:QName" select="atop:get-element-qname(.)"/>
     <xsl:variable name="vContent" as="element()*">
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="* except classes"/>
     </xsl:variable>
 
     <rng:define name="{atop:get-element-pattern-name(.)}">
       <rng:element name="{local-name-from-QName($vQName)}"
                    ns="{namespace-uri-from-QName($vQName)}">
+        <xsl:apply-templates select="classes"/>
         <xsl:choose>
           <xsl:when test="empty($vContent)">
             <rng:empty/>
@@ -100,6 +107,11 @@
         </xsl:choose>
       </rng:element>
     </rng:define>
+  </xsl:template>
+
+  <xsl:template match="(elementSpec | classSpec[@type = 'atts'])/classes/memberOf" as="element(rng:ref)">
+    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
+    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
   </xsl:template>
 
   <!-- An attribute list transpiles to the sequence or alternate
