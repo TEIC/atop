@@ -2,9 +2,15 @@
 <!-- XSpec file for testing ${pd}/XSLT/modules/functions_module.xslt. -->
 <!-- Each function should have at least one test. -->
 
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:tei="http://www.tei-c.org/ns/1.0"
+<x:description 
+  xmlns:x="http://www.jenitennison.com/xslt/xspec" 
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
   xmlns:atop="http://www.tei-c.org/ns/atop"
-  xmlns:map="http://www.w3.org/2005/xpath-functions/map" stylesheet="../../XSLT/modules/functions_module.xslt">
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:map="http://www.w3.org/2005/xpath-functions/map" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+  stylesheet="../../XSLT/modules/functions_module.xslt">
 
   <x:scenario label="Scenarios for testing function collapse-space">
     <x:scenario label="collapse-space with lots of spaces everywhere">
@@ -197,6 +203,39 @@
       </x:call>
       <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-noIdentInScope')"/>
     </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="Scenarios for testing atop:repeat-content">
+    <x:scenario label="Simple test with a single item without min or max parameters.">
+      <x:call template="atop:repeat-content">
+        <x:param name="pContent" as="element(rng:ref)" select="/rng:ref">
+          <rng:ref name="foobar"/>
+        </x:param>
+      </x:call>
+      <x:expect label="One instance plus a zero-or-more" test="$x:result[1][self::rng:ref] => count()" select="1"/>
+    </x:scenario>
+    <x:scenario label="Simple test with a single item one to unbounded.">
+      <x:call template="atop:repeat-content">
+        <x:param name="pContent" as="element(rng:ref)" select="/rng:ref">
+          <rng:ref name="foobar"/>
+        </x:param>
+        <x:param name="pMinOccurrence" as="xs:integer?" select="1"/>
+        <x:param name="pMaxOccurrence" as="xs:string?" select="'unbounded'"/>
+      </x:call>
+      <x:expect label="One instance plus a zero-or-more" test="$x:result[1][self::rng:ref] and $x:result[2][self::rng:zeroOrMore]"/>
+    </x:scenario>
+    <x:scenario label="Simple test with a single item two to five.">
+      <x:call template="atop:repeat-content">
+        <x:param name="pContent" as="element(rng:ref)" select="/rng:ref">
+          <rng:ref name="foobar"/>
+        </x:param>
+        <x:param name="pMinOccurrence" as="xs:integer?" select="2"/>
+        <x:param name="pMaxOccurrence" as="xs:string?" select="'5'"/>
+      </x:call>
+      <x:expect label="Two instances of the pContent" test="$x:result[1][self::rng:ref] and $x:result[2][self::rng:ref]"/>
+      <x:expect label="Three optionals containing the pContent" test="$x:result[self::rng:optional][child::rng:ref] => count()" select="3"/>
+    </x:scenario>
+    
   </x:scenario>
   
 </x:description>
