@@ -205,6 +205,36 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Scenarios for testing atop:get-class-members">
+    <x:scenario label="Simple case: one class, no complexity.">
+      <x:call function="atop:get-class-members">
+        <x:param name="pClassSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']/tei:classSpec[@ident='att.noChildClasses']"/>
+        <x:param name="pSchemaSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']"/>
+        <x:param name="pClassSpecSeen" select="()"/>
+      </x:call>
+      <x:expect label="The elSimple element" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']/tei:elementSpec[@ident='elSimple']"/>
+    </x:scenario>
+    <x:scenario label="More complex case: nested classes, multiple elements">
+      <x:call function="atop:get-class-members">
+        <x:param name="pClassSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']/tei:classSpec[@ident='att.parentClass']"/>
+        <x:param name="pSchemaSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']"/>
+        <x:param name="pClassSpecSeen" select="()"/>
+      </x:call>
+      <x:expect label="The elSimple element" href="test_odd_components.odd" 
+        select="(//tei:schemaSpec[@ident='classMembership']/tei:elementSpec[@ident='elNestedClass1'], 
+        //tei:schemaSpec[@ident='classMembership']/tei:elementSpec[@ident='elNestedClass2'])"/>
+    </x:scenario>
+    <x:scenario label="Nested class but running on the child class.">
+      <x:call function="atop:get-class-members">
+        <x:param name="pClassSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']/tei:classSpec[@ident='att.childClass']"/>
+        <x:param name="pSchemaSpec" href="test_odd_components.odd" select="//tei:schemaSpec[@ident='classMembership']"/>
+        <x:param name="pClassSpecSeen" select="()"/>
+      </x:call>
+      <x:expect label="The elSimple element" href="test_odd_components.odd" 
+        select="//tei:schemaSpec[@ident='classMembership']/tei:elementSpec[@ident='elNestedClass1']"/>
+    </x:scenario>
+  </x:scenario>
+  
   <x:scenario label="Scenarios for testing atop:repeat-content">
     <x:scenario label="Simple test with a single item without min or max parameters.">
       <x:call template="atop:repeat-content">

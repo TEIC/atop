@@ -63,6 +63,62 @@
                </content>
             </elementSpec>
          </schemaSpec>
+         <schemaSpec ident="classMembership">
+            <classSpec ident="att.noChildClasses" type="atts">
+               <attList>
+                  <attDef ident="simpleAtt1">
+                     <datatype>
+                        <dataRef name="token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.parentClass" type="atts">
+               <attList>
+                  <attDef ident="simpleAtt2">
+                     <datatype>
+                        <dataRef name="token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            <classSpec ident="att.childClass" type="atts">
+               <classes>
+                  <memberOf key="att.parentClass"/>
+               </classes>
+               <attList>
+                  <attDef ident="simpleAtt1">
+                     <datatype>
+                        <dataRef name="token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            <elementSpec ident="elSimple">
+               <classes>
+                  <memberOf key="att.noChildClasses"/>
+               </classes>
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+            <elementSpec ident="elNestedClass1">
+               <classes>
+                  <memberOf key="att.childClass"/>
+               </classes>
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+            <elementSpec ident="elNestedClass2">
+               <classes>
+                  <memberOf key="att.parentClass"/>
+               </classes>
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+         </schemaSpec>
       </body>
    </text>
 </TEI>
