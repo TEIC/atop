@@ -268,4 +268,43 @@
     
   </x:scenario>
   
+  <x:scenario label="Scenarios for testing atop:resolve-private-uri()">
+    <x:scenario label="Simple test with TEI Vault version">
+      <x:call function="atop:resolve-private-uri">
+        <x:param name="pUri" as="xs:string" select="'tei:4.4.2'"/>
+        <x:param name="pContext" as="node()"><tei:TEI></tei:TEI></x:param>
+      </x:call>
+      <x:expect label="Expanded URI" select="'http://www.tei-c.org/Vault/P5/4.4.2/xml/tei/odd/p5subset.xml'"/>
+    </x:scenario>
+    <x:scenario label="Simple test with ill-formed TEI Vault version" catch="yes">
+      <x:call function="atop:resolve-private-uri">
+        <x:param name="pUri" as="xs:string" select="'tei:4.4.'"/>
+        <x:param name="pContext" as="node()"><tei:TEI></tei:TEI></x:param>
+      </x:call>
+      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-invalidOrMalformedURI')"/>
+    </x:scenario>
+    <x:scenario label="Simple case with private URI scheme">
+      <x:call function="atop:resolve-private-uri">
+        <x:param name="pUri" as="xs:string" select="'mol:HOLM3'"/>
+        <x:param name="pContext" as="node()">
+          <tei:listPrefixDev>
+            <tei:prefixDef ident="mol" matchPattern="(.+)" replacementPattern="https://mapoflondon.uvic.ca/$1.htm"/>
+          </tei:listPrefixDev>
+        </x:param>
+      </x:call>
+      <x:expect label="Expanded URI" select="'https://mapoflondon.uvic.ca/HOLM3.htm'"/>
+    </x:scenario>
+    <x:scenario label="Unresolvable case where the input should be returned">
+      <x:call function="atop:resolve-private-uri">
+        <x:param name="pUri" as="xs:string" select="'notmol:HOLM3'"/>
+        <x:param name="pContext" as="node()">
+          <tei:listPrefixDev>
+            <tei:prefixDef ident="mol" matchPattern="(.+)" replacementPattern="https://mapoflondon.uvic.ca/$1.htm"/>
+          </tei:listPrefixDev>
+        </x:param>
+      </x:call>
+      <x:expect label="Expanded URI" select="'notmol:HOLM3'"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>

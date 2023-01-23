@@ -244,6 +244,8 @@
     elements which are members of the parameter class.</xd:desc>
     <xd:param name="pClassSpec">The classSpec whose member elementSpecs are required.</xd:param>
     <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
+    <xd:param name="pClassSpecSeen">A list of zero or more classSpecs which have already been retrieved,
+    used to check for circularity issues.</xd:param>
     <xd:return>A sequence of zero or more classSpec or elementSpecs elements.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
@@ -328,7 +330,7 @@
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
-          <xsl:message terminate="yes" expand-text="yes">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+          <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidOrMalformedURI">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
         </xsl:if>
         <xsl:value-of select="concat('http://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
