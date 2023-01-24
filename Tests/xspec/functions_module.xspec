@@ -274,7 +274,7 @@
         <x:param name="pUri" as="xs:string" select="'tei:4.4.2'"/>
         <x:param name="pContext" as="node()"><tei:TEI></tei:TEI></x:param>
       </x:call>
-      <x:expect label="Expanded URI" select="'http://www.tei-c.org/Vault/P5/4.4.2/xml/tei/odd/p5subset.xml'"/>
+      <x:expect label="Expanded URI" select="'https://www.tei-c.org/Vault/P5/4.4.2/xml/tei/odd/p5subset.xml'"/>
     </x:scenario>
     <x:scenario label="Simple test with ill-formed TEI Vault version" catch="yes">
       <x:call function="atop:resolve-private-uri">
