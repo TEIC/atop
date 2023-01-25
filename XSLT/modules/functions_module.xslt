@@ -147,7 +147,7 @@
       <xd:p><xd:ref name="atop:get-attribute-qname"/>:
         Given an attribute specification, return QName of specified attribute.</xd:p>
       <xd:p>The name part of the QName is taken from the first altIdent child element if present, the @ident attribute otherwise.</xd:p>
-      <xd:p>The namespace URI is taken from the @ns attribute of the element specification if present. It defaults to the no-namespace empty string otherwise.</xd:p>
+      <xd:p>The namespace URI is taken from the @ns attribute of the attribute specification if present. It defaults to the no-namespace empty string otherwise.</xd:p>
     </xd:desc>
     <xd:param name="pAttDef">Attribute specification</xd:param>
     <xd:return>QName of specified attribute</xd:return>
