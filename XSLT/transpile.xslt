@@ -254,9 +254,9 @@ ignored and the members of the value list are provided.
   <xsl:template match="sequence" as="element()*">
     <xsl:call-template name="atop:repeat-content">
       <xsl:with-param name="pContent" as="element()*">
-        <rng:group>
+        <xsl:element name="{if (@preserveOrder eq 'false') then 'interleave' else 'group'}" namespace="http://relaxng.org/ns/structure/1.0">
           <xsl:apply-templates/>
-        </rng:group>
+        </xsl:element>
       </xsl:with-param>
       <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
       <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
