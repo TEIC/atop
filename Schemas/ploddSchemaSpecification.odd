@@ -347,6 +347,7 @@
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
+            <attDef ident="expand"    mode="delete"/>
           </attList>
         </elementSpec>
 
@@ -363,6 +364,7 @@
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
+            <attDef ident="generate"  mode="delete"/>
           </attList>
         </elementSpec>
 
