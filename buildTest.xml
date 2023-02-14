@@ -1,18 +1,13 @@
-<project basedir=".">
+<project name="atopTests" basedir=".">
   <description>
-    This is the base ant build file for the ATOP project. Eventually it will
-    provide one access method for all build and test functionality. At 
-    present it just has a few targets we are using in the early development
-    phase of ATOP.
+    This is the ant build file for running tests used for ATOP development.
   </description>
   
   <!-- Globals file which defines various properties and also imports build.properties. -->
   <import file="buildGlobals.xml"/>
   
-  <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
-
   <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
-  
+
   <target name="test.xspec" description="Run all XSpec tests" depends="setWindowsAntPath, setUnixAntPath">
     <description>
       TARGET test.xspec
@@ -34,24 +29,6 @@
       <arg line="-lib ${basedir}/Lib/saxon"/>
       <arg value="xspec-runner"/>
     </exec>
-  </target>
-
-  <target name="transpile" description="Run the experimental transpiler through Morgana">
-    <dirname property="ploddDir" file="${inputTestPlodd}"/>
-    <echo message="Processing ${ploddName}.odd to ${ploddDir}/${ploddName}.rng"/>
-    <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
-      <classpath>
-        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
-        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/*" />
-      </classpath>
-      <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
-      <arg value="${basedir}/Util/pipeline.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
-      <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
-    </java>
-    <jing rngfile="${basedir}/Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="${ploddDir}/${ploddName}.rng"/>
-    </jing>
   </target>
 
   <!-- Targets for generating PLODD test files to test the
