@@ -41,13 +41,13 @@
   <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
 
   <target name="preplodd">
-    <echo>=== Sweepy, sweepy, sweepy</echo>
+    <echo>Cleaning up temporary test files...</echo>
     <delete dir="${basedir}/tmp/CODDs"/>
     <delete dir="${basedir}/tmp/PLODDs"/>
   </target>
 
   <target name="copy_ODDs">
-    <echo>=== Copying ODDs ...</echo>
+    <echo>Copying ODDs to temporary directories...</echo>
     <mkdir dir="${basedir}/tmp/CODDs"/>
     <mkdir dir="${basedir}/tmp/PLODDs"/>
     <copy todir="${basedir}/tmp/CODDs">
@@ -57,7 +57,7 @@
   </target>
 
   <target name="deriveAll">
-    <echo>=== derive all</echo>
+    <echo>Derive all ODD files in temporary directory...</echo>
     <foreach target="derive" param="inFile" parallel="true">
       <path>
         <fileset dir="${basedir}/tmp/CODDs" includes="*.odd"/>
@@ -66,7 +66,7 @@
   </target>
   
   <target name="derive">
-    <echo message="deriving ${inFile}"/>
+    <echo message="Deriving ${inFile}..."/>
     <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
     <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
     <property name="outFile" value="${basedir}/tmp/CODDs/${plainFileName}.derodd"/>
@@ -79,7 +79,7 @@
   </target>
 
   <target name="transformAll">
-    <echo>=== transform all</echo>
+    <echo>Transform all derived files to PLODDS...</echo>
     <foreach target="transform" param="inFile" parallel="true">
       <path>
         <fileset dir="${basedir}/tmp/CODDs" includes="*.derodd"/>
@@ -87,7 +87,7 @@
     </foreach>
   </target>
   <target name="transform">
-    <echo message="pruning ${inFile}"/>
+    <echo message="Pruning ${inFile}..."/>
     <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
     <property name="outFile" value="${basedir}/tmp/PLODDs/${plainFileName}.odd"/>
     <xslt style="${basedir}/XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
@@ -96,7 +96,7 @@
   </target>
   
   <target name="validateResults">
-    <echo>=== validate output files</echo>
+    <echo>Validating output files...</echo>
     <if>
       <not>
         <available file="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
