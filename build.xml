@@ -5,6 +5,9 @@
     present it just has a few targets we are using in the early development
     phase of ATOP.
   </description>
+  
+  <!-- Global properties file, defining Saxon, stylesheets location, etc. -->
+  <property file="build.properties"/>
 
   <!-- We need ant-contrib to do foreach.   -->
   <!--
@@ -18,20 +21,11 @@
 
   <!-- We validate against closed schema with Jing. -->
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
-    <classpath location="${basedir}/Lib/jing.jar"/>
+    <classpath location="${jing}"/>
   </taskdef>
   
-  <!-- Local version of Saxon. -->
-  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
   
-  <property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>
   <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
-  
-  <!-- We expect a local installation of the TEI Stylesheets for this early 
-       testing; the default must be overridden with -DstylesheetsPath=... 
-       unless you are Syd. -->
-  <property name="stylesheetsPath" value="/home/syd/Documents/Stylesheets"/>
-
 
   <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
 
