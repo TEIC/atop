@@ -5,9 +5,20 @@
     ant-contrib, and the taskdef for Jing.
   </description>
   
-  <!-- Global properties file, defining Saxon, stylesheets location, etc. -->
-  <property file="build.properties"/>
-
+  <!--##### GENERAL BUILD PROPERTIES #####-->
+  
+  <!--We are currently using Saxon 11.-->
+  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
+  
+  <!--Jing in the Lib directory.-->
+  <property name="jing" value="${basedir}/Lib/jing.jar"/>
+  
+  
+  <!--We expect a local installation of the TEI Stylesheets for this early 
+  testing; the default must be overridden with -DstylesheetsPath=...-->  
+  <property name="stylesheetsPath" value="${basedir}/../Stylesheets"/>
+  
+  
   <!-- We need ant-contrib to do foreach.   -->
   <!--
       Note: We expect the 4 ATOP developers to have ant-contrib
@@ -17,12 +28,12 @@
       targets to avoid ant-contrib components.
   -->
   <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
-
+  
   <!-- We validate against closed schema with Jing. -->
   <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
     <classpath location="${jing}"/>
   </taskdef>
-
+  
   <condition property="isWindows">
     <os family="windows" />
   </condition>
@@ -38,6 +49,13 @@
   <target name="setUnixAntPath" if="isUnix">
     <property name="antPath" value="ant" />
   </target>
+  
+  <!--##### TESTING-RELATED PROPERTIES #####-->
+  
+  <!--Current PLODD for testing transpile step.-->
+  <property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>
+  
+
   
 
 </project>
