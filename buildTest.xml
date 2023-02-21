@@ -113,5 +113,35 @@
       <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
     </jing>
   </target>
+  
+  <target name="checkValidInstances">
+    <description>
+      TARGET checkValidInstances 
+      This target validates every file found in a Tests/../instances_valid folder
+      against the schema found in the folder above it.
+    </description>
+    <foreach target="checkValidInstance" param="inFile" parallel="true">
+      <fileset dir="${basedir}/Tests">
+        <include name="**/instances_valid/*.xml"/>
+      </fileset>
+    </foreach>
+  </target>
+  
+  <target name="checkValidInstance">
+    <description>
+      TARGET checkValidInstance
+      This target validates a single valid instance file against the schema found
+      in the folder above it.
+    </description>
+    <echo>Validating ${inFile}...</echo>
+    <propertyregex 
+      property="testSchema" 
+      input="${inFile}" 
+      regexp="^(.+\/)([^\/]+)\/instances_valid\/.+\.xml$" 
+      replace="\1\2/\2.rng"
+      global="true"/>
+    <echo>Schema is: ${testSchema}...</echo>
+    <jing rngfile="${testSchema}" file="${inFile}"/>
+  </target>
 
 </project>
