@@ -11,31 +11,6 @@
   
   <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
 
-  <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
-  
-  <target name="test.xspec" description="Run all XSpec tests" depends="setWindowsAntPath, setUnixAntPath">
-    <description>
-      TARGET test.xspec
-      This target is intended to run all XSpec tests by creating an ant build
-      file which then runs the XSpec project's build file passing the parameter
-      files containing our tests. [Note: this is not working as of 2022-10-25,
-      possibly because of the switch to Saxon 11.]
-    </description>
-    <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
-    <xslt style="${basedir}/Tests/xspec-runner.xslt" in="build.xml" out="${basedir}/Tests/xspec-runner.xml">
-      <classpath location="${saxon}"/>
-      <param name="files" expression="${xspec.files}"/>
-    </xslt>
-    <!--<subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>-->
-    <exec executable="${antPath}" dir="Tests">
-      <arg value="-f"/>
-      <arg file="${basedir}/Tests/xspec-runner.xml"/>
-      <arg value="-Dbuildpath=${basedir}/Tests"/>
-      <arg line="-lib ${basedir}/Lib/saxon"/>
-      <arg value="xspec-runner"/>
-    </exec>
-  </target>
-
   <target name="transpile" description="Run the experimental transpiler through Morgana">
     <dirname property="ploddDir" file="${inputTestPlodd}"/>
     <echo message="Processing ${ploddName}.odd to ${ploddDir}/${ploddName}.rng"/>
@@ -54,87 +29,5 @@
     </jing>
   </target>
 
-  <!-- Targets for generating PLODD test files to test the
-       PLODD-to-RNG process before we have actually written the
-       customization-to-PLODD process. I.e., this chunk is not
-       intended to be permanent or user-facing. (Although it might
-       grow up in the future.)
-  -->
-
-  <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
-
-  <target name="preplodd">
-    <echo>=== Sweepy, sweepy, sweepy</echo>
-    <delete dir="${basedir}/tmp/CODDs"/>
-    <delete dir="${basedir}/tmp/PLODDs"/>
-  </target>
-
-  <target name="copy_ODDs">
-    <echo>=== Copying ODDs ...</echo>
-    <mkdir dir="${basedir}/tmp/CODDs"/>
-    <mkdir dir="${basedir}/tmp/PLODDs"/>
-    <copy todir="${basedir}/tmp/CODDs">
-      <fileset dir="${basedir}/Tests/resources/" includes="**/*.odd"/>
-      <flattenmapper/>
-    </copy>
-  </target>
-
-  <target name="deriveAll">
-    <echo>=== derive all</echo>
-    <foreach target="derive" param="inFile" parallel="true">
-      <path>
-        <fileset dir="${basedir}/tmp/CODDs" includes="*.odd"/>
-      </path>
-    </foreach>
-  </target>
-  
-  <target name="derive">
-    <echo message="deriving ${inFile}"/>
-    <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
-    <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
-    <property name="outFile" value="${basedir}/tmp/CODDs/${plainFileName}.derodd"/>
-    <exec executable="${stylesheetsPath}/bin/teitoodd">
-      <arg value="--odd"/>
-      <!-- arg value="- - debug"/-->
-      <arg value="${inFile}"/>
-      <arg value="${outFile}"/>
-    </exec>
-  </target>
-
-  <target name="transformAll">
-    <echo>=== transform all</echo>
-    <foreach target="transform" param="inFile" parallel="true">
-      <path>
-        <fileset dir="${basedir}/tmp/CODDs" includes="*.derodd"/>
-      </path>
-    </foreach>
-  </target>
-  <target name="transform">
-    <echo message="pruning ${inFile}"/>
-    <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
-    <property name="outFile" value="${basedir}/tmp/PLODDs/${plainFileName}.odd"/>
-    <xslt style="${basedir}/XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
-      <classpath location="${saxon}"/>
-    </xslt>
-  </target>
-  
-  <target name="validateResults">
-    <echo>=== validate output files</echo>
-    <if>
-      <not>
-        <available file="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
-      </not>
-      <then>
-        <exec executable="${stylesheetsPath}/bin/teitorelaxng">
-          <arg value="${basedir}/Schemas/ploddSchemaSpecification.odd"/>
-          <arg value="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
-        </exec>
-      </then>
-    </if>
-    
-    <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng">
-      <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
-    </jing>
-  </target>
 
 </project>
