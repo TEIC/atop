@@ -109,9 +109,11 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="(elementSpec | classSpec[@type = 'atts'])/classes/memberOf" as="element(rng:ref)">
+  <xsl:template match="(elementSpec | classSpec[@type = 'atts'])/classes/memberOf" as="element(rng:ref)?">
     <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
-    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
+    <xsl:if test="$vClassSpec/@type = 'atts'">
+      <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
+    </xsl:if>
   </xsl:template>
 
   <!-- An attribute list transpiles to the sequence or alternate
