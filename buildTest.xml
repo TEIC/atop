@@ -114,6 +114,35 @@
     </jing>
   </target>
   
+  <target name="buildPloddTestSchemas">
+    <description>
+      TARGET buildPloddTestSchemas
+      This target invokes the transpile step to compile 
+      rng schemas from the PLODD files in the PLODD_test_suite
+      folder.
+    </description>
+    <foreach target="buildPloddTestSchema" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/Tests/PLODD_test_suite">
+          <include name="**/*.plodd"/>
+        </fileset>
+      </path>
+    </foreach>
+  </target>
+  
+  <target name="buildPloddTestSchema">
+    <description>
+      TARGET buildPloddTestSchema
+      This target invokes the transpile step to compile 
+      a single rng schema from the PLODD_test_suite.
+      folder.
+    </description>
+    <echo>Transpiling ${inFile}...</echo>
+    <ant antfile="${basedir}/build.xml" target="transpile">
+      <property name="inputTestPlodd" value="${inFile}"/>
+    </ant>
+  </target>
+  
   <target name="checkValidInstances">
     <description>
       TARGET checkValidInstances 
@@ -239,6 +268,19 @@
         <fail message="Build failed because of differences between ${inFile} and ${expectedResults}. Diff these files to diagnose the problem."/>
       </catch>
     </trycatch>
+  </target>
+  
+  <target name="runPloddTests">
+    <description>
+      TARGET runPloddTests
+      This target first calls the transpile step to create 
+      rng schemas from all of the .plodd files in the PLODD_test_suite
+      folder, then it runs the validation tests to check all the valid
+      instances and invalid instances.
+    </description>
+    <antcall target="buildPloddTestSchemas"/>
+    <antcall target="checkValidInstances"/>
+    <antcall target="checkInvalidInstances"/>
   </target>
 
 </project>
