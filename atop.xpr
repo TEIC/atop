@@ -58,7 +58,7 @@
                                 <field name="schemaDescriptor">
                                     <docTypeSchema>
                                         <field name="type">
-                                            <Integer>2</Integer>
+                                            <Integer>6</Integer>
                                         </field>
                                         <field name="uri">
                                             <String>${pdu}/Schemas/ploddSchemaSpecification.rng</String>
