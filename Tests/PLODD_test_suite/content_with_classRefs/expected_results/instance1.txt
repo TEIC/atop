@@ -1,0 +1,16 @@
+instance1.xml:9:20: error: element "in_MC2_A" not allowed yet; expected element "in_MC1_A", "in_MC1_B", "in_MC1_C", "in_MC1_D" or "in_MC1_E"
+instance1.xml:10:20: error: element "in_MC1_A" not allowed here; expected element "in_MC3_A", "in_MC3_B", "in_MC3_C", "in_MC3_D" or "in_MC3_E"
+instance1.xml:20:20: error: element "in_MC2_A" not allowed here; expected the element end-tag
+instance1.xml:23:20: error: element "in_MC4_D" not allowed here; expected element "in_MC1_A", "in_MC1_B", "in_MC1_C", "in_MC1_D", "in_MC1_E", "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D", "in_MC2_E", "in_MC3_A", "in_MC3_B", "in_MC3_C", "in_MC3_D" or "in_MC3_E"
+instance1.xml:24:20: error: element "IAmAlternate" incomplete; expected element "in_MC1_A", "in_MC1_B", "in_MC1_C", "in_MC1_D", "in_MC1_E", "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D", "in_MC2_E", "in_MC3_A", "in_MC3_B", "in_MC3_C", "in_MC3_D" or "in_MC3_E"
+instance1.xml:27:20: error: element "in_MC3_E" not allowed here; expected the element end-tag
+instance1.xml:30:20: error: element "in_MC4_C" not allowed yet; expected element "in_MC1_A", "in_MC1_B", "in_MC1_C", "in_MC1_D", "in_MC1_E", "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D", "in_MC2_E", "in_MC3_A", "in_MC3_B", "in_MC3_C", "in_MC3_D" or "in_MC3_E"
+instance1.xml:31:20: error: element "in_MC1_A" not allowed here; expected the element end-tag
+instance1.xml:35:20: error: element "in_MC3_C" not allowed here; expected element "in_MC4_A", "in_MC4_B", "in_MC4_C", "in_MC4_D", "in_MC4_E", "in_MC5_A", "in_MC5_B", "in_MC5_C", "in_MC5_D", "in_MC5_E", "in_MC6_A", "in_MC6_B", "in_MC6_C", "in_MC6_D" or "in_MC6_E"
+instance1.xml:36:31: error: element "IAmSequenceOfAlternates" incomplete; expected element "in_MC4_A", "in_MC4_B", "in_MC4_C", "in_MC4_D", "in_MC4_E", "in_MC5_A", "in_MC5_B", "in_MC5_C", "in_MC5_D", "in_MC5_E", "in_MC6_A", "in_MC6_B", "in_MC6_C", "in_MC6_D" or "in_MC6_E"
+instance1.xml:38:20: error: element "in_MC3_A" not allowed yet; expected element "in_MC1_A", "in_MC1_B", "in_MC1_C", "in_MC1_D", "in_MC1_E", "in_MC4_A", "in_MC4_B", "in_MC4_C", "in_MC4_D" or "in_MC4_E"
+instance1.xml:39:20: error: element "in_MC1_A" not allowed here; expected the element end-tag
+instance1.xml:40:20: error: element "in_MC2_A" not allowed here; expected the element end-tag
+instance1.xml:44:20: error: element "in_MC5_A" not allowed here; expected element "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D" or "in_MC2_E"
+instance1.xml:45:20: error: element "in_MC6_A" not allowed here; expected element "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D" or "in_MC2_E"
+instance1.xml:46:31: error: element "IAmAlternateOfSequences" incomplete; expected element "in_MC2_A", "in_MC2_B", "in_MC2_C", "in_MC2_D" or "in_MC2_E"
