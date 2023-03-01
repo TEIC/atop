@@ -93,10 +93,10 @@
 	<elementSpec ident="test_elements">
 	  <content>
 	    <sequence>
-	      <elementRef key="IAmSequence"/>
-	      <elementRef key="IAmAlternate"/>
-	      <elementRef key="IAmSequenceOfAlternates"/>
-	      <elementRef key="IAmAlternateOfSequences"/>
+	      <elementRef key="IAmSequence" minOccurs="1" maxOccurs="unbounded"/>
+	      <elementRef key="IAmAlternate" minOccurs="1" maxOccurs="unbounded"/>
+	      <elementRef key="IAmSequenceOfAlternates" minOccurs="1" maxOccurs="unbounded"/>
+	      <elementRef key="IAmAlternateOfSequences" minOccurs="1" maxOccurs="unbounded"/>
 	    </sequence>
 	  </content>
 	</elementSpec>
@@ -110,6 +110,9 @@
 	<elementSpec ident="charlie">
 	  <content><empty/></content>
 	</elementSpec>
+  <elementSpec ident="delta">
+    <content><empty/></content>
+  </elementSpec>
 	<elementSpec ident="echo">
 	  <content><empty/></content>
 	</elementSpec>
