@@ -246,7 +246,7 @@
     <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
     <xd:param name="pClassSpecSeen">A list of zero or more classSpecs which have already been retrieved,
     used to check for circularity issues.</xd:param>
-    <xd:return>A sequence of zero or more classSpec or elementSpecs elements.</xd:return>
+    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
