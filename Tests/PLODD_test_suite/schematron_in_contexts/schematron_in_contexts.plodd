@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:nontei="http://www.example.com/ns/nonTeiEl"
+  xmlns:nonteiatt="http://www.example.com/ns/nonTeiAtt"
+  >
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>test of schematron rules in various contexts, where @context is not specified.</title>
+      </titleStmt>
+      <publicationStmt>
+        <p>part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <p></p>
+    </front>
+    <body>
+      <schemaSpec ident="schematron_context" prefix="sic_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
+        <!-- "sic" is short for schematron in context -->
+        
+        <!-- What we are trying to test here:
+          constraintSpec elements containing Schematron which lacks a precise 
+          context may be scattered in various places in a schema, and we need
+          to be sure that the mechanical derivation of the @context for the 
+          output Schematron is correct. This file attempts to cover most possible
+          contexts in which such constraintSpecs would be found.  
+          -->
+        
+        <elementSpec ident="test_elements">
+          <content>
+            <sequence>
+              <elementRef key="elWithSchematron" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="elWithAttWithSchematron" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="elWithNsAndSchematron" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="elWithNsAndAttWithSchematron" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="elWithAttWithNsAndSchematron" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="elWithNsAndAttWithNsAndSchematron" minOccurs="1" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="elWithSchematron">
+          <desc xml:lang="en">Element with constraintSpec at the element level.</desc>
+          <content><empty/></content>
+          <constraintSpec ident="elWithSch" scheme="schematron">
+            
+          </constraintSpec>
+        </elementSpec>
+        
+        <elementSpec ident="elWithAttWithSchematron">
+          <desc xml:lang="en">Element with att that has constraintSpec.</desc>
+          <content><textNode/></content>
+          <attList>
+            <attDef ident="attWithSchematron1" usage="req">
+              <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
+              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <constraintSpec ident="elWithAttWithSch" scheme="schematron">
+                
+              </constraintSpec>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="elWithNsAndSchematron" ns="http://www.example.com/ns/nonTeiEl">
+          <desc xml:lang="en">Element with namespace and constraintSpec at the element level.</desc>
+          <content><empty/></content>
+          <constraintSpec ident="elWithNsAndSch" scheme="schematron">
+            
+          </constraintSpec>
+        </elementSpec>
+          
+        <elementSpec ident="elWithNsAndAttWithSchematron" ns="http://www.example.com/ns/nonTeiEl">
+          <desc xml:lang="en">Element with namespace and att that has constraintSpec.</desc>
+          <content><textNode/></content>
+          <attList>
+            <attDef ident="attWithSchematron2" usage="req">
+              <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
+              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <constraintSpec ident="elWithNsAndAttWithSch" scheme="schematron">
+                
+              </constraintSpec>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="elWithAttWithNsAndSchematron">
+          <desc xml:lang="en">Element with att that has namespace and constraintSpec.</desc>
+          <content><textNode/></content>
+          <attList>
+            <attDef ident="attWithSchematron3" usage="req" ns="http://www.example.com/ns/nonTeiAtt">
+              <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
+              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <constraintSpec ident="elWithAttWithNsAndSch" scheme="schematron">
+                
+              </constraintSpec>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="elWithNsAndAttWithNsAndSchematron" ns="http://www.example.com/ns/nonTeiEl">
+          <desc xml:lang="en">Element with namespace and att that has namespace and constraintSpec.</desc>
+          <content><textNode/></content>
+          <attList>
+            <attDef ident="attWithSchematron4" usage="req" ns="http://www.example.com/ns/nonTeiAtt">
+              <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
+              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <constraintSpec ident="elWithNsAndAttWithNsAndSch" scheme="schematron">
+                
+              </constraintSpec>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
