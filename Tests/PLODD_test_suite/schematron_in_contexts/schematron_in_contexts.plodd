@@ -58,7 +58,11 @@
           <attList>
             <attDef ident="attWithSchematron1" usage="req">
               <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
-              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <datatype maxOccurs="1"><dataRef name="token"/></datatype>
+              
+              <!-- NOTE: It is not clear whether we should still be able to use dataRef/@key at
+                   the PLODD stage or not. -->
+              <!--<datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>-->
               <constraintSpec ident="elWithAttWithSch" scheme="schematron">
                 
               </constraintSpec>
@@ -80,7 +84,7 @@
           <attList>
             <attDef ident="attWithSchematron2" usage="req">
               <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
-              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <datatype maxOccurs="1"><dataRef name="token"/></datatype>
               <constraintSpec ident="elWithNsAndAttWithSch" scheme="schematron">
                 
               </constraintSpec>
@@ -94,7 +98,7 @@
           <attList>
             <attDef ident="attWithSchematron3" usage="req" ns="http://www.example.com/ns/nonTeiAtt">
               <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
-              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <datatype maxOccurs="1"><dataRef name="token"/></datatype>
               <constraintSpec ident="elWithAttWithNsAndSch" scheme="schematron">
                 
               </constraintSpec>
@@ -108,7 +112,7 @@
           <attList>
             <attDef ident="attWithSchematron4" usage="req" ns="http://www.example.com/ns/nonTeiAtt">
               <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
-              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
+              <datatype maxOccurs="1"><dataRef name="token"/></datatype>
               <constraintSpec ident="elWithNsAndAttWithNsAndSch" scheme="schematron">
                 
               </constraintSpec>
