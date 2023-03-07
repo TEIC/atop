@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0"
-  xmlns:nontei="http://www.example.com/ns/nonTeiEl"
+  xmlns:nonteiel="http://www.example.com/ns/nonTeiEl"
   xmlns:nonteiatt="http://www.example.com/ns/nonTeiAtt"
   >
   <teiHeader>
