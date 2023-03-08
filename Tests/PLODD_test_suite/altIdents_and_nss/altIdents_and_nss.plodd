@@ -3,14 +3,14 @@
   <teiHeader>
     <fileDesc>
       <titleStmt>
-	<title>base ODD for testing <att>namespace</att> and <gi>altIident</gi></title>
-	<author>ATOP Task Force</author>
+        <title>base ODD for testing <att>namespace</att> and <gi>altIident</gi></title>
+        <author>ATOP Task Force</author>
       </titleStmt>
       <publicationStmt>
-	<p>Published by TEI-C on their ATOP repository site.</p>
+        <p>Published by TEI-C on their ATOP repository site.</p>
       </publicationStmt>
       <sourceDesc>
-	<p>Born digital.</p>
+        <p>Born digital.</p>
       </sourceDesc>
     </fileDesc>
   </teiHeader>
@@ -18,155 +18,211 @@
     <body>
       <schemaSpec ident="aan" prefix="aan_" ns="http://www.tei-c.org/ns/atop/test_suite" start="sandefjord">
 
-	<elementSpec ident="sandefjord">
-	  <content>
-	    <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
-	    <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
-	  </content>
-	</elementSpec>
+        <elementSpec ident="sandefjord">
+          <content>
+            <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
+            <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
+          </content>
+        </elementSpec>
 
-	<elementSpec ident="polaris">
-	  <altIdent>endurance</altIdent>
-	  <content>
-	    <elementRef key="shackleton"/>
-	    <elementRef key="wild"/>
-	    <elementRef key="worsley"/>
-	    <elementRef key="greenstreet"/>
-	    <elementRef key="crean"/>
-	    <elementRef key="cheetham"/>
-	    <elementRef key="hudson"/>
-	    <elementRef key="rickinson"/>
-	    <elementRef key="kerr"/>
-	    <elementRef key="macklin"/>
-	    <elementRef key="mcilroy"/>
-	    <elementRef key="wordie"/>
-	    <elementRef key="hussey"/>
-	    <elementRef key="james"/>
-	    <elementRef key="clark"/>
-	    <elementRef key="hurley"/>
-	    <elementRef key="marston"/>
-	    <elementRef key="orde-Lees"/>
-	    <elementRef key="mcnish"/>
-	    <elementRef key="green"/>
-	    <elementRef key="how"/>
-	    <elementRef key="bakewell"/>
-	    <elementRef key="mccarthy"/>
-	    <elementRef key="mcleod"/>
-	    <elementRef key="vincent"/>
-	    <elementRef key="holness"/>
-	    <elementRef key="stephenson"/>
-	    <elementRef key="blackborow"/>
-	  </content>
-	  <attList>
-	    <attDef ident="launched">
-	      <altIdent>christened</altIdent>
-	      <datatype minOccurs="1" maxOccurs="1">
-		<dataRef name="xs:date"/>
-		<!-- 1912-12-17 -->
-	      </datatype>
-	    </attDef>
-	    <attDef ident="length" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
-	      <datatype minOccurs="1" maxOccurs="1">
-		<dataRef name="xs:integer"/>
-	      </datatype>
-	      <!-- 44 m -->
-	    </attDef>
-	    <attDef ident="width" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
-	      <altIdent>beam</altIdent>
-	      <datatype minOccurs="1" maxOccurs="1">
-		<dataRef name="xs:integer"/>
-	      </datatype>
-	      <!-- 7.6 m -->
-	    </attDef>
-	  </attList>
-	</elementSpec>
+        <elementSpec ident="polaris">
+          <altIdent>endurance</altIdent>
+          <content>
+            <elementRef key="shackleton"/>
+            <elementRef key="wild"/>
+            <elementRef key="worsley"/>
+            <elementRef key="greenstreet"/>
+            <elementRef key="crean"/>
+            <elementRef key="cheetham"/>
+            <elementRef key="hudson"/>
+            <elementRef key="rickinson"/>
+            <elementRef key="kerr"/>
+            <elementRef key="macklin"/>
+            <elementRef key="mcilroy"/>
+            <elementRef key="wordie"/>
+            <elementRef key="hussey"/>
+            <elementRef key="james"/>
+            <elementRef key="clark"/>
+            <elementRef key="hurley"/>
+            <elementRef key="marston"/>
+            <elementRef key="orde-Lees"/>
+            <elementRef key="mcnish"/>
+            <elementRef key="green"/>
+            <elementRef key="how"/>
+            <elementRef key="bakewell"/>
+            <elementRef key="mccarthy"/>
+            <elementRef key="mcleod"/>
+            <elementRef key="vincent"/>
+            <elementRef key="holness"/>
+            <elementRef key="stephenson"/>
+            <elementRef key="blackborow"/>
+          </content>
+          <attList>
+            <attDef ident="launched">
+              <altIdent>christened</altIdent>
+              <datatype minOccurs="1" maxOccurs="1">
+                <dataRef name="date"/>
+                <!-- 1912-12-17 -->
+              </datatype>
+            </attDef>
+            <attDef ident="length" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
+              <datatype minOccurs="1" maxOccurs="1">
+                <dataRef name="integer"/>
+              </datatype>
+              <!-- 44 m -->
+            </attDef>
+            <attDef ident="width" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
+              <altIdent>beam</altIdent>
+              <datatype minOccurs="1" maxOccurs="1">
+                <dataRef name="integer"/>
+              </datatype>
+              <!-- 7.6 m -->
+            </attDef>
+          </attList>
+        </elementSpec>
 
-	<elementSpec ident="shackleton" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
-	  <altIdent>ErnestHenryShackletonOBE</altIdent>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="wild">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="worsley">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="greenstreet">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="crean">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="cheetham">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="hudson">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="rickinson">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="kerr">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="macklin">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="mcilroy">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="wordie" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="hussey">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="james">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="clark">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="hurley">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="marston">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="orde-Lees">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="mcnish">
-	  <altIdent>chippy</altIdent>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="green">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="how">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="bakewell">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="mccarthy">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="mcleod">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="vincent">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="holness">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="stephenson">
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="blackborow">
-	  <content><empty/></content>
-	</elementSpec>
+        <elementSpec ident="shackleton" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
+          <altIdent>ErnestHenryShackletonOBE</altIdent>
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="wild">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="worsley">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="greenstreet">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="crean">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="cheetham">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="hudson">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="rickinson">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="kerr">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="macklin">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="mcilroy">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="wordie" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="hussey">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="james">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="clark">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="hurley">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="marston">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="orde-Lees">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="mcnish">
+          <altIdent>chippy</altIdent>
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="green">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="how">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="bakewell">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="mccarthy">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="mcleod">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="vincent">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="holness">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="stephenson">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
+        <elementSpec ident="blackborow">
+          <content>
+            <empty/>
+          </content>
+        </elementSpec>
 
       </schemaSpec>
     </body>
