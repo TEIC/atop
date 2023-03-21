@@ -443,16 +443,16 @@
     <xsl:param name="pContext" as="element()"/>
     <xsl:choose>
       <xsl:when test="$pContext/ancestor::attDef[ancestor::classSpec]">
-        
+        <xsl:sequence select="'Not yet.'"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
-        
+        <xsl:sequence select="'Not yet.'"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::elementSpec">
-        
+        <xsl:sequence select="'Not yet.'"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::classSpec">
-        
+        <xsl:sequence select="'Not yet.'"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::macroSpec">
         <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
