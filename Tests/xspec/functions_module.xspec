@@ -307,4 +307,78 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Scenarios for testing atop:get-nearest-ns">
+    <x:variable name="allTeiNoNs" as="element(tei:schemaSpec)">
+      <tei:schemaSpec>
+        <tei:desc>Some info</tei:desc>
+        <tei:classSpec ident="att.things"/>
+        <tei:elementSpec ident="div">
+          <tei:attList>
+            <tei:attDef ident="type"/>
+          </tei:attList>
+        </tei:elementSpec>
+      </tei:schemaSpec>
+    </x:variable>
+    <x:variable name="someTeiSomeHtml" as="element(tei:schemaSpec)">
+      <tei:schemaSpec ns="http://www.tei-c.org/ns/1.0">
+        <tei:desc>Some info</tei:desc>
+        <tei:classSpec ident="att.things"/>
+        <tei:elementSpec ident="blockquote" ns="http://www.w3.org/1999/xhtml">
+          <tei:attList>
+            <tei:attDef ident="style"/>
+            <tei:attDef ident="customAtt" ns="http://www.tei-c.org/ns/atop"/>
+          </tei:attList>
+        </tei:elementSpec>
+      </tei:schemaSpec>
+    </x:variable>
+    <x:scenario label="Simple case with attDef">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$allTeiNoNs//tei:attDef"/>
+      </x:call>
+      <x:expect label="Empty namespace" select="''"/>
+    </x:scenario>
+    <x:scenario label="Simple case with element">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$allTeiNoNs//tei:elementSpec"/>
+      </x:call>
+      <x:expect label="TEI namespace" select="'http://www.tei-c.org/ns/1.0'"/>
+    </x:scenario>
+    <x:scenario label="Simple case with classSpec">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$allTeiNoNs//tei:classSpec"/>
+      </x:call>
+      <x:expect label="TEI namespace" select="'http://www.tei-c.org/ns/1.0'"/>
+    </x:scenario>
+    <x:scenario label="Simple case with other context">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$allTeiNoNs//tei:desc"/>
+      </x:call>
+      <x:expect label="TEI namespace" select="'http://www.tei-c.org/ns/1.0'"/>
+    </x:scenario>
+    <x:scenario label="Case with attDef without ns">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$someTeiSomeHtml//tei:attDef[not(@ns)]"/>
+      </x:call>
+      <x:expect label="Empty namespace" select="''"/>
+    </x:scenario>
+    <x:scenario label="Case with attDef with ns">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$someTeiSomeHtml//tei:attDef[@ns='http://www.tei-c.org/ns/atop']"/>
+      </x:call>
+      <x:expect label="Empty namespace" select="'http://www.tei-c.org/ns/atop'"/>
+    </x:scenario>
+    <x:scenario label="Case with element with ns">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$someTeiSomeHtml//tei:elementSpec"/>
+      </x:call>
+      <x:expect label="TEI namespace" select="'http://www.w3.org/1999/xhtml'"/>
+    </x:scenario>
+    <x:scenario label="Simple case with classSpec">
+      <x:call function="atop:get-nearest-ns">
+        <x:param name="pEl" select="$someTeiSomeHtml//tei:classSpec"/>
+      </x:call>
+      <x:expect label="TEI namespace" select="'http://www.tei-c.org/ns/1.0'"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>

@@ -213,7 +213,7 @@
   <xd:doc>
     <xd:desc><xd:ref name="atop:get-pattern-name"/>: Construct a viable pattern
       name for an RNG pattern created from a TEI classSpec, dataSpec, elementSpec, or macroSpec element. Delegates to <xd:ref name="atop:get-class-pattern-name"/>, <xd:ref name="atop:get-datatype-pattern-name"/>, <xd:ref name="atop:get-element-pattern-name"/>, or <xd:ref name="atop:get-macro-pattern-name"/> respectively.</xd:desc>
-    <xd:param name="pDataSpec">The dataSpec element for which a pattern name is required.</xd:param>
+    <xd:param name="pSpec">The dataSpec element for which a pattern name is required.</xd:param>
     <xd:return>A string value suitable for a pattern name.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-pattern-name" as="xs:string">
@@ -400,5 +400,67 @@
     </xsl:choose>
 
   </xsl:function>
-
+  
+  
+  <!-- NOTE: Questions for the ATOP team: Should we care about namespace declarations 
+       using sch:ns elements? -->
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-nearest-ns"/>: Gets the namespace-uri which is closest in 
+    the hierarchy for a tagdocs element.</xd:desc>
+    <xd:param name="pEl" as="element()">The element for which we need to derive the namespace.</xd:param>
+    <xd:return as="xs:string">The nearest namespace, if any is defined; otherwise, 
+      the defaults, which are the empty string (for attDefs) or the TEI namespace 
+      (for other contexts).</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-nearest-ns" as="xs:string">
+    <xsl:param name="pEl" as="element()"/>
+    <xsl:variable name="vScopeEl" as="element()" select="$pEl/ancestor-or-self::*[self::attDef or self::elementSpec or self::schemaSpec][1]"/>
+    <xsl:choose>
+      <xsl:when test="$vScopeEl/self::attDef">
+        <xsl:sequence select="if ($vScopeEl/@ns) then $vScopeEl/@ns else ''"/>
+      </xsl:when>
+      <xsl:when test="$vScopeEl/@ns"><xsl:sequence select="$vScopeEl/@ns"/></xsl:when>
+      <xsl:when test="$vScopeEl/ancestor::*[@ns]"><xsl:sequence select="$vScopeEl/ancestor::*[@ns][1]/@ns"/></xsl:when>
+      <xsl:otherwise>
+        <!-- NOTE: we should use one of the global variables, but for testing the 
+             XSpec only knows about the functions module. Needs discussion. -->
+        <xsl:sequence select="'http://www.tei-c.org/ns/1.0'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-schematron-context"/>: Given a context (which is a Schematron
+      fragment, inside a constraint element, but lacking @context), derive XPath to serve 
+      as the @context value in a fully-realized Schematron rule. This is heavily based on 
+      SB's code in extract-isosch.xsl.
+    </xd:desc>
+    <xd:param name="pContext" as="element()">The highest-level Schematron element for 
+    which a context needs to be derived.</xd:param>
+    <xd:return>A string value suitable for use as @context on a Schematron rule.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-schematron-context" as="xs:string">
+    <xsl:param name="pContext" as="element()"/>
+    <xsl:choose>
+      <xsl:when test="$pContext/ancestor::attDef[ancestor::classSpec]">
+        
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
+        
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::elementSpec">
+        
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::classSpec">
+        
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::macroSpec">
+        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::schemaSpec">
+        <xsl:sequence select="'/'"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:function>
+  
 </xsl:stylesheet>
