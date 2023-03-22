@@ -406,12 +406,17 @@
        using sch:ns elements? -->
   <xd:doc>
     <xd:desc><xd:ref name="atop:get-nearest-ns"/>: Gets the namespace-uri which is closest in 
-    the hierarchy for a tagdocs element.</xd:desc>
-    <xd:param name="pEl" as="element()">The element for which we need to derive the namespace.</xd:param>
+    the hierarchy for a tagdocs element. This function gets to work on a number of assumptions
+    because it will be called on elements from a PLODD file, not a file earlier in the
+    process.</xd:desc>
+    <xd:param name="pEl" as="element()">The PLODD file element for which we need to derive 
+      the namespace.</xd:param>
     <xd:return as="xs:string">The nearest namespace, if any is defined; otherwise, 
       the defaults, which are the empty string (for attDefs) or the TEI namespace 
       (for other contexts).</xd:return>
   </xd:doc>
+  <!-- NOTE: The new constraintDecl element which may appear should be 
+       handled here. -->
   <xsl:function name="atop:get-nearest-ns" as="xs:string">
     <xsl:param name="pEl" as="element()"/>
     <xsl:variable name="vScopeEl" as="element()" select="$pEl/ancestor-or-self::*[self::attDef or self::elementSpec or self::schemaSpec][1]"/>
