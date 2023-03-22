@@ -19,6 +19,24 @@
       <schemaSpec ident="aan" prefix="aan_" ns="http://www.tei-c.org/ns/atop/test_suite" start="sandefjord">
 
         <elementSpec ident="sandefjord">
+	  <gloss xml:lang="en">Sandefjord, NO</gloss>
+	  <desc xml:lang="en">
+	    City in which the <name type="ship">Polaris</name> was
+	    originally built. Contains a reference to 1 or 2
+	    <gi>polaris</gi> elements and to 0–3 <gi>endurance</gi>
+	    elements. Note that those two (<gi>polaris</gi> and
+	    <gi>endurance</gi>) are the same element, with <name
+	    type="alt">endurance</name> an alternate name for
+	    <ident>polaris</ident>. Thus only the the reference to
+	    <gi>polaris</gi> should be resolved. (From which we should
+	    get a RELAX NG <emph>pattern</emph> name that includes
+	    <mentioned>polaris</mentioned>, e.g.
+	    <name>aan_polaris</name>, but the <emph>element
+	    name</emph> should be <gi>endurance</gi>, and there should
+	    be only 1 or 2 of them, not 0–3.) The reference to
+	    <gi>endurance</gi> may or may note cause an error, but
+	    should not generate any output in the RELAX NG.
+	  </desc>
           <content>
             <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
             <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
@@ -27,6 +45,13 @@
 
         <elementSpec ident="polaris">
           <altIdent>endurance</altIdent>
+	  <gloss xml:lang="en">Endurance</gloss>
+	  <desc xml:lang="en">
+	    The Endurance had a crew of 28, two of whom were members
+	    of the OBE (Shackleton was OBE, Wordie CBE), and thus have
+	    the title <mentioned>sir</mentioned>, and thus are in a
+	    different namespace.
+	  </desc>
           <content>
             <elementRef key="shackleton"/>
             <elementRef key="wild"/>
@@ -60,12 +85,22 @@
           <attList>
             <attDef ident="launched">
               <altIdent>christened</altIdent>
+	      <gloss xml:lang="en">Christened</gloss>
+	      <desc xml:lang="en">
+		An attribute (<att>christened</att>) defined via an
+		alternate identifier. (I don’t think
+		<mentioned>launched</mentioned> should show up in the
+		schema at all, unless maybe there is a reference to
+		this attr.</desc>
               <datatype minOccurs="1" maxOccurs="1">
                 <dataRef name="date"/>
                 <!-- 1912-12-17 -->
               </datatype>
             </attDef>
             <attDef ident="length" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
+	      <gloss xml:lang="en">distance, bow to stern</gloss>
+	      <desc xml:lang="en">An attribute (<att>SI:length</att>)
+	      in an explicit non-TEI namespace</desc>
               <datatype minOccurs="1" maxOccurs="1">
                 <dataRef name="integer"/>
               </datatype>
@@ -73,6 +108,10 @@
             </attDef>
             <attDef ident="width" ns="https://en.wikipedia.org/wiki/International_System_of_Units">
               <altIdent>beam</altIdent>
+	      <gloss xml:lang="en">width at widest point</gloss>
+	      <desc xml:lang="en">An attribute in an explicit
+	      non-TEI namespace (<att>SI:beam</att>) that is
+	      defined via an alternate identifier.</desc>
               <datatype minOccurs="1" maxOccurs="1">
                 <dataRef name="integer"/>
               </datatype>
@@ -83,6 +122,12 @@
 
         <elementSpec ident="shackleton" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
           <altIdent>ErnestHenryShackletonOBE</altIdent>
+	  <gloss xml:lang="en">Ernest Shackleton himself</gloss>
+	  <desc xml:lang="en">
+	    An element in an explicit non-TEI namespace
+	    (<gi>sir:ErnestHenryShackletonOBE</gi>) that is defined
+	    via an alternate identifier.
+	  </desc>
           <content>
             <empty/>
           </content>
@@ -138,6 +183,11 @@
           </content>
         </elementSpec>
         <elementSpec ident="wordie" ns="http://www.tei-c.org/ns/atop/test_suite/sir">
+	  <gloss xml:lang="en">James Mann Wordie CBE</gloss>
+	  <desc xml:lang="en">
+	    An element in an explicit non-TEI namespace
+	    (<gi>sir:wordie</gi>).
+	  </desc>
           <content>
             <empty/>
           </content>
@@ -174,6 +224,10 @@
         </elementSpec>
         <elementSpec ident="mcnish">
           <altIdent>chippy</altIdent>
+	  <gloss xml:lang="en">Harry McNish</gloss>
+	  <desc xml:lang="en">
+	    An element (<gi>chippy</gi>) defined with an alternate identifier.
+	  </desc>
           <content>
             <empty/>
           </content>
