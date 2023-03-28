@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sandefjord xmlns="http://www.tei-c.org/ns/atop/test_suite"
+	    xmlns:sir="http://www.tei-c.org/ns/atop/test_suite/sir"
+	    xmlns:si="https://en.wikipedia.org/wiki/International_System_of_Units"
+	    >
+  <endurance christened="1912-12-17" si:length="44" si:beam="7.6">
+    <sir:ErnestHenryShackletonOBE/>
+    <wild/>
+    <worsley/>
+    <greenstreet/>
+    <crean/>
+    <cheetham/>
+    <hudson/>
+    <rickinson/>
+    <kerr/>
+    <macklin/>
+    <mcilroy/>
+    <sir:wordie/>
+    <hussey/>
+    <james/>
+    <clark/>
+    <hurley/>
+    <marston/>
+    <orde-Lees/>
+    <chippy/>
+    <green/>
+    <how/>
+    <bakewell/>
+    <mccarthy/>
+    <mcleod/>
+    <vincent/>
+    <holness/>
+    <stephenson/>
+    <blackborow/>
+  </endurance>
+</sandefjord>
