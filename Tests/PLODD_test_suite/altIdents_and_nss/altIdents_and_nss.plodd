@@ -102,7 +102,7 @@
 	      <desc xml:lang="en">An attribute (<att>SI:length</att>)
 	      in an explicit non-TEI namespace</desc>
               <datatype minOccurs="1" maxOccurs="1">
-                <dataRef name="integer"/>
+                <dataRef name="decimal"/>
               </datatype>
               <!-- 44 m -->
             </attDef>
@@ -113,7 +113,7 @@
 	      non-TEI namespace (<att>SI:beam</att>) that is
 	      defined via an alternate identifier.</desc>
               <datatype minOccurs="1" maxOccurs="1">
-                <dataRef name="integer"/>
+                <dataRef name="decimal"/>
               </datatype>
               <!-- 7.6 m -->
             </attDef>
