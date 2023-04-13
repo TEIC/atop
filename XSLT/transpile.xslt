@@ -205,13 +205,23 @@ ignored and the members of the value list are provided.
         <xsl:sequence select="$vDatatypeContent"/>
       </xsl:when>
       <xsl:otherwise>
-        <rng:list>
+        <xsl:variable name="vDatatypeContentRepeat" as="element()+">
           <xsl:call-template name="atop:repeat-content">
             <xsl:with-param name="pContent" as="element()*" select="$vDatatypeContent"/>
             <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
             <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
           </xsl:call-template>
-        </rng:list>
+        </xsl:variable>
+        <xsl:choose>
+          <xsl:when test="count($vDatatypeContentRepeat) eq 1">
+            <xsl:sequence select="$vDatatypeContentRepeat"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <rng:list>
+              <xsl:sequence select="$vDatatypeContentRepeat"/>
+            </rng:list>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
