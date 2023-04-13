@@ -139,7 +139,7 @@
 
   <!-- An attribute specifcation transpiles to an (optional) attribute
        pattern. -->
-  <xsl:template match="attDef[empty(@use) or @use = ('opt', 'rec')]" as="element(rng:optional)">
+  <xsl:template match="attDef[empty(@usage) or @usage = ('opt', 'rec')]" as="element(rng:optional)">
     <rng:optional>
       <xsl:next-match/>
     </rng:optional>
