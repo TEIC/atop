@@ -42,8 +42,8 @@
             <surname>Maus</surname>
           </name>
           <affiliation>
-            <roleName>Head of Research &amp; Development</roleName> at the
-            <orgName>State- and University Library Hamburg</orgName>
+            <roleName>Head of Research &amp; Development</roleName> at the <orgName>State- and
+              University Library Hamburg</orgName>
           </affiliation>
           <email>david.maus@sub.uni-hamburg.de</email>
         </author>
@@ -157,17 +157,21 @@
           <item>organizing elements and attributes into classes, for easier use.</item>
         </list>
         <p>The TEI system itself is, of course, described using this sub-system, which is
-          affectionately called ODD (see X, Y, and Z).</p>
+          affectionately called ODD (see <ref target="#burnard2004" type="bibl">Burnard and Rahtz
+            2004</ref>, <ref target="#burnard2013a" type="bibl">Burnard and Rahtz 2013a</ref>, <ref
+            target="#burnard2013b" type="bibl">Burnard and Rahtz 2013b</ref>, <ref target="#teicODD"
+            type="bibl">TEI Consortium n.d.</ref>).</p>
         <p>While ODD can be used for a variety of purposes, its two main uses are 1) defining the
-          TEI Guidelines, and 2) creating customizations thereof. (See Bauman, 2019) The remainder
-          of this section is an overview of the current system for generating schemas and
-          documentation from TEI ODD customization files.</p>
+          TEI Guidelines, and 2) creating customizations thereof. (See <ref type="bibl"
+            target="#bauman2019">Bauman 2019</ref>) The remainder of this section is an overview of
+          the current system for generating schemas and documentation from TEI ODD customization
+          files.</p>
         <p>The TEI Guidelines are written in TEI ODD. That is, the source for the Guidelines you
-          read on the web or via an ePub or PDF viewer is a single TEI document. It has a &lt;TEI>
-          start-tag at the beginning, a &lt;TEI> end-tag at the end, and a &lt;teiHeader> just like
-          any other TEI document. It is filled with &lt;div>, &lt;head>, and &lt;p> elements as you
-          might expect. But it also contains &lt;elementSpec> elements for describing elements and
-          &lt;moduleSpec> elements for grouping those element specifications, and a host of other
+          read on the web or via an ePub or PDF viewer is a single TEI document. It has a <gi>TEI</gi>
+          start-tag at the beginning, a <gi>TEI</gi> end-tag at the end, and a <gi>teiHeader</gi> just like
+          any other TEI document. It is filled with <gi>div</gi>, <gi>head</gi>, and <gi>p</gi> elements as you
+          might expect. But it also contains <gi>elementSpec</gi> elements for describing elements and
+          <gi>moduleSpec</gi> elements for grouping those element specifications, and a host of other
           constructs dedicated to describing an XML markup language in detail. This single TEI
           document is stored in over 800 separate files for the convenience of those maintaining the
           TEI, but those files comprise a single TEI document.</p>
@@ -190,12 +194,12 @@
           documentation and 2) usable schemas. Customized documentation is a version of the TEI
           Guidelines, or at least of the reference section, that reflects the changes expressed in
           the customization ODD. For example, if the customization ODD says <q>I only need the
-            required modules plus the &lt;metDecl> element</q> — i.e., it does not include the
+            required modules plus the <gi>metDecl</gi> element</q> — i.e., it does not include the
           specialized modules for drama, feature structures, manuscript description, etc., then only
-          ~61 different element types would be listed as possible children of &lt;p>, and only ~197
+          ~61 different element types would be listed as possible children of <gi>p</gi>, and only ~197
           as members of the class att.global. This makes documentation much easier to read when
           compared to to TEI All, in which ~207 elements would be listed as possible children of
-          &lt;p>, and ~590 as members of the class att.global.</p>
+          <gi>p</gi>, and ~590 as members of the class att.global.</p>
         <p>We need to generate usable schemas from the TEI system because no software exists that
           will directly validate a document against an XML language written in TEI ODD, let alone
           provide assistance in writing a document that conforms to it. The TEI ODD language is
@@ -205,13 +209,13 @@
           converted to other languages. (In particular, the Stylesheets will convert the closed
           schema language constructs into the W3C XML Schema Language or to the DTD language from
           the XML specification.)</p>
-        <p>Following the principles of literate programming (Knuth 1984), the process of generating
-          custom documentation from a customization file and the TEI Guidelines is called <hi
-            rend="italic">weaving</hi>, and the process of generating schemas is called <hi
-            rend="italic">tangling</hi>. The TEI Consortium provides software (called
-            <name>roma</name>, not to be confused with <name>Roma</name> [linked to new Roma], the
-          web interface to that software) which performs these tangle and weave functions. See
-          Figure 1. [Picture from slide 2]</p>
+        <p>Following the principles of literate programming (<ref target="#knuth1984" type="bibl"
+            >Knuth 1984</ref>), the process of generating custom documentation from a customization
+          file and the TEI Guidelines is called <hi rend="italic">weaving</hi>, and the process of
+          generating schemas is called <hi rend="italic">tangling</hi>. The TEI Consortium provides
+          software (called <name>roma</name>, not to be confused with <name>Roma</name> [linked to
+          new Roma], the web interface to that software) which performs these tangle and weave
+          functions. See Figure 1. [Picture from slide 2]</p>
       </div>
       <div xml:id="hx">
         <head>History — who, what, and why</head>
@@ -306,7 +310,7 @@
       </div>
       <div xml:id="plans">
         <head>Plans and progress</head>
-        <div>
+        <div xml:id="comparison">
           <head>Comparison to current process</head>
           <p>The current Stylesheets include over 330 XSLT files; of those only ~25–33 are part of
             the process we are duplicating. However, the division of labor among these is, at best,
@@ -344,7 +348,7 @@
               in. The ODDs are are combined by following the instructions in the assembled
               customization ODD and applying them to the base ODD. All internationalization
               information (i.e., all languages of glosses, descriptions, and alternate identifers)
-              is kept. The output is referred to as a <term>derived ODD</term>”.</item>
+              is kept. The output is referred to as a <term>derived ODD</term>.</item>
             <item>Stage 3: <hi rend="bold">Customization ODD + Derived ODD → Derived ODD</hi> — This
               stage is very similar to stage 2, except that the customization ODD used is the next
               ODD in the chain, and the output of the previous stage is used as if it were the base
@@ -361,7 +365,7 @@
           <p>The user is welcome to try to convert the RNG to DTD or XSD, but such is out of scope
             for ATOP; our goal is only generation of RELAX NG and Schematron.</p>
         </div>
-        <div>
+        <div xml:id="consistency">
           <head>Consistency and Conventions</head>
           <p>We have spent some time developing a set of coding conventions to help ensure
             consistency of the code we produce. When the topic of consistency comes up, one often
@@ -376,8 +380,8 @@
               little statesmen and philosophers and divines. With consistency a great soul has
               simply nothing to do. He may as well concern himself with his shadow on the wall.
               Speak what you think now in hard words, and to-morrow speak what to-morrow thinks in
-              hard words again, though it contradict every thing you said to-day. — “Ah, so you
-              shall be sure to be misunderstood.” — Is it so bad, then, to be misunderstood?
+              hard words again, though it contradict every thing you said to-day. — <q>Ah, so you
+                shall be sure to be misunderstood.</q> — Is it so bad, then, to be misunderstood?
               Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and
               Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great
               is to be misunderstood.</quote></p>
@@ -409,13 +413,13 @@
             PLODDs.</p>
           <p>When testing the final RELAX NG result, we plan to perform both comparison testing
             (checking that the output file matches a previously agreed upon <term>expected</term>
-            <?ATOP is <term> the right element here? or <soCalled>? or nothing? ?> output file) and
-            behavioral testing (checking that the output file flags a known to be correct file as
-            valid, and a known to be incorrect file as invalid). The latter is necessary because
-            there are often multiple RELAX NG patterns that will match the same XML constructs. For
-            example, the content models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and
-              <code>( blort, blort?, blort* )</code> all mean the same thing: <q>one ore more
-              &lt;blort>s</q>.</p>
+            <?ATOP is <term> the right element here? or <soCalled>? or nothing? 
+            HBS: in this case I would say nothing ?> output file) and behavioral testing
+            (checking that the output file flags a known to be correct file as valid, and a known to
+            be incorrect file as invalid). The latter is necessary because there are often multiple
+            RELAX NG patterns that will match the same XML constructs. For example, the content
+            models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and <code>( blort,
+              blort?, blort* )</code> all mean the same thing: <q>one ore more <gi>blort</gi>s</q>.</p>
         </div>
       </div>
       <div xml:id="deliverables">
@@ -431,7 +435,8 @@
           programs should run in any standard XML-friendly environment, including the GNU/Linux
           commandline and oXygen. We make use of oXygen, and the end product should run quite nicely
           in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
-        <p>The <soCalled>glue</soCalled> or <?ATOP again, right phrase-level encoding? ?>
+        <p>The <soCalled>glue</soCalled> or <?ATOP again, right phrase-level encoding? 
+        HBS: I agree with <soCalled> ?>
           <soCalled>driver</soCalled> program that tests the input and runs the required XSLT
           programs in the right order will probably be written in ant or XProc.</p>
       </div>
@@ -457,23 +462,23 @@
               really broken beyond repair?</title>. Text Encoding Initiative Conference (Online),
             25/10/2021. <ref target="https://zenodo.org/record/6522554"
               >https://zenodo.org/record/6522554</ref>.</bibl>
-          <bibl>Bauman, Syd (2019). <title level="a">A TEI Customization for Writing TEI
-              Customizations</title>. <title level="j">Journal of the Text Encoding
+          <bibl xml:id="bauman2019">Bauman, Syd (2019). <title level="a">A TEI Customization for
+              Writing TEI Customizations</title>. <title level="j">Journal of the Text Encoding
               Initiative</title>, Issue 12. doi:10.4000/jtei.2573.</bibl>
-          <item>Need citations X, Y, \&amp; Z to papers on ODD system WILL THE FOLLOWING DO?</item>
-          <bibl>Burnard, Lou, and Rahtz, Sebastian (2004). "RelaxNG with Son of ODD". Presented at
-            the Extreme Markup Languages 2004, Montreal, QC, Canada, August 2.</bibl>
-          <bibl>Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a">Reviewing the TEI ODD
-              system</title>. <title level="m">DocEng ’13: Proceedings of the 2013 ACM symposium on
-              Document engineering September 2013</title>, 193–196. <ref
+          <bibl xml:id="burnard2004">Burnard, Lou, and Rahtz, Sebastian (2004). <title level="a"
+              >RelaxNG with Son of ODD</title>. Presented at the Extreme Markup Languages 2004,
+            Montreal, QC, Canada, August 2.</bibl>
+          <bibl xml:id="burnard2013a">Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a"
+              >Reviewing the TEI ODD system</title>. <title level="m">DocEng ’13: Proceedings of the
+              2013 ACM symposium on Document engineering September 2013</title>, 193–196. <ref
               target="https://doi.org/10.1145/2494266.2494321"
               >https://doi.org/10.1145/2494266.2494321</ref>.</bibl>
-          <bibl>Burnard, Lou, and Rahtz, Sebastian (2013). "A complete schema definition language
-            for the Text Encoding Initiative". <hi rend="italic">Proceedings of XML London
-            2013</hi>. Presented at XML London 2013, June 15-16th, 2013. <ref
-              target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
+          <bibl xml:id="burnard2013b">Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a">A
+              complete schema definition language for the Text Encoding Initiative</title>. In
+              <title level="m">Proceedings of XML London 2013</title>. Presented at XML London 2013,
+            June 15-16th, 2013. <ref target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
               >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
-          <bibl>TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
+          <bibl xml:id="teicODD">TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
               target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
               >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
           <bibl xml:id="teicFAQ">TEI Consortium (n.d.). Frequently Asked Questions. <ref
