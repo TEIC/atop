@@ -13,8 +13,9 @@
             <surname>Bauman</surname>
           </name>
           <affiliation>
-            <roleName>Senior XML Programmer/Analyst</roleName> at the <orgName>Northeastern
-              University Digital Scholarship Group</orgName>
+            <roleName>Senior XML Programmer/Analyst</roleName>
+            at the
+            <orgName>Northeastern University Digital Scholarship Group</orgName>
           </affiliation>
           <email>s.bauman@northeastern.edu</email>
         </author>
@@ -22,9 +23,15 @@
           <name>
             <forename>Martin</forename>
             <surname>Holmes</surname>
-            <?MH add <affiliation> ?>
-            <?MH add <email> ?>
           </name>
+          <affiliation>
+            <roleName>Programmer/Consultant</roleName>
+            at the
+            <orgName>Humanities Computing and Media Centre</orgName>
+            at the
+            <orgName>University of Victoria</orgName>
+          </affiliation>
+          <email>mholmes@uvic.ca</email>
         </author>
         <author xml:id="HBS">
           <name>
