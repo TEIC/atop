@@ -462,43 +462,53 @@
       <div type="bibliography" xml:id="bibl">
         <head>Bibliography</head>
         <listBibl>
-          <bibl xml:id="bauman2019">Bauman, Syd (2019). <title level="a">A TEI Customization for
-              Writing TEI Customizations</title>. <title level="j">Journal of the Text Encoding
+          <bibl xml:id="bauman2019"><author>Bauman, Syd</author>
+            <date>2019</date>. <title level="a">A TEI Customization for Writing TEI
+              Customizations</title>. <title level="j">Journal of the Text Encoding
               Initiative</title>, Issue 12. doi:10.4000/jtei.2573.</bibl>
-          <bibl xml:id="burnard2004">Burnard, Lou, and Rahtz, Sebastian (2004). <title level="a"
-              >RelaxNG with Son of ODD</title>. Presented at the Extreme Markup Languages 2004,
-            Montreal, QC, Canada, August 2.</bibl>
-          <bibl xml:id="burnard2013a">Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a"
-              >Reviewing the TEI ODD system</title>. <title level="m">DocEng ’13: Proceedings of the
-              2013 ACM symposium on Document engineering September 2013</title>, 193–196. <ref
-              target="https://doi.org/10.1145/2494266.2494321"
+          <bibl xml:id="burnard2004"><author>Burnard, Lou</author>, and <author>Rahtz,
+              Sebastian</author>
+            <date>2004</date>. <title level="a">RelaxNG with Son of ODD</title>. Presented at the
+            Extreme Markup Languages 2004, Montreal, QC, Canada, August 2.</bibl>
+          <bibl xml:id="burnard2013a"><author>Burnard, Lou</author>, and <author>Rahtz,
+              Sebastian</author>
+            <date>2013</date>. <title level="a">Reviewing the TEI ODD system</title>. <title
+              level="m">DocEng ’13: Proceedings of the 2013 ACM symposium on Document engineering
+              September 2013</title>, 193–196. <ref target="https://doi.org/10.1145/2494266.2494321"
               >https://doi.org/10.1145/2494266.2494321</ref>.</bibl>
-          <bibl xml:id="burnard2013b">Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a">A
-              complete schema definition language for the Text Encoding Initiative</title>. In
-              <title level="m">Proceedings of XML London 2013</title>. Presented at XML London 2013,
-            June 15-16th, 2013. <ref target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
+          <bibl xml:id="burnard2013b"><author>Burnard, Lou</author>, and <author>Rahtz,
+              Sebastian</author>
+            <date>2013</date>. <title level="a">A complete schema definition language for the Text
+              Encoding Initiative</title>. In <title level="m">Proceedings of XML London
+              2013</title>. Presented at XML London 2013, June 15-16th, 2013. <ref
+              target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
               >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
-          <bibl xml:id="emerson">Emerson, Ralph Waldo (1907). <title level="a"
-            >Self-Reliance</title>. In <title level="m">Essays</title>. Edited by Edna H. L. Turpin.
-            New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. <ref
+          <bibl xml:id="emerson">Emerson, Ralph Waldo <date>1907</date>. <title level="a"
+              >Self-Reliance</title>. In <title level="m">Essays</title>. Edited by Edna H. L.
+            Turpin. New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. <ref
               target="https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE"
               >https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE</ref>.</bibl>
-          <bibl xml:id="holmes2021">Holmes, Martin (2021). <title level="a">Are the TEI Stylesheets
-              really broken beyond repair?</title>. Text Encoding Initiative Conference (Online),
-            25/10/2021. <ref target="https://zenodo.org/record/6522554"
-              >https://zenodo.org/record/6522554</ref>.</bibl>
-          <bibl xml:id="knuth1984">Knuth, Donald E. (1984). <title level="a">Literate
-              Programming</title>. <title level="j">The Computer Journal</title>. British Computer
-            Society. 27 (2): 97–111. <idno type="DOI">10.1093/comjnl/27.2.97</idno>. <ref
+          <bibl xml:id="holmes2021"><author>Holmes, Martin</author>
+            <date>2021</date>. <title level="a">Are the TEI Stylesheets really broken beyond
+              repair?</title>. Text Encoding Initiative Conference (Online), 25/10/2021. <ref
+              target="https://zenodo.org/record/6522554"
+            >https://zenodo.org/record/6522554</ref>.</bibl>
+          <bibl xml:id="knuth1984"><author>Knuth, Donald E.</author>
+            <date>1984</date>. <title level="a">Literate Programming</title>. <title level="j">The
+              Computer Journal</title>. British Computer Society. 27 (2): 97–111. <idno type="DOI"
+              >10.1093/comjnl/27.2.97</idno>. <ref
               target="http://www.literateprogramming.com/knuthweb.pdf"
               >http://www.literateprogramming.com/knuthweb.pdf</ref>.</bibl>
-          <bibl xml:id="maus2021">Maus, David (2021) <ref
-              target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
+          <bibl xml:id="maus2021"><author>Maus, David</author>
+            <date>2021</date>
+            <ref target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
               >https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
-          <bibl xml:id="teicODD">TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
+          <bibl xml:id="teicODD"><author>TEI Consortium</author>
+            <date>n.d.</date>. Getting Started with P5 ODDs. <ref
               target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
               >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
-          <bibl xml:id="teicFAQ">TEI Consortium (n.d.). Frequently Asked Questions. <ref
+          <bibl xml:id="teicFAQ"><author>TEI Consortium</author>
+            <date>n.d.</date>. Frequently Asked Questions. <ref
               target="https://tei-c.org/about/frequently-asked-questions/"
               >https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
         </listBibl>
