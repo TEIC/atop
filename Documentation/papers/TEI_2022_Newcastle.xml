@@ -9,12 +9,12 @@
         <title type="sub">Another TEI ODD Processor</title>
         <author xml:id="SB">
           <name>
-            <forename>Syd</forename> 
+            <forename>Syd</forename>
             <surname>Bauman</surname>
           </name>
           <affiliation>
-            <roleName>Senior XML Programmer/Analyst</roleName> at the
-            <orgName>Northeastern University Digital Scholarship Group</orgName>
+            <roleName>Senior XML Programmer/Analyst</roleName> at the <orgName>Northeastern
+              University Digital Scholarship Group</orgName>
           </affiliation>
           <email>s.bauman@northeastern.edu</email>
         </author>
@@ -30,9 +30,11 @@
           <name>
             <forename>Helena</forename>
             <surname>Bermúdez Sabel</surname>
-            <?HBS add <affiliation> ?>
-            <?HBS add <email> ?>
           </name>
+          <affiliation>
+            <roleName>Independent scholar</roleName>
+          </affiliation>
+          <email>helena.b.sabel@gmail.com</email>
         </author>
         <author xml:id="DM">
           <name>
@@ -48,7 +50,8 @@
         <date>2023</date>
         <availability>
           <licence target="https://creativecommons.org/licenses/by/4.0/">
-            <p>For this publication a Creative Commons Attribution 4.0 International license has been granted by the author(s) who retain full copyright.</p>
+            <p>For this publication a Creative Commons Attribution 4.0 International license has
+              been granted by the author(s) who retain full copyright.</p>
           </licence>
         </availability>
       </publicationStmt>
@@ -58,18 +61,16 @@
     </fileDesc>
     <encodingDesc>
       <projectDesc>
-        <p>OpenEdition Journals -centre for open electronic publishing- is the platform for journals in the
-          humanities and social sciences, open to quality periodicals looking to publish full-text
-          articles online.</p>
+        <p>OpenEdition Journals -centre for open electronic publishing- is the platform for journals
+          in the humanities and social sciences, open to quality periodicals looking to publish
+          full-text articles online.</p>
       </projectDesc>
       <appInfo>
         <application ident="TEIGarage" version="1.1.1">
-          <desc>
-            A <ref target="https://annuel2.framapad.org/p/TEI_ATOP_jTEI_2022_(Newcastle)_paper">Framapad document</ref>
-            was used as the original scratch pad for writing this paper.
-            It was converted to Markdown using the Framapad export feature.
-            That Markdown was converted to rudimentary TEI by TEIGarage 11.0.16+8, 1.1.1.
-          </desc>
+          <desc> A <ref target="https://annuel2.framapad.org/p/TEI_ATOP_jTEI_2022_(Newcastle)_paper"
+              >Framapad document</ref> was used as the original scratch pad for writing this paper.
+            It was converted to Markdown using the Framapad export feature. That Markdown was
+            converted to rudimentary TEI by TEIGarage 11.0.16+8, 1.1.1. </desc>
         </application>
       </appInfo>
     </encodingDesc>
@@ -92,14 +93,26 @@
       <change who="#SB" when="2023-04-14T12:00:00">Started conversion to jTEI</change>
       <change who="#SB" when="2023-04-14T11:30:00">Converted to TEI using TEIGarage</change>
       <change who="#SB" when="2023-04-14T11:00:00">Finalized some edits in Framapad</change>
-      <change who="#MH #HBS #DM" from="2023-04-09" to="2023-04-13">Edited and made suggestions in Framapad</change>
+      <change who="#MH #HBS #DM" from="2023-04-09" to="2023-04-13">Edited and made suggestions in
+        Framapad</change>
       <change who="#SB" when="2023-04-08">Wrote bulk of paper in Framapad</change>
     </revisionDesc>
   </teiHeader>
   <text>
     <front>
       <div type="abstract" xml:id="abstract">
-        <?ATOP to be written — should be 1 or 2 <p> elements ?>
+        <?ATOP to be written — should be 1 or 2 <p> elements 
+        HBS: I added a very rough draft ?>
+        <p>The TEI XSL Stylesheets is a tool that tackles the transformation of TEI XML documents to
+          (and from) various formats. This includes the crucial activity of generating schemas from
+          TEI ODD, a TEI XML-conformant specification format that allows one to customize TEI P5 in
+          a literate programming fashion. Due to the difficulties of maintaining the current set of
+          Stylesheets, a Task Force was created with the mission of developing, from scratch, an ODD
+          processor that reads in one or more TEI ODD customization files, merges them with a TEI
+          language (likely, but not necessarily, TEI P5 itself), and generates RELAX NG and
+          Schematron schemas. This paper presents a rationale of this task and the initial steps of
+          this work.</p>
+
       </div>
     </front>
     <body xml:id="atop">
@@ -147,15 +160,14 @@
           of this section is an overview of the current system for generating schemas and
           documentation from TEI ODD customization files.</p>
         <p>The TEI Guidelines are written in TEI ODD. That is, the source for the Guidelines you
-          read on the web or via an ePub or PDF viewer is a single TEI document. It has a
-          &lt;TEI> start-tag at the beginning, a &lt;TEI> end-tag at the end, and a
-          &lt;teiHeader> just like any other TEI document. It is filled with &lt;div>,
-          &lt;head>, and &lt;p> elements as you might expect. But it also contains
-          &lt;elementSpec> elements for describing elements and &lt;moduleSpec> elements for
-          grouping those element specifications, and a host of other constructs dedicated to
-          describing an XML markup language in detail. This single TEI document is stored in over
-          800 separate files for the convenience of those maintaining the TEI, but those files
-          comprise a single TEI document.</p>
+          read on the web or via an ePub or PDF viewer is a single TEI document. It has a &lt;TEI>
+          start-tag at the beginning, a &lt;TEI> end-tag at the end, and a &lt;teiHeader> just like
+          any other TEI document. It is filled with &lt;div>, &lt;head>, and &lt;p> elements as you
+          might expect. But it also contains &lt;elementSpec> elements for describing elements and
+          &lt;moduleSpec> elements for grouping those element specifications, and a host of other
+          constructs dedicated to describing an XML markup language in detail. This single TEI
+          document is stored in over 800 separate files for the convenience of those maintaining the
+          TEI, but those files comprise a single TEI document.</p>
         <p>This single TEI document that defines an XML language is not intended to be used on its
           own, however. This is in large part because the TEI covers many fields of study, and a
           user from one field may not be interested in the TEI elements and attributes that support
@@ -163,20 +175,22 @@
           the TEI Guidelines. The customization file expresses which bits of the TEI will be used,
           and which will not, and adds additional explanations, constraints, and examples where
           needed. One of the most well-known customizations is TEI Lite, a large and complex
-          customization that produces a slimmed-down version of the TEI intended <quote>to meet 90% of the
-          needs of 90% of the TEI user community</quote>. A customization that is very commonly used for
-          experimentation (but not appropriate for use in actual encoding projects) is TEI All, a
-          very small customization that simply says <q>use all bits of TEI without any further
-            explanations, examples, or constraints</q>.</p>
+          customization that produces a slimmed-down version of the TEI intended <quote
+            source="#teiLite">to meet 90% of the needs of 90% of the TEI user community</quote>
+            (<ref target="#teicFAQ" type="bibl" xml:id="teiLite">TEI Consortium 2023: What is TEI
+            Lite?</ref>). A customization that is very commonly used for experimentation (but not
+          appropriate for use in actual encoding projects) is TEI All, a very small customization
+          that simply says <q>use all bits of TEI without any further explanations, examples, or
+            constraints</q>.</p>
         <p>Given a TEI customization, two of the main tasks we wish to accomplish are to convert the
           combination of the TEI customization and the TEI source document into 1) customized
           documentation and 2) usable schemas. Customized documentation is a version of the TEI
           Guidelines, or at least of the reference section, that reflects the changes expressed in
           the customization ODD. For example, if the customization ODD says <q>I only need the
-          required modules plus the &lt;metDecl> element</q> — i.e., it does not include the
+            required modules plus the &lt;metDecl> element</q> — i.e., it does not include the
           specialized modules for drama, feature structures, manuscript description, etc., then only
-          ~61 different element types would be listed as possible children of &lt;p>, and only
-          ~197 as members of the class att.global. This makes documentation much easier to read when
+          ~61 different element types would be listed as possible children of &lt;p>, and only ~197
+          as members of the class att.global. This makes documentation much easier to read when
           compared to to TEI All, in which ~207 elements would be listed as possible children of
           &lt;p>, and ~590 as members of the class att.global.</p>
         <p>We need to generate usable schemas from the TEI system because no software exists that
@@ -191,50 +205,51 @@
         <p>Following the principles of literate programming (Knuth 1984), the process of generating
           custom documentation from a customization file and the TEI Guidelines is called <hi
             rend="italic">weaving</hi>, and the process of generating schemas is called <hi
-              rend="italic">tangling</hi>. The TEI Consortium provides software (called <name>roma</name>, not to
-          be confused with <name>Roma</name> [linked to new Roma], the web interface to that software) which
-          performs these tangle and weave functions. See Figure 1. [Picture from slide 2]</p>
+            rend="italic">tangling</hi>. The TEI Consortium provides software (called
+            <name>roma</name>, not to be confused with <name>Roma</name> [linked to new Roma], the
+          web interface to that software) which performs these tangle and weave functions. See
+          Figure 1. [Picture from slide 2]</p>
       </div>
       <div xml:id="hx">
         <head>History — who, what, and why</head>
         <p>The software currently used to convert TEI ODD into custom documentation and custom
-          schemas is a large set of XSLT stylesheets commonly referred
-          to by the somewhat <?ATOP (insouciant | blasé | lackadaisical | passionless | spiritless ) ?>
-          name <name>the TEI Stylesheets</name>. (You might think they are called that because the name of
-          the GitHub repository where they live is <name>Stylesheets</name>, but in fact the repo is named
-          after the software.) The Stylesheets also convert TEI into many other formats (including DocBook,
-          HTML, PDF, NLM, OpenDocument), and many of those formats into TEI. These Stylesheets <ref
-            target="https://github.com/TEIC/Stylesheets/"
+          schemas is a large set of XSLT stylesheets commonly referred to by the somewhat
+          <?ATOP (insouciant | blasé | lackadaisical | passionless | spiritless ) ?> name <name>the
+            TEI Stylesheets</name>. (You might think they are called that because the name of the
+          GitHub repository where they live is <name>Stylesheets</name>, but in fact the repo is
+          named after the software.) The Stylesheets also convert TEI into many other formats
+          (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into TEI.
+          These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/"
             >[https://github.com/TEIC/Stylesheets/</ref>] are both a work of genius (the genius of
           Sebastian Rahtz, to be precise) and somewhat of an obstacle to the growth of the TEI
           language. The Stylesheets are very impressive in that they perform a large set of
           intricate tasks reasonably well, and in that they were written amazingly fast. But they
           are very difficult to maintain. The source of the problem was summed up by Holmes in 2021:
-          <quote>Sebastian was such a genius he really found it impossible to imagine how dim the rest of
-          us actually are.</quote>. For a detailed discussion of the problems the Stylesheets pose see the
-          rest of Holmes’ paper (Holmes 2021). But to summarize here for our purposes:</p>
+            <quote source="#holmes">Sebastian was such a genius he really found it impossible to
+            imagine how dim the rest of us actually are.</quote>. For a detailed discussion of the
+          problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl"
+            target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
+          purposes:</p>
         <list rend="bulleted">
-          <item>The Stylesheets are <hi rend="bold">very</hi> complex.
-          <list>
-            <item>This is in large part because they do a <hi
-            rend="bold">lot</hi> more than convert TEI ODD into custom
-            documentation and custom schemas, which are the core
-            activities the TEI Council needs to support.</item>
-          </list></item>
+          <item>The Stylesheets are <hi rend="bold">very</hi> complex. <list>
+              <item>This is in large part because they do a <hi rend="bold">lot</hi> more than
+                convert TEI ODD into custom documentation and custom schemas, which are the core
+                activities the TEI Council needs to support.</item>
+            </list></item>
           <item>They are written in an outdated dialect of XSLT (basically XSLT 1.0 with a few 2.0
             constructs).</item>
-          <item>They are full of redundancy (e.g., there are two
-          functions, <code>whatsTheDate()</code> and
-          <code>tei:whatsTheDate()</code>, that do exactly the same
-          thing).</item>
+          <item>They are full of redundancy (e.g., there are two functions,
+              <code>whatsTheDate()</code> and <code>tei:whatsTheDate()</code>, that do exactly the
+            same thing).</item>
           <item>They are almost completely undocumented.</item>
         </list>
         <p>Thus fixing bugs, let alone adding new features, to the Stylesheets is quite difficult,
           in part because it is very difficult to be confident that a bug fix does not cause other
           problems. Furthermore, it is common to find new bugs when fixing known bugs. David Maus
-          went so far as to say in an issue comment <quote>I consider the Stylesheets as broken beyond
-          repair. They work … to a certain degree[,] but they are, from my point of view,
-          effectively unmaintainable.</quote></p>
+          went so far as to say in an issue comment <quote source="#comment">I consider the
+            Stylesheets as broken beyond repair. They work … to a certain degree[,] but they are,
+            from my point of view, effectively unmaintainable.</quote> (<ref target="#maus2021"
+            type="bibl" xml:id="comment">Maus 2021</ref>)</p>
         <p>The natural consequence to the Stylesheets being simultaneously so difficult to maintain
           and being so central to the TEI Technical Council’s mission is that the Council spends a
           lot of its time trying to fix bugs in the Stylesheets. There is a monthly meeting devoted
@@ -348,22 +363,21 @@
           <p>We have spent some time developing a set of coding conventions to help ensure
             consistency of the code we produce. When the topic of consistency comes up, one often
             hears the famous quotation from Ralph Waldo Emerson’s 1841 essay Self-Reliance, that
-            <quote>consistency is the hobgoblin of little minds</quote>. First off, Emerson was not a computer
-            programmer. Second, he was not talking about consistency in notation, or that 2+2
-            consistently is 4, or if there should be a consistent left margin on a printed page.
-            Third, he was not even suggesting that consistency itself is bad, only that a desire to
-            be consistent should not thwart one from changing one’s mind or expressing a point of
-            view contradictory to a previous point of view, as is evident from the entire
-            quotation:
-          <quote>A foolish consistency is the hobgoblin of little minds, adored by little statesmen
-              and philosophers and divines. With consistency a great soul has simply nothing to do.
-              He may as well concern himself with his shadow on the wall. Speak what you think now
-              in hard words, and to-morrow speak what to-morrow thinks in hard words again, though
-              it contradict every thing you said to-day. — “Ah, so you shall be sure to be
-              misunderstood.” — Is it so bad, then, to be misunderstood? Pythagoras was
-              misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and
-              Newton, and every pure and wise spirit that ever took flesh. To be great is to be
-              misunderstood.</quote></p>
+              <quote>consistency is the hobgoblin of little minds</quote>. First off, Emerson was
+            not a computer programmer. Second, he was not talking about consistency in notation, or
+            that 2+2 consistently is 4, or if there should be a consistent left margin on a printed
+            page. Third, he was not even suggesting that consistency itself is bad, only that a
+            desire to be consistent should not thwart one from changing one’s mind or expressing a
+            point of view contradictory to a previous point of view, as is evident from the entire
+            quotation: <quote>A foolish consistency is the hobgoblin of little minds, adored by
+              little statesmen and philosophers and divines. With consistency a great soul has
+              simply nothing to do. He may as well concern himself with his shadow on the wall.
+              Speak what you think now in hard words, and to-morrow speak what to-morrow thinks in
+              hard words again, though it contradict every thing you said to-day. — “Ah, so you
+              shall be sure to be misunderstood.” — Is it so bad, then, to be misunderstood?
+              Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and
+              Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great
+              is to be misunderstood.</quote></p>
           <p>Our desired consistency is not that of philosophy or religion, but mostly that of
             naming and usage. For example, if a subroutine is going to return a node, we use a
             template for that routine; if it does not, we use a function.</p>
@@ -371,7 +385,8 @@
             consistency in our own coding conventions:</p>
           <list>
             <item>of variable names (e.g., <code>$atop:vVersion</code>)</item>
-            <item>of parameter names (e.g., <code>$atop:pPatternPrefix</code>, <code>$atop:tpFun</code>)</item>
+            <item>of parameter names (e.g., <code>$atop:pPatternPrefix</code>,
+                <code>$atop:tpFun</code>)</item>
             <item>of function names (e.g., <code>atop:unique-ident()</code>)</item>
             <item>in global use of <code>@as</code> attribute</item>
             <item>to require internal documentation</item>
@@ -390,13 +405,14 @@
             are writing another <hi rend="italic">in vitro</hi> test suite for processing of
             PLODDs.</p>
           <p>When testing the final RELAX NG result, we plan to perform both comparison testing
-            (checking that the output file matches a previously agreed upon <term>expected</term> 
-            <?ATOP is <term> the right element here? or <soCalled>? or nothing? ?> output file)
-            and behavioral testing (checking that the output file flags a known to be correct file
-            as valid, and a known to be incorrect file as invalid). The latter is necessary because
-            there are often multiple RELAX NG patterns that will match the same XML constructs.
-            For example, the content models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and <code>( blort, blort?,
-              blort* )</code> all mean the same thing: <q>one ore more &lt;blort>s</q>.</p>
+            (checking that the output file matches a previously agreed upon <term>expected</term>
+            <?ATOP is <term> the right element here? or <soCalled>? or nothing? ?> output file) and
+            behavioral testing (checking that the output file flags a known to be correct file as
+            valid, and a known to be incorrect file as invalid). The latter is necessary because
+            there are often multiple RELAX NG patterns that will match the same XML constructs. For
+            example, the content models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and
+              <code>( blort, blort?, blort* )</code> all mean the same thing: <q>one ore more
+              &lt;blort>s</q>.</p>
         </div>
       </div>
       <div xml:id="deliverables">
@@ -413,9 +429,8 @@
           commandline and oXygen. We make use of oXygen, and the end product should run quite nicely
           in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
         <p>The <soCalled>glue</soCalled> or <?ATOP again, right phrase-level encoding? ?>
-        <soCalled>driver</soCalled> program that tests the input and
-        runs the required XSLT programs in the right order will
-        probably be written in ant or XProc.</p>
+          <soCalled>driver</soCalled> program that tests the input and runs the required XSLT
+          programs in the right order will probably be written in ant or XProc.</p>
       </div>
       <div xml:id="foreshadowing">
         <head>Side effects (and foreshadowing)</head>
@@ -433,36 +448,44 @@
     </body>
     <back>
       <div type="bibliography" xml:id="bibl">
-        <head>bibliography</head>
+        <head>Bibliography</head>
         <listBibl>
-          <item>Holmes, Martin (2021). "Are the TEI Stylesheets really broken beyond repair?" Text
-            Encoding Initiative Conference (Online), 25/10/2021. <ref
-              target="https://zenodo.org/record/6522554"
-              >https://zenodo.org/record/6522554</ref>.</item>
-          <item>Bauman, Syd (2019): “A TEI Customization for Writing TEI Customizations”. <hi
-            rend="italic">Journal of the Text Encoding Initiative</hi>, Issue 12.
-            doi:10.4000/jtei.2573.</item>
+          <bibl xml:id="holmes2021">Holmes, Martin (2021). <title level="a">Are the TEI Stylesheets
+              really broken beyond repair?</title>. Text Encoding Initiative Conference (Online),
+            25/10/2021. <ref target="https://zenodo.org/record/6522554"
+              >https://zenodo.org/record/6522554</ref>.</bibl>
+          <bibl>Bauman, Syd (2019). <title level="a">A TEI Customization for Writing TEI
+              Customizations</title>. <title level="j">Journal of the Text Encoding
+              Initiative</title>, Issue 12. doi:10.4000/jtei.2573.</bibl>
           <item>Need citations X, Y, \&amp; Z to papers on ODD system WILL THE FOLLOWING DO?</item>
-          <item>Burnard, Lou, and Rahtz, Sebastian (2004). "RelaxNG with Son of ODD". Presented at
-            the Extreme Markup Languages 2004, Montreal, QC, Canada, August 2.</item>
-          <item>Burnard, Lou, and Rahtz, Sebastian (2013). "Reviewing the TEI ODD system". DocEng
-            '13: Proceedings of the 2013 ACM symposium on Document engineering September 2013,
-            193–196. <ref target="https://doi.org/10.1145/2494266.2494321"
-              >https://doi.org/10.1145/2494266.2494321</ref>.</item>
-          <item>Burnard, Lou, and Rahtz, Sebastian (2013). "A complete schema definition language
+          <bibl>Burnard, Lou, and Rahtz, Sebastian (2004). "RelaxNG with Son of ODD". Presented at
+            the Extreme Markup Languages 2004, Montreal, QC, Canada, August 2.</bibl>
+          <bibl>Burnard, Lou, and Rahtz, Sebastian (2013). <title level="a">Reviewing the TEI ODD
+              system</title>. <title level="m">DocEng ’13: Proceedings of the 2013 ACM symposium on
+              Document engineering September 2013</title>, 193–196. <ref
+              target="https://doi.org/10.1145/2494266.2494321"
+              >https://doi.org/10.1145/2494266.2494321</ref>.</bibl>
+          <bibl>Burnard, Lou, and Rahtz, Sebastian (2013). "A complete schema definition language
             for the Text Encoding Initiative". <hi rend="italic">Proceedings of XML London
-              2013</hi>. Presented at XML London 2013, June 15-16th, 2013. <ref
-                target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
-                >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</item>
-          <item>TEI Consortium (n.d.). Getting Started with P5 ODDs". <ref
-            target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
-            >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</item>
-          <item>Knuth, Donald E. (1984). "Literate Programming". The Computer Journal. British
-            Computer Society. 27 (2): 97–111. doi:10.1093/comjnl/27.2.97. <ref
+            2013</hi>. Presented at XML London 2013, June 15-16th, 2013. <ref
+              target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
+              >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
+          <bibl>TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
+              target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
+              >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
+          <bibl xml:id="teicFAQ">TEI Consortium (n.d.). Frequently Asked Questions. <ref
+              target="https://tei-c.org/about/frequently-asked-questions/"
+              >https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
+          <bibl xml:id="knuth1984">Knuth, Donald E. (1984). <title level="a">Literate
+              Programming</title>. <title level="j">The Computer Journal</title>. British Computer
+            Society. 27 (2): 97–111. <idno type="DOI">10.1093/comjnl/27.2.97</idno>. <ref
               target="http://www.literateprogramming.com/knuthweb.pdf"
-              >http://www.literateprogramming.com/knuthweb.pdf</ref>.</item>
+              >http://www.literateprogramming.com/knuthweb.pdf</ref>.</bibl>
+          <bibl xml:id="maus2021">Maus, David (2021) <ref
+              target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
+              >https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
         </listBibl>
-      </div>      
+      </div>
     </back>
   </text>
 </TEI>
