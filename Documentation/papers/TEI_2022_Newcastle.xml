@@ -167,14 +167,15 @@
           the current system for generating schemas and documentation from TEI ODD customization
           files.</p>
         <p>The TEI Guidelines are written in TEI ODD. That is, the source for the Guidelines you
-          read on the web or via an ePub or PDF viewer is a single TEI document. It has a <gi>TEI</gi>
-          start-tag at the beginning, a <gi>TEI</gi> end-tag at the end, and a <gi>teiHeader</gi> just like
-          any other TEI document. It is filled with <gi>div</gi>, <gi>head</gi>, and <gi>p</gi> elements as you
-          might expect. But it also contains <gi>elementSpec</gi> elements for describing elements and
-          <gi>moduleSpec</gi> elements for grouping those element specifications, and a host of other
-          constructs dedicated to describing an XML markup language in detail. This single TEI
-          document is stored in over 800 separate files for the convenience of those maintaining the
-          TEI, but those files comprise a single TEI document.</p>
+          read on the web or via an ePub or PDF viewer is a single TEI document. It has a
+            <gi>TEI</gi> start-tag at the beginning, a <gi>TEI</gi> end-tag at the end, and a
+            <gi>teiHeader</gi> just like any other TEI document. It is filled with <gi>div</gi>,
+            <gi>head</gi>, and <gi>p</gi> elements as you might expect. But it also contains
+            <gi>elementSpec</gi> elements for describing elements and <gi>moduleSpec</gi> elements
+          for grouping those element specifications, and a host of other constructs dedicated to
+          describing an XML markup language in detail. This single TEI document is stored in over
+          800 separate files for the convenience of those maintaining the TEI, but those files
+          comprise a single TEI document.</p>
         <p>This single TEI document that defines an XML language is not intended to be used on its
           own, however. This is in large part because the TEI covers many fields of study, and a
           user from one field may not be interested in the TEI elements and attributes that support
@@ -196,10 +197,10 @@
           the customization ODD. For example, if the customization ODD says <q>I only need the
             required modules plus the <gi>metDecl</gi> element</q> — i.e., it does not include the
           specialized modules for drama, feature structures, manuscript description, etc., then only
-          ~61 different element types would be listed as possible children of <gi>p</gi>, and only ~197
-          as members of the class att.global. This makes documentation much easier to read when
+          ~61 different element types would be listed as possible children of <gi>p</gi>, and only
+          ~197 as members of the class att.global. This makes documentation much easier to read when
           compared to to TEI All, in which ~207 elements would be listed as possible children of
-          <gi>p</gi>, and ~590 as members of the class att.global.</p>
+            <gi>p</gi>, and ~590 as members of the class att.global.</p>
         <p>We need to generate usable schemas from the TEI system because no software exists that
           will directly validate a document against an XML language written in TEI ODD, let alone
           provide assistance in writing a document that conforms to it. The TEI ODD language is
@@ -369,22 +370,24 @@
           <head>Consistency and Conventions</head>
           <p>We have spent some time developing a set of coding conventions to help ensure
             consistency of the code we produce. When the topic of consistency comes up, one often
-            hears the famous quotation from Ralph Waldo Emerson’s 1841 essay Self-Reliance, that
-              <quote>consistency is the hobgoblin of little minds</quote>. First off, Emerson was
-            not a computer programmer. Second, he was not talking about consistency in notation, or
-            that 2+2 consistently is 4, or if there should be a consistent left margin on a printed
-            page. Third, he was not even suggesting that consistency itself is bad, only that a
-            desire to be consistent should not thwart one from changing one’s mind or expressing a
-            point of view contradictory to a previous point of view, as is evident from the entire
-            quotation: <quote>A foolish consistency is the hobgoblin of little minds, adored by
-              little statesmen and philosophers and divines. With consistency a great soul has
-              simply nothing to do. He may as well concern himself with his shadow on the wall.
-              Speak what you think now in hard words, and to-morrow speak what to-morrow thinks in
-              hard words again, though it contradict every thing you said to-day. — <q>Ah, so you
-                shall be sure to be misunderstood.</q> — Is it so bad, then, to be misunderstood?
-              Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and
-              Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great
-              is to be misunderstood.</quote></p>
+            hears the famous quotation from Ralph Waldo <ref type="bibl" target="#emerson"
+              xml:id="self-reliance">Emerson’s 1841</ref> essay <title>Self-Reliance</title>, that
+              <quote source="#self-reliance">consistency is the hobgoblin of little minds</quote>.
+            First off, Emerson was not a computer programmer. Second, he was not talking about
+            consistency in notation, or that 2+2 consistently is 4, or if there should be a
+            consistent left margin on a printed page. Third, he was not even suggesting that
+            consistency itself is bad, only that a desire to be consistent should not thwart one
+            from changing one’s mind or expressing a point of view contradictory to a previous point
+            of view, as is evident from the entire quotation: <quote source="#self-reliance">A
+              foolish consistency is the hobgoblin of little minds, adored by little statesmen and
+              philosophers and divines. With consistency a great soul has simply nothing to do. He
+              may as well concern himself with his shadow on the wall. Speak what you think now in
+              hard words, and to-morrow speak what to-morrow thinks in hard words again, though it
+              contradict every thing you said to-day. — <q>Ah, so you shall be sure to be
+                misunderstood.</q> — Is it so bad, then, to be misunderstood? Pythagoras was
+              misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and
+              Newton, and every pure and wise spirit that ever took flesh. To be great is to be
+              misunderstood.</quote></p>
           <p>Our desired consistency is not that of philosophy or religion, but mostly that of
             naming and usage. For example, if a subroutine is going to return a node, we use a
             template for that routine; if it does not, we use a function.</p>
@@ -419,7 +422,8 @@
             be incorrect file as invalid). The latter is necessary because there are often multiple
             RELAX NG patterns that will match the same XML constructs. For example, the content
             models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and <code>( blort,
-              blort?, blort* )</code> all mean the same thing: <q>one ore more <gi>blort</gi>s</q>.</p>
+              blort?, blort* )</code> all mean the same thing: <q>one ore more
+            <gi>blort</gi>s</q>.</p>
         </div>
       </div>
       <div xml:id="deliverables">
@@ -458,10 +462,6 @@
       <div type="bibliography" xml:id="bibl">
         <head>Bibliography</head>
         <listBibl>
-          <bibl xml:id="holmes2021">Holmes, Martin (2021). <title level="a">Are the TEI Stylesheets
-              really broken beyond repair?</title>. Text Encoding Initiative Conference (Online),
-            25/10/2021. <ref target="https://zenodo.org/record/6522554"
-              >https://zenodo.org/record/6522554</ref>.</bibl>
           <bibl xml:id="bauman2019">Bauman, Syd (2019). <title level="a">A TEI Customization for
               Writing TEI Customizations</title>. <title level="j">Journal of the Text Encoding
               Initiative</title>, Issue 12. doi:10.4000/jtei.2573.</bibl>
@@ -478,12 +478,15 @@
               <title level="m">Proceedings of XML London 2013</title>. Presented at XML London 2013,
             June 15-16th, 2013. <ref target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
               >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
-          <bibl xml:id="teicODD">TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
-              target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
-              >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
-          <bibl xml:id="teicFAQ">TEI Consortium (n.d.). Frequently Asked Questions. <ref
-              target="https://tei-c.org/about/frequently-asked-questions/"
-              >https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
+          <bibl xml:id="emerson">Emerson, Ralph Waldo (1907). <title level="a"
+            >Self-Reliance</title>. In <title level="m">Essays</title>. Edited by Edna H. L. Turpin.
+            New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. <ref
+              target="https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE"
+              >https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE</ref>.</bibl>
+          <bibl xml:id="holmes2021">Holmes, Martin (2021). <title level="a">Are the TEI Stylesheets
+              really broken beyond repair?</title>. Text Encoding Initiative Conference (Online),
+            25/10/2021. <ref target="https://zenodo.org/record/6522554"
+              >https://zenodo.org/record/6522554</ref>.</bibl>
           <bibl xml:id="knuth1984">Knuth, Donald E. (1984). <title level="a">Literate
               Programming</title>. <title level="j">The Computer Journal</title>. British Computer
             Society. 27 (2): 97–111. <idno type="DOI">10.1093/comjnl/27.2.97</idno>. <ref
@@ -492,6 +495,12 @@
           <bibl xml:id="maus2021">Maus, David (2021) <ref
               target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
               >https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
+          <bibl xml:id="teicODD">TEI Consortium (n.d.). Getting Started with P5 ODDs. <ref
+              target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
+              >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
+          <bibl xml:id="teicFAQ">TEI Consortium (n.d.). Frequently Asked Questions. <ref
+              target="https://tei-c.org/about/frequently-asked-questions/"
+              >https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
         </listBibl>
       </div>
     </back>
