@@ -105,17 +105,18 @@
     <front>
       <div type="abstract" xml:id="abstract">
         <?ATOP to be written — should be 1 or 2 <p> elements 
-        HBS: I added a very rough draft ?>
+        HBS: I added a very rough draft
+        SB: Wow, nicely done! ?>
         <p>The TEI XSL Stylesheets is a tool that tackles the transformation of TEI XML documents to
           (and from) various formats. This includes the crucial activity of generating schemas from
-          TEI ODD, a TEI XML-conformant specification format that allows one to customize TEI P5 in
-          a literate programming fashion. Due to the difficulties of maintaining the current set of
+          TEI ODD, the TEI XML-conformant specification format that allows one to write a schema language
+          (for example, TEI P5 itself is written in ODD) or to customize TEI P5 in
+          a literate programming fashion. Due to the difficulties of maintaining this current set of
           Stylesheets, a Task Force was created with the mission of developing, from scratch, an ODD
-          processor that reads in one or more TEI ODD customization files, merges them with a TEI
+          processor that reads in a series of one or more TEI ODD customization files, merges them with a TEI
           language (likely, but not necessarily, TEI P5 itself), and generates RELAX NG and
           Schematron schemas. This paper presents a rationale of this task and the initial steps of
           this work.</p>
-
       </div>
     </front>
     <body xml:id="atop">
@@ -415,9 +416,8 @@
             are writing another <hi rend="italic">in vitro</hi> test suite for processing of
             PLODDs.</p>
           <p>When testing the final RELAX NG result, we plan to perform both comparison testing
-            (checking that the output file matches a previously agreed upon <term>expected</term>
-            <?ATOP is <term> the right element here? or <soCalled>? or nothing? 
-            HBS: in this case I would say nothing ?> output file) and behavioral testing
+            (checking that the output file matches a previously agreed upon expected
+            output file) and behavioral testing
             (checking that the output file flags a known to be correct file as valid, and a known to
             be incorrect file as invalid). The latter is necessary because there are often multiple
             RELAX NG patterns that will match the same XML constructs. For example, the content
@@ -439,10 +439,9 @@
           programs should run in any standard XML-friendly environment, including the GNU/Linux
           commandline and oXygen. We make use of oXygen, and the end product should run quite nicely
           in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
-        <p>The <soCalled>glue</soCalled> or <?ATOP again, right phrase-level encoding? 
-        HBS: I agree with <soCalled> ?>
-          <soCalled>driver</soCalled> program that tests the input and runs the required XSLT
-          programs in the right order will probably be written in ant or XProc.</p>
+        <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that
+          tests the input and runs the required XSLT programs in the right order will
+          probably be written in ant or XProc.</p>
       </div>
       <div xml:id="foreshadowing">
         <head>Side effects (and foreshadowing)</head>
