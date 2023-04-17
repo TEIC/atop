@@ -40,9 +40,12 @@
           <name>
             <forename>David</forename>
             <surname>Maus</surname>
-            <?DM add <affiliation> ?>
-            <?DM add <email> ?>
           </name>
+          <affiliation>
+            <roleName>Head of Research &amp; Development</roleName> at the
+            <orgName>State- and University Library Hamburg</orgName>
+          </affiliation>
+          <email>david.maus@sub.uni-hamburg.de</email>
         </author>
       </titleStmt>
       <publicationStmt>
