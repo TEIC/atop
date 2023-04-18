@@ -224,7 +224,11 @@
           generating schemas is called <hi rend="italic">tangling</hi>. The TEI Consortium provides
           software (called <name>roma</name>, not to be confused with <name>Roma</name> [linked to
           new Roma], the web interface to that software) which performs these tangle and weave
-          functions. See Figure 1. [Picture from slide 2]</p>
+          functions. See <ptr target="#fig01" type="crossref"/>.</p>
+        <figure xml:id="fig01">
+          <graphic url="tei_odd_customization_detail_iconed.png" width="676px" height="538px"/>
+          <head type="legend">Generation of customized documentation and schemas from TEI</head>
+        </figure>
       </div>
       <div xml:id="hx">
         <head>History — who, what, and why</head>
@@ -340,14 +344,22 @@
         </div>
         <div xml:id="workflow">
           <head>Workflow</head>
-          <p>Our intended workflow will involve at least four stages. See figure 2. [Picture from
-            slide 23.] Each stage will likely begin with a validation step. In most cases invalidity
-            would result in the entire process being aborted. There may be some cases for which a
-            warning will be issued and processing continues. One advantage to this methodology is
-            that we will, by necessity, generate a rigorous definition of a derived ODD file and of
-            a Pruned Localized ODD (PLODD). It may mean that intermediate files need be written out
-            at every stage (which some might consider a disadvantage); however, writing those
-            intermediate files will be very useful in debugging the system.</p>
+          <p>Our intended workflow will involve at least four
+  	    stages. See <ptr target="#fig02" type="crossref"/> Each stage will likely
+  	    begin with a validation step. In most cases invalidity
+  	    would result in the entire process being aborted. There
+  	    may be some cases for which a warning will be issued and
+  	    processing continues. One advantage to this methodology is
+  	    that we will, by necessity, generate a rigorous definition
+  	    of a derived ODD file and of a Pruned Localized ODD
+  	    (PLODD). It may mean that intermediate files need be
+  	    written out at every stage (which some might consider a
+  	    disadvantage); however, writing those intermediate files
+  	    will be very useful in debugging the system.</p>
+	  <figure xml:id="fig02">
+	    <graphic url="datapath.png" width="184px" height="497px"/>
+	    <head type="legend">Stages for generating schemas from a customization</head>
+	  </figure>
           <list>
             <item>Stage 1: <hi rend="bold">Assemble customization ODD</hi> — References to external
               components, if any are read into the ODD; prose may be dropped at this stage (but most
