@@ -111,9 +111,6 @@
   <text>
     <front>
       <div type="abstract" xml:id="abstract">
-        <?ATOP to be written — should be 1 or 2 <p> elements 
-        HBS: I added a very rough draft
-        SB: Wow, nicely done! ?>
         <p>The TEI XSL Stylesheets is a tool that tackles the transformation of TEI XML documents to
           (and from) various formats. This includes the crucial activity of generating schemas from
           TEI ODD, the TEI XML-conformant specification format that allows one to write a schema language
