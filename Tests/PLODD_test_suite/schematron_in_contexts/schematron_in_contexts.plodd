@@ -58,17 +58,28 @@
           <attList>
             <attDef ident="attWithSchematron1" usage="req">
               <desc xml:lang="en">Attribute with constraintSpec at the attribute level.</desc>
-              <datatype maxOccurs="1"><dataRef name="token"/></datatype>
+              <!--<datatype maxOccurs="1"><dataRef name="token"/></datatype>-->
               
-              <!-- NOTE: It is not clear whether we should still be able to use dataRef/@key at
-                   the PLODD stage or not. -->
-              <!--<datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>-->
+<!-- NOTE: It is not yet clear whether we should still be able to use dataRef/@key at
+     the PLODD stage or not. We are proceeding on the basis that dataSpecs will 
+     be retained up to the PLODD stage, and the PLODD-to-rng processing will 
+     expect to find the dataSpec to deal with a dataRef. -->
+              <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
               <constraintSpec ident="elWithAttWithSch" scheme="schematron">
                 
               </constraintSpec>
             </attDef>
           </attList>
         </elementSpec>
+        
+        <dataSpec ident="teidata.text">
+          <desc versionDate="2012-06-17" xml:lang="en">defines the range of attribute values used to express some
+            kind of identifying string as a single sequence
+            of Unicode characters possibly including whitespace.</desc>
+          <content>
+            <dataRef name="string"/>
+          </content>
+        </dataSpec>
         
         <elementSpec ident="elWithNsAndSchematron" ns="http://www.example.com/ns/nonTeiEl">
           <desc xml:lang="en">Element with namespace and constraintSpec at the element level.</desc>
