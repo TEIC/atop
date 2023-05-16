@@ -8,9 +8,9 @@
   
   <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
 
-  <target name="test.xspec" description="Run all XSpec tests" depends="setWindowsAntPath, setUnixAntPath">
+  <target name="runXSpecTests" description="Run all XSpec tests" depends="setWindowsAntPath, setUnixAntPath">
     <description>
-      TARGET test.xspec
+      TARGET runXSpecTests
       This target is intended to run all XSpec tests by creating an ant build
       file which then runs the XSpec project's build file passing the parameter
       files containing our tests. [Note: this is not working as of 2022-10-25,

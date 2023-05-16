@@ -35,7 +35,7 @@
       This is a convenience target to run the test suite using the 
       buildTest.xml ant file.
     </description>
-    <ant antfile="buildTest.xml" target="test.xspec"/>
+    <ant antfile="buildTest.xml" target="runXSpecTests"/>
     <ant antfile="buildTest.xml" target="runPloddTests"/>
   </target>
 
