@@ -5,7 +5,8 @@
                xmlns:rng="http://relaxng.org/ns/structure/1.0"
                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               xmlns:sch="http://purl.oclc.org/dsdl/schematron">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p>Experimental Pruned, Localized ODD to RelaxNG transpiler</xd:p>
@@ -18,7 +19,14 @@
     to unexpected content.</xd:desc>
   </xd:doc>
   <xsl:mode on-no-match="shallow-skip"/>
-
+  
+  
+  <xd:doc>
+    <xd:desc>A special mode to enable us to process constraintSpecs in the 
+    specific location we want to.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="schematron" on-no-match="shallow-skip"/>
+  
   <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
               exclude-result-prefixes="#all"/>
 
@@ -49,6 +57,21 @@
         <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
       </xsl:apply-templates>
       <xsl:apply-templates/>
+      
+      <!-- Now we output any Schematron required. -->
+      <xsl:if test="descendant::constraintSpec[@scheme='schematron']">
+        <rng:div>
+          <xsl:comment><xsl:text>Schematron rules.</xsl:text></xsl:comment>
+          <!-- We'll almost certainly need the TEI namespace. What other namespaces will we 
+               need, and how should they be discovered? -->
+          <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
+          
+          <!-- Is this the right level at which to proceed? -->
+          <xsl:apply-templates select="descendant::constraintSpec" mode="schematron"/>          
+        </rng:div>
+      </xsl:if>
+      
+      
     </rng:grammar>
   </xsl:template>
 
@@ -539,5 +562,34 @@ ignored and the members of the value list are provided.
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
-
+  
+  <xd:doc>
+    <xd:desc>By default we suppress the processing of constraintSpec where it appears
+    in the schemaSpec; instead we collect all constraintSpecs and process them 
+    into a single div at the end of the RNG schema.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec" as="item()*"/>
+  
+  <xd:doc>
+    <xd:desc>When we do process constraintSpecs all together, we start in 
+    a distinct mode, but then revert to the default mode. Each constraintSpec
+    gets an rng:div of its own, to group documentation with it.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec" as="item()*" mode="schematron">
+    <rng:div>
+      <xsl:apply-templates mode="#default"/>
+    </rng:div>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>If a constraintSpec has a desc, we should output it as an 
+    annotation in the RNG.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec/desc" as="element(a:documentation)">
+    <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+      <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
+      <xsl:sequence select="xs:string(.)"/>
+    </a:documentation>
+  </xsl:template>
+  
 </xsl:transform>

@@ -85,7 +85,7 @@
           <desc xml:lang="en">Element with namespace and constraintSpec at the element level.</desc>
           <content><empty/></content>
           <constraintSpec ident="elWithNsAndSch" scheme="schematron">
-            
+            <desc xml:lang="en">A Schematron rule in the context of an element with a non-TEI namespace.</desc>
           </constraintSpec>
         </elementSpec>
           
