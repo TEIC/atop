@@ -605,6 +605,7 @@ ignored and the members of the value list are provided.
   <xsl:template match="constraint" as="element()*">
     <xsl:for-each select="child::*">
       <xsl:choose>
+        <!-- Am I right that sch:ns can sit outside a pattern element? -->
         <xsl:when test="not(self::sch:pattern or self::sch:ns)">
           <pattern xmlns="http://purl.oclc.org/dsdl/schematron">
             <xsl:apply-templates select="."/>
@@ -615,6 +616,18 @@ ignored and the members of the value list are provided.
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>It is common practice to place Schematron fragments in schemaSpec
+    contexts from which it is assumed a context can be derived. For output, 
+    these all need to be wrapped in rule elements.</xd:desc>
+  </xd:doc>
+  <xsl:template match="(sch:report | sch:assert | sch:extents)[not(parent::sch:rule)]" as="element(sch:rule)">
+    <rule xmlns="http://purl.oclc.org/dsdl/schematron">
+      <xsl:attribute name="context" select="atop:get-schematron-context(.)"/>
+      <xsl:next-match/>
+    </rule>
   </xsl:template>
   
 </xsl:transform>
