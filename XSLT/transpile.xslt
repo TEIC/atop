@@ -577,6 +577,11 @@ ignored and the members of the value list are provided.
   </xd:doc>
   <xsl:template match="constraintSpec" as="item()*" mode="schematron">
     <rng:div>
+      <xsl:if test="not(child::desc)">
+        <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <xsl:sequence select="@ident"/>
+        </a:documentation>
+      </xsl:if>
       <xsl:apply-templates mode="#default"/>
     </rng:div>
   </xsl:template>
@@ -590,6 +595,26 @@ ignored and the members of the value list are provided.
       <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
       <xsl:sequence select="xs:string(.)"/>
     </a:documentation>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>We take advantage of the constraint element to check 
+    whether descendant rules are containing in patterns; if not, we 
+    supply the pattern.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraint" as="element()*">
+    <xsl:for-each select="child::*">
+      <xsl:choose>
+        <xsl:when test="not(self::sch:pattern or self::sch:ns)">
+          <pattern xmlns="http://purl.oclc.org/dsdl/schematron">
+            <xsl:apply-templates select="."/>
+          </pattern> 
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="."/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:for-each>
   </xsl:template>
   
 </xsl:transform>
