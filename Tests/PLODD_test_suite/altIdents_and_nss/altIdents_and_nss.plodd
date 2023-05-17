@@ -38,8 +38,10 @@
 	    should not generate any output in the RELAX NG.
 	  </desc>
           <content>
-            <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
-            <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
+            <sequence>
+              <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
+              <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
+            </sequence>
           </content>
         </elementSpec>
 
@@ -53,34 +55,36 @@
 	    different namespace.
 	  </desc>
           <content>
-            <elementRef key="shackleton"/>
-            <elementRef key="wild"/>
-            <elementRef key="worsley"/>
-            <elementRef key="greenstreet"/>
-            <elementRef key="crean"/>
-            <elementRef key="cheetham"/>
-            <elementRef key="hudson"/>
-            <elementRef key="rickinson"/>
-            <elementRef key="kerr"/>
-            <elementRef key="macklin"/>
-            <elementRef key="mcilroy"/>
-            <elementRef key="wordie"/>
-            <elementRef key="hussey"/>
-            <elementRef key="james"/>
-            <elementRef key="clark"/>
-            <elementRef key="hurley"/>
-            <elementRef key="marston"/>
-            <elementRef key="orde-Lees"/>
-            <elementRef key="mcnish"/>
-            <elementRef key="green"/>
-            <elementRef key="how"/>
-            <elementRef key="bakewell"/>
-            <elementRef key="mccarthy"/>
-            <elementRef key="mcleod"/>
-            <elementRef key="vincent"/>
-            <elementRef key="holness"/>
-            <elementRef key="stephenson"/>
-            <elementRef key="blackborow"/>
+            <sequence>
+              <elementRef key="shackleton"/>
+              <elementRef key="wild"/>
+              <elementRef key="worsley"/>
+              <elementRef key="greenstreet"/>
+              <elementRef key="crean"/>
+              <elementRef key="cheetham"/>
+              <elementRef key="hudson"/>
+              <elementRef key="rickinson"/>
+              <elementRef key="kerr"/>
+              <elementRef key="macklin"/>
+              <elementRef key="mcilroy"/>
+              <elementRef key="wordie"/>
+              <elementRef key="hussey"/>
+              <elementRef key="james"/>
+              <elementRef key="clark"/>
+              <elementRef key="hurley"/>
+              <elementRef key="marston"/>
+              <elementRef key="orde-Lees"/>
+              <elementRef key="mcnish"/>
+              <elementRef key="green"/>
+              <elementRef key="how"/>
+              <elementRef key="bakewell"/>
+              <elementRef key="mccarthy"/>
+              <elementRef key="mcleod"/>
+              <elementRef key="vincent"/>
+              <elementRef key="holness"/>
+              <elementRef key="stephenson"/>
+              <elementRef key="blackborow"/>
+            </sequence>
           </content>
           <attList>
             <attDef ident="launched">
