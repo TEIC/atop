@@ -67,7 +67,7 @@
           <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
           
           <!-- Is this the right level at which to proceed? -->
-          <xsl:apply-templates select="descendant::constraintSpec" mode="schematron"/>          
+          <xsl:apply-templates select="descendant::constraintSpec[@scheme='schematron']" mode="schematron"/>          
         </rng:div>
       </xsl:if>
       
