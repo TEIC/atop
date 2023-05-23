@@ -468,6 +468,53 @@
     </xsl:choose>
   </xsl:function>
   
-  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-sch-ns-prefix-map"/>: Given a context (which is typically 
+    an XML document such as a PLODD file), construct a two-way map whereby every declared 
+    Schematron namespace is a key to a single prefix for that namespace, and every distinct 
+    prefix is a key to its matching namespace. This enables us to quickly look up the correct
+    ns for any prefix, or prefix for any ns, when processing Schematron fragments, and 
+    also to generate a collection of ns elements covering all the Schematron in the document.</xd:desc>
+    <xd:param name="pContext" as="node()">The context to process, which may be a complete document.</xd:param>
+    <xd:return as="map(xs:string, xs:string)">A map in which every prefix and namespace is a key to its
+    corresponding namespace or prefix.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-sch-ns-prefix-map" as="map(xs:string, xs:string)">
+    <xsl:param name="pContext" as="node()"/>
+    <xsl:variable name="vExplicitNs" as="element(sch:ns)*" select="$pContext/descendant::sch:ns"/>
+    <!-- Code thanks to @dmaus. -->
+    <xsl:variable name="vNamespaces" as="element(sch:ns)*">
+      <xsl:iterate select="$pContext/descendant::sch:*">
+        <xsl:param name="pNs" as="element(sch:ns)*" select="$vExplicitNs"/>
+        <xsl:on-completion select="$pNs"/>
+        <xsl:variable name="vCurrent" as="element()" select="."/>
+        <xsl:next-iteration>
+          <xsl:with-param name="pNs" as="element(sch:ns)*">
+            <xsl:sequence select="$pNs"/>
+            <xsl:for-each select="in-scope-prefixes($vCurrent)[not(. = ('', 'xml'))]">
+              <xsl:choose>
+                <xsl:when test="empty($pNs[@prefix eq current()])">
+                  <sch:ns prefix="{.}" uri="{namespace-uri-for-prefix(., $vCurrent)}"/>
+                </xsl:when>
+                <!-- We only warn when a prefix is used for two different namespaces; we discard all but the first. -->
+                <xsl:when test="$pNs[@prefix eq current()]/@uri ne namespace-uri-for-prefix(., $vCurrent)">
+                  <xsl:message expand-text="yes">WARNING: Ambiguous in-scope namespace declaration for prefix {.}</xsl:message>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:for-each>
+          </xsl:with-param>
+        </xsl:next-iteration>
+      </xsl:iterate>
+    </xsl:variable>
+    <xsl:map>
+      <xsl:for-each select="distinct-values($vNamespaces/@uri)">
+        <xsl:variable name="vCurrNs" as="xs:string" select="."/>
+        <xsl:message select="$vCurrNs"/>
+        <xsl:variable name="vCurrNs" as="element(sch:ns)" select="$vNamespaces[@uri=$vCurrNs][1]"/>
+        <xsl:map-entry key="xs:string($vCurrNs/@prefix)" select="xs:string($vCurrNs/@uri)"/>
+        <xsl:map-entry key="xs:string($vCurrNs/@uri)" select="xs:string($vCurrNs/@prefix)"/>
+      </xsl:for-each>
+    </xsl:map>
+  </xsl:function>
   
 </xsl:stylesheet>

@@ -10,6 +10,7 @@
   xmlns:map="http://www.w3.org/2005/xpath-functions/map" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:rng="http://relaxng.org/ns/structure/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron"
   stylesheet="../../XSLT/modules/functions_module.xslt">
 
   <x:scenario label="Scenarios for testing function collapse-space">
@@ -381,6 +382,20 @@
     </x:scenario>
   </x:scenario>
   
-  
+  <x:scenario label="Tests for the global sch:ns map.">
+    <x:scenario label="Simple test with a few uncomplicated cases.">
+      <x:call function="atop:get-sch-ns-prefix-map">
+        <x:param name="pContext" as="element(tei:constraint)" select="/tei:constraint">
+          <tei:constraint>
+            <sch:ns prefix="notTei" uri="http://www.tei-c.org/ns/1.0/not"/>
+            <sch:ns prefix="notXh" uri="http://www.w3.org/1999/xhtml/not"/>
+            <sch:ns prefix="notAtop" uri="http://www.tei-c.org/ns/atop/not"/>
+          </tei:constraint>
+        </x:param>
+      </x:call>
+      <x:expect label="Our notXh prefix should get our notXh uri." test="map:get($x:result[1], 'notXh')" select="'http://www.w3.org/1999/xhtml/not'"/>
+      <x:expect label="Our notTei uri should get our notTei prefix." test="map:get($x:result[1], 'http://www.tei-c.org/ns/1.0/not')" select="'notTei'"/>
+    </x:scenario>
+  </x:scenario>
   
 </x:description>
