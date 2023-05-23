@@ -6,7 +6,8 @@
                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-               xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+               xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+               xmlns:map="http://www.w3.org/2005/xpath-functions/map">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p>Experimental Pruned, Localized ODD to RelaxNG transpiler</xd:p>
@@ -32,6 +33,12 @@
 
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble-relaxng.xslt"/>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:vMapSchNs"/>: A map of all in-scope namespaces, each with 
+    a selected prefix.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vMapSchNs" as="map(xs:string, xs:string)" select="atop:get-sch-ns-prefix-map(/)"/>
 
   <xd:doc>
     <xd:desc>The TEI schemaSpec becomes the rng:grammar.</xd:desc>
@@ -62,9 +69,12 @@
       <xsl:if test="descendant::constraintSpec[@scheme='schematron']">
         <rng:div>
           <xsl:comment><xsl:text>Schematron rules.</xsl:text></xsl:comment>
-          <!-- We'll almost certainly need the TEI namespace. What other namespaces will we 
-               need, and how should they be discovered? -->
-          <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
+          
+          <!-- Now we build the collection of Schematron namespaces we need. -->
+          <xsl:comment><xsl:sequence select="'Namespace declarations (' || map:size($atop:vMapSchNs) div 2 || ')'"/></xsl:comment>
+          <xsl:for-each select="map:keys($atop:vMapSchNs)[not(contains(., ':'))]">
+            <sch:ns prefix="{.}" uri="{map:get($atop:vMapSchNs, .)}"/>
+          </xsl:for-each>
           
           <!-- Is this the right level at which to proceed? -->
           <xsl:apply-templates select="descendant::constraintSpec[@scheme='schematron']" mode="schematron"/>          
