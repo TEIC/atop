@@ -2138,6 +2138,10 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
                         </documentTypeEntry-array>
                     </entry>
                     <entry>
+                        <String>enable.project.master.files.support</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
                         <String>key.editor.document.type.association.option.pane</String>
                         <Boolean>true</Boolean>
                     </entry>
@@ -2390,6 +2394,9 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
         </options>
     </meta>
     <projectTree name="atop.xpr">
+        <folder masterFiles="true" name="Main Files">
+            <file name="XSLT/transpile.xslt"/>
+        </folder>
         <folder path="."/>
     </projectTree>
 </project>
