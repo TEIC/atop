@@ -451,17 +451,17 @@
         <xsl:sequence select="'Not yet.'"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
-        <xsl:variable name="vElName" as="xs:string" select="ancestor::elementSpec/@ident"/>
-        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns(ancestor::elementSpec)"/>
+        <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
+        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
         <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vElNs)) then map:get($atop:vMapSchNs, $vElNs) || ':' else 'tei:'"/>
-        <xsl:variable name="vAttName" as="xs:string" select="ancestor::attDef[1]/@ident"/>
-        <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns(ancestor::attDef[1])"/>
+        <xsl:variable name="vAttName" as="xs:string" select="$pContext/ancestor::attDef[1]/@ident"/>
+        <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::attDef[1])"/>
         <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vAttNs)) then map:get($atop:vMapSchNs, $vAttNs) || ':' else ''"/>
         <xsl:sequence select="$vElPrefix || $vElName || '/' || $vAttPrefix || $vAttName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::elementSpec">
-        <xsl:variable name="vElName" as="xs:string" select="ancestor::elementSpec/@ident"/>
-        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns(ancestor::elementSpec)"/>
+        <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
+        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
         <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vElNs)) then map:get($atop:vMapSchNs, $vElNs) || ':' else 'tei:'"/>
         <xsl:sequence select="$vElPrefix || $vElName"/>
       </xsl:when>

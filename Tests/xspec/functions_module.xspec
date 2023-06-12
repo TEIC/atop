@@ -11,7 +11,8 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:rng="http://relaxng.org/ns/structure/1.0"
   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
-  stylesheet="../../XSLT/modules/functions_module.xslt">
+  stylesheet="../../XSLT/transpile.xslt">
+  <!--<x:helper stylesheet="../../XSLT/transpile.xslt"/>-->
 
   <x:scenario label="Scenarios for testing function collapse-space">
     <x:scenario label="collapse-space with lots of spaces everywhere">
