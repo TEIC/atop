@@ -635,7 +635,7 @@ ignored and the members of the value list are provided.
   </xd:doc>
   <xsl:template match="(sch:report | sch:assert | sch:extents)[not(parent::sch:rule)]" as="element(sch:rule)">
     <rule xmlns="http://purl.oclc.org/dsdl/schematron">
-      <xsl:attribute name="context" select="atop:get-schematron-context(.)"/>
+      <xsl:attribute name="context" select="atop:get-schematron-context(., $atop:vMapSchNs)"/>
       <xsl:next-match/>
     </rule>
   </xsl:template>

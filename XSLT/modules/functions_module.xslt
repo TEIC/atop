@@ -442,10 +442,13 @@
     </xd:desc>
     <xd:param name="pContext" as="element()">The highest-level Schematron element for 
     which a context needs to be derived.</xd:param>
+    <xd:param name="pMapSchNs" as="map(xs:string, xs:string)">A map in which every prefix and namespace is a key to its
+      corresponding namespace or prefix.</xd:param>
     <xd:return>A string value suitable for use as @context on a Schematron rule.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-schematron-context" as="xs:string">
     <xsl:param name="pContext" as="element()"/>
+    <xsl:param name="pMapSchNs" as="map(xs:string, xs:string)"/>
     <xsl:choose>
       <xsl:when test="$pContext/ancestor::attDef[ancestor::classSpec]">
         <xsl:sequence select="'Not yet.'"/>
@@ -453,20 +456,20 @@
       <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
         <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
         <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
-        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vElNs)) then map:get($atop:vMapSchNs, $vElNs) || ':' else 'tei:'"/>
+        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vElNs)) then map:get($pMapSchNs, $vElNs) || ':' else 'tei:'"/>
         <xsl:variable name="vAttName" as="xs:string" select="$pContext/ancestor::attDef[1]/@ident"/>
         <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::attDef[1])"/>
-        <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vAttNs)) then map:get($atop:vMapSchNs, $vAttNs) || ':' else ''"/>
+        <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vAttNs)) then map:get($pMapSchNs, $vAttNs) || ':' else ''"/>
         <xsl:sequence select="$vElPrefix || $vElName || '/' || $vAttPrefix || $vAttName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::elementSpec">
         <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
         <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
-        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($atop:vMapSchNs, $vElNs)) then map:get($atop:vMapSchNs, $vElNs) || ':' else 'tei:'"/>
+        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vElNs)) then map:get($pMapSchNs, $vElNs) || ':' else 'tei:'"/>
         <xsl:sequence select="$vElPrefix || $vElName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::classSpec">
-        <xsl:sequence select="'Not yet.'"/>
+        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a classSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::macroSpec">
         <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
