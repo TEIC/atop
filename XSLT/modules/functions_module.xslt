@@ -450,9 +450,6 @@
     <xsl:param name="pContext" as="element()"/>
     <xsl:param name="pMapSchNs" as="map(xs:string, xs:string)"/>
     <xsl:choose>
-      <xsl:when test="$pContext/ancestor::attDef[ancestor::classSpec]">
-        <xsl:sequence select="'Not yet.'"/>
-      </xsl:when>
       <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
         <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
         <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
