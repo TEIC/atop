@@ -465,7 +465,7 @@ ignored and the members of the value list are provided.
                     <rng:exclude>
                       <xsl:for-each select="$vExceptions[atop:namespace-or-name-is-name(., $vScope)]">
                         <xsl:if test="$vNamespaceUri eq namespace-uri-for-prefix(substring-before(., ':'), $vScope)">
-                          <rng:name>{.}</rng:name>
+                          <rng:name><xsl:sequence select="."/></rng:name>
                         </xsl:if>
                       </xsl:for-each>
                     </rng:exclude>
