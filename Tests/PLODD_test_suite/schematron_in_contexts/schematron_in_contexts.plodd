@@ -31,6 +31,7 @@
           to be sure that the mechanical derivation of the @context for the 
           output Schematron is correct. This file attempts to cover most possible
           contexts in which such constraintSpecs would be found.
+
 	  The Schematron in each constraint specification is trivial,
 	  but includes the context written out (rather than using
 	  <sch:name/>, etc.) to make finding problems easier.
@@ -85,7 +86,19 @@
               <constraintSpec ident="elWithAttWithSchAt" scheme="schematron">
 		<constraint>
 		  <sch:report test="false()" role="info">In elWithAttWithSchematron, attr level.</sch:report>
-		</constraint>
+<!-- MH: I do not think there should be an <sch:rule> at all, let
+     alone one without the required @context. Thus I have commented
+     this out and used the above (kinda lame) constraint. Feel free
+     to disagree, but let me know if you do! —SB 
+              <constraintSpec ident="elWithAttWithSch" scheme="schematron">
+                <constraint>
+                  <sch:rule>
+                    <sch:assert test="contains(., 'x')">
+                      ASSERTION DID NOT PASS: value of <sch:value-of select="local-name()"/> should 
+                      contain at least one 'x'.
+                    </sch:assert>
+                  </sch:rule> -->
+                </constraint>
               </constraintSpec>
             </attDef>
           </attList>

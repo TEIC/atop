@@ -457,7 +457,7 @@
         <xsl:variable name="vAttName" as="xs:string" select="$pContext/ancestor::attDef[1]/@ident"/>
         <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::attDef[1])"/>
         <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vAttNs)) then map:get($pMapSchNs, $vAttNs) || ':' else ''"/>
-        <xsl:sequence select="$vElPrefix || $vElName || '/' || $vAttPrefix || $vAttName"/>
+        <xsl:sequence select="$vElPrefix || $vElName || '/@' || $vAttPrefix || $vAttName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::elementSpec">
         <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
@@ -488,7 +488,7 @@
     <xd:return as="map(xs:string, xs:string)">A map in which every prefix and namespace is a key to its
     corresponding namespace or prefix.</xd:return>
   </xd:doc>
-  <xsl:function name="atop:get-sch-ns-prefix-map" as="map(xs:string, xs:string)">
+  <xsl:function name="atop:get-sch-ns-prefix-map" as="map(xs:string, xs:string)" new-each-time="no">
     <xsl:param name="pContext" as="node()"/>
     <xsl:variable name="vExplicitNs" as="element(sch:ns)*" select="$pContext/descendant::sch:ns"/>
     <!-- Code thanks to @dmaus. -->
@@ -514,6 +514,10 @@
           </xsl:with-param>
         </xsl:next-iteration>
       </xsl:iterate>
+      <!-- We also need any declarations in @ns attributes, which won't necessarily have discoverable prefixes. -->
+      <xsl:for-each select="$pContext/descendant::*[@ns]">
+        <sch:ns prefix="{generate-id(.)}" uri="{@ns}"/>
+      </xsl:for-each>
     </xsl:variable>
     <xsl:map>
       <xsl:for-each select="distinct-values($vNamespaces/@uri)">
