@@ -634,7 +634,7 @@ ignored and the members of the value list are provided.
   <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="schematron">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
-      <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(.))"/>
+      <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))"/>
       <xsl:apply-templates mode="schematron"/>
     </xsl:copy>
   </xsl:template>

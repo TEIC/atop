@@ -514,6 +514,9 @@
           </xsl:with-param>
         </xsl:next-iteration>
       </xsl:iterate>
+      <xsl:for-each select="$pContext/descendant::*[@ns]">
+        <sch:ns prefix="{generate-id(.)}" uri="{@ns}"/>
+      </xsl:for-each>
     </xsl:variable>
     <xsl:map>
       <xsl:for-each select="distinct-values($vNamespaces/@uri)">
