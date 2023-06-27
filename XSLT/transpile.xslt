@@ -26,7 +26,7 @@
     <xd:desc>A special mode to enable us to process constraintSpecs in the 
     specific location we want to.</xd:desc>
   </xd:doc>
-  <xsl:mode name="schematron" on-no-match="shallow-skip"/>
+  <xsl:mode name="schematron" on-no-match="shallow-copy"/>
   
   <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
               exclude-result-prefixes="#all"/>
@@ -592,7 +592,7 @@ ignored and the members of the value list are provided.
           <xsl:sequence select="@ident"/>
         </a:documentation>
       </xsl:if>
-      <xsl:apply-templates mode="#default"/>
+      <xsl:apply-templates mode="schematron"/>
     </rng:div>
   </xsl:template>
   
@@ -600,7 +600,7 @@ ignored and the members of the value list are provided.
     <xd:desc>If a constraintSpec has a desc, we should output it as an 
     annotation in the RNG.</xd:desc>
   </xd:doc>
-  <xsl:template match="constraintSpec/desc" as="element(a:documentation)">
+  <xsl:template match="constraintSpec/desc" as="element(a:documentation)" mode="schematron">
     <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
       <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
       <xsl:sequence select="xs:string(.)"/>
@@ -612,20 +612,31 @@ ignored and the members of the value list are provided.
     whether descendant rules are containing in patterns; if not, we 
     supply the pattern.</xd:desc>
   </xd:doc>
-  <xsl:template match="constraint" as="element()*">
+  <xsl:template match="constraint" as="element()*" mode="schematron">
     <xsl:for-each select="child::*">
       <xsl:choose>
         <!-- Am I right that sch:ns can sit outside a pattern element? -->
         <xsl:when test="not(self::sch:pattern or self::sch:ns)">
           <pattern xmlns="http://purl.oclc.org/dsdl/schematron">
-            <xsl:apply-templates select="."/>
+            <xsl:apply-templates select="." mode="schematron"/>
           </pattern> 
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="."/>
+          <xsl:apply-templates select="." mode="schematron"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>An explicit rule which lacks a context must get one.</xd:desc>
+  </xd:doc>
+  <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="schematron">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(.))"/>
+      <xsl:apply-templates mode="schematron"/>
+    </xsl:copy>
   </xsl:template>
   
   <xd:doc>
@@ -633,7 +644,7 @@ ignored and the members of the value list are provided.
     contexts from which it is assumed a context can be derived. For output, 
     these all need to be wrapped in rule elements.</xd:desc>
   </xd:doc>
-  <xsl:template match="(sch:report | sch:assert | sch:extents)[not(parent::sch:rule)]" as="element(sch:rule)">
+  <xsl:template match="(sch:report | sch:assert | sch:extents)[not(parent::sch:rule)]" as="element(sch:rule)" mode="schematron">
     <rule xmlns="http://purl.oclc.org/dsdl/schematron">
       <xsl:attribute name="context" select="atop:get-schematron-context(., $atop:vMapSchNs)"/>
       <xsl:next-match/>

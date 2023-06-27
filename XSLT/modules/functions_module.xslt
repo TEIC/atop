@@ -457,7 +457,7 @@
         <xsl:variable name="vAttName" as="xs:string" select="$pContext/ancestor::attDef[1]/@ident"/>
         <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::attDef[1])"/>
         <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vAttNs)) then map:get($pMapSchNs, $vAttNs) || ':' else ''"/>
-        <xsl:sequence select="$vElPrefix || $vElName || '/' || $vAttPrefix || $vAttName"/>
+        <xsl:sequence select="$vElPrefix || $vElName || '/@' || $vAttPrefix || $vAttName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::elementSpec">
         <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>

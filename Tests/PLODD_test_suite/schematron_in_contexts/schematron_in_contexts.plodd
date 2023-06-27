@@ -49,7 +49,9 @@
           <desc xml:lang="en">Element with constraintSpec at the element level.</desc>
           <content><empty/></content>
           <constraintSpec ident="elWithSch" scheme="schematron">
-            <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
+            <constraint>
+              <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
+            </constraint>
           </constraintSpec>
         </elementSpec>
         
@@ -67,7 +69,14 @@
      expect to find the dataSpec to deal with a dataRef. -->
               <datatype maxOccurs="1"><dataRef key="teidata.text"/></datatype>
               <constraintSpec ident="elWithAttWithSch" scheme="schematron">
-                
+                <constraint>
+                  <sch:rule>
+                    <sch:assert test="contains(., 'x')">
+                      ASSERTION DID NOT PASS: value of <sch:value-of select="local-name()"/> should 
+                      contain at least one 'x'.
+                    </sch:assert>
+                  </sch:rule>
+                </constraint>
               </constraintSpec>
             </attDef>
           </attList>
