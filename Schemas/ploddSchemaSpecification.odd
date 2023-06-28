@@ -28,10 +28,14 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-06-28">
+        Per request #MH allow gloss or desc element (or both) as child
+        of schemaSpec (by referring to "gloss_amper_desc" macro).
+      </change>
       <change who="#SB" when="2023-06-27">
-	Fix bug in "gloss_amper_desc" noticed by #MH: The 2nd
-	reference to &lt;gloss> had minOccurs=1 even though it needs
-	to be optional (i.e. minOccurs=0).
+        Fix bug in "gloss_amper_desc" noticed by #MH: The 2nd
+        reference to &lt;gloss> had minOccurs=1 even though it needs
+        to be optional (i.e. minOccurs=0).
       </change>
       <change who="#SB" when="2023-01-12">
         Per yesterday’s meeting, require values of <att>start</att> of
@@ -106,7 +110,7 @@
     </body>
     <back>
       <!-- Note: deliberately no source= on <schemaSpec> so that we, the ATOPers,
-	   get caught if there is a backwards-incompatible change to P5 ODDs. -->
+           get caught if there is a backwards-incompatible change to P5 ODDs. -->
       <schemaSpec ident="ploddSchemaSpecification" targetLang="en"
                   docLang="en" prefix="plodd_" start="TEI schemaSpec">
         <gloss>derived schema specification</gloss>
@@ -204,10 +208,13 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-            <alternate minOccurs="1" maxOccurs="unbounded">
-              <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
-              <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
-            </alternate>
+            <sequence minOccurs="1" maxOccurs="1">
+              <macroRef key="gloss_amper_desc"/>
+              <alternate minOccurs="1" maxOccurs="unbounded">
+                <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
+              </alternate>
+            </sequence>
           </content>
           <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
             <constraint>
