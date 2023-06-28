@@ -615,7 +615,6 @@ ignored and the members of the value list are provided.
   <xsl:template match="constraint" as="element()*" mode="schematron">
     <xsl:for-each select="child::*">
       <xsl:choose>
-        <!-- Am I right that sch:ns can sit outside a pattern element? -->
         <xsl:when test="not(self::sch:pattern or self::sch:ns)">
           <pattern xmlns="http://purl.oclc.org/dsdl/schematron">
             <xsl:apply-templates select="." mode="schematron"/>
