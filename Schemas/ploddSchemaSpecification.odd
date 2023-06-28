@@ -28,6 +28,11 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-06-27">
+	Fix bug in "gloss_amper_desc" noticed by #MH: The 2nd
+	reference to &lt;gloss> had minOccurs=1 even though it needs
+	to be optional (i.e. minOccurs=0).
+      </change>
       <change who="#SB" when="2023-01-12">
         Per yesterday’s meeting, require values of <att>start</att> of
         <gi>schemaSpec</gi> to be the identifier of a defined element.
@@ -175,7 +180,7 @@
               </sequence>
               <sequence minOccurs="1" maxOccurs="1">
                 <classRef minOccurs="1" maxOccurs="1" key="model.descLike"/>
-                <elementRef minOccurs="1" maxOccurs="1" key="gloss"/>
+                <elementRef minOccurs="0" maxOccurs="1" key="gloss"/>
               </sequence>
             </alternate>
           </content>

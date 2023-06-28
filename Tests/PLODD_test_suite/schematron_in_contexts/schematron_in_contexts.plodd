@@ -89,7 +89,7 @@
 <!-- MH: I do not think there should be an <sch:rule> at all, let
      alone one without the required @context. Thus I have commented
      this out and used the above (kinda lame) constraint. Feel free
-     to disagree, but let me know if you do! —SB 
+     to disagree; will talk to you tomorrow! —SB 
               <constraintSpec ident="elWithAttWithSch" scheme="schematron">
                 <constraint>
                   <sch:rule>
