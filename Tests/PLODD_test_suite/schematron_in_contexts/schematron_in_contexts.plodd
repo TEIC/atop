@@ -37,7 +37,7 @@
 	  <sch:name/>, etc.) to make finding problems easier.
           -->
 
-	<desc>schematron in context</desc>
+	<desc xml:lang="en">schematron in context</desc>
 	<constraintSpec scheme="schematron" ident="schemaSpec-level">
 	  <constraint>
             <sch:ns prefix="tei" uri="http://www.tei-c.org/ns/1.0"/>
