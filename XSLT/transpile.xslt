@@ -608,23 +608,30 @@ ignored and the members of the value list are provided.
   </xsl:template>
   
   <xd:doc>
-    <xd:desc>We take advantage of the constraint element to check 
-    whether descendant rules are containing in patterns; if not, we 
-    supply the pattern.</xd:desc>
+    <xd:desc>We check the contents of the constraint element, and output any 
+      complete sch:patterns, then we wrap any sch:rules in sch:patterns,
+      then finally we create sch:pattern and sch:rule elements to contain 
+      any lower-level Schematron elements.</xd:desc>
   </xd:doc>
   <xsl:template match="constraint" as="element()*" mode="schematron">
-    <xsl:for-each select="child::*">
-      <xsl:choose>
-        <xsl:when test="not(self::sch:pattern or self::sch:ns)">
-          <pattern xmlns="http://purl.oclc.org/dsdl/schematron">
-            <xsl:apply-templates select="." mode="schematron"/>
-          </pattern> 
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="." mode="schematron"/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <!-- First we output any complete Schematron components. -->
+    <xsl:for-each select="child::*[self::sch:pattern or self::sch:ns]">
+      <xsl:apply-templates mode="#current"/>
     </xsl:for-each>
+    <!-- Next, we wrap any rule children in patterns. -->
+    <xsl:for-each select="child::sch:rule">
+      <sch:pattern>
+        <xsl:apply-templates select="." mode="#current"/>
+      </sch:pattern>
+    </xsl:for-each>
+    <!-- Finally, we create pattern/rule containers for any lower-level elements. -->
+    <xsl:if test="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]">
+      <sch:pattern>
+        <sch:rule context="{atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))}">
+          <xsl:apply-templates select="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]" mode="#current"/>
+        </sch:rule>
+      </sch:pattern>
+    </xsl:if>
   </xsl:template>
   
   <xd:doc>
@@ -636,18 +643,6 @@ ignored and the members of the value list are provided.
       <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))"/>
       <xsl:apply-templates mode="schematron"/>
     </xsl:copy>
-  </xsl:template>
-  
-  <xd:doc>
-    <xd:desc>It is common practice to place Schematron fragments in schemaSpec
-    contexts from which it is assumed a context can be derived. For output, 
-    these all need to be wrapped in rule elements.</xd:desc>
-  </xd:doc>
-  <xsl:template match="(sch:report | sch:assert | sch:extents)[not(parent::sch:rule)]" as="element(sch:rule)" mode="schematron">
-    <rule xmlns="http://purl.oclc.org/dsdl/schematron">
-      <xsl:attribute name="context" select="atop:get-schematron-context(., $atop:vMapSchNs)"/>
-      <xsl:next-match/>
-    </rule>
   </xsl:template>
   
 </xsl:transform>
