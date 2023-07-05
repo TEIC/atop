@@ -39,7 +39,7 @@
   </xd:doc>
   <xsl:template match="/" as="item()*">
     <xsl:variable name="vOutputFile" as="xs:string" select="replace(base-uri(.), '\.rng$', '.sch')"/>
-    <xsl:result-document href="{$vOutputFile}">
+    <!--<xsl:result-document href="{$vOutputFile}">-->
       <schema xmlns="http://purl.oclc.org/dsdl/schematron"
         queryBinding="xslt3"
         xmlns:sqf="http://www.schematron-quickfix.com/validator/process">
@@ -50,19 +50,17 @@
         <title><xsl:text>Schematron extracted from </xsl:text><xsl:sequence select="tokenize(base-uri(.), '[/\\]')[last()]"/></title>
         <xsl:apply-templates select="//rng:*/child::sch:*"/>
       </schema>
-    </xsl:result-document>
+    <!--</xsl:result-document>-->
   </xsl:template>
   
   <xd:doc>
-    <xd:desc></xd:desc>
+    <xd:desc>This approach is the only one we know which enables nice clean
+    Schematron output uncluttered by redundant namespace declarations.</xd:desc>
   </xd:doc>
   <xsl:template match="*" as="element()" exclude-result-prefixes="#all">
     <xsl:element name="{local-name()}" exclude-result-prefixes="#all">
       <xsl:apply-templates select="@*|node()"/>
     </xsl:element>
-    <!--<xsl:copy copy-namespaces="no" exclude-result-prefixes="#all">
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>-->
   </xsl:template>
   
 </xsl:transform>
