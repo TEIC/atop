@@ -27,6 +27,15 @@
     <jing rngfile="${basedir}/Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="${ploddDir}/${ploddName}.rng"/>
     </jing>
+    
+    <!-- This should probably be done through XProc but 
+         I can't figure out how to do it. -->
+    <xslt style="${basedir}/XSLT/extract-schematron.xslt" 
+      in="${ploddDir}/${ploddName}.rng" 
+      out="${ploddDir}/${ploddName}.sch">
+      <classpath location="${saxon}"/>
+    </xslt>
+    
   </target>
   
   <target name="test">
