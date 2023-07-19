@@ -23,7 +23,7 @@
       <arg value="${basedir}/Util/pipeline.xpl"/>
       <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
       <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
-      <arg value="-output:extract-schematron=${ploddDir}/${ploddName}.sch"/>
+      <arg value="-output:schematron=${ploddDir}/${ploddName}.sch"/>
     </java>
     <jing rngfile="${basedir}/Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="${ploddDir}/${ploddName}.rng"/>
