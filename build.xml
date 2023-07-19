@@ -23,6 +23,7 @@
       <arg value="${basedir}/Util/pipeline.xpl"/>
       <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
       <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
+      <arg value="-output:extract-schematron=${ploddDir}/${ploddName}.sch"/>
     </java>
     <jing rngfile="${basedir}/Schemas/relaxng.rnc" compactsyntax="true">
       <fileset file="${ploddDir}/${ploddName}.rng"/>
@@ -30,11 +31,11 @@
     
     <!-- This should probably be done through XProc but 
          I can't figure out how to do it. -->
-    <xslt style="${basedir}/XSLT/extract-schematron.xslt" 
+    <!--<xslt style="${basedir}/XSLT/extract-schematron.xslt" 
       in="${ploddDir}/${ploddName}.rng" 
       out="${ploddDir}/${ploddName}.sch">
       <classpath location="${saxon}"/>
-    </xslt>
+    </xslt>-->
     
   </target>
   
