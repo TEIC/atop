@@ -2,7 +2,6 @@
                 xmlns:atop="http://www.tei-c.org/ns/atop"
                 xmlns:c="http://www.w3.org/ns/xproc-step"
                 xmlns:p="http://www.w3.org/ns/xproc"
-                xmlns:schematron-schematron="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
                 xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
                 xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
