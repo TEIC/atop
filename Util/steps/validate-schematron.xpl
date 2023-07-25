@@ -8,6 +8,13 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xvrl="http://www.xproc.org/ns/xvrl">
 
+  <p:documentation>
+    Validates the Schematron extracted from the ODD specification. The
+    schematron is returned unchanged on the report output port. If the
+    Schematron is not valid, a non-empty sequence of XVRL and SVRL
+    validation reports flows to the result output port.
+  </p:documentation>
+
   <p:import href="../../Lib/schxslt/xproc/3.0/validate-with-schematron.xpl">
     <p:documentation>
       As of 2023-07-25 Morgana XProc III does not support Schematron
