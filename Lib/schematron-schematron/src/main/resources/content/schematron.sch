@@ -33,7 +33,7 @@
       <sch:let name="queryBinding" value="lower-case((ancestor::sch:schema/@queryBinding, $queryBinding, 'xslt')[1])"/>
       <sch:let name="result" value="fn:validate-xpath(., $queryBinding)"/>
       <sch:let name="bound-ns" value="($schema/sch:ns/@prefix, 'xml')"/>
-      <sch:let name="unbound-ns" value="fn:get-qname-prefixes($result)[not(. = $bound-ns)]"/>
+      <sch:let name="unbound-ns" value="distinct-values(fn:get-qname-prefixes($result)[not(. = $bound-ns)])"/>
       <sch:report test="exists($unbound-ns)" role="WARNING" id="unbound-qname-ns">
         The XPath expression may contain one or more unbound namespace prefixes: <sch:value-of select="$unbound-ns"/>.
       </sch:report>
