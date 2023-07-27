@@ -1,0 +1,55 @@
+<xspec:description schematron="../../main/resources/content/schematron.sch"
+                   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                   xmlns:xspec="http://www.jenitennison.com/xslt/xspec">
+
+  <xspec:scenario label="XSLT 2.0 query language binding">
+    <xspec:scenario label="Namespace prefixes in QNames">
+      <xspec:scenario label="QName with undeclared prefix">
+        <xspec:context>
+          <sch:schema queryBinding="xslt2">
+            <sch:pattern>
+              <sch:rule context="@undeclared:lang"/>
+            </sch:pattern>
+          </sch:schema>
+        </xspec:context>
+        <xspec:expect-report id="unbound-qname-ns"/>
+      </xspec:scenario>
+      <xspec:scenario label="QName with xml: prefix">
+        <xspec:context>
+          <sch:schema queryBinding="xslt2">
+            <sch:pattern>
+              <sch:rule context="@xml:lang"/>
+            </sch:pattern>
+          </sch:schema>
+        </xspec:context>
+        <xspec:expect-not-report id="unbound-qname-ns"/>
+      </xspec:scenario>
+    </xspec:scenario>
+  </xspec:scenario>
+
+  <xspec:scenario label="XSLT 3.0 query language binding">
+    <xspec:scenario label="Namespace prefixes in QNames">
+      <xspec:scenario label="QName with undeclared prefix">
+        <xspec:context>
+          <sch:schema queryBinding="xslt3">
+            <sch:pattern>
+              <sch:rule context="@undeclared:lang"/>
+            </sch:pattern>
+          </sch:schema>
+        </xspec:context>
+        <xspec:expect-report id="unbound-qname-ns"/>
+      </xspec:scenario>
+      <xspec:scenario label="QName with xml: prefix">
+        <xspec:context>
+          <sch:schema queryBinding="xslt3">
+            <sch:pattern>
+              <sch:rule context="@xml:lang"/>
+            </sch:pattern>
+          </sch:schema>
+        </xspec:context>
+        <xspec:expect-not-report id="unbound-qname-ns"/>
+      </xspec:scenario>
+    </xspec:scenario>
+  </xspec:scenario>
+
+</xspec:description>

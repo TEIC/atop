@@ -72,9 +72,11 @@
       <xsl:choose>
         <xsl:when test="$queryBinding eq 'xslt2'">
           <xsl:sequence select="doc('xpath20-functions-and-operators.xml')/functions/function"/>
+          <xsl:sequence select="doc('xslt2-functions.xml')/functions/function"/>
         </xsl:when>
         <xsl:when test="$queryBinding eq 'xslt3'">
           <xsl:sequence select="doc('xpath31-functions-and-operators.xml')/functions/function"/>
+          <xsl:sequence select="doc('xslt3-functions.xml')/functions/function"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:message terminate="yes">Unsupported query language binding: <xsl:value-of select="$queryBinding"/></xsl:message>
