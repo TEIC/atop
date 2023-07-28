@@ -5,7 +5,9 @@
                xmlns:rng="http://relaxng.org/ns/structure/1.0"
                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-               xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+               xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+               xmlns:map="http://www.w3.org/2005/xpath-functions/map">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p>Experimental Pruned, Localized ODD to RelaxNG transpiler</xd:p>
@@ -18,12 +20,25 @@
     to unexpected content.</xd:desc>
   </xd:doc>
   <xsl:mode on-no-match="shallow-skip"/>
-
+  
+  
+  <xd:doc>
+    <xd:desc>A special mode to enable us to process constraintSpecs in the 
+    specific location we want to.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="schematron" on-no-match="shallow-copy"/>
+  
   <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
               exclude-result-prefixes="#all"/>
 
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble-relaxng.xslt"/>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:vMapSchNs"/>: A map of all in-scope namespaces, each with 
+    a selected prefix.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vMapSchNs" as="map(xs:string, xs:string)" select="atop:get-sch-ns-prefix-map(/)"/>
 
   <xd:doc>
     <xd:desc>The TEI schemaSpec becomes the rng:grammar.</xd:desc>
@@ -49,11 +64,34 @@
         <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
       </xsl:apply-templates>
       <xsl:apply-templates/>
+      
+      <!-- Now we output any Schematron required. -->
+      <xsl:if test="descendant::constraintSpec[@scheme='schematron']">
+        <rng:div>
+          <xsl:comment><xsl:text>Schematron rules.</xsl:text></xsl:comment>
+          
+          <!-- Now we build the collection of Schematron namespaces we need. -->
+          <xsl:comment><xsl:sequence select="'Namespace declarations (' || map:size($atop:vMapSchNs) div 2 || ')'"/></xsl:comment>
+          <xsl:for-each select="map:keys($atop:vMapSchNs)[not(contains(., ':'))]">
+            <sch:ns prefix="{.}" uri="{map:get($atop:vMapSchNs, .)}"/>
+          </xsl:for-each>
+          
+          <!-- Is this the right level at which to proceed? -->
+          <xsl:apply-templates select="descendant::constraintSpec[@scheme='schematron']" mode="schematron"/>          
+        </rng:div>
+      </xsl:if>
+      
+      
     </rng:grammar>
   </xsl:template>
 
   <!-- NOTE FOR DM: Is there any reason that this and the following
        two templates could not be combined into one? e.g.: -->
+  <!-- DM, 2022-12-07: Having separate templates for macroSpec,
+       dataSpec, classSpec[attList] is a scaffold. We can merge them
+       once we are convinced that translating to a named pattern is
+       the right thing in both cases. See classSpec[atttList]: Turns
+       out we don't define a pattern. -->
   <!--<xsl:template match="macroSpec | dataSpec | classSpec[attList]" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
@@ -72,44 +110,26 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec[@type = 'model']" as="element(rng:define)">
-    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members(., ancestor::schemaSpec)"/>
-    <rng:define name="{atop:get-class-pattern-name(.)}">
-      <xsl:choose>
-        <xsl:when test="empty($vClassMembers)">
-          <rng:notAllowed/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:for-each select="$vClassMembers">
-            <rng:ref name="{atop:get-pattern-name(.)}"/>
-          </xsl:for-each>
-        </xsl:otherwise>
-      </xsl:choose>
-    </rng:define>
-  </xsl:template>
-
   <xsl:template match="classSpec[@type = 'atts']" as="element(rng:define)">
     <rng:define name="{atop:get-class-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classes/memberOf" as="element()">
-    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key)"/>
-    <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
-  </xsl:template>
+  <xsl:template match="classSpec" as="empty-sequence()" priority="-10"/>
 
   <!-- An element specification transpiles to a named RelaxNG pattern
        w/ defining the element. -->
   <xsl:template match="elementSpec" as="element(rng:define)">
     <xsl:variable name="vQName" as="xs:QName" select="atop:get-element-qname(.)"/>
     <xsl:variable name="vContent" as="element()*">
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="* except classes"/>
     </xsl:variable>
 
     <rng:define name="{atop:get-element-pattern-name(.)}">
       <rng:element name="{local-name-from-QName($vQName)}"
                    ns="{namespace-uri-from-QName($vQName)}">
+        <xsl:apply-templates select="classes"/>
         <xsl:choose>
           <xsl:when test="empty($vContent)">
             <rng:empty/>
@@ -120,6 +140,13 @@
         </xsl:choose>
       </rng:element>
     </rng:define>
+  </xsl:template>
+
+  <xsl:template match="(elementSpec | classSpec[@type = 'atts'])/classes/memberOf" as="element(rng:ref)?">
+    <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
+    <xsl:if test="$vClassSpec/@type = 'atts'">
+      <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
+    </xsl:if>
   </xsl:template>
 
   <!-- An attribute list transpiles to the sequence or alternate
@@ -145,7 +172,7 @@
 
   <!-- An attribute specifcation transpiles to an (optional) attribute
        pattern. -->
-  <xsl:template match="attDef[empty(@use) or @use = ('opt', 'rec')]" as="element(rng:optional)">
+  <xsl:template match="attDef[empty(@usage) or @usage = ('opt', 'rec')]" as="element(rng:optional)">
     <rng:optional>
       <xsl:next-match/>
     </rng:optional>
@@ -211,13 +238,23 @@ ignored and the members of the value list are provided.
         <xsl:sequence select="$vDatatypeContent"/>
       </xsl:when>
       <xsl:otherwise>
-        <rng:list>
+        <xsl:variable name="vDatatypeContentRepeat" as="element()+">
           <xsl:call-template name="atop:repeat-content">
             <xsl:with-param name="pContent" as="element()*" select="$vDatatypeContent"/>
             <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
             <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
           </xsl:call-template>
-        </rng:list>
+        </xsl:variable>
+        <xsl:choose>
+          <xsl:when test="count($vDatatypeContentRepeat) eq 1">
+            <xsl:sequence select="$vDatatypeContentRepeat"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <rng:list>
+              <xsl:sequence select="$vDatatypeContentRepeat"/>
+            </rng:list>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -262,9 +299,9 @@ ignored and the members of the value list are provided.
   <xsl:template match="sequence" as="element()*">
     <xsl:call-template name="atop:repeat-content">
       <xsl:with-param name="pContent" as="element()*">
-        <rng:group>
+        <xsl:element name="{if (@preserveOrder eq 'false') then 'interleave' else 'group'}" namespace="http://relaxng.org/ns/structure/1.0">
           <xsl:apply-templates/>
-        </rng:group>
+        </xsl:element>
       </xsl:with-param>
       <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
       <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
@@ -316,60 +353,83 @@ ignored and the members of the value list are provided.
       </xsl:if>
     </xsl:if>
 
-    <xsl:variable name="vClassMembers" as="element()*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec)"/>
+    <xsl:variable name="vAllClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec, ())"/>
+    <xsl:variable name="vClassMembers" as="element(elementSpec)*">
+      <xsl:choose>
+        <xsl:when test="@except">
+          <xsl:variable name="vExcept" as="xs:string*" select="tokenize(@except)"/>
+          <xsl:if test="$vExcept[not(. = $vAllClassMembers/@ident)]">
+            <xsl:message terminate="yes">
+              <xsl:text>ERROR: The elements </xsl:text>
+              <xsl:value-of select="$vExcept[not(. = $vAllClassMembers/@ident)]"/>
+              <xsl:text> should be excluded but are not members of the class '{@key}'.</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="$vAllClassMembers[not(@ident = $vExcept)]"/>
+        </xsl:when>
+        <xsl:when test="@include">
+          <xsl:variable name="vInclude" as="xs:string*" select="tokenize(@include)"/>
+          <xsl:if test="$vInclude[not(. = $vAllClassMembers/@ident)]">
+            <xsl:message terminate="yes">
+              <xsl:text>ERROR: The elements </xsl:text>
+              <xsl:value-of select="$vInclude[not(. = $vAllClassMembers/@ident)]"/>
+              <xsl:text> should be included but are not members of the class '{@key}'.</xsl:text>
+            </xsl:message>
+          </xsl:if>
+          <xsl:sequence select="$vAllClassMembers[@ident = $vInclude]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:sequence select="$vAllClassMembers"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
-    <xsl:choose>
-      <xsl:when test="empty($vClassMembers)">
-        <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
-      </xsl:when>
+    <xsl:if test="exists($vClassMembers)">
 
-      <xsl:otherwise>
+      <xsl:variable name="vContent" as="element()">
+        <xsl:element name="{if ($vExpand eq 'alternation') then 'rng:choice' else 'rng:group'}">
 
-        <xsl:variable name="vContent" as="element()">
-          <xsl:element name="{if ($vExpand eq 'alternation') then 'rng:choice' else 'rng:group'}">
-
-            <xsl:for-each select="$vClassMembers">
-              <xsl:variable name="vReference" as="element()">
-                <xsl:choose>
-                  <xsl:when test="$vExpand eq 'sequenceRepeatable'">
-                    <rng:oneOrMore>
-                      <rng:ref name="{atop:get-pattern-name(.)}"/>
-                    </rng:oneOrMore>
-                  </xsl:when>
-                  <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
-                    <rng:zeroOrMore>
-                      <rng:ref name="{atop:get-pattern-name(.)}"/>
-                    </rng:zeroOrMore>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <rng:ref name="{atop:get-pattern-name(.)}"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
+          <xsl:for-each select="$vClassMembers">
+            <xsl:variable name="vReference" as="element()">
               <xsl:choose>
-                <xsl:when test="$vExpand = ('sequenceOptional', 'sequenceOptionalRepeatable')">
-                  <rng:optional>
-                    <xsl:sequence select="$vReference"/>
-                  </rng:optional>
+                <xsl:when test="$vExpand eq 'sequenceRepeatable'">
+                  <rng:oneOrMore>
+                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
+                  </rng:oneOrMore>
+                </xsl:when>
+                <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
+                  <rng:zeroOrMore>
+                    <rng:ref name="{atop:get-pattern-name(.)}"/>
+                  </rng:zeroOrMore>
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:sequence select="$vReference"/>
+                  <rng:ref name="{atop:get-element-pattern-name(.)}"/>
                 </xsl:otherwise>
               </xsl:choose>
+            </xsl:variable>
 
-            </xsl:for-each>
-          </xsl:element>
-        </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="$vExpand = ('sequenceOptional')">
+                <rng:optional>
+                  <xsl:sequence select="$vReference"/>
+                </rng:optional>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:sequence select="$vReference"/>
+              </xsl:otherwise>
+            </xsl:choose>
 
-        <xsl:call-template name="atop:repeat-content">
-          <xsl:with-param name="pContent" as="element()*" select="$vContent"/>
-          <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
-          <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
-        </xsl:call-template>
+          </xsl:for-each>
+        </xsl:element>
+      </xsl:variable>
 
-      </xsl:otherwise>
-    </xsl:choose>
+      <xsl:call-template name="atop:repeat-content">
+        <xsl:with-param name="pContent" as="element()*" select="$vContent"/>
+        <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
+        <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
+      </xsl:call-template>
+
+    </xsl:if>
 
   </xsl:template>
 
@@ -405,7 +465,7 @@ ignored and the members of the value list are provided.
                     <rng:exclude>
                       <xsl:for-each select="$vExceptions[atop:namespace-or-name-is-name(., $vScope)]">
                         <xsl:if test="$vNamespaceUri eq namespace-uri-for-prefix(substring-before(., ':'), $vScope)">
-                          <rng:name>{.}</rng:name>
+                          <rng:name><xsl:sequence select="."/></rng:name>
                         </xsl:if>
                       </xsl:for-each>
                     </rng:exclude>
@@ -512,5 +572,77 @@ ignored and the members of the value list are provided.
       <xsl:apply-templates select="node()"/>
     </xsl:copy>
   </xsl:template>
-
+  
+  <xd:doc>
+    <xd:desc>By default we suppress the processing of constraintSpec where it appears
+    in the schemaSpec; instead we collect all constraintSpecs and process them 
+    into a single div at the end of the RNG schema.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec" as="item()*"/>
+  
+  <xd:doc>
+    <xd:desc>When we do process constraintSpecs all together, we start in 
+    a distinct mode, but then revert to the default mode. Each constraintSpec
+    gets an rng:div of its own, to group documentation with it.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec" as="item()*" mode="schematron">
+    <rng:div>
+      <xsl:if test="not(child::desc)">
+        <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+          <xsl:sequence select="@ident"/>
+        </a:documentation>
+      </xsl:if>
+      <xsl:apply-templates mode="schematron"/>
+    </rng:div>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>If a constraintSpec has a desc, we should output it as an 
+    annotation in the RNG.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraintSpec/desc" as="element(a:documentation)" mode="schematron">
+    <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+      <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
+      <xsl:sequence select="xs:string(.)"/>
+    </a:documentation>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>We check the contents of the constraint element, and output any 
+      complete sch:patterns, then we wrap any sch:rules in sch:patterns,
+      then finally we create sch:pattern and sch:rule elements to contain 
+      any lower-level Schematron elements.</xd:desc>
+  </xd:doc>
+  <xsl:template match="constraint" as="element()*" mode="schematron">
+    <!-- First we output any complete Schematron components. -->
+    <xsl:for-each select="child::*[self::sch:pattern or self::sch:ns]">
+      <xsl:apply-templates mode="#current"/>
+    </xsl:for-each>
+    <!-- Next, we wrap any rule children in patterns. -->
+    <xsl:for-each select="child::sch:rule">
+      <sch:pattern>
+        <xsl:apply-templates select="." mode="#current"/>
+      </sch:pattern>
+    </xsl:for-each>
+    <!-- Finally, we create pattern/rule containers for any lower-level elements. -->
+    <xsl:if test="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]">
+      <sch:pattern>
+        <sch:rule context="{atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))}">
+          <xsl:apply-templates select="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]" mode="#current"/>
+        </sch:rule>
+      </sch:pattern>
+    </xsl:if>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>An explicit rule which lacks a context must get one.</xd:desc>
+  </xd:doc>
+  <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="schematron">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))"/>
+      <xsl:apply-templates mode="schematron"/>
+    </xsl:copy>
+  </xsl:template>
+  
 </xsl:transform>

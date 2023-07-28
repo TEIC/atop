@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+	<title>test of various <gi>content</gi> using <gi>elementRef</gi></title>
+      </titleStmt>
+      <publicationStmt>
+	<p>part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+	<p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <p></p>
+    </front>
+    <body>
+      <schemaSpec ident="elementRef_content" prefix="cue_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
+        <!-- "cue" is short for content using elementRefs -->
+	<elementSpec ident="test_elements">
+	  <content>
+	    <sequence>
+	      <elementRef key="IAmEmpty"/>
+	      <elementRef key="IAmSequence"/>
+	      <elementRef key="IAmAlternate"/>
+	      <elementRef key="IAmSequenceOfAlternates"/>
+	      <elementRef key="IAmAlternateOfSequences"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="alt1">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="alt2">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="alt3">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="alt4">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="alt5">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="alt6">
+	  <content><empty/></content>
+	</elementSpec>
+	<!--  -->
+	<elementSpec ident="seq1">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="seq2">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="seq3">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="seq4">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="seq5">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="seq6">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="IAmEmpty">
+	  <content><empty/></content>
+	</elementSpec>
+	<elementSpec ident="IAmSequence">
+	  <content>
+	    <sequence>
+	      <elementRef key="seq1"/>
+	      <elementRef key="seq2"/>
+	      <elementRef key="seq3"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternate">
+	  <content>
+	    <alternate>
+	      <elementRef key="alt1"/>
+	      <elementRef key="alt2"/>
+	      <elementRef key="alt3"/>
+	    </alternate>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmSequenceOfAlternates">
+	  <content>
+	    <sequence>
+	      <alternate>
+		<elementRef key="alt1"/>
+		<elementRef key="alt2"/>
+		<elementRef key="alt3"/>
+	      </alternate>
+	      <alternate>
+		<elementRef key="alt4"/>
+		<elementRef key="alt5"/>
+		<elementRef key="alt6"/>
+	      </alternate>
+	    </sequence>
+	  </content>
+	</elementSpec>
+	<elementSpec ident="IAmAlternateOfSequences">
+	  <content>
+	    <alternate>
+	      <sequence>
+		<elementRef key="seq1"/>
+		<elementRef key="seq2"/>
+		<elementRef key="seq3"/>
+	      </sequence>
+	      <sequence>
+		<elementRef key="seq4"/>
+		<elementRef key="seq5"/>
+		<elementRef key="seq6"/>
+	      </sequence>
+	    </alternate>
+	  </content>
+	</elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

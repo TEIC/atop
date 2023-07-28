@@ -1,0 +1,61 @@
+<project basedir=".">
+  <description>
+    This ant build file contains the properties and taskdefs we will need 
+    for virtually every build task, including OS detection, provision of 
+    ant-contrib, and the taskdef for Jing.
+  </description>
+  
+  <!--##### GENERAL BUILD PROPERTIES #####-->
+  
+  <!--We are currently using Saxon 11.-->
+  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
+  
+  <!--Jing in the Lib directory.-->
+  <property name="jing" value="${basedir}/Lib/jing.jar"/>
+  
+  
+  <!--We expect a local installation of the TEI Stylesheets for this early 
+  testing; the default must be overridden with -DstylesheetsPath=...-->  
+  <property name="stylesheetsPath" value="${basedir}/../Stylesheets"/>
+  
+  
+  <!-- We need ant-contrib to do foreach.   -->
+  <!--
+      Note: We expect the 4 ATOP developers to have ant-contrib
+      installed. If & when an ant build process is delivered to users,
+      we should consider including the ant-contrib library in our Lib/
+      so that users do not have to download it; or we could rewrite 
+      targets to avoid ant-contrib components.
+  -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  
+  <!-- We validate against closed schema with Jing. -->
+  <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
+    <classpath location="${jing}"/>
+  </taskdef>
+  
+  <condition property="isWindows">
+    <os family="windows" />
+  </condition>
+  
+  <condition property="isUnix">
+    <os family="unix" />
+  </condition>
+  
+  <target name="setWindowsAntPath" if="isWindows">
+    <property name="antPath" value="${ant.home}/bin/ant.bat" />
+  </target>
+  
+  <target name="setUnixAntPath" if="isUnix">
+    <property name="antPath" value="ant" />
+  </target>
+  
+  <!--##### TESTING-RELATED PROPERTIES #####-->
+  
+  <!--Current PLODD for testing transpile step.-->
+  <property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>
+  
+
+  
+
+</project>

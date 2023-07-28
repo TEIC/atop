@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" version="4.4.0"
+<TEI xmlns="http://www.tei-c.org/ns/1.0" version="4.5.0"
      xmlns:sch="http://purl.oclc.org/dsdl/schematron">
   <teiHeader>
     <fileDesc>
@@ -28,40 +28,89 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
-      <change who="#SB" when="2022-07-15">Per recent meeting, allow a
-      limited version of <gi>moduleRef</gi>.</change>
-      <change who="#SB" when="2022-06-24">Started from scratch.</change>
+      <change who="#SB" when="2023-06-28">
+        Per request #MH allow gloss or desc element (or both) as child
+        of schemaSpec (by referring to "gloss_amper_desc" macro).
+      </change>
+      <change who="#SB" when="2023-06-27">
+        Fix bug in "gloss_amper_desc" noticed by #MH: The 2nd
+        reference to &lt;gloss> had minOccurs=1 even though it needs
+        to be optional (i.e. minOccurs=0).
+      </change>
+      <change who="#SB" when="2023-01-12">
+        Per yesterday’s meeting, require values of <att>start</att> of
+        <gi>schemaSpec</gi> to be the identifier of a defined element.
+      </change>
+      <change who="#SB" when="2023-01-11">
+        Per today’s meeting, disallow <gi>gloss</gi> and <gi>desc</gi>
+        from each of <gi>classSpec</gi>, <gi>elementSpec</gi>, and
+        <gi>macroSpec</gi>.
+      </change>
+      <change who="#SB" when="2022-12-21">
+        Per today’s meeting, allow a PLODD to have <gi>front</gi> and
+        <gi>revisionDesc</gi>.
+      </change>
+      <change who="#SB" when="2022-07-15">
+        Per recent meeting, allow a limited version of
+        <gi>moduleRef</gi>.
+      </change>
+      <change who="#SB" when="2022-06-24">
+        Started from scratch.
+      </change>
     </revisionDesc>
   </teiHeader>
   <text>
     <front>
       <head>Schema for derived (pruned, localized) ODD</head>
       <divGen type="toc"/>
-      <div type="section">
-        <head>TODO</head>
-        <list>
-          <item>constraint <gi>altIdent</gi> so it can have no sibling
-          <gi>altIdent</gi>s (i.e., only 1 child::altiDent).</item>
-        </list>
-      </div>
     </front>
     <body>
-      <p>One method of generating a test suite and validating it
-      against this schema:</p>
-      <eg xml:lang="x-bash">
-        $ cd /tmp/
-        $ mkdir -p CODDs PLODDs
-        $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
-        $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ; done ; cd .. )
-        $ rm CODDs/*.odd
-        $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
-        $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .derodd.xml`.xml ; done )  # wish I could use .plodd, but Morgana objects
-        $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
-        $ cd /path/to/atop/Lib/morgana
-        $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
-      </eg>
+      <div type="section">
+        <head>Purpose</head>
+        <p>This schema serves two distinct but <emph>very</emph>
+        closely related purposes. First and foremost, it expresses
+        constraints on the ODD that serves as input to transpilation,
+        i.e. the final derived ODD produced from the last ODD in an
+        ODD-derivation chain. It is pruned (i.e., has no prose bits
+        like <gi>remarks</gi> or <gi>exemplum</gi>) and localized
+        (i.e., there is at most one <gi>gloss</gi> and one <gi>desc</gi> child
+        of any given specification element, presumably in the
+        appropriate natural language).</p>
+        <p>Second, it expresses the constraints on our files used in
+        testing the transpiler before we have built the odd-chaining
+        software. This set of constraints is <emph>exactly</emph> like
+        those for the first purpose, but <gi>front</gi> and
+        <gi>revisionDesc</gi> are also permitted to allow documenting
+        our test procedures.</p>
+      </div>
+      <div type="section">
+        <head>Usage</head>
+        <p>The schemas derived from this ODD are used to validate
+        PLODDs. Generating test PLODDs for the ATOP system without
+        using the ATOP ODD-chaining software (which is necessary
+        before we build the ATOP ODD-chaining software) can be done
+        by either <name type="cmd">generate_test_PLODDs.bash</name>
+        or by <name type="cmd">ant</name> with the <name
+        type="file">build_test_PLODDs.xml</name> build file.</p>
+        <p>That bash program does essentially the following.
+        <eg xml:lang="x-bash">
+          $ cd /tmp/
+          $ mkdir -p CODDs PLODDs
+          $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
+          $ ( cd CODDs ; for f in *.odd ; do echo "---------$f:" ; /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ; done ; cd .. )
+          $ rm CODDs/*.odd
+          $ saxon -s:CODDs/ -xsl:/path/to/atop/XSLT/prune_compiled_to_PLODD.xslt -o:PLODDs/
+          $ ( cd PLODDs ; for f in * ; do mv $f `basename $f .derodd.xml`.xml ; done )  # wish I could use .plodd, but Morgana objects
+          $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
+          $ cd /path/to/atop/Lib/morgana
+          $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
+        </eg>
+        </p>    
+      </div>
     </body>
     <back>
+      <!-- Note: deliberately no source= on <schemaSpec> so that we, the ATOPers,
+           get caught if there is a backwards-incompatible change to P5 ODDs. -->
       <schemaSpec ident="ploddSchemaSpecification" targetLang="en"
                   docLang="en" prefix="plodd_" start="TEI schemaSpec">
         <gloss>derived schema specification</gloss>
@@ -73,9 +122,9 @@
         <moduleRef key="tei"/>
         <moduleRef key="header" include="appInfo application creation
                                          fileDesc encodingDesc publicationStmt
-                                         schemaRef sourceDesc teiHeader
-                                         titleStmt "/>
-        <moduleRef key="textstructure" include="TEI body text"/>
+                                         revisionDesc schemaRef sourceDesc
+                                         teiHeader titleStmt "/>
+        <moduleRef key="textstructure" include="TEI body front text"/>
         <moduleRef key="core" include="abbr addrLine address
                                        analytic author bibl
                                        biblScope biblStruct choice
@@ -130,12 +179,12 @@
           <content>
             <alternate minOccurs="0" maxOccurs="1">
               <sequence minOccurs="1" maxOccurs="1">
-                <classRef minOccurs="1" maxOccurs="1" key="model.glossLike"/>
+                <elementRef minOccurs="1" maxOccurs="1" key="gloss"/>
                 <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
               </sequence>
               <sequence minOccurs="1" maxOccurs="1">
                 <classRef minOccurs="1" maxOccurs="1" key="model.descLike"/>
-                <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
+                <elementRef minOccurs="0" maxOccurs="1" key="gloss"/>
               </sequence>
             </alternate>
           </content>
@@ -159,11 +208,13 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-            <macroRef key="gloss_amper_desc"/>
-            <alternate minOccurs="1" maxOccurs="unbounded">
-              <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
-              <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
-            </alternate>
+            <sequence minOccurs="1" maxOccurs="1">
+              <macroRef key="gloss_amper_desc"/>
+              <alternate minOccurs="1" maxOccurs="unbounded">
+                <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
+              </alternate>
+            </sequence>
           </content>
           <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
             <constraint>
@@ -204,6 +255,25 @@
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
+            <attDef ident="start" mode="change" usage="req">
+              <constraintSpec ident="only_defined_elements_can_be_starter" scheme="schematron">
+                <constraint>
+                  <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
+                  <!-- Note: this is not really a list of GIs, since
+                       some of the GIs may be created from
+                       <altIdent>. But it is what we want, the list of
+                       patterns, without @prefix, used to refer to
+                       those elements. -->
+                  <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
+                    Each value of @start must be the GI of a defined
+                    element (i.e., equal elementSpec/@ident); one of these
+                    ("<sch:value-of select="."/>") does not. The list
+                    of valid values is "<sch:value-of
+                    select="$GIs"/>".
+                  </sch:assert>
+                </constraint>
+              </constraintSpec>
+            </attDef>
           </attList>
         </elementSpec>
 
@@ -298,7 +368,6 @@
           <content>
             <sequence>
               <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
-              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
@@ -439,7 +508,6 @@
         <elementSpec ident="macroSpec" mode="change">
           <content>
             <sequence>
-              <macroRef key="gloss_amper_desc"/>
               <alternate minOccurs="0" maxOccurs="1">
                 <elementRef key="content" minOccurs="1" maxOccurs="1"/>
                 <elementRef key="valList" minOccurs="1" maxOccurs="1"/>

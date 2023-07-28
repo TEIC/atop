@@ -3,7 +3,9 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   xmlns:math="http://www.w3.org/2005/xpath-functions/math"
   xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+  xmlns:rng="http://relaxng.org/ns/structure/1.0"
   xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
   xmlns:atop="http://www.tei-c.org/ns/atop"
   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0"
@@ -14,7 +16,7 @@
   <xd:doc>
     <xd:desc>Version number of this program</xd:desc>
   </xd:doc>
-  <xsl:variable name="atop:vVersion" select="'0.1.3'" as="xs:string"/>
+  <xsl:variable name="atop:vVersion" select="'0.1.5'" as="xs:string"/>
   
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -37,8 +39,35 @@
   <xd:doc>
     <xd:desc>give empty &lt;content> &lt;empty> content</xd:desc>
   </xd:doc>
-  <xsl:template match="content[not(child::*)]" as="element(content)">
+  <xsl:template match="content[ not(child::*) ]" as="element(content)">
     <content><empty/></content>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>give multi-child &lt;content> one child</xd:desc>
+    <xd:desc>That is, a &lt;content> that has more than 1 child should
+    instead have its content wrapped in a &lt;sequence> (or maybe
+    &lt;rng:group>) which is (now) its only 1 child.</xd:desc>
+  </xd:doc>
+  <xsl:template match="content[ count(child::*) > 1 ]" as="element(content)">
+    <content>
+      <xsl:choose>
+        <xsl:when test="child::rng:*">
+          <rng:group>
+            <xsl:apply-templates select="node()"/>
+          </rng:group>
+        </xsl:when>
+        <xsl:when test="child::tei:*">
+          <sequence>
+            <xsl:apply-templates select="node()"/>
+          </sequence>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:message select="'What the heck do you have in this &lt;content>? (To answer myself, you have: '||string-join( child::*/name(), ', ')||'!'"/>
+          <xsl:apply-templates select="node()"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </content>
   </xsl:template>
   
   <xd:doc>
@@ -72,6 +101,13 @@
     </xsl:copy>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>Strip leading and trailing whitespace from ODD identifiers</xd:desc>
+  </xd:doc>
+  <xsl:template match="@ident" as="attribute(ident)">
+    <xsl:attribute name="ident" select="normalize-space(.)"/>
+  </xsl:template>
+  
   <xd:doc>
     <xd:desc>Generate the PLODD metadata</xd:desc>
   </xd:doc>
@@ -158,7 +194,6 @@
   <xd:doc>
     <xd:desc>
       <xd:p>Kill various constructs that PLODDs should not have</xd:p>
-      <xd:p>Note that I am less sure of those that occur after the blank line.</xd:p>
     </xd:desc>
   </xd:doc>
   <xsl:template as="item()*" name="atop:nuke" match="
@@ -205,5 +240,5 @@
     |@ref
     |equiv
     "/>
-  
+
 </xsl:stylesheet>

@@ -1,0 +1,12 @@
+instance1.xml:8:18: error: element "IAmSequence" not allowed yet; missing required element "IAmEmpty"
+instance1.xml:9:16: error: element "seq3" not allowed yet; missing required element "seq1"
+instance1.xml:10:16: error: element "seq2" not allowed here; expected the element end-tag
+instance1.xml:11:16: error: element "seq1" not allowed here; expected the element end-tag
+instance1.xml:15:16: error: element "alt2" not allowed here; expected the element end-tag
+instance1.xml:18:16: error: element "alt6" not allowed yet; expected element "alt1", "alt2" or "alt3"
+instance1.xml:19:16: error: element "alt2" not allowed here; expected the element end-tag
+instance1.xml:23:16: error: element "seq5" not allowed here; expected element "seq2"
+instance1.xml:24:16: error: element "seq6" not allowed here; expected element "seq2"
+instance1.xml:25:31: error: element "IAmAlternateOfSequences" incomplete; missing required element "seq2"
+instance1.xml:26:15: error: element "IAmEmpty" not allowed here; expected the element end-tag
+instance1.xml:27:16: error: element "seq1" not allowed here; expected the element end-tag

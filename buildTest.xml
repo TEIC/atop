@@ -1,0 +1,286 @@
+<project name="atopTests" basedir=".">
+  <description>
+    This is the ant build file for running tests used for ATOP development.
+  </description>
+  
+  <!-- Globals file which defines various properties and also imports build.properties. -->
+  <import file="buildGlobals.xml"/>
+  
+  <fileset id="xspec-files" dir="${basedir}/Tests/xspec" includes="*.xspec"/>
+
+  <target name="runXSpecTests" description="Run all XSpec tests" depends="setWindowsAntPath, setUnixAntPath">
+    <description>
+      TARGET runXSpecTests
+      This target is intended to run all XSpec tests by creating an ant build
+      file which then runs the XSpec project's build file passing the parameter
+      files containing our tests. [Note: this is not working as of 2022-10-25,
+      possibly because of the switch to Saxon 11.]
+    </description>
+    <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
+    <xslt style="${basedir}/Tests/xspec-runner.xslt" in="build.xml" out="${basedir}/Tests/xspec-runner.xml">
+      <classpath location="${saxon}"/>
+      <param name="files" expression="${xspec.files}"/>
+    </xslt>
+    <!--<subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>-->
+    <exec executable="${antPath}" dir="Tests">
+      <arg value="-f"/>
+      <arg file="${basedir}/Tests/xspec-runner.xml"/>
+      <arg value="-Dbuildpath=${basedir}/Tests"/>
+      <arg line="-lib ${basedir}/Lib/saxon"/>
+      <arg value="xspec-runner"/>
+    </exec>
+  </target>
+
+  <!-- Targets for generating PLODD test files to test the
+       PLODD-to-RNG process before we have actually written the
+       customization-to-PLODD process. I.e., this chunk is not
+       intended to be permanent or user-facing. (Although it might
+       grow up in the future.)
+  -->
+
+  <target name="odds2plodds" depends="preplodd,copy_ODDs,deriveAll,transformAll,validateResults"/>
+
+  <target name="preplodd">
+    <echo>Cleaning up temporary test files...</echo>
+    <delete dir="${basedir}/tmp/CODDs"/>
+    <delete dir="${basedir}/tmp/PLODDs"/>
+  </target>
+
+  <target name="copy_ODDs">
+    <echo>Copying ODDs to temporary directories...</echo>
+    <mkdir dir="${basedir}/tmp/CODDs"/>
+    <mkdir dir="${basedir}/tmp/PLODDs"/>
+    <copy todir="${basedir}/tmp/CODDs">
+      <fileset dir="${basedir}/Tests/resources/" includes="**/*.odd"/>
+      <flattenmapper/>
+    </copy>
+  </target>
+
+  <target name="deriveAll">
+    <echo>Derive all ODD files in temporary directory...</echo>
+    <foreach target="derive" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/tmp/CODDs" includes="*.odd"/>
+      </path>
+    </foreach>
+  </target>
+  
+  <target name="derive">
+    <echo message="Deriving ${inFile}..."/>
+    <?syd /path/to/Stylesheets/bin/teitoodd --odd --debug $f `basename $f .odd`.derodd ?>
+    <basename file="${inFile}" property="plainFileName" suffix=".odd"/>
+    <property name="outFile" value="${basedir}/tmp/CODDs/${plainFileName}.derodd"/>
+    <exec executable="${stylesheetsPath}/bin/teitoodd">
+      <arg value="--odd"/>
+      <!-- arg value="- - debug"/-->
+      <arg value="${inFile}"/>
+      <arg value="${outFile}"/>
+    </exec>
+  </target>
+
+  <target name="transformAll">
+    <echo>Transform all derived files to PLODDS...</echo>
+    <foreach target="transform" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/tmp/CODDs" includes="*.derodd"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="transform">
+    <echo message="Pruning ${inFile}..."/>
+    <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
+    <property name="outFile" value="${basedir}/tmp/PLODDs/${plainFileName}.odd"/>
+    <xslt style="${basedir}/XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
+      <classpath location="${saxon}"/>
+    </xslt>
+  </target>
+  
+  <target name="validateResults">
+    <echo>Validating output files...</echo>
+    <if>
+      <not>
+        <available file="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
+      </not>
+      <then>
+        <exec executable="${stylesheetsPath}/bin/teitorelaxng">
+          <arg value="${basedir}/Schemas/ploddSchemaSpecification.odd"/>
+          <arg value="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
+        </exec>
+      </then>
+    </if>
+    
+    <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng">
+      <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
+    </jing>
+  </target>
+  
+  <target name="buildPloddTestSchemas">
+    <description>
+      TARGET buildPloddTestSchemas
+      This target invokes the transpile step to compile 
+      rng schemas from the PLODD files in the PLODD_test_suite
+      folder.
+    </description>
+    <foreach target="buildPloddTestSchema" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/Tests/PLODD_test_suite">
+          <include name="**/*.plodd"/>
+        </fileset>
+      </path>
+    </foreach>
+  </target>
+  
+  <target name="buildPloddTestSchema">
+    <description>
+      TARGET buildPloddTestSchema
+      This target invokes the transpile step to compile 
+      a single rng schema from the PLODD_test_suite.
+      folder.
+    </description>
+    <echo>Transpiling ${inFile}...</echo>
+    <ant antfile="${basedir}/build.xml" target="transpile">
+      <property name="inputTestPlodd" value="${inFile}"/>
+    </ant>
+  </target>
+  
+  <target name="checkValidInstances">
+    <description>
+      TARGET checkValidInstances 
+      This target validates every file found in a Tests/.../instances_valid folder
+      against the schema found in the folder above it.
+    </description>
+    <foreach target="checkValidInstance" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/Tests">
+          <include name="**/instances_valid/*.xml"/>
+        </fileset>
+      </path>
+    </foreach>
+  </target>
+  
+  <target name="checkValidInstance">
+    <description>
+      TARGET checkValidInstance
+      This target validates a single valid instance file against the schema found
+      in the folder above it.
+    </description>
+    <echo>Validating ${inFile}...</echo>
+    <propertyregex 
+      property="testSchema" 
+      input="${inFile}" 
+      regexp="^(.+\/)([^\/]+)\/instances_valid\/.+\.xml$" 
+      replace="\1\2/\2.rng"
+      global="true"/>
+    <echo>Schema is: ${testSchema}...</echo>
+    <jing rngfile="${testSchema}" file="${inFile}"/>
+  </target>
+  
+  <target name="checkInvalidInstances">
+    <description>
+      TARGET checkInvalidInstances 
+      This target validates every file found in a Tests/.../instances_invalid folder
+      against the schema found in the folder above it, outputs the error messages
+      to a file, and diffs that file against an expected result.
+    </description>
+    <foreach target="checkInvalidInstance" param="inFile" parallel="true">
+      <path>
+        <fileset dir="${basedir}/Tests">
+          <include name="**/instances_invalid/*.xml"/>
+        </fileset>
+      </path>
+    </foreach>
+  </target>
+
+  <target name="checkInvalidInstance">
+    <description>
+      TARGET checkInvalidInstance
+      This target validates a single invalid instance file against the schema found
+      in the folder above it, outputs the error messages to a file, and diffs that 
+      file against an expected result. Because we need the output in a file to diff 
+      it, we must call jing using java.
+    </description>
+    <echo>Validating ${inFile}...</echo>
+    <propertyregex 
+      property="testSchema" 
+      input="${inFile}" 
+      regexp="^(.+\/)([^\/]+)\/instances_invalid\/.+\.xml$" 
+      replace="\1\2/\2.rng"
+      global="true"/>
+    <propertyregex
+      property="folder"
+      input="${inFile}"
+      regexp="^(.+\/)([^\/]+)\/instances_invalid\/.+\.xml$"
+      replace="\1\2/"
+      global="true"/>
+    <mkdir dir="${folder}actual_results"/>
+    <basename property="messagesFile" file="${inFile}" suffix=".xml"/>
+    <echo>Schema is: ${testSchema}, and results will go to: ${folder}actual_results/${messagesFile}.txt.</echo>
+    <java fork="true" failonerror="false" jar="${jing}" output="${folder}actual_results/${messagesFile}.txt">
+      <arg value="${testSchema}"/>
+      <arg value="${inFile}"/>
+    </java>
+    <!-- Having generated the errors file, we need to strip all local paths
+         from it. -->
+    <replaceregexp file="${folder}actual_results/${messagesFile}.txt" match="^.+\/instances_invalid\/" replace="" flags="gmi" byline="true"/> 
+    <!--   Now diff against expected-results. -->
+    <antcall target="diffFile">
+      <param name="inFile" value="${folder}actual_results/${messagesFile}.txt"/>
+    </antcall>
+  </target>
+  
+  <target name="diffFile">
+    <description>
+      TARGET diffFile
+      The diffFile target is passed the name of a transformation result
+      or other output file from a validation operation. It infers the 
+      location of the expected results against which to diff this file, 
+      and then does a comparison between the two, using the ant filesmatch 
+      condition. If that fails, it then reports the results and fails 
+      the build.
+    </description>
+    <basename property="inFileName" file="${inFile}"/>
+    <propertyregex 
+      property="expectedResults" 
+      input="${inFile}"
+      regexp="^(.+\/[^\/]+)\/actual_results\/(.+\.txt)$"
+      replace="\1/expected_results/\2"
+      global="true"
+    />
+    <trycatch>
+      <try>
+        <echo message="about to compare files:"/>
+        <!-- 
+	     Note: the format of the following message is designed to allow
+	     the user to copy-and-paste the two file paths into a `diff` or
+	     `cp` command. Just select everything after the '='. 
+        -->
+        <echo message="actual results, expected results = ${inFile} ${expectedResults}"/>
+        <fail message="Sadly, ${inFile} is different from ${expectedResults}.">    
+          <condition>
+            <not>
+              <filesmatch textfile="true" file1="${inFile}" file2="${expectedResults}"/>
+            </not>
+          </condition>
+        </fail>
+      </try>
+      <catch>
+        <echo message="ERROR: DIFF FAILURE..."/>
+        <fail message="Build failed because of differences between ${inFile} and ${expectedResults}. Diff these files to diagnose the problem."/>
+      </catch>
+    </trycatch>
+  </target>
+  
+  <target name="runPloddTests">
+    <description>
+      TARGET runPloddTests
+      This target first calls the transpile step to create 
+      rng schemas from all of the .plodd files in the PLODD_test_suite
+      folder, then it runs the validation tests to check all the valid
+      instances and invalid instances.
+    </description>
+    <antcall target="buildPloddTestSchemas"/>
+    <antcall target="checkValidInstances"/>
+    <antcall target="checkInvalidInstances"/>
+  </target>
+
+</project>

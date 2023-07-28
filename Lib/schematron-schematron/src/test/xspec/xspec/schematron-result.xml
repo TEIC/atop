@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.jenitennison.com/xslt/xspec"
+        xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+        stylesheet="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-sch-preprocessed.xsl"
+        schematron="file:/home/dmaus/projects/schematron/schematron-schematron/src/main/resources/content/schematron.sch"
+        date="2023-07-26T15:23:54.983+02:00">
+   <scenario id="scenario1"
+             xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+      <label>XSLT 2.0 query language binding</label>
+      <scenario id="scenario1-scenario1"
+                xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+         <label>The generate-id() function</label>
+         <input-wrap xmlns="">
+            <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                           xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                           select="self::document-node()">
+               <sch:rule context="element[generate-id()]"/>
+            </xspec:context>
+         </input-wrap>
+         <result select="/element()">
+            <content-wrap xmlns="">
+               <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                       xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                       xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                       xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                       xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                       xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                  <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                  <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                  <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                  <svrl:active-pattern name="embedded"
+                                       id="embedded"
+                                       documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                  <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                  <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                  <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+               </svrl:schematron-output>
+            </content-wrap>
+         </result>
+         <test id="scenario1-scenario1-expect1" successful="true">
+            <label>not report unknown-function</label>
+            <expect-test-wrap xmlns="">
+               <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                             xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                             test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unknown-function'])"/>
+            </expect-test-wrap>
+            <expect select="()"/>
+         </test>
+      </scenario>
+      <scenario id="scenario1-scenario2"
+                xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+         <label>Namespace prefixes in QNames</label>
+         <scenario id="scenario1-scenario2-scenario1"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+            <label>QName with undeclared prefix</label>
+            <input-wrap xmlns="">
+               <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                              xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                              select="self::document-node()">
+                  <sch:schema queryBinding="xslt2">
+                     <sch:pattern>
+                        <sch:rule context="@undeclared:lang"/>
+                     </sch:pattern>
+                  </sch:schema>
+               </xspec:context>
+            </input-wrap>
+            <result select="/element()">
+               <content-wrap xmlns="">
+                  <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                          xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                          xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                          xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                          xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                          xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                     <svrl:active-pattern name="embedded"
+                                          id="embedded"
+                                          documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:successful-report location="/Q{http://purl.oclc.org/dsdl/schematron}schema[1]/Q{http://purl.oclc.org/dsdl/schematron}pattern[1]/Q{http://purl.oclc.org/dsdl/schematron}rule[1]/@context"
+                                             role="WARNING"
+                                             id="unbound-qname-ns"
+                                             test="exists($unbound-ns)">
+                        <svrl:text>
+        The XPath expression may contain one or more unbound namespace prefixes: undeclared.
+      </svrl:text>
+                     </svrl:successful-report>
+                  </svrl:schematron-output>
+               </content-wrap>
+            </result>
+            <test id="scenario1-scenario2-scenario1-expect1" successful="true">
+               <label>report unbound-qname-ns</label>
+               <expect-test-wrap xmlns="">
+                  <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                                test="exists(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+               </expect-test-wrap>
+               <expect select="()"/>
+            </test>
+         </scenario>
+         <scenario id="scenario1-scenario2-scenario2"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+            <label>QName with xml: prefix</label>
+            <input-wrap xmlns="">
+               <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                              xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                              select="self::document-node()">
+                  <sch:schema queryBinding="xslt2">
+                     <sch:pattern>
+                        <sch:rule context="@xml:lang"/>
+                     </sch:pattern>
+                  </sch:schema>
+               </xspec:context>
+            </input-wrap>
+            <result select="/element()">
+               <content-wrap xmlns="">
+                  <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                          xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                          xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                          xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                          xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                          xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                     <svrl:active-pattern name="embedded"
+                                          id="embedded"
+                                          documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                  </svrl:schematron-output>
+               </content-wrap>
+            </result>
+            <test id="scenario1-scenario2-scenario2-expect1" successful="true">
+               <label>not report unbound-qname-ns</label>
+               <expect-test-wrap xmlns="">
+                  <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                                test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+               </expect-test-wrap>
+               <expect select="()"/>
+            </test>
+         </scenario>
+      </scenario>
+   </scenario>
+   <scenario id="scenario2"
+             xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+      <label>XSLT 3.0 query language binding</label>
+      <scenario id="scenario2-scenario1"
+                xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+         <label>The generate-id() function</label>
+         <input-wrap xmlns="">
+            <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                           xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                           select="self::document-node()">
+               <sch:schema queryBinding="xslt3">
+                  <sch:pattern>
+                     <sch:rule context="element[generate-id()]"/>
+                  </sch:pattern>
+               </sch:schema>
+            </xspec:context>
+         </input-wrap>
+         <result select="/element()">
+            <content-wrap xmlns="">
+               <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                       xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                       xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                       xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                       xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                       xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                       xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                  <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                  <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                  <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                  <svrl:active-pattern name="embedded"
+                                       id="embedded"
+                                       documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                  <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                  <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                  <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+               </svrl:schematron-output>
+            </content-wrap>
+         </result>
+         <test id="scenario2-scenario1-expect1" successful="true">
+            <label>not report unknown-function</label>
+            <expect-test-wrap xmlns="">
+               <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                             xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                             test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unknown-function'])"/>
+            </expect-test-wrap>
+            <expect select="()"/>
+         </test>
+      </scenario>
+      <scenario id="scenario2-scenario2"
+                xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+         <label>Namespace prefixes in QNames</label>
+         <scenario id="scenario2-scenario2-scenario1"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+            <label>QName with undeclared prefix</label>
+            <input-wrap xmlns="">
+               <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                              xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                              select="self::document-node()">
+                  <sch:schema queryBinding="xslt3">
+                     <sch:pattern>
+                        <sch:rule context="@undeclared:lang"/>
+                     </sch:pattern>
+                  </sch:schema>
+               </xspec:context>
+            </input-wrap>
+            <result select="/element()">
+               <content-wrap xmlns="">
+                  <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                          xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                          xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                          xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                          xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                          xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                     <svrl:active-pattern name="embedded"
+                                          id="embedded"
+                                          documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:successful-report location="/Q{http://purl.oclc.org/dsdl/schematron}schema[1]/Q{http://purl.oclc.org/dsdl/schematron}pattern[1]/Q{http://purl.oclc.org/dsdl/schematron}rule[1]/@context"
+                                             role="WARNING"
+                                             id="unbound-qname-ns"
+                                             test="exists($unbound-ns)">
+                        <svrl:text>
+        The XPath expression may contain one or more unbound namespace prefixes: undeclared.
+      </svrl:text>
+                     </svrl:successful-report>
+                  </svrl:schematron-output>
+               </content-wrap>
+            </result>
+            <test id="scenario2-scenario2-scenario1-expect1" successful="true">
+               <label>report unbound-qname-ns</label>
+               <expect-test-wrap xmlns="">
+                  <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                                test="exists(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+               </expect-test-wrap>
+               <expect select="()"/>
+            </test>
+         </scenario>
+         <scenario id="scenario2-scenario2-scenario2"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec">
+            <label>QName with xml: prefix</label>
+            <input-wrap xmlns="">
+               <xspec:context xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                              xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                              select="self::document-node()">
+                  <sch:schema queryBinding="xslt3">
+                     <sch:pattern>
+                        <sch:rule context="@xml:lang"/>
+                     </sch:pattern>
+                  </sch:schema>
+               </xspec:context>
+            </input-wrap>
+            <result select="/element()">
+               <content-wrap xmlns="">
+                  <svrl:schematron-output xmlns:error="https://doi.org/10.5281/zenodo.1495494#error"
+                                          xmlns:fn="tag:dmaus@dmaus.name,2022:Schematron-Schematron"
+                                          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                                          xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                          xmlns:schxslt="https://doi.org/10.5281/zenodo.1495494"
+                                          xmlns:schxslt-api="https://doi.org/10.5281/zenodo.1495494#api"
+                                          xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+                                          xmlns:xs="http://www.w3.org/2001/XMLSchema">
+                     <svrl:ns-prefix-in-attribute-values prefix="fn" uri="tag:dmaus@dmaus.name,2022:Schematron-Schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="sch" uri="http://purl.oclc.org/dsdl/schematron"/>
+                     <svrl:ns-prefix-in-attribute-values prefix="xsl" uri="http://www.w3.org/1999/XSL/Transform"/>
+                     <svrl:active-pattern name="embedded"
+                                          id="embedded"
+                                          documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                     <svrl:active-pattern documents="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-compiled.xsl"/>
+                     <svrl:fired-rule context="sch:rule/@context | sch:assert/@test | sch:report/@test | sch:value-of/@select | sch:let/@value | sch:name/@path | sch:pattern/@documents | xsl:copy-of/@select"/>
+                  </svrl:schematron-output>
+               </content-wrap>
+            </result>
+            <test id="scenario2-scenario2-scenario2-expect1" successful="true">
+               <label>not report unbound-qname-ns</label>
+               <expect-test-wrap xmlns="">
+                  <xspec:expect xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                                xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                                test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+               </expect-test-wrap>
+               <expect select="()"/>
+            </test>
+         </scenario>
+      </scenario>
+   </scenario>
+</report>

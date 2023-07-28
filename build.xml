@@ -5,69 +5,37 @@
     present it just has a few targets we are using in the early development
     phase of ATOP.
   </description>
-
-  <taskdef name="jing" classname="com.thaiopensource.relaxng.util.JingTask">
-    <classpath location="Lib/jing.jar"/>
-  </taskdef>
   
-  <property name="inputTestOdd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.odd"/>
-  <basename property="oddName" file="${inputTestOdd}" suffix=".odd"/>
-
-  <fileset id="xspec-files" dir="Tests/xspec" includes="*.xspec"/>
-
-  <target name="test.xspec" description="Run all XSpec tests">
-    <description>
-      TARGET test.xspec
-      This target is intended to run all XSpec tests by creating an ant build
-      file which then runs the XSpec project's build file passing the parameter
-      files containing our tests. [Note: this is not working as of 2022-10-25,
-      possibly because of the switch to Saxon 11.]
-    </description>
-    <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
-    <xslt style="Tests/xspec-runner.xslt" in="build.xml" out="Tests/xspec-runner.xml">
-      <classpath location="Lib/saxon/saxon-he-11.jar"/>
-      <param name="files" expression="${xspec.files}"/>
-    </xslt>
-    <subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>
-  </target>
-
-  <target name="transpile" description="Run the experimental transpiler">
-    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
-    <xslt style="XSLT/transpile.xslt" in="${inputTestOdd}"
-      out="output/${oddName}.rng">
-      <classpath location="Lib/saxon/saxon-he-11.jar"/>
-    </xslt>
-    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="output/${oddName}.rng"/>
-    </jing>
-  </target>
+  <!-- Globals file which defines various properties and also imports build.properties. -->
+  <import file="buildGlobals.xml"/>
   
-  <target name="transpileMorgana" description="Run the experimental transpiler through Morgana">
-    <mkdir dir="output"/>
-    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
-    <exec executable="Lib/morgana/Morgana.sh">
-      <arg value="Util/pipeline.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
-      <arg value="-output:result=output/${oddName}.rng"/>
-    </exec>
-    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="output/${oddName}.rng"/>
-    </jing>
-  </target>
-  
-  <target name="transpileMorgana2" description="Run the experimental transpiler through Morgana">
-    <mkdir dir="output"/>
-    <echo message="Processing ${oddName}.odd to output/${oddName}.rng"/>
-    <java failonerror="true" fork="true" jar="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar" dir="${basedir}">
-      <!--<jvmarg value="-javaagent:${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/quasar-core-0.7.9.jar"/>-->
+  <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
+
+  <target name="transpile" description="Run the experimental transpiler through Morgana">
+    <dirname property="ploddDir" file="${inputTestPlodd}"/>
+    <echo message="Processing ${inputTestPlodd} to ${ploddDir}/${ploddName}.rng"/>
+    <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
+      <classpath>
+        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
+        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/*" />
+      </classpath>
       <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
       <arg value="${basedir}/Util/pipeline.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestOdd}"/>
-      <arg value="-output:result=${basedir}/output/${oddName}.rng"/>
+      <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
+      <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
+      <arg value="-output:schematron=${ploddDir}/${ploddName}.sch"/>
     </java>
-    <jing rngfile="Schemas/relaxng.rnc" compactsyntax="true">
-      <fileset file="output/${oddName}.rng"/>
-    </jing>
   </target>
+  
+  <target name="test">
+    <description>
+      TARGET test
+      This is a convenience target to run the test suite using the 
+      buildTest.xml ant file.
+    </description>
+    <ant antfile="buildTest.xml" target="runXSpecTests"/>
+    <ant antfile="buildTest.xml" target="runPloddTests"/>
+  </target>
+
 
 </project>

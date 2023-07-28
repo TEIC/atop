@@ -1,0 +1,19 @@
+# Rules file for ATOP build on Jenkins. This suppresses errors we know about and can't fix
+# or phrases that would appear to flag errors but do not.
+
+#We don't want all the annoying warnings about https on linkchecking.
+ok /InsecureRequestWarning/
+
+#Fix annoying filename warnings
+ok /failure*.xsl/
+
+ok /FATAL error: attempt to get unique identifier of an unidentified element./
+ok /Invalid or malformed tei:/
+ok /Map including an error message./
+ok /should cause an error/
+ok /Commit message:/
+
+error /[Ee]rror/
+warning /[Ww]arning/
+warning /WARNING/
+error /ERROR/

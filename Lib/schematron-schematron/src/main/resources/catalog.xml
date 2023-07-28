@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <system uri="https://pkg.dmaus.name/expath/schematron-schematron/schematron.sch"
+          systemId="content/schematron.sch"/>
+  <system uri="https://pkg.dmaus.name/expath/schematron-schematron/step.xpl"
+          systemId="content/step.xpl"/>
+</catalog>

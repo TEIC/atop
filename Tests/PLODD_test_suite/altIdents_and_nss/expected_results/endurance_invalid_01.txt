@@ -1,0 +1,5 @@
+endurance_invalid_01.xml:7:32: error: element "ErnestHenryShackletonOBE" not allowed anywhere; expected element "sir:ErnestHenryShackletonOBE"
+endurance_invalid_01.xml:8:12: error: element "wild" not allowed yet; missing required element "sir:ErnestHenryShackletonOBE"
+endurance_invalid_01.xml:17:19: error: element "sir:mcilroy" not allowed anywhere; expected element "mcilroy"
+endurance_invalid_01.xml:18:14: error: element "wordie" not allowed anywhere; expected element "mcilroy"
+endurance_invalid_01.xml:19:14: error: element "hussey" not allowed yet; missing required element "mcilroy"
