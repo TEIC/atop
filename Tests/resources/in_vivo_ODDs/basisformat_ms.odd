@@ -60,6 +60,10 @@
                 <ref target="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/USE.html">XML/TEI P5
                     guidelines for the TEI schema personalization and customization</ref>.</p>
         </encodingDesc>
+        <revisionDesc>            
+            <change when="2022-11-16" resp="ATOP">Association of tei_odds schema</change>
+            <change when="2022-11-16" resp="ATOP">Replacement of <gi>persName</gi> and similar elements with generic <gi>name</gi> in header so as to make it valid against the schema</change>
+        </revisionDesc>
     </teiHeader>
     <text>
         <front>

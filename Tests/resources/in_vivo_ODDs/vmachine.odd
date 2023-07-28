@@ -23,7 +23,9 @@
       </sourceDesc>
     </fileDesc>
      <revisionDesc>
-        <change when="2022-05-28" resp="ATOP">Added repo link to source description</change>
+        <change when="2022-05-28" resp="ATOP">Added repo link to source description</change>        
+        <change when="2022-11-16" resp="ATOP">Association of tei_odds schema</change>
+        <change when="2022-11-16" resp="ATOP">Commented out incomplete <gi>attDef</gi> element</change>
      </revisionDesc>
   </teiHeader>
    <text>
