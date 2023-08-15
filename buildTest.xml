@@ -137,7 +137,7 @@
       a single rng schema from the PLODD_test_suite.
       folder.
     </description>
-    <echo>Transpiling ${inFile}...</echo>
+    <echo message="Transpiling ${inFile}"/>
     <ant antfile="${basedir}/build.xml" target="transpile">
       <property name="inputTestPlodd" value="${inFile}"/>
     </ant>
