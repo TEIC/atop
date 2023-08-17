@@ -63,6 +63,27 @@
           </content>
         </elementSpec>
         
+        <elementSpec ident="title">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="meta">
+          <content>
+            <empty/>
+          </content>
+          <attList>
+            <attDef ident="charset">
+              <valList type="closed">
+                <valItem ident="UTF-8">
+                  <gloss xml:lang="en">UTF-8 should be all you ever need.</gloss>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
         <elementSpec ident="body">
           <content>
             <sequence>

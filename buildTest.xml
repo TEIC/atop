@@ -149,7 +149,7 @@
       This target validates every file found in a Tests/.../instances_valid folder
       against the schema found in the folder above it.
     </description>
-    <foreach target="checkValidInstance" param="inFile" parallel="true">
+    <foreach target="checkValidInstance" param="inFile">
       <path>
         <fileset dir="${basedir}/Tests">
           <include name="**/instances_valid/*.xml"/>
@@ -173,6 +173,10 @@
       global="true"/>
     <echo>Schema is: ${testSchema}...</echo>
     <jing rngfile="${testSchema}" file="${inFile}"/>
+    <!--<java jar="${basedir}/Lib/jing.jar" fork="yes" failonerror="true">
+      <arg value="${testSchema}" />
+      <arg line="${inFile}" />
+    </java>-->
   </target>
   
   <target name="checkInvalidInstances">
@@ -182,7 +186,7 @@
       against the schema found in the folder above it, outputs the error messages
       to a file, and diffs that file against an expected result.
     </description>
-    <foreach target="checkInvalidInstance" param="inFile" parallel="true">
+    <foreach target="checkInvalidInstance" param="inFile">
       <path>
         <fileset dir="${basedir}/Tests">
           <include name="**/instances_invalid/*.xml"/>
