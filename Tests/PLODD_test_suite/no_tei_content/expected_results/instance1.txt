@@ -1,0 +1,6 @@
+instance1.xml:5:34: error: value of attribute "charset" is invalid; must be equal to "UTF-8"
+instance1.xml:11:44: error: element "a" missing required attribute "href"
+instance1.xml:15:74: error: attribute "target" not allowed here; expected attribute "href"
+instance1.xml:15:74: error: element "a" missing required attribute "href"
+instance1.xml:17:100: error: element "img" missing required attribute "alt"
+instance1.xml:20:130: error: element "img" not allowed here; expected the element end-tag or element "p"
