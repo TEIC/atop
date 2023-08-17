@@ -138,7 +138,7 @@
       folder.
     </description>
     <echo message="Transpiling ${inFile}"/>
-    <ant antfile="${basedir}/build.xml" target="transpile">
+    <ant antfile="${basedir}/build.xml" target="transpilePlodd">
       <property name="inputTestPlodd" value="${inFile}"/>
     </ant>
   </target>
