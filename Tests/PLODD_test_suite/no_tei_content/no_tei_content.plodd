@@ -17,8 +17,28 @@
   <text>
     <body>
       <schemaSpec ident="htmlSubset" prefix="htsub_" ns="http://www.w3.org/1999/xhtml" start="html">
-      	<moduleRef key="tei"/>
-      	<!--<moduleSpec ident="htmlSubset">
+        
+        <!-- Components required from tei module. -->
+        
+        <dataSpec ident="teidata.pointer">
+          <desc versionDate="2013-01-19" xml:lang="en">defines the range of attribute values used to provide a single
+            URI, absolute or relative, pointing to some other
+            resource, either within the current document or elsewhere.</desc>
+          <content>
+            <dataRef restriction="\S+" name="anyURI"/>
+          </content>
+        </dataSpec>
+        
+        <dataSpec ident="teidata.word">
+          <desc versionDate="2007-10-22" xml:lang="en">defines the range of attribute values expressed as a single
+            word or token.</desc>
+          <content>
+            <dataRef name="token" restriction="[^\p{C}\p{Z}]+"/>
+          </content>
+        </dataSpec>
+        
+      	<!--<moduleRef key="tei"/>
+      	<moduleSpec ident="htmlSubset">
       		<desc xml:lang="en">Base schema module for all HTML elements defined in this ODD.</desc>
       	</moduleSpec>-->
         <elementSpec ident="html" ns="http://www.w3.org/1999/xhtml">
