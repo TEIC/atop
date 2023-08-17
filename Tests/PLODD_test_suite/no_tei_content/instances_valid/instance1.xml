@@ -12,7 +12,9 @@
         </div>
         <div>
             <h2>Section 2</h2>
-            <p>More content here with a <a href="https://www.uvic.ca/">link</a> to UVic.</p>
+            <p>More content here with a <a href="https://www.uvic.ca/">link</a> to UVic.
+                There is also an image here: 
+                <img src="https://www.tei-c.org/release/doc/tei-p5-doc/en/html/Images/banner.jpg" alt="TEI logo/banner"/></p>
         </div>
     </body>
 </html>

@@ -37,6 +37,8 @@
           </content>
         </dataSpec>
         
+        
+        
       	<!--<moduleRef key="tei"/>
       	<moduleSpec ident="htmlSubset">
       		<desc xml:lang="en">Base schema module for all HTML elements defined in this ODD.</desc>
@@ -54,7 +56,7 @@
           </content>
         </elementSpec>
         
-        <elementSpec ident="head">
+        <elementSpec ident="head" ns="http://www.w3.org/1999/xhtml">
           <content>
             <sequence>
               <elementRef key="title" minOccurs="1" maxOccurs="1"/>
@@ -63,13 +65,14 @@
           </content>
         </elementSpec>
         
-        <elementSpec ident="title">
+        <elementSpec ident="title" ns="http://www.w3.org/1999/xhtml">
           <content>
             <textNode/>
           </content>
         </elementSpec>
+
         
-        <elementSpec ident="meta">
+        <elementSpec ident="meta" ns="http://www.w3.org/1999/xhtml">
           <content>
             <empty/>
           </content>
@@ -84,7 +87,7 @@
           </attList>
         </elementSpec>
         
-        <elementSpec ident="body">
+        <elementSpec ident="body" ns="http://www.w3.org/1999/xhtml">
           <content>
             <sequence>
               <elementRef key="h1" minOccurs="1" maxOccurs="1"/>
@@ -93,13 +96,13 @@
           </content>
         </elementSpec>
         
-        <elementSpec ident="h1">
+        <elementSpec ident="h1" ns="http://www.w3.org/1999/xhtml">
           <content>
             <textNode/>
           </content>
         </elementSpec>
         
-        <elementSpec ident="div">
+        <elementSpec ident="div" ns="http://www.w3.org/1999/xhtml">
           <content>
             <sequence>
               <elementRef key="h2" minOccurs="1" maxOccurs="1"/>
@@ -108,29 +111,49 @@
           </content>
         </elementSpec>
         
-        <elementSpec ident="h2">
+        <elementSpec ident="h2" ns="http://www.w3.org/1999/xhtml">
           <content>
             <textNode/>
           </content>
         </elementSpec>
         
-        <elementSpec ident="p">
+        <elementSpec ident="p" ns="http://www.w3.org/1999/xhtml">
           <content>
             <alternate minOccurs="1" maxOccurs="unbounded">
               <textNode/>
               <elementRef key="a"/>
+              <elementRef key="img"/>
             </alternate>
           </content>
         </elementSpec>
         
-        <elementSpec ident="a">
+        <elementSpec ident="a" ns="http://www.w3.org/1999/xhtml">
           <content>
             <textNode/>
           </content>
           <attList>
-            <attDef ident="href">
+            <attDef ident="href" usage="req">
               <datatype>
                 <dataRef key="teidata.pointer"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        
+        <elementSpec ident="img" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <empty/>
+          </content>
+          <attList>
+            <attDef ident="src" usage="req">
+              <datatype>
+                <dataRef key="teidata.pointer"/>
+              </datatype>
+            </attDef>
+            <attDef ident="alt" usage="req">
+              <datatype>
+                <dataRef name="string"/>
               </datatype>
             </attDef>
           </attList>
