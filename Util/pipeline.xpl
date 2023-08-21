@@ -19,12 +19,17 @@
 
   <atop:legacy-odd2odd/>
   <atop:prune/>
+
+  <p:validate-with-schematron assert-valid="true">
+    <p:with-input port="schema" href="../Schemas/pre-transpile.sch"/>
+  </p:validate-with-schematron>
+
   <atop:transpile/>
 
   <p:validate-with-relax-ng assert-valid="false" name="validate">
     <p:with-input port="schema" href="../Schemas/relaxng.rnc"/>
   </p:validate-with-relax-ng>
-  
+
   <atop:extract-schematron name="extract-schematron"/>
 
 </p:declare-step>
