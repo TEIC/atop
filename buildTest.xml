@@ -58,7 +58,7 @@
 
   <target name="deriveAll">
     <echo>Derive all ODD files in temporary directory...</echo>
-    <foreach target="derive" param="inFile" parallel="true">
+    <foreach target="derive" param="inFile">
       <path>
         <fileset dir="${basedir}/tmp/CODDs" includes="*.odd"/>
       </path>
@@ -80,7 +80,7 @@
 
   <target name="transformAll">
     <echo>Transform all derived files to PLODDS...</echo>
-    <foreach target="transform" param="inFile" parallel="true">
+    <foreach target="transform" param="inFile">
       <path>
         <fileset dir="${basedir}/tmp/CODDs" includes="*.derodd"/>
       </path>
@@ -121,7 +121,7 @@
       rng schemas from the PLODD files in the PLODD_test_suite
       folder.
     </description>
-    <foreach target="buildPloddTestSchema" param="inFile" parallel="true">
+    <foreach target="buildPloddTestSchema" param="inFile">
       <path>
         <fileset dir="${basedir}/Tests/PLODD_test_suite">
           <include name="**/*.plodd"/>
