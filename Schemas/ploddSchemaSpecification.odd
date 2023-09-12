@@ -28,6 +28,9 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-08-15">
+	Add gloss_and_desc to <gi>classSpec</gi>
+      </change>
       <change who="#SB" when="2023-06-28">
         Per request #MH allow gloss or desc element (or both) as child
         of schemaSpec (by referring to "gloss_amper_desc" macro).
@@ -368,6 +371,7 @@
           <content>
             <sequence>
               <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
