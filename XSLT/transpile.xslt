@@ -284,30 +284,6 @@ ignored and the members of the value list are provided.
   </xsl:template>
 
   <!-- Process members of model.contentPart -->
-  <!-- <xsl:template match="alternate" as="element()*"> -->
-  <!--   <xsl:call-template name="atop:repeat-content"> -->
-  <!--     <xsl:with-param name="pContent" as="element()*"> -->
-  <!--       <rng:choice> -->
-  <!--         <xsl:apply-templates/> -->
-  <!--       </rng:choice> -->
-  <!--     </xsl:with-param> -->
-  <!--     <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/> -->
-  <!--     <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/> -->
-  <!--   </xsl:call-template> -->
-  <!-- </xsl:template> -->
-
-  <!-- <xsl:template match="sequence" as="element()*"> -->
-  <!--   <xsl:call-template name="atop:repeat-content"> -->
-  <!--     <xsl:with-param name="pContent" as="element()*"> -->
-  <!--       <xsl:element name="{if (@preserveOrder eq 'false') then 'interleave' else 'group'}" namespace="http://relaxng.org/ns/structure/1.0"> -->
-  <!--         <xsl:apply-templates/> -->
-  <!--       </xsl:element> -->
-  <!--     </xsl:with-param> -->
-  <!--     <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/> -->
-  <!--     <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/> -->
-  <!--   </xsl:call-template> -->
-  <!-- </xsl:template> -->
-
   <xsl:template match="sequence | interleave | alternate" as="element()*">
     <xsl:variable name="vRngOutputElementName" as="xs:NCName">
       <xsl:choose>
