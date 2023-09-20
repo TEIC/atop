@@ -287,9 +287,9 @@ ignored and the members of the value list are provided.
   <xsl:template match="sequence | interleave | alternate" as="element()*">
     <xsl:variable name="vRngOutputElementName" as="xs:NCName">
       <xsl:choose>
-	<xsl:when test="self::alternate">choice</xsl:when>
-	<xsl:when test="self::sequence[ not( @preserveOrder eq 'false') ]">group</xsl:when>
-	<xsl:otherwise>interleave</xsl:otherwise>
+        <xsl:when test="self::alternate">choice</xsl:when>
+        <xsl:when test="self::sequence[ not( @preserveOrder eq 'false') ]">group</xsl:when>
+        <xsl:otherwise>interleave</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:call-template name="atop:repeat-content">
@@ -337,6 +337,10 @@ ignored and the members of the value list are provided.
       </xsl:message>
     </xsl:if>
 
+    <!-- This chunk of code (that deals with @generate) should be
+         removed as soon as TEI has deprecated and removed that
+         attribute. (See https://github.com/TEIC/TEI/issues/2369.)
+         — Syd, 2023-09-20 -->
     <!-- Create reference to class members -->
     <xsl:variable name="vExpand" as="xs:string" select="(@expand, 'alternation')[1]"/>
     <xsl:if test="exists(tokenize($vClassSpec/@generate))">
