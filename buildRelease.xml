@@ -1,0 +1,88 @@
+<project basedir="." default="release">
+  <description>
+    This Ant build file generates a release package including only the 
+    components required by end users to process ODDs, along with end-user
+    documentation.
+  </description>
+  
+  <!-- Used to make messages easier to separate. -->
+  <property name="echo.separator" value="************************************************"/>
+  
+  <!-- Handy property for today's date (in W3C)-->
+  <tstamp>
+    <format property="today" pattern="yyyy-MM-dd"/>
+  </tstamp>
+  
+  <!-- Fileset of all the files we need for processing. -->
+  <fileset id="processingFiles" dir="${basedir}">
+    <include name="Util/**"/>
+    <include name="build.xml"/>
+    <include name="buildGlobals.xml"/>
+    <include name="LICENSE.md"/>
+    <include name="XSLT/assemble-relaxng.xslt"/>
+    <include name="XSLT/transpile.xslt"/>    
+    <include name="XSLT/modules/functions_module.xslt"/>
+    <include name="Schemas/ploddSchemaSpecification.rng"/>
+    <include name="Schemas/pre-transpile.sch"/>
+    <include name="Schemas/relang.rnc"/>
+    <include name="Schemas/schematron.rnc"/>
+    <include name="Schhemas/schematron.sch"/>
+    <include name="Lib/**"/>
+    <exclude name="Lib/xspec/**"/>
+  </fileset>
+  
+  <!-- Fileset of end-user documentation. TO BE CREATED. -->
+  <fileset id="documentation" dir="${basedir}/Documentation/end-user">
+    <include name="**/*"/>
+  </fileset>
+  
+  <target name="clean">
+    <description>
+      TARGET clean
+      This creates the release folder if needed, or empties it
+      if it already exists.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Setting up release build in release/${today}..."/>
+    <mkdir dir="${basedir}/release/${today}"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${basedir}/release/${today}">
+        <include name="*"/>
+        <include name="**/*"/>
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="copyFiles">
+    <description>
+      TARGET copyFiles
+      Copies all required files to the release folder.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Copying files..."/>
+    <copy todir="${basedir}/release/${today}">
+      <fileset refid="processingFiles"/>
+    </copy>
+  </target>
+  
+  <target name="zipResults">
+    <description>
+      TARGET zipResults
+      This creates a zip archive of the release package.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Creating a zip archive."/>
+    <zip destfile="${basedir}/release/${today}.zip" basedir="${basedir}/release/${today}"/>
+  </target>
+
+  <target name="release">
+    <description>
+      TARGET release
+      This runs the entire process.
+    </description>
+    <antcall target="clean"/>
+    <antcall target="copyFiles"/>
+    <antcall target="zipResults"/>
+  </target>
+
+</project>
