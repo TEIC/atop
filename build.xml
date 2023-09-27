@@ -9,11 +9,11 @@
   <!-- Globals file which defines various properties and also imports build.properties. -->
   <import file="buildGlobals.xml"/>
   
-  <basename property="ploddName" file="${inputTestPlodd}" suffix=".plodd"/>
+  <basename property="ploddName" file="${inputPlodd}" suffix=".plodd"/>
 
   <target name="transpile" description="Run the experimental transpiler through Morgana">
-    <dirname property="ploddDir" file="${inputTestPlodd}"/>
-    <echo message="Processing ${inputTestPlodd} to ${ploddDir}/${ploddName}.rng"/>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Processing ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
     <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
       <classpath>
         <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
@@ -21,15 +21,15 @@
       </classpath>
       <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
       <arg value="${basedir}/Util/pipeline.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
+      <arg value="-option:teiOddSpecification=${inputPlodd}"/>
       <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
       <arg value="-output:schematron=${ploddDir}/${ploddName}.sch"/>
     </java>
   </target>
   
   <target name="transpilePlodd" description="Run the experimental transpiler through Morgana: PLODD stage only">
-    <dirname property="ploddDir" file="${inputTestPlodd}"/>
-    <echo message="Processing ${inputTestPlodd} to ${ploddDir}/${ploddName}.rng"/>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Processing ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
     <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
       <classpath>
         <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
@@ -37,7 +37,7 @@
       </classpath>
       <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
       <arg value="${basedir}/Util/pipeline_plodd.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputTestPlodd}"/>
+      <arg value="-option:teiOddSpecification=${inputPlodd}"/>
       <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
       <arg value="-output:schematron=${ploddDir}/${ploddName}.sch"/>
     </java>

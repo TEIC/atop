@@ -5,6 +5,9 @@
     documentation.
   </description>
   
+  <!-- Include ant-contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  
   <!-- Used to make messages easier to separate. -->
   <property name="echo.separator" value="************************************************"/>
   
@@ -13,8 +16,33 @@
     <format property="today" pattern="yyyy-MM-dd"/>
   </tstamp>
   
+  <!-- Get the current version number. -->
+  <loadfile property="versionRaw" srcfile="${basedir}/VERSION.txt"/>
+  
+  <!-- Make it usable. -->
+  <propertyregex property="versionUntrimmed"
+    input="${versionRaw}"
+    regexp="\."
+    replace="_"
+    global="true" />
+  
+  <!-- Trim any whitespace. -->
+  <propertyregex property="version"
+    input="${versionUntrimmed}"
+    regexp="\s+"
+    replace=""
+    defaultvalue="${versionUntrimmed}"
+    global="true" />
+  
+  <echo message="${version}"/>
+  
+  <!-- Build the folder/filename using date and version. -->
+  <property name="fName" value="atop_${version}_${today}"/>
+  
   <!-- Fileset of all the files we need for processing. -->
   <fileset id="processingFiles" dir="${basedir}">
+    <include name="README.md"/>
+    <include name="VERSION.txt"/>
     <include name="Util/**"/>
     <include name="build.xml"/>
     <include name="buildGlobals.xml"/>
@@ -43,10 +71,10 @@
       if it already exists.
     </description>
     <echo message="${echo.separator}"/>
-    <echo message="Setting up release build in release/${today}..."/>
-    <mkdir dir="${basedir}/release/${today}"/>
+    <echo message="Setting up release build in release/${fName}..."/>
+    <mkdir dir="${basedir}/release/${fName}"/>
     <delete includeemptydirs="true">
-      <fileset dir="${basedir}/release/${today}">
+      <fileset dir="${basedir}/release/${fName}">
         <include name="*"/>
         <include name="**/*"/>
       </fileset>
@@ -60,7 +88,7 @@
     </description>
     <echo message="${echo.separator}"/>
     <echo message="Copying files..."/>
-    <copy todir="${basedir}/release/${today}">
+    <copy todir="${basedir}/release/${fName}">
       <fileset refid="processingFiles"/>
     </copy>
   </target>
@@ -72,7 +100,7 @@
     </description>
     <echo message="${echo.separator}"/>
     <echo message="Creating a zip archive."/>
-    <zip destfile="${basedir}/release/${today}.zip" basedir="${basedir}/release/${today}"/>
+    <zip destfile="${basedir}/release/${fName}.zip" basedir="${basedir}/release/${fName}"/>
   </target>
 
   <target name="release">
