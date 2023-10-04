@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns:rng="http://relaxng.org/ns/structure/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:math="http://exslt.org/math">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>MEI Customization for Anton Bruckner's "Kitzler Studybook"</title>
+        <respStmt>
+          <resp>Authored by</resp>
+          <name xml:id="AS">Agnes Seipelt</name>
+          <name xml:id="PR">Paul Gulewycz</name>
+        </respStmt>
+      </titleStmt>
+      <publicationStmt>
+        <p/>
+      </publicationStmt>
+      <sourceDesc>
+        <p><ptr target="https://github.com/paavomare/Bruckner-Study-Book-Viewer/"/></p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change n="1" when="2018-10-12" who="#PG">
+        <desc>Adapting Perry Roland's ODD for MEI Basic to exclude elements for Kitzler's
+          Studybook.</desc>
+      </change>
+      <change when="2023-07-28" resp="ATOP">Added repo link to source description</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <divGen type="toc"/>
+      <div xml:id="index" type="chapter">
+        <head>Introduction</head>
+        <p> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
+          dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
+          nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
+          sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec,
+          vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+          Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus
+          elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu,
+          consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat
+          a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
+          imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget
+          dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper
+          libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus
+          pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae
+          sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros
+          faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis
+          magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc, </p>
+      </div>
+      <div>
+        <head>Basics</head>
+        <div xml:id="events" type="chapter">
+          <head>Notes, Chords and Rests</head>
+        </div>
+        <div xml:id="controlEvents" type="chapter">
+          <head>Slurs, Dynamics and other "Control Events"</head>
+        </div>
+        <div xml:id="artic" type="chapter">
+          <head>Articulations</head>
+        </div>
+      </div>
+      <div>
+        <head>Score Organization</head>
+        <div xml:id="scoreDef" type="chapter">
+          <head>Definition of Score Setup</head>
+        </div>
+        <div xml:id="layers" type="chapter">
+          <head>Layers and Spaces</head>
+        </div>
+        <div xml:id="repetition" type="chapter">
+          <head>Repetition and Endings</head>
+        </div>
+      </div>
+      <div xml:id="metadata" type="chapter">
+        <head>Metadata</head>
+      </div>
+      <div xml:id="interactive" type="chapter">
+        <head>Interactive Example</head>
+      </div>
+    </front>
+    <!-- This file creates a subset of mei-all. -->
+    <body>
+      <schemaSpec ident="mei" ns="http://www.music-encoding.org/ns/mei" prefix="mei_" start="mei">
+
+        <!-- Declare MEI and XLink namespaces for use in Schematron -->
+        <constraintSpec ident="set_ns" scheme="schematron" mode="add">
+          <constraint>
+            <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="mei"
+              uri="http://www.music-encoding.org/ns/mei"/>
+            <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="xlink"
+              uri="http://www.w3.org/1999/xlink"/>
+          </constraint>
+        </constraintSpec>
+
+        <!-- Disallow some modules -->
+        <moduleRef key="MEI"/>
+        <moduleRef key="MEI.analytical"/>
+        <moduleRef key="MEI.cmn"/>
+        <moduleRef key="MEI.cmnOrnaments"/>
+        <!--<moduleRef key="MEI.corpus"/>-->
+        <!--<moduleRef key="MEI.critapp"/>-->
+        <!--<moduleRef key="MEI.drama"/>-->
+        <moduleRef key="MEI.edittrans"/>
+        <!--<moduleRef key="MEI.externalsymbols"/>-->
+        <moduleRef key="MEI.facsimile"/>
+        <!--<moduleRef key="MEI.figtable"/>-->
+        <!--<moduleRef key="MEI.fingering"/>-->
+        <moduleRef key="MEI.frbr"/>
+        <moduleRef key="MEI.gestural"/>
+        <moduleRef key="MEI.harmony"/>
+        <moduleRef key="MEI.header"/>
+        <moduleRef key="MEI.lyrics"/>
+        <moduleRef key="MEI.mensural"/>
+        <!--<moduleRef key="MEI.midi"/>-->
+        <!--<moduleRef key="MEI.msDesc"/>-->
+        <moduleRef key="MEI.namesdates"/>
+        <!--<moduleRef key="MEI.neumes"/>-->
+        <!--<moduleRef key="MEI.performance"/>-->
+        <!--<moduleRef key="MEI.ptrref"/>-->
+        <moduleRef key="MEI.shared"/>
+        <!--<moduleRef key="MEI.tablature"/>-->
+        <!--<moduleRef key="MEI.text"/>-->
+        <moduleRef key="MEI.usersymbols"/>
+        <moduleRef key="MEI.visual"/>
+
+        <!-- Include SVG -->
+        <moduleRef url="https://www.tei-c.org/release/xml/tei/custom/schema/relaxng/svg11.rng"
+          prefix="svg_">
+          <content>
+            <rng:define name="mei_model.graphicLike" combine="choice">
+              <rng:ref name="svg_svg"/>
+            </rng:define>
+          </content>
+        </moduleRef>
+
+        <!-- ******************************************************************** -->
+        <!-- CONFORMING CHANGES -->
+
+
+        <!-- Remove elements -->
+        <elementSpec ident="actor" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="addName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="ambitus" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="ambNote" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="analytic" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="attacca" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="barLine" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="barre" module="MEI.harmony" mode="delete"/>
+        <elementSpec ident="bend" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="biblStruct" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="block" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="bracketSpan" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="breath" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="caesura" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="caption" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="captureMode" module="MEI.header" mode="delete"/>
+        <elementSpec ident="carrierForm" module="MEI.header" mode="delete"/>
+        <elementSpec ident="castGrp" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="castItem" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="castList" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="cb" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="chordTable" module="MEI.harmony" mode="delete"/>
+        <elementSpec ident="clefGrp" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="colLayout" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="contributor" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="curve" module="MEI.usersymbols" mode="delete"/>
+        <elementSpec ident="custos" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="damage" module="MEI.edittrans" mode="delete"/>
+        <elementSpec ident="dedicatee" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="depth" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="dim" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="event" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="eventList" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="expansion" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="exhibHist" module="MEI.header" mode="delete"/>
+        <elementSpec ident="extMeta" module="MEI.header" mode="delete"/>
+        <elementSpec ident="fingerprint" module="MEI.header" mode="delete"/>
+        <elementSpec ident="genName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="genre" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="geogFeat" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="geogName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="group" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="graceGrp" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="grpSym" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="harpPedal" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="head" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="height" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="history" module="MEI.header" mode="delete"/>
+        <elementSpec ident="incip" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="incipCode" module="MEI.header" mode="delete"/>
+        <elementSpec ident="incipText" module="MEI.header" mode="delete"/>
+        <elementSpec ident="inscription" module="MEI.header" mode="delete"/>
+        <elementSpec ident="interpretation" module="MEI.header" mode="delete"/>
+        <elementSpec ident="key" module="MEI.header" mode="delete"/>
+        <elementSpec ident="keySig" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="keyAccid" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="librettist" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="line" module="MEI.usersymbols" mode="delete"/>
+        <elementSpec ident="lv" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="mapping" module="MEI.usersymbols" mode="delete"/>
+        <elementSpec ident="mensuration" module="MEI.header" mode="delete"/>
+        <elementSpec ident="meter" module="MEI.header" mode="delete"/>
+        <elementSpec ident="meterSig" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="meterSigGrp" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="mNum" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="monograph" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="multiRest" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="multiRpt" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="normalization" module="MEI.header" mode="delete"/>
+        <elementSpec ident="notesStmt" module="MEI.header" mode="delete"/>
+        <elementSpec ident="num" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="ornam" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="otherChar" module="MEI.header" mode="delete"/>
+        <elementSpec ident="pad" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="part" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="parts" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="perfDuration" module="MEI.header" mode="delete"/>
+        <elementSpec ident="perfMedium" module="MEI.header" mode="delete"/>
+        <elementSpec ident="perfRes" module="MEI.header" mode="delete"/>
+        <elementSpec ident="perfResList" module="MEI.header" mode="delete"/>
+        <elementSpec ident="periodName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="phrase" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="plateNum" module="MEI.header" mode="delete"/>
+        <elementSpec ident="playingSpeed" module="MEI.header" mode="delete"/>
+        <elementSpec ident="postBox" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="price" module="MEI.header" mode="delete"/>
+        <elementSpec ident="propName" module="MEI.usersymbols" mode="delete"/>
+        <elementSpec ident="propValue" module="MEI.usersymbols" mode="delete"/>
+        <elementSpec ident="recipient" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="refrain" module="MEI.lyrics" mode="delete"/>
+        <elementSpec ident="reh" module="MEI.cmn" mode="delete"/>
+        <elementSpec ident="repository" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="role" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="roleDesc" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="roleName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="samplingDecl" module="MEI.header" mode="delete"/>
+        <elementSpec ident="scoreFormat" module="MEI.header" mode="delete"/>
+        <elementSpec ident="segmentation" module="MEI.header" mode="delete"/>
+        <elementSpec ident="series" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="seriesStmt" module="MEI.header" mode="delete"/>
+        <elementSpec ident="soundChan" module="MEI.header" mode="delete"/>
+        <elementSpec ident="speaker" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="specRepro" module="MEI.header" mode="delete"/>
+        <elementSpec ident="sponsor" module="MEI.header" mode="delete"/>
+        <elementSpec ident="stack" module="MEI.header" mode="delete"/>
+        <elementSpec ident="stdVals" module="MEI.header" mode="delete"/>
+        <elementSpec ident="styleName" module="MEI.namesdates" mode="delete"/>
+        <elementSpec ident="titlePage" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="titlePart" module="MEI.shared" mode="delete"/>
+        <elementSpec ident="trackConfig" module="MEI.header" mode="delete"/>
+        <elementSpec ident="treatHist" module="MEI.header" mode="delete"/>
+        <elementSpec ident="treatSched" module="MEI.header" mode="delete"/>
+        <elementSpec ident="volta" module="MEI.lyrics" mode="delete"/>
+        <elementSpec ident="watermark" module="MEI.header" mode="delete"/>
+        <elementSpec ident="width" module="MEI.header" mode="delete"/>
+
+        <!-- Add "erased" and "overwritten" as values for @del -->
+        <macroSpec ident="data.TEXTRENDITIONLIST" mode="change" module="MEI" predeclare="false"
+          type="dt">
+          <desc>Closed list of text rendition values.</desc>
+          <content autoPrefix="true">
+            <valList mode="change" type="closed">
+              <valItem ident="quote" mode="delete">
+                <desc>Surrounded by single quotes.</desc>
+              </valItem>
+              <valItem ident="quotedbl" mode="delete">
+                <desc>Surrounded by double quotes.</desc>
+              </valItem>
+              <valItem ident="italic" mode="delete">
+                <desc>Italicized (slanted to right).</desc>
+              </valItem>
+              <valItem ident="oblique" mode="delete">
+                <desc>Oblique (slanted to left).</desc>
+              </valItem>
+              <valItem ident="smcaps" mode="delete">
+                <desc>Small capitals.</desc>
+              </valItem>
+              <valItem ident="bold" mode="delete">
+                <desc>Relative font weight.</desc>
+              </valItem>
+              <valItem ident="bolder" mode="delete">
+                <desc>Relative font weight.</desc>
+              </valItem>
+              <valItem ident="lighter" mode="delete">
+                <desc>Relative font weight.</desc>
+              </valItem>
+              <valItem ident="box" mode="delete">
+                <desc>Enclosed in box.</desc>
+              </valItem>
+              <valItem ident="circle" mode="delete">
+                <desc>Enclosed in ellipse/circle.</desc>
+              </valItem>
+              <valItem ident="dbox" mode="delete">
+                <desc>Enclosed in diamond.</desc>
+              </valItem>
+              <valItem ident="tbox" mode="delete">
+                <desc>Enclosed in triangle.</desc>
+              </valItem>
+              <valItem ident="bslash" mode="delete">
+                <desc>Struck through by '\' (back slash).</desc>
+              </valItem>
+              <valItem ident="fslash" mode="delete">
+                <desc>Struck through by '/' (forward slash).</desc>
+              </valItem>
+              <valItem ident="line-through" mode="delete">
+                <desc>Struck through by '-'; may be qualified to indicate multiple parallel lines,
+                  e.g. line-through(2).</desc>
+              </valItem>
+              <valItem ident="none" mode="delete">
+                <desc>Not rendered, invisible.</desc>
+              </valItem>
+              <valItem ident="overline" mode="delete">
+                <desc>Line above the text; may be qualified to indicate multiple parallel lines,
+                  e.g. overline(3).</desc>
+              </valItem>
+              <valItem ident="overstrike" mode="delete">
+                <desc>Use for deleted text fully or partially obscured by other text (such as
+                  'XXXXX') or musical symbols (such as notes, rests, etc.).</desc>
+              </valItem>
+              <valItem ident="strike" mode="add">
+                <desc>Struck through by '-'; equivalent to line-through; may be qualified to
+                  indicate multiple parallel lines, e.g. strike(3).</desc>
+              </valItem>
+              <valItem ident="sub" mode="delete">
+                <desc>Subscript.</desc>
+              </valItem>
+              <valItem ident="sup" mode="add">
+                <desc>Superscript.</desc>
+              </valItem>
+              <valItem ident="superimpose" mode="delete">
+                <desc>Use for added text or musical symbols that fully or partially obscure text
+                  from an earlier writing stage.</desc>
+              </valItem>
+              <valItem ident="underline" mode="delete">
+                <desc>Underlined; may be qualified to indicate multiple parallel lines, e.g.
+                  underline(2).</desc>
+              </valItem>
+              <valItem ident="x-through" mode="delete">
+                <desc>Crossed-out; equivalent to 'bslash' (\) plus 'fslash' (/); that is, a
+                  hand-written 'X'; may be qualified to indicate multiple parallel lines, e.g.
+                  x-through(2).</desc>
+              </valItem>
+              <valItem ident="ltr" mode="delete">
+                <desc>Left-to-right (BIDI embed).</desc>
+              </valItem>
+              <valItem ident="rtl" mode="delete">
+                <desc>Right-to-left (BIDI embed).</desc>
+              </valItem>
+              <valItem ident="lro" mode="delete">
+                <desc>Left-to-right (BIDI override).</desc>
+              </valItem>
+              <valItem ident="rlo" mode="delete">
+                <desc>Right-to-left (BIDI override).</desc>
+              </valItem>
+
+              <valItem ident="erased" mode="add">
+                <desc>Erased content.</desc>
+              </valItem>
+              <valItem ident="overwritten" mode="add">
+                <desc>Overwritten content.</desc>
+              </valItem>
+
+            </valList>
+          </content>
+        </macroSpec>
+
+        <!-- Add @hand to <annot> -->
+        <elementSpec ident="annot" mode="change" module="MEI.shared" predeclare="false">
+          <desc>(annotation) – Provides a statement explaining the text or indicating the basis for
+            an assertion.</desc>
+          <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.annot.log"/>
+            <memberOf key="att.annot.vis"/>
+            <memberOf key="att.annot.ges"/>
+            <memberOf key="att.annot.anl"/>
+            <memberOf key="att.audience"/>
+            <memberOf key="att.bibl"/>
+            <memberOf key="att.dataPointing"/>
+            <memberOf key="att.facsimile"/>
+            <memberOf key="att.lang"/>
+            <memberOf key="att.plist"/>
+            <memberOf key="att.source"/>
+            <memberOf key="att.targetEval"/>
+            <memberOf key="model.annotLike"/>
+
+            <memberOf key="att.handIdent"/>
+          </classes>
+        </elementSpec>
+
+
+        <!-- Add @hand to <dir> -->
+        <elementSpec ident="dir" mode="change" module="MEI.shared" predeclare="false">
+          <desc>(directive) – An instruction expressed as a combination of text and symbols — such
+            as segno and coda symbols, fermatas over a bar line, etc., typically above, below, or
+            between staves, but not on the staff — that is not encoded elsewhere in more specific
+            elements, like <gi scheme="MEI">tempo</gi> or <gi scheme="MEI">dynam</gi>.</desc>
+          <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.facsimile"/>
+            <memberOf key="att.lang"/>
+            <memberOf key="att.dir.log"/>
+            <memberOf key="att.dir.vis"/>
+            <memberOf key="att.dir.ges"/>
+            <memberOf key="att.dir.anl"/>
+            <memberOf key="model.controlEventLike"/>
+
+            <memberOf key="att.handIdent"/>
+          </classes>
+        </elementSpec>
+
+        <!-- Add "margin" as value for @place -->
+        <macroSpec ident="data.STAFFREL.extended" mode="change" module="MEI" predeclare="false"
+          type="dt">
+          <desc>Location of symbol relative to a staff.</desc>
+          <content autoPrefix="true">
+            <valList type="closed">
+              <valItem ident="between">
+                <desc>Between staves.</desc>
+              </valItem>
+              <valItem ident="within">
+                <desc>Within/on the staff.</desc>
+              </valItem>
+
+              <valItem ident="margin">
+                <desc>Located at the left or right side of the staff.</desc>
+              </valItem>
+            </valList>
+          </content>
+        </macroSpec>
+
+        <!-- Allow <lb> in <metaMark> -->
+        <elementSpec ident="metaMark" mode="change" module="MEI.edittrans" predeclare="false">
+          <desc>A graphical or textual statement with additional / explanatory information about the
+            musical text. The textual consequences of this intervention are encoded independently
+            via other means; that is, with elements such as &lt;add&gt;, &lt;del&gt;, etc.</desc>
+
+          <content autoPrefix="true">
+            <rng:zeroOrMore xmlns:rng="http://relaxng.org/ns/structure/1.0">
+              <rng:choice>
+                <rng:text/>
+                <rng:ref name="model.editLike"/>
+                <rng:ref name="model.sectionLike"/>
+                <rng:ref name="model.textphraseLike.limited"/>
+                <rng:ref name="model.transcriptionLike"/>
+
+                <rng:ref name="model.lbLike"/>
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <!-- Allow @meter.count in <cpMark> -->
+        <elementSpec ident="cpMark" module="MEI.edittrans" predeclare="false" mode="change">
+          <desc>(copy/colla parte mark) – A verbal or graphical indication to copy musical material
+            written elsewhere.</desc>
+          <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.facsimile"/>
+            <memberOf key="att.cpMark.log"/>
+            <memberOf key="att.cpMark.vis"/>
+            <memberOf key="att.cpMark.ges"/>
+            <memberOf key="att.cpMark.anl"/>
+            <memberOf key="model.controlEventLike"/>
+
+            <memberOf key="att.meterSigDefault.log"/>
+          </classes>
+        </elementSpec>
+
+        <!-- Allow @dots in <beatRpt> -->
+        <elementSpec ident="beatRpt" module="MEI.cmn" predeclare="false" mode="change">
+          <desc>(beat repeat) – An indication that material on a preceding beat should be
+            repeated.</desc>
+          <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.facsimile"/>
+            <memberOf key="att.beatRpt.log"/>
+            <memberOf key="att.beatRpt.vis"/>
+            <memberOf key="att.beatRpt.ges"/>
+            <memberOf key="att.beatRpt.anl"/>
+            <memberOf key="att.plist"/>
+            <memberOf key="att.targetEval"/>
+            <memberOf key="model.eventLike.cmn"/>
+
+            <memberOf key="att.augmentDots"/>
+          </classes>
+        </elementSpec>
+
+        <!-- Allow @dots in <halfmRpt> -->
+        <elementSpec ident="halfmRpt" module="MEI.cmn" predeclare="false" mode="change">
+          <desc>(half-measure repeat) – A half-measure repeat in any meter.</desc>
+          <classes>
+            <memberOf key="att.common"/>
+            <memberOf key="att.facsimile"/>
+            <memberOf key="att.halfmRpt.log"/>
+            <memberOf key="att.halfmRpt.vis"/>
+            <memberOf key="att.halfmRpt.ges"/>
+            <memberOf key="att.halfmRpt.anl"/>
+            <memberOf key="model.eventLike.cmn"/>
+
+            <memberOf key="att.augmentDots"/>
+          </classes>
+        </elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

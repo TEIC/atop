@@ -1,0 +1,306 @@
+<!-- <?xml-model href="../source/tei_odds.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="../source/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?> -->
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:rng="http://relaxng.org/ns/structure/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Music Encoding Initiative Guidelines: <title type="sub">Customization for meiLib.js</title></title>
+      </titleStmt>
+      <publicationStmt>
+        <p/>
+      </publicationStmt>
+      <sourceDesc>
+        <p><ptr target="https://github.com/zolaemil/meiView"/></p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2023-07-28" resp="ATOP">Added repo link to source
+        description</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <divGen type="toc"/>
+    </front>
+    <body>
+      <schemaSpec ident="mei" ns="http://www.music-encoding.org/ns/mei" start="mei meiHead meiCorpus
+        music">
+        <moduleRef key="MEI"/>
+        <moduleRef key="MEI.shared"/>
+        <moduleRef key="MEI.header"/>
+        <moduleRef key="MEI.cmn"/>
+        <!-- Disable mensural and neume modules -->
+        <!--<moduleRef key="MEI.mensural"/> -->
+        <!--<moduleRef key="MEI.neumes"/>-->
+        <!-- <moduleRef key="MEI.analysis"/> -->
+        <!-- <moduleRef key="MEI.cmnOrnaments"/> -->
+        <!-- <moduleRef key="MEI.corpus"/> -->
+        <moduleRef key="MEI.critapp"/>
+        <moduleRef key="MEI.edittrans"/>
+        <!-- <moduleRef key="MEI.facsimile"/> -->
+        <!-- <moduleRef key="MEI.figtable"/> -->
+        <!-- <moduleRef key="MEI.frbr"/> -->
+        <!-- <moduleRef key="MEI.harmony"/> -->
+        <moduleRef key="MEI.linkalign"/>
+        <moduleRef key="MEI.lyrics"/>
+        <!-- <moduleRef key="MEI.midi"/> -->
+        <moduleRef key="MEI.namesdates"/>
+        <!-- <moduleRef key="MEI.performance"/> -->
+        <moduleRef key="MEI.ptrref"/>
+        <!-- <moduleRef key="MEI.tablature"/> -->
+        <moduleRef key="MEI.text"/>
+        <!-- <moduleRef key="MEI.usersymbols"/> -->
+
+        <!-- Disable mensural- and neume-specific model classes in the shared module -->
+        <classSpec ident="model.scorePart.mensuralAndNeumes" module="MEI.shared" type="model"
+          mode="delete"/>
+        <!-- <classSpec ident="model.sectionPart.mensuralAndNeumes" module="MEI.shared" type="model"
+          mode="delete"/> -->
+        <classSpec ident="model.staffPart.mensuralAndNeumes" module="MEI.shared" type="model"
+          mode="delete"/>
+        <classSpec ident="model.layerPart.mensuralAndNeumes" module="MEI.shared" type="model"
+          mode="delete"/>
+        
+        <!-- TODO: all mei2vexflow constraints -->
+
+
+        <!-- ============================================================================
+             ==== CONSTRAINTS "INHERITED" FROM MEILIB.JS SLICING METHODS ==================
+        -->
+        <!-- sub-measure variants only -->
+        <elementSpec ident="section" module="MEI.shared" mode="change">
+          <content mode="replace">
+            <rng:zeroOrMore>
+              <rng:ref name="expansion"/>
+            </rng:zeroOrMore>
+            <rng:zeroOrMore>
+              <rng:choice>
+                <!-- <rng:ref name="model.appLike"/> -->
+                <rng:ref name="model.divLike"/>
+                <rng:ref name="model.milestoneLike.music"/>
+                <rng:ref name="model.annotLike"/>
+                <rng:ref name="model.graphicprimitiveLike"/>
+                <rng:ref name="model.editLike"/>
+                <rng:ref name="model.transcriptionLike"/>
+                <rng:ref name="model.sectionPart"/>
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+          <constraintSpec ident="meilibjs_meterChange" scheme="isoschematron" mode="change">
+            <constraint>
+              <sch:rule context="mei:mdiv">
+                <sch:assert test="count(mei:section) &lt;= 1">the score contains no more than one &lt;section&gt; element.</sch:assert>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
+        </elementSpec>
+        
+        <!-- <staff> must have @n if it contains an app element, or there is an element[@staff=this_staff] 
+             within an app element
+        -->
+        <elementSpec ident="staff" module="MEI.shared" mode="change">
+          <attList>
+            <attDef ident="n" usage="mwa" mode="replace">
+              <desc>provides a name or number designation for an element. While the value need not be
+                unique, it is required to be a single token. It is mandatory, when the staff contains 
+                an 'app' element, or there is an element somewhere else within the same measure, (but 
+                not under this 'staff' element) that have @staff value pointing to this staff.</desc>
+              <datatype>
+                <rng:data type="NMTOKEN"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        
+        <!-- ============================================================================================
+             ==== CONSTRAINTS "INHERITED" FROM MEI2VF MERGED WITH CONSTRAINTS INHERITED FROM MEILIB.JS ====
+        -->
+        <!-- @dur of note, rest, space must be defined! -->
+        <classSpec ident="att.duration.musical.req" module="MEI.shared" type="atts" mode="add">
+          <desc>Required attributes that express duration in musical terms.</desc>
+          <attList>
+            <attDef ident="dur" usage="req">
+              <desc>records the duration of a feature using the relative durational values provided by
+                the data.DURATION datatype. It is required by MEI2VexFlow</desc>
+              <datatype>
+                <rng:ref name="data.DURATION"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+        
+        <classSpec ident="att.note.log" module="MEI.shared" type="atts" mode="change">
+          <classes mode="replace">
+            <memberOf key="att.event"/>
+            <memberOf key="att.accidental"/>
+            <memberOf key="att.articulation"/>
+            <memberOf key="att.augmentdots"/>
+            <memberOf key="att.duration.musical.req"/>
+            <memberOf key="att.fermatapresent"/>
+            <memberOf key="att.pitched"/>
+            <memberOf key="att.syltext"/>
+            <memberOf key="att.slurpresent"/>
+            <memberOf key="att.tiepresent"/>
+            <memberOf key="att.tupletpresent"/>
+            <memberOf key="att.note.log.cmn"/>
+            <memberOf key="att.note.log.mensural"/>
+          </classes>
+        </classSpec>
+
+        <classSpec ident="att.rest.log" module="MEI.shared" type="atts" mode="change">
+          <classes mode="replace">
+            <memberOf key="att.augmentdots"/>
+            <memberOf key="att.event"/>
+            <memberOf key="att.duration.musical.req"/>
+            <memberOf key="att.fermatapresent"/>
+            <memberOf key="att.tupletpresent"/>
+            <memberOf key="att.rest.log.cmn"/>
+          </classes>
+        </classSpec>
+
+        <!-- 'space' element isn't supported by MEI2VF
+        <classSpec ident="att.space.log" module="MEI.shared" type="atts" mode="change">
+         <desc>Logical domain attributes.</desc>
+         <classes mode="replace">
+           <memberOf key="att.augmentdots"/>
+           <memberOf key="att.event"/>
+           <memberOf key="att.duration.musical.req"/>
+           <memberOf key="att.fermatapresent"/>
+           <memberOf key="att.tupletpresent"/>
+           <memberOf key="att.space.log.cmn"/>
+         </classes>
+        </classSpec>        
+        -->
+        
+
+        
+        <classSpec ident="model.meilibjs.eventLike" mode="add" module="MEI.cmn" type="model">
+          <desc>groups event elements what MeiLib.js can accept when converting between timestamps and xml:id values</desc>
+        </classSpec>
+        
+        <classSpec ident="model.meilibjs.simpleEventLike" mode="add" module="MEI.cmn" type="model">
+          <desc>groups event elements with atomic duration value</desc>
+          <classes>
+            <memberOf key="model.meilibjs.eventLike"/>
+          </classes>
+        </classSpec>
+        
+        <elementSpec ident="note" module="MEI.shared" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.simpleEventLike"/>
+          </classes>
+        </elementSpec>
+        <elementSpec ident="rest" module="MEI.shared" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.simpleEventLike"/>
+          </classes>
+        </elementSpec>
+        <!-- 'space' element isn't supported by MEI2VF
+        <elementSpec ident="space" module="MEI.shared" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.simpleEventLike"/>
+          </classes>
+        </elementSpec> -->
+        <elementSpec ident="mRest" module="MEI.cmn" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.eventLike"/>
+          </classes>
+        </elementSpec>
+
+        <elementSpec ident="chord" module="MEI.shared" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.simpleEventLike"/>
+          </classes>
+          <!-- duration of chord should be well-defined! 
+               A) all child notes, as long as they belong to the current layer, must have the 
+                  same @dur value.
+               B) if @dur is defined, it should be the same value then all 
+                  child elements' @dur if any of them are defined.
+          -->    
+          <constraintSpec ident="meilibjs_chordDur" scheme="isoschematron" mode="change">
+            <constraint>
+              <sch:rule context="mei:chord[@dur][ancestor::layer[@n]]">
+                <sch:let name="this_layer" value="ancestor::layer[1]/@n"/>
+                <sch:assert test="*[not(@layer)]/@dur = @dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+                <sch:assert test="*[@layer=$this_layer]/@dur = @dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+              </sch:rule>
+              <sch:rule context="mei:chord[@dur][ancestor::layer[not(@n)]]">
+                <sch:let name="this_layer" value="1"/>
+                <sch:assert test="*[not(@layer)]/@dur = @dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+                <sch:assert test="*[@layer=$this_layer]/@dur = @dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+              </sch:rule>
+              <sch:rule context="mei:chord[not(@dur)][ancestor::layer[@n]]">
+                <sch:let name="this_dur" value="*[@dur and (not(@layer) or @layer=$this_layer)][1]/@dur"/>                
+                <sch:let name="this_layer" value="ancestor::layer[1]/@n"/>
+                <sch:assert test="*[not(@layer)]/@dur = $this_dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+                <sch:assert test="*[@layer=$this_layer]/@dur = $this_dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+              </sch:rule>
+              <sch:rule context="mei:chord[not(@dur)][ancestor::layer[not(@n)]]">
+                <sch:let name="this_dur" value="*[@dur and (not(@layer) or @layer=$this_layer)][1]/@dur"/>
+                <sch:let name="this_layer" value="1"/>
+                <sch:assert test="*[not(@layer)]/@dur = $this_dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+                <sch:assert test="*[@layer=$this_layer]/@dur = $this_dur">
+                  duration of chord must be well-defined
+                </sch:assert>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
+        </elementSpec>
+          
+          
+        <!-- children of beam can only be note, rest, space or chord -->
+        <elementSpec ident="beam" module="MEI.cmn" mode="change">
+          <classes mode="change">
+            <memberOf key="model.meilibjs.eventLike"/>
+          </classes>
+          <content mode="replace">
+            <rng:zeroOrMore>
+              <rng:choice>
+                <rng:ref name="model.meilibjs.simpleEventLike"/>
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <!-- children of layer can only be note, rest, space, mRest, chord or beam -->
+        <elementSpec ident="layer" module="MEI.shared" mode="change">
+          <desc mode="change">An independent stream of events on a staff. In order to convert 
+            xml:id and timestamp values there and back, MeiLib.js can only accept certain elements under layer.
+            <!-- The term 'layer' is used instead of
+            'voice' in order to avoid confusion between 'voice' and 'voice leading'. The def attribute
+            may be used to create a connection with a layerDef element where logical and visual
+            information about the layer is recorded. Alternatively, the n attribute may be used as a
+            reference to a layerDef element with the same value in its n attribute. If neither def nor n
+            attributes are present, then encoding order of the layers is presumed to match the encoding
+            order of the layer definitions.--></desc>
+          <content mode="replace">
+            <rng:zeroOrMore>
+                <rng:choice>
+                    <rng:ref name="model.appLike"/>
+                    <rng:ref name="model.editLike"/>
+                    <rng:ref name="model.meilibjs.eventLike"/>
+                </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+        
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

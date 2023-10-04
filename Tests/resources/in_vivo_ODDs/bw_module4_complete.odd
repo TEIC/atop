@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?><?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns:rng="http://relaxng.org/ns/structure/1.0"
+   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+   xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Beethovens Werkstatt Data Model Customization</title>
+            <respStmt>
+               <resp>Authored by</resp>
+               <name xml:id="JK">Johannes Kepper</name>
+            </respStmt>
+            <!--<respStmt>
+               <resp>Project Team of Beethoven in the House</resp>
+               <name xml:id="bithTeam_ch" role="res" from="2021-10" to="2021-11">Christin Heitmann</name>
+               <name xml:id="bithTeam_dl" role="res"
+                  ref="https://orcid.org/0000-0003-4151-0499">David Lewis</name>
+               <name xml:id="bithTeam_lr" role="res"
+                  ref="https://orcid.org/0000-0002-4826-4553">Lisa Rosendahl</name>
+               <name xml:id="bithTeam_ms" role="res"
+                  ref="https://orcid.org/0000-0002-4635-7684">Mark Saccomano</name>
+               <name xml:id="bithTeam_es" role="res"
+                  ref="https://orcid.org/0009-0004-0272-8377">Elisabete Shibata</name>
+               <name xml:id="bithTeam_ah" role="led"
+                  ref="https://orcid.org/0000-0003-2663-0003">Andrew Hankinson</name>
+               <name xml:id="bithTeam_jk" role="led"
+                  ref="https://orcid.org/0000-0003-4891-260X">Johannes Kepper</name>
+               <name xml:id="bithTeam_kp" role="led"
+                  ref="https://orcid.org/0000-0002-1668-6540">Kevin Page</name>
+               <name xml:id="bithTeam_cs" role="led">Christine Siegert</name>
+               <name xml:id="bithTeam_fs" role="ctb" from="2020-10" to="2020-12">Fabian Schmidt</name>
+            </respStmt>-->
+            <!--<funder>
+               <ident type="projectNumber">429039809</ident>
+               <name ref="viaf-of-dfg">Deutsche Forschungsgemeinschaft
+                  (DFG)</name>
+            </funder>-->
+         </titleStmt>
+         <publicationStmt>
+            <publisher>
+            </publisher>
+            <date when="2023"/>
+            <availability>
+               <licence target="http://creativecommons.org/licenses/by-sa/4.0/">
+                  Creative Commons Attribution-ShareAlike 4.0 International </licence>
+            </availability>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Original work by the Beethovens Werkstatt, but inspired by the great work of many other projects. <ptr target="https://github.com/BeethovensWerkstatt/data" /></p>
+         </sourceDesc>
+      </fileDesc>
+      <revisionDesc>
+         <change n="1" when="2023-05-05" who="#JK">
+            <desc>Initial setup of the ODD.</desc>
+         </change>
+         <change when="2023-07-28" resp="ATOP">Added repo link to source
+            description</change>
+      </revisionDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <schemaSpec ident="mei" ns="http://www.music-encoding.org/ns/mei" prefix="mei_"
+            start="mei">
+            <!-- Declare MEI and XLink namespaces for use in Schematron -->
+            <constraintSpec ident="set_ns" scheme="schematron" mode="add">
+               <constraint>
+                  <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="mei"
+                     uri="http://www.music-encoding.org/ns/mei"/>
+                  <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="xlink"
+                     uri="http://www.w3.org/1999/xlink"/>
+                  <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="svg"
+                     uri="http://www.w3.org/2000/svg"/>
+                  <sch:ns xmlns:sch="http://purl.oclc.org/dsdl/schematron" prefix="tei"
+                     uri="http://www.tei-c.org/ns/1.0"/>
+               </constraint>
+            </constraintSpec>
+            <!-- Include all modules -->
+            <moduleRef key="MEI"/>
+            <moduleRef key="MEI.analytical"/>
+            <moduleRef key="MEI.cmn"
+               except="beamSpan bend bracketSpan breath meterSigGrp mNum tupletSpan"/>
+            <moduleRef key="MEI.cmnOrnaments"/>
+            <moduleRef key="MEI.drama" except="sp"/>
+            <moduleRef key="MEI.externalsymbols"/>
+            <moduleRef key="MEI.facsimile"/>
+            <moduleRef key="MEI.figtable" except="fig figDesc table td th tr"/>
+            <moduleRef key="MEI.fingering"/>
+            <moduleRef key="MEI.frbr"/>
+            <moduleRef key="MEI.genetic"/>
+            <moduleRef key="MEI.gestural"/>
+            <moduleRef key="MEI.harmony" except="chordDef chordMember chordTable"/>
+            <moduleRef key="MEI.header"
+               except="componentList acquisition altId attUsage audience byline captureMode carrierForm catRel classification condition contentItem contents context cutout editionStmt exhibHist extMeta fileChar fingerprint hand handList history incipCode incipText inscription key mensuration meter namespace notesStmt otherChar patch perfDuration physMedium playingSpeed price provenance segmentation soundChan specRepro stdVals sysReq tagsDecl tagUsage termList trackConfig treatHist treatSched useRestrict watermark"/>
+            <moduleRef key="MEI.lyrics"/>
+            <moduleRef key="MEI.msDesc" include="layoutDesc layout"/>
+            <moduleRef key="MEI.namesdates"
+               except="addName bloc country district famName foreName genName geogFeat nameLink periodName postBox postCode region roleName settlement street styleName"/>
+            <moduleRef key="MEI.shared"
+               except="actor address addrLine ambitus ambNote analytic annot author barLine caption castGrp castItem cb castList colLayout contributor custos depth dim dimensions distributor div dot edition event eventList expansion extent genre group height imprint incip keyAccid lb lg librettist monogr pad pgDesc pgFoot pgFoot2 pgHead pgHead2 phrase recipient relatedItem role roleDesc speaker sponsor stack term textLang titlePage titlePart width"/>
+            <moduleRef key="MEI.usersymbols"
+               except="anchoredText curve line mapping propName propValue"/>
+            <moduleRef key="MEI.visual"/>
+            
+            <!-- Include SVG -->
+            <moduleRef url="https://www.tei-c.org/release/xml/tei/custom/schema/relaxng/svg11.rng"
+               prefix="svg_">
+               <content>
+                  <rng:define name="mei_model.graphicLike" combine="choice">
+                     <rng:ref name="svg_svg"/>
+                  </rng:define>
+               </content>
+            </moduleRef>
+            <!--  ../rng/tei_bw.rng -->
+            <moduleRef url="https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng"
+               prefix="tei_">
+               <content>
+                  <rng:define name="mei_model.divLike" combine="choice">
+                     <rng:ref name="tei_div"/>
+                  </rng:define>
+                  <rng:define name="tei_model.noteLike" combine="choice">
+                     <rng:choice>
+                        <rng:ref name="mei_metaMark"/>
+                        <rng:ref name="mei_annot"/>  
+                     </rng:choice>
+                  </rng:define>
+                  <rng:define name="tei_notatedMusic" combine="choice">
+                     <!-- allow complete music examples to be embedded in notatedMusic -->
+                     <rng:element name="notatedMusic">
+                        <rng:zeroOrMore>
+                           <rng:choice>
+                              <rng:ref name="tei_model.labelLike"/>
+                              <!--<rng:ref name="tei_model.ptrLike"/>-->
+                              <rng:ref name="tei_graphic"/>
+                              <rng:ref name="mei_section"/>
+                              <!--<rng:ref name="tei_binaryObject"/>-->
+                              <!--<rng:ref name="tei_seg"/>-->
+                           </rng:choice>
+                        </rng:zeroOrMore>
+                        <rng:ref name="tei_att.global.attributes"/>
+                        <rng:ref name="tei_att.placement.attributes"/>
+                        <rng:ref name="tei_att.typed.attributes"/>
+                        <rng:empty/>
+                     </rng:element>  
+                  </rng:define>
+               </content>
+            </moduleRef>
+            
+            <elementSpec ident="section" module="MEI.shared" mode="change">
+               <constraintSpec ident="section_in_tei" scheme="schematron" mode="add">
+                  <constraint>
+                     <sch:rule context="mei:section[parent::tei:notatedMusic]">
+                        <sch:assert role="error" test="child::element()[1][local-name() = 'scoreDef']">An mei:section embedded into TEI needs to have a scoreDef as first child.</sch:assert>                                
+                     </sch:rule>
+                  </constraint>
+               </constraintSpec>        
+            </elementSpec>
+            
+            <!-- Disable mensural- and neume-specific model classes in the shared module -->
+            <classSpec ident="model.scorePart.mensuralAndNeumes" module="MEI.shared" type="model"
+               mode="delete"/>
+            <classSpec ident="model.sectionPart.mensuralAndNeumes" module="MEI.shared" type="model"
+               mode="delete"/>
+            <classSpec ident="model.staffPart.mensuralAndNeumes" module="MEI.shared" type="model"
+               mode="delete"/>
+            <classSpec ident="model.layerPart.mensuralAndNeumes" module="MEI.shared" type="model"
+               mode="delete"/>
+            
+            <!-- Move model.noteModifierLike from layerPart.mensuralAndNeumes to editTransPart.music -->
+            <classSpec ident="model.noteModifierLike" module="MEI.shared" type="model" mode="replace">
+               <desc>Groups elements that modify note-like features.</desc>
+               <classes>
+                  <memberOf key="model.editTransPart.music"/>
+               </classes>
+            </classSpec>
+            
+            <macroSpec ident="macro.metaLike.page" module="MEI.shared" mode="delete"/>
+            
+            <!-- allow @facs references to SVG shapes -->
+            <classSpec ident="att.facsimile" module="MEI.facsimile" type="atts" mode="replace">
+               <desc>Attributes that associate a feature corresponding with all or part of an image.</desc>
+               <attList org="group">
+                  <attDef ident="facs" usage="opt">
+                     <desc>Permits the current element to reference a facsimile surface or image zone which corresponds to it.</desc>
+                     <datatype maxOccurs="unbounded" minOccurs="1">
+                        <rng:ref name="data.URI" />
+                     </datatype>
+                     <constraintSpec ident="check_facsTarget" scheme="schematron" mode="replace">
+                        <constraint>
+                           <sch:rule context="@facs">
+                              <sch:assert role="warning" test="not(normalize-space(.) eq '')">@facs attribute should have content.</sch:assert>
+                              <sch:assert role="warning" test="normalize-space(.) = .">@facs should use normalized space</sch:assert>
+                              <sch:assert role="warning" test="(every $i in tokenize(., '\s+') satisfies substring($i,2)=(//mei:surface/@xml:id, //mei:zone/@xml:id, //svg:path/@id)) or ancestor::mei:mei//mei:encodingDesc['#bw_module3_textFile' = tokenize(@class,' ')]">Each value in @facs should correspond to the @xml:id attribute of a surface or zone element, or to an svg:shape's @id attribute.</sch:assert>
+                           </sch:rule>
+                        </constraint>
+                     </constraintSpec>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+            
+            <elementSpec ident="unknownFoliation" module="MEI.header" mode="add">
+               <desc xml:lang="en">Captures two subsequent surfaces for which the foliation / binding is unknown.</desc>
+               <classes>
+                  <memberOf key="att.common"/>
+                  <memberOf key="att.dimensions"/>
+                  <memberOf key="att.measurement"/>
+                  <memberOf key="att.foliumSurfaces"/>
+                  <memberOf key="model.foliumLike"/>
+               </classes>
+               <content>
+                  <rng:zeroOrMore>
+                     <rng:ref name="model.paperModLike"/>
+                  </rng:zeroOrMore>
+               </content>
+               <remarks xml:lang="en">
+                  <p>When the exact folium setup can't be identified, it is advised to use <gi scheme="MEI">folium</gi> elements only (and not guess about the presence of <gi scheme="MEI">bifolium</gi>s in the document).</p>
+               </remarks>
+            </elementSpec>
+            
+            
+            <elementSpec ident="layout" module="MEI.msDesc" mode="change">
+               <desc xml:lang="en">Describes how text is laid out on the page, including information about any ruling, pricking, or other evidence of page-preparation techniques.</desc>
+               <!--<classes>
+                  <memberOf key="att.common"/>
+                  <memberOf key="att.bibl"/>
+                  <memberOf key="att.lang"/>
+               </classes>-->
+               <content>
+                  <rng:choice>
+                     <rng:ref name="macro.struc-unstrucContent"/>
+                     <rng:ref name="rastrumDesc"/>
+                  </rng:choice>
+                  <rng:ref name="macro.struc-unstrucContent"/>
+               </content>
+               <!--<attList>
+                  <attDef ident="cols" usage="opt">
+                     <desc xml:lang="en">Specifies the number of columns per page.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                     <remarks xml:lang="en">
+                        <p>A single number indicates that all pages have this number of columns. Two numbers mean that the number of columns per page varies between the values supplied.</p>
+                     </remarks>
+                  </attDef>
+                  <attDef ident="ruledlines" usage="opt">
+                     <desc xml:lang="en">Specifies the number of ruled text lines per column.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                     <remarks xml:lang="en">
+                        <p> A single number indicates that all columns have this number of ruled lines. Two numbers mean that the number of text lines per column varies between the values supplied.</p>
+                     </remarks>
+                  </attDef>
+                  <attDef ident="writtenlines" usage="opt">
+                     <desc xml:lang="en">Specifies the number of written text lines per column.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                     <remarks xml:lang="en">
+                        <p>A single number indicates that all columns have this number of written text lines. Two numbers mean that the number of text lines per column varies between the values supplied.</p>
+                     </remarks>
+                  </attDef>
+                  <attDef ident="ruledstaves" usage="opt">
+                     <desc xml:lang="en">Specifies the number of ruled staves per column.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                     <remarks xml:lang="en">
+                        <p>A single number indicates that all columns have this number of ruled staves. Two numbers mean that the number of ruled staves per column varies between the values supplied.</p>
+                     </remarks>
+                  </attDef>
+                  <attDef ident="writtenstaves" usage="opt">
+                     <desc xml:lang="en">Specifies the number of written staves per column.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                     <remarks xml:lang="en">
+                        <p>A single number indicates that all columns have this number of written staves. Two numbers mean that the number of written staves per column varies between the values supplied.</p>
+                     </remarks>
+                  </attDef>
+               </attList>-->
+               <remarks xml:lang="en">
+                  <p>The model of this element is based on the <ref target="https://tei-c.org/release/doc/tei-p5-doc/en/html/ref-layout.html">layout</ref> element of the Text Encoding Initiative (TEI).</p>
+               </remarks>
+            </elementSpec>
+            
+            
+            
+            <elementSpec ident="rastrumDesc" module="MEI.msDesc" mode="add">
+               <desc xml:lang="en">Describes the use of rastrums on a given (set of) page(s).</desc>
+               <classes>
+                  <memberOf key="att.common"/>
+               </classes>
+               <content>
+                  <rng:zeroOrMore>
+                     <rng:ref name="model.rastrumLike"/>
+                  </rng:zeroOrMore>
+               </content>
+            </elementSpec>
+            
+            <elementSpec ident="rastrum" module="MEI.msDesc" mode="add">
+               <desc xml:lang="en">Describes a rastrum used to prepare a page with staff lines.</desc>
+               <classes>
+                  <memberOf key="att.common"/>
+                  <memberOf key="model.rastrumLike"/>
+                  <memberOf key="att.rastrum.log"/>
+                  <memberOf key="att.rastrum.vis"/>
+                  <memberOf key="att.rastrum.ges"/>
+                  <memberOf key="att.rastrum.anl"/>
+               </classes>
+               <content>
+                  <rng:empty/>
+               </content>
+               <constraintSpec ident="Check_rastrum" scheme="schematron">
+                  <constraint>
+                     <sch:rule context="mei:rastrum">
+                        <sch:assert test="not(@systems = '1' and exists(@system.dist))">A rastrum with only one system must not specify a distance between multiple systems.</sch:assert>
+                     </sch:rule>
+                  </constraint>
+               </constraintSpec>
+               <remarks xml:lang="en">
+                  <p>A rastrum is a traditional tool used to draw staff lines on paper. It may draw one or more systems at a time.
+                     The rastrum element tries to reflect this. It is most useful when describing manuscripts, even when they use
+                     industrially produced paper. One rastrum element is used per block of systems / staff lines that are produced 
+                     simultaneously. The <att>systems</att> attribute indicates the number of systems produced by this rastrum, 
+                     while <att>system.height</att> and <att>system.dist</att> describe the height of and distance between these
+                     systems.</p>
+                  <p>In oder to achieve compatibility with traditional printed source descriptions, it is highly recommended to 
+                     provide all measurements in real-world units, like millimeters.</p>
+               </remarks>
+            </elementSpec>
+            
+            <classSpec ident="model.rastrumLike" type="model" mode="add">
+               <desc xml:lang="en">Groups elements describing the rastrum.</desc>
+            </classSpec>
+            
+            <classSpec ident="att.rastrum.log" type="atts" module="MEI.shared" mode="add">
+               <desc xml:lang="en">Attributes that capture logical domain information about rastrums.</desc>
+               <classes>
+                  <memberOf key="att.systemCount"/>
+               </classes>
+            </classSpec>
+            
+            <classSpec ident="att.rastrum.vis" type="atts" module="MEI.visual" mode="add">
+               <desc xml:lang="en">Attributes that capture rastrum layout information.</desc>
+               <classes>
+                  <memberOf key="att.systems"/>
+                  <memberOf key="att.dimensions"/>
+                  <memberOf key="att.systemDistance"/>
+                  <memberOf key="att.systemHeight"/>
+               </classes>
+            </classSpec>
+            
+            <classSpec ident="att.rastrum.ges" type="atts" module="MEI.gestural" mode="add">
+               <desc xml:lang="en">Attributes that capture rastrum performance information.</desc>
+            </classSpec>
+            
+            <classSpec ident="att.rastrum.anl" type="atts" module="MEI.analytical" mode="add">
+               <desc xml:lang="en">Attributes that capture analytical information about rastrums.</desc>
+            </classSpec>
+            
+            <classSpec ident="att.systemDistance" type="atts" module="MEI.visual" mode="add">
+               <desc xml:lang="en">Attributes describing the distance between systems.</desc>
+               <attList>
+                  <attDef ident="system.dist" usage="opt">
+                     <desc xml:lang="en">Describes the distance between two adjacent sets of staff lines.</desc>
+                     <datatype>
+                        <rng:ref name="data.MEASUREMENTUNSIGNED"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+            <classSpec ident="att.systemHeight" type="atts" module="MEI.visual" mode="add">
+               <desc xml:lang="en">Attributes describing the height of a set of staff lines.</desc>
+               <attList>
+                  <attDef ident="system.height" usage="opt">
+                     <desc xml:lang="en">Describes the height of a set of staff lines.</desc>
+                     <datatype>
+                        <rng:ref name="data.MEASUREMENTUNSIGNED"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+            <classSpec ident="att.systemCount" type="atts" module="MEI.shared" mode="add">
+               <desc xml:lang="en">Attributes describing the of number of staves.</desc>
+               <attList>
+                  <attDef ident="systems" usage="opt">
+                     <desc xml:lang="en">The number of systems / staves on a page.</desc>
+                     <datatype minOccurs="1" maxOccurs="2">
+                        <rng:data type="nonNegativeInteger"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+
+            <elementSpec ident="mei" module="MEI.shared" mode="change">
+               <!-- All Schematron rules are gathered here for better orientation. -->
+               <constraintSpec ident="check-mei-id" scheme="schematron" mode="add">
+                  <constraint>
+                     <sch:rule context="mei:mei">
+                        <sch:assert test="@xml:id">An mei file must have an id</sch:assert>
+                     </sch:rule>
+                     
+                     <sch:rule context="mei:bifolium/@*[local-name() = ('outer.recto', 'inner.verso', 'inner.recto', 'outer.verso')]">
+                        <sch:let name="uri" value="string(.)"/>
+                        <sch:let name="localLink" value="starts-with($uri, '#')"/>
+                        
+                        <sch:let name="id" value="substring-after($uri, '#')"/>
+                        
+                        <sch:let name="localElem" value="root()/id($id)"/>
+                        <sch:let name="localRef" value="exists($localElem) and local-name($localElem) eq 'surface'"/>
+                        
+                        <sch:let name="file" value="substring-before($uri, '#')"/>
+                        <sch:let name="path" value="string-join(tokenize(document-uri(root()), '/')[position() lt last()], '/') || '/'"/>
+                        
+                        <sch:let name="remoteRef" value="doc-available($path || $file) and exists(doc($path || $file)/id($id)) and local-name(doc($path || $file)/id($id)) eq 'surface'"/>
+                        
+                        <sch:assert test="$localRef or $remoteRef"><sch:value-of select="local-name()"/> must point to a surface element, either locally or in a different source document.</sch:assert>
+                     </sch:rule>
+                     <sch:rule context="mei:folium/@*[local-name() = ('recto', 'verso')]">
+                        <sch:let name="uri" value="string(.)"/>
+                        <sch:let name="localLink" value="starts-with($uri, '#')"/>
+                        
+                        <sch:let name="id" value="substring-after($uri, '#')"/>
+                        
+                        <sch:let name="localElem" value="root()/id($id)"/>
+                        <sch:let name="localRef" value="exists($localElem) and local-name($localElem) eq 'surface'"/>
+                        
+                        <sch:let name="file" value="substring-before($uri, '#')"/>
+                        <sch:let name="path" value="string-join(tokenize(document-uri(root()), '/')[position() lt last()], '/') || '/'"/>
+                        
+                        <sch:let name="remoteRef" value="doc-available($path || $file) and exists(doc($path || $file)/id($id)) and local-name(doc($path || $file)/id($id)) eq 'surface'"/>
+                        
+                        <sch:assert test="$localRef or $remoteRef"><sch:value-of select="local-name()"/> must point to a surface element, either locally or in a different source document.</sch:assert>
+                     </sch:rule>
+                     
+                  </constraint>
+               </constraintSpec>
+            </elementSpec>
+
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
