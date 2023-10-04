@@ -60,8 +60,8 @@
   </fileset>
   
   <!-- Fileset of end-user documentation. TO BE CREATED. -->
-  <fileset id="documentation" dir="${basedir}/Documentation/end-user">
-    <include name="**/*"/>
+  <fileset id="documentation" dir="${basedir}">
+    <include name="Documentation/end-user/**"/>
   </fileset>
   
   <target name="clean">
@@ -90,6 +90,7 @@
     <echo message="Copying files..."/>
     <copy todir="${basedir}/release/${fName}">
       <fileset refid="processingFiles"/>
+      <fileset refid="documentation"/>
     </copy>
   </target>
   
