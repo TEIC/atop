@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>MEI Instrument Details</title>
+        <author>David Lewis</author>
+        <author>Richard Lewis</author>
+        <author>Tim Crawford</author>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>Goldsmiths' College</publisher>
+      </publicationStmt>
+      <sourceDesc><p>born digital <ptr target="https://github.com/music-encoding/tablature-ig"/></p></sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2023-07-28" resp="ATOP">Added repo link to source
+        description</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="instruments" start="mei meiHead meiCorpus music" xmlns:rng="http://relaxng.org/ns/structure/1.0" ns="http://www.music-encoding.org/ns/mei">
+        <specGrp xml:id="instruments">
+
+        <moduleSpec ident="MEI.instruments">
+          <desc>Provides details of instruments and playing techniques.</desc>
+        </moduleSpec>
+
+        <classSpec ident="model.perfResPart" module="MEI.instruments" type="model" mode="add">
+          <desc>Groups elements that may be be part of a structured instrument definition.</desc>
+        </classSpec>
+
+        <elementSpec ident="perfRes" module="TEI.header" mode="change" ns="http://www.music-encoding.org/ns/mei">
+          <classes mode="change">
+            <memberOf mode="add" key="model.perfResPart" />
+          </classes>
+          <content>
+            <rng:zeroOrMore>
+              <rng:choice>
+                <rng:text />
+                <rng:ref name="model.perfResPart" />
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <classSpec ident="model.instrdescPart" module="MEI.instruments" type="model" mode="add">
+          <desc>Groups elements that may be part of a structured description of an instrument.</desc>
+        </classSpec>
+
+        <elementSpec ident="instrDesc" module="MEI.instruments" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>description of an instrument</gloss>
+          <desc>A detailed and structured description of an instrument.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.authorized" />
+            <memberOf key="att.bibl" />
+            <memberOf key="att.pointing" />
+            <memberOf key="model.perfResPart" />
+          </classes>
+          <content>
+            <rng:zeroOrMore>
+              <rng:choice>
+                <rng:text />
+                <rng:ref name="model.instrdescPart" />
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <classSpec ident="att.instrdesc" module="MEI.instruments" type="atts" mode="add">
+          <classes>
+            <memberOf key="att.typed" />
+          </classes>
+          <attList>
+            <attDef ident="family" usage="opt">
+              <desc>The instrument family of this instrument</desc>
+              <datatype>
+                <rng:text />
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+
+        <elementSpec ident="instrName" module="MEI.instruments" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>instrument name</gloss>
+          <desc>The name of an instrument</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.instrdesc" />
+            <memberOf key="model.instrdescPart" />
+            <memberOf key="model.editorialLike" />
+          </classes>
+          <content>
+            <rng:text />
+          </content>
+        </elementSpec>
+
+        <classSpec ident="model.instrconfigPart" module="MEI.instruments" type="model" mode="add">
+          <desc>Groups elements that may be part of a structured instrument configuration.</desc>
+        </classSpec>
+
+        <elementSpec ident="instrConfig" module="MEI.instruments" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>instrument configuration</gloss>
+          <desc>Specifies how an instrument is required to be configured by this score.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="model.editorialLike" />
+            <memberOf key="model.perfResPart" />
+          </classes>
+          <content>
+            <rng:zeroOrMore>
+              <rng:choice>
+                <rng:text />
+                <rng:ref name="model.instrconfigPart" />
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <classSpec ident="att.fingering" module="MEI.instruments" type="atts" mode="add">
+          <desc>Attributes to describe instrument fingering.</desc>
+          <attList>
+            <attDef ident="playingHand" usage="opt">
+              <desc>The hand (left, right, or both) prescribed by the fingering marking.</desc>
+              <valList type="closed">
+                <valItem ident="left">
+                  <desc>Left hand</desc>
+                </valItem>
+                <valItem ident="right">
+                  <desc>Right hand</desc>
+                </valItem>
+                <valItem ident="both">
+                  <desc>Both left and right hands</desc>
+                </valItem>
+              </valList>
+            </attDef>
+            <attDef ident="playingFinger" usage="opt">
+              <desc>The finger prescribed by the fingering marking.</desc>
+              <datatype>
+                <!-- This macro contains the right information, but is
+                     unfortunately specific in its name -->
+                <rng:ref name="data.FINGER.FRET" />
+              </datatype>
+            </attDef>
+            <attDef ident="symbol" usage="opt">
+              <desc>The symbol employed in the fingering marking.</desc>
+              <datatype>
+                <rng:text />
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+
+        <elementSpec ident="fingering" module="MEI.instruments" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>instrument fingering</gloss>
+          <desc>Indicates an instrument fingering marking.</desc>
+          <classes>
+            <memberOf key="att.fingering" />
+            <memberOf key="att.common" />
+            <memberOf key="att.authorized" />
+            <memberOf key="att.edit" />
+            <memberOf key="att.pointing" />
+            <memberOf key="model.noteModifierLike" />
+            <memberOf key="model.measurePart" />
+            <memberOf key="model.staffPart" />
+            <memberOf key="model.editorialLike" />
+          </classes>
+        </elementSpec>
+
+        </specGrp>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

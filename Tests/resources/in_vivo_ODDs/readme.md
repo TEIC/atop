@@ -105,6 +105,7 @@ eventually gets you to a download of EVT, which includes
 
 ## References to GitHub repositories with ODD files that could have been included in this repo
 
+* https://github.com/richard-strauss-werke/strauss-ODD (MEI, requires a build process)
 * https://github.com/utkdigitalinitiatives/polk-correspondence-app
 * https://github.com/stazh/briefedition-escher 
 * https://github.com/Edirom/Quellenbeschreibung-mit-MEI 

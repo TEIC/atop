@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>MEI Fretted Instruments Tablature</title>
+        <author>David Lewis</author>
+        <author>Richard Lewis</author>
+        <author>Tim Crawford</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Goldsmiths College</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital <ptr target="https://github.com/music-encoding/tablature-ig"/></p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2023-07-28" resp="ATOP">Added repo link to source
+        description</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="frettab" start="mei meiHead meiCorpus music" xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron" ns="http://www.music-encoding.org/ns/mei">
+
+        <specGrp xml:id="frettab">
+
+        <moduleSpec ident="MEI.frettab">
+          <desc>Marking up of tablatures for fretted string instruments.</desc>
+        </moduleSpec>
+
+        <classSpec mode="change" ident="att.staffDef.vis" module="MEI.shared" type="atts">
+          <attList>
+            <attDef ident="lines" mode="change">
+              <datatype>
+                <rng:data type="nonNegativeInteger"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+
+        <macroSpec ident="data.FRETNUMBER" module="MEI" type="dt" mode="replace">
+          <desc>In string tablature, the fret number. The value '0' (zero) indicates the open string and 'x' indicates a 'dead' note.</desc>
+          <content>
+            <rng:choice>
+              <rng:data type="token">
+                <rng:param name="pattern">x</rng:param>
+              </rng:data>
+              <rng:data type="nonNegativeInteger"/>
+            </rng:choice>
+          </content>
+        </macroSpec>
+
+        <macroSpec ident="data.COURSENUMBER" module="MEI.frettab" type="dt" mode="add">
+          <desc>In string tablature, the number of the course to be played, i.e., [1-9]+.</desc>
+          <content>
+            <rng:data type="positiveInteger"/>
+          </content>
+        </macroSpec>
+
+        <classSpec ident="att.note.ges.tablature" module="MEI.frettab" type="atts" mode="change">
+          <attList>
+            <attDef ident="tab.course" usage="opt" mode="add">
+              <desc>Records which course is to be played.</desc>
+              <datatype>
+                <rng:ref name="data.COURSENUMBER" />
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="att.note.ges.tablature.mod" module="MEI.frettab" type="atts" mode="add">
+          <gloss>Attributes shared by elements which indicate some sort of modification to a note in tablature.</gloss>
+          <attList>
+            <attDef ident="tab.fromFret" usage="opt" mode="add">
+              <desc>Indicates a starting fret of a multi-fret gesture.</desc>
+              <datatype>
+                <rng:ref name="data.FRETNUMBER" />
+              </datatype>
+            </attDef>
+            <attDef ident="tab.toFret" usage="opt" mode="add">
+              <desc>Indicates an ending fret of a multi-fret gesture.</desc>
+              <datatype>
+                <rng:ref name="data.FRETNUMBER" />
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+
+        <classSpec ident="model.fretGlyphLike" module="MEI.frettab" type="model" mode="add">
+          <desc>Groups elements that may used as symbols (or glyphs) for a &lt;note&gt; in a tablature staff.</desc>
+          <classes>
+            <memberOf key="model.noteModifierLike" />
+          </classes>
+        </classSpec>
+
+        <elementSpec ident="fretGlyph" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>tablature note glyph</gloss>
+          <desc>Encodes the actual symbol found in the tablature source for a particular note. These are often simple numerals or letters, but may also (in German lute tablature) be characters such as ꝯ or ꝫ or letters with a bar such as ā. They may also be compound glypths that contain articulation symbols such as '/'.</desc>
+          <classes>
+            <memberOf key="att.facsimile" />
+            <memberOf key="model.fretGlyphLike" />
+          </classes>
+          <content>
+            <rng:text />
+          </content>
+        </elementSpec>
+
+        <macroSpec ident="data.DURATION.tablature" module="MEI.frettab" type="dt">
+          <desc>The duration symbols used to encode logical duration of &lt;rhythmGlyph&gt;s in tablature. This is included for compatibility with common ASCII tab conventions and with Tabcode.</desc>
+          <content>
+            <rng:choice>
+              <rng:value>F</rng:value>
+              <a:documentation>Fermata</a:documentation>
+              <rng:value>B</rng:value>
+              <a:documentation>Breve</a:documentation>
+              <rng:value>B3</rng:value>
+              <a:documentation>Triplet breve</a:documentation>
+              <rng:value>B3.</rng:value>
+              <a:documentation>Dotted triplet breve</a:documentation>
+              <rng:value>W</rng:value>
+              <a:documentation>Semibreve (whole note)</a:documentation>
+              <rng:value>W.</rng:value>
+              <a:documentation>Dotted semibreve (whole note)</a:documentation>
+              <rng:value>W3</rng:value>
+              <a:documentation>Triplet semibreve (whole note)</a:documentation>
+              <rng:value>W3.</rng:value>
+              <a:documentation>Dotted triplet semibreve (whole note)</a:documentation>
+              <rng:value>H</rng:value>
+              <a:documentation>Minim (half note)</a:documentation>
+              <rng:value>H.</rng:value>
+              <a:documentation>Dotted minim (half note)</a:documentation>
+              <rng:value>H3</rng:value>
+              <a:documentation>Triplet minim (half note)</a:documentation>
+              <rng:value>H3.</rng:value>
+              <a:documentation>Dotted triplet minim (half note)</a:documentation>
+              <rng:value>Q</rng:value>
+              <a:documentation>Crotchet (quarter note)</a:documentation>
+              <rng:value>Q.</rng:value>
+              <a:documentation>Dotted crotchet (quarter note)</a:documentation>
+              <rng:value>Q3</rng:value>
+              <a:documentation>Triplet crotchet (quarter note)</a:documentation>
+              <rng:value>Q3.</rng:value>
+              <a:documentation>Dotted triplet crotchet (quarter note)</a:documentation>
+              <rng:value>E</rng:value>
+              <a:documentation>Quaver (eight note)</a:documentation>
+              <rng:value>E.</rng:value>
+              <a:documentation>Dotted quaver (eight note)</a:documentation>
+              <rng:value>E3</rng:value>
+              <a:documentation>Triplet quaver (eighth note)</a:documentation>
+              <rng:value>E3.</rng:value>
+              <a:documentation>Dotted triplet quaver (eighth note)</a:documentation>
+              <rng:value>S</rng:value>
+              <a:documentation>Semiquaver (sixteenth note)</a:documentation>
+              <rng:value>S.</rng:value>
+              <a:documentation>Dotted semiquaver (sixteenth note)</a:documentation>
+              <rng:value>S3</rng:value>
+              <a:documentation>Triplet semiquaver (sixteenth note)</a:documentation>
+              <rng:value>S3.</rng:value>
+              <a:documentation>Dotted triplet semiquaver (sixteenth note)</a:documentation>
+              <rng:value>T</rng:value>
+              <a:documentation>Demisemiquaver (thirtysecond note)</a:documentation>
+              <rng:value>T.</rng:value>
+              <a:documentation>Dotted demisemiquaver (thirtysecond note)</a:documentation>
+              <rng:value>T3</rng:value>
+              <a:documentation>Triplet demisemiquaver (thirtysecond note)</a:documentation>
+              <rng:value>T3.</rng:value>
+              <a:documentation>Dotted triplet demisemiquaver (thirtysecond note)</a:documentation>
+              <rng:value>Y</rng:value>
+              <a:documentation>Hemidemisemiquaver (sixtyfourth note)</a:documentation>
+              <rng:value>Y.</rng:value>
+              <a:documentation>Dotted hemidemisemiquaver (sixtyfourth note)</a:documentation>
+              <rng:value>Y3</rng:value>
+              <a:documentation>Triplet hemidemisemiquaver (sixtyfourth note)</a:documentation>
+              <rng:value>Y3.</rng:value>
+              <a:documentation>Dotted triplet hemidemisemiquaver (sixtyfourth note)</a:documentation>
+              <rng:value>Z</rng:value>
+              <a:documentation>Semihemidemisemiquaver (one hundred and twentyeighth note)</a:documentation>
+              <rng:value>Z.</rng:value>
+              <a:documentation>Dotted semihemidemisemiquaver (one hundred and twentyeighth note)</a:documentation>
+              <rng:value>Z3</rng:value>
+              <a:documentation>Triplet semihemidemisemiquaver (one hundred and twentyeighth note)</a:documentation>
+              <rng:value>Z3.</rng:value>
+              <a:documentation>Dotted triplet semihemidemisemiquaver (one hundred and twentyeighth note)</a:documentation>
+            </rng:choice>
+          </content>
+        </macroSpec>
+
+        <elementSpec ident="rhythmGlyph" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>tablature rhythm sign</gloss>
+          <desc>The durational sign associated with a tablature chord. The intended use of &lt;rhythmGlyph&gt; is to encode the rhythmic sign found in the source (if any) while the actual duration of the associated tablature chord is encoded using the &lt;chord&gt;'s @dur attribute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.facsimile" />
+            <memberOf key="model.chordPart" />
+          </classes>
+          <content>
+            <rng:text />
+          </content>
+          <attList>
+            <attDef ident="symbol" usage="opt">
+              <desc>The duration symbol.</desc>
+              <datatype>
+                <rng:ref name="data.DURATION.tablature" />
+              </datatype>
+            </attDef>
+            <attDef ident="head" usage="opt">
+              <desc>Indicates whether the rhythm sign has a note head and if so, what shape.</desc>
+              <datatype>
+                <rng:ref name="data.HEADSHAPE" />
+              </datatype>
+            </attDef>
+            <attDef ident="flags" usage="opt">
+              <desc>The number of flags on the rhythm sign.</desc>
+              <datatype>
+                <rng:data type="nonNegativeInteger" />
+              </datatype>
+            </attDef>
+            <attDef ident="flagDir" usage="opt">
+              <desc>Indicates the direction of the rhythm sign's flag(s)</desc>
+              <valList type="closed">
+                <valItem ident="left">
+                  <desc>Left pointing</desc>
+                </valItem>
+                <valItem ident="right">
+                  <desc>Right pointing</desc>
+                </valItem>
+              </valList>
+            </attDef>
+            <attDef ident="serif" usage="opt">
+              <desc>Indicates that the rhythm sign has a serif</desc>
+              <datatype>
+                <rng:ref name="data.BOOLEAN" />
+              </datatype>
+            </attDef>
+            <attDef ident="serifDir" usage="opt">
+              <desc>Indicates the direction of the rhythm sign's serif when @serif is true</desc>
+              <valList type="closed">
+                <valItem ident="left">
+                  <desc>Left pointing</desc>
+                </valItem>
+                <valItem ident="right">
+                  <desc>Right pointing</desc>
+                </valItem>
+              </valList>
+            </attDef>
+            <attDef ident="dots" usage="opt">
+              <desc>The number of dots on the rhythm sign.</desc>
+              <datatype>
+                <rng:data type="integer" />
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="rest" module="MEI.shared" mode="change" ns="http://www.music-encoding.org/ns/mei">
+          <content>
+            <rng:zeroOrMore>
+              <rng:choice>
+                <rng:ref name="dot" />
+                <rng:ref name="rhythmGlyph" />
+                <rng:ref name="model.appLike" />
+                <rng:ref name="model.editLike" />
+                <rng:ref name="model.transcriptionLike" />
+              </rng:choice>
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="fermata" module="MEI.cmn" mode="change" ns="http://www.music-encoding.org/ns/mei">
+          <classes mode="change">
+            <memberOf mode="add" key="model.chordPart" />
+          </classes>
+        </elementSpec>
+
+        <elementSpec ident="abzug" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>abzug marking</gloss>
+          <desc>abzug marking</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.startendid" />
+            <memberOf key="model.chordPart" />
+          </classes>
+        </elementSpec>
+
+        <elementSpec ident="tabBarre" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>barré marking</gloss>
+          <desc>barré marking</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.startid" />
+            <memberOf key="att.fretlocation" />
+            <memberOf key="model.chordPart" />
+            <memberOf key="model.measurePart" />
+            <memberOf key="model.staffPart" />
+          </classes>
+        </elementSpec>
+
+        <elementSpec ident="ensembleLine" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>ensemble line</gloss>
+          <desc>Indicates that two &lt;tabNote&gt;s are to be played simultaneously.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.startendid" />
+            <memberOf key="model.chordPart" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="connectingLine" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>connecting line</gloss>
+          <desc>connecting line</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.startendid" />
+            <memberOf key="model.measurePart" />
+            <memberOf key="model.staffPart" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="separee" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>separeé marking</gloss>
+          <desc>Indicates that two &lt;note&gt;s in a single tablature &lt;chord&gt; should be played sequentially (rather than simultaneously).</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.startendid" />
+            <memberOf key="model.chordPart" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="slide" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>slide marking</gloss>
+          <desc>Indicates a slide up or down the course between two frets.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="model.noteModifierLike" />
+            <memberOf key="att.note.ges.tablature" />
+            <memberOf key="att.note.ges.tablature.mod" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="courseCount" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>number of courses</gloss>
+          <desc>The number of courses on a lute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="model.instrdescPart" />
+          </classes>
+          <content>
+            <rng:text />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="courseTuning" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>tuning of courses</gloss>
+          <desc>Child &lt;course&gt; elements should be used to indicate the tuning of each course on a lute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="model.instrconfigPart" />
+          </classes>
+          <content>
+            <rng:oneOrMore>
+              <rng:ref name="course" />
+            </rng:oneOrMore>
+            <rng:zeroOrMore>
+              <rng:ref name="bassTuning" />
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="course" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>course tuning information</gloss>
+          <desc>Describes the tuning of a course on a lute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.pitched" />
+          </classes>
+          <content>
+            <rng:zeroOrMore>
+              <rng:ref name="string" />
+            </rng:zeroOrMore>
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="string" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>a string of a course</gloss>
+          <desc>Describes the tuning of a single string of a course on a lute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.pitched" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        <elementSpec ident="bassTuning" module="MEI.frettab" mode="add" ns="http://www.music-encoding.org/ns/mei">
+          <gloss>bass course tuning</gloss>
+          <desc>Describes the tuning of the bass course of a lute.</desc>
+          <classes>
+            <memberOf key="att.common" />
+            <memberOf key="att.keySig.log" />
+          </classes>
+          <content>
+            <rng:empty />
+          </content>
+        </elementSpec>
+
+        </specGrp>
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
