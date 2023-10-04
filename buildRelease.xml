@@ -52,9 +52,9 @@
     <include name="XSLT/modules/functions_module.xslt"/>
     <include name="Schemas/ploddSchemaSpecification.rng"/>
     <include name="Schemas/pre-transpile.sch"/>
-    <include name="Schemas/relang.rnc"/>
+    <include name="Schemas/relaxng.rnc"/>
     <include name="Schemas/schematron.rnc"/>
-    <include name="Schhemas/schematron.sch"/>
+    <include name="Schemas/schematron.sch"/>
     <include name="Lib/**"/>
     <exclude name="Lib/xspec/**"/>
   </fileset>
