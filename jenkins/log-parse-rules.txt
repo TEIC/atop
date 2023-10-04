@@ -11,6 +11,7 @@ ok /FATAL error: attempt to get unique identifier of an unidentified element./
 ok /Invalid or malformed tei:/
 ok /Map including an error message./
 ok /should cause an error/
+ok /Commit message:/
 
 error /[Ee]rror/
 warning /[Ww]arning/

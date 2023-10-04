@@ -1,0 +1,20 @@
+instance1.xml:6:12: error: element "echo" not allowed yet; missing required element "bravo"
+instance1.xml:7:13: error: element "bravo" not allowed here; expected the element end-tag
+instance1.xml:8:15: error: element "charlie" not allowed here; expected the element end-tag
+instance1.xml:9:13: error: element "delta" not allowed here; expected the element end-tag
+instance1.xml:12:13: error: element "bravo" not allowed yet; missing required element "alpha"
+instance1.xml:19:13: error: element "bravo" not allowed here; expected the element end-tag
+instance1.xml:25:15: error: element "foxtrot" not allowed here; expected the element end-tag
+instance1.xml:29:12: error: element "golf" not allowed here; expected the element end-tag
+instance1.xml:33:12: error: element "echo" not allowed here; expected element "hotel", "india", "juliet", "quebec", "tango", "whisky" or "zulu"
+instance1.xml:42:29: error: element "IAmSequenceOfAlternates" incomplete; expected element "hotel", "india", "juliet", "quebec", "tango", "whisky" or "zulu"
+instance1.xml:44:12: error: element "zulu" not allowed yet; expected element "alpha", "bravo", "echo", "foxtrot" or "golf"
+instance1.xml:45:12: error: element "golf" not allowed here; expected the element end-tag
+instance1.xml:53:15: error: element "foxtrot" not allowed here; expected the element end-tag
+instance1.xml:61:14: error: element "juliet" not allowed here; expected the element end-tag
+instance1.xml:62:12: error: element "mike" not allowed here; expected the element end-tag
+instance1.xml:63:12: error: element "papa" not allowed here; expected the element end-tag
+instance1.xml:64:13: error: element "tango" not allowed here; expected the element end-tag
+instance1.xml:65:15: error: element "uniform" not allowed here; expected the element end-tag
+instance1.xml:66:14: error: element "victor" not allowed here; expected the element end-tag
+instance1.xml:67:12: error: element "zulu" not allowed here; expected the element end-tag

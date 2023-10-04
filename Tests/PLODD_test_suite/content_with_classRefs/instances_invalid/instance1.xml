@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<test_elements xmlns="http://www.tei-c.org/ns/atop/test_suite">
+  <!-- 
+       This is an invalid instance file for the content_with_classRefs test 
+       schema.
+  -->
+  <IAmSequence>
+    <in_MC2_A/>
+    <in_MC1_A/>
+    <in_MC3_A/>
+  </IAmSequence>
+  <IAmSequence>
+    <in_MC1_D/>
+    <in_MC2_C/>
+    <in_MC3_B/>
+  </IAmSequence>
+  <IAmAlternate>
+    <in_MC1_A/>
+    <in_MC2_A/>
+  </IAmAlternate>
+  <IAmAlternate>
+    <in_MC4_D/>
+  </IAmAlternate>
+  <IAmAlternate>
+    <in_MC3_D/>
+    <in_MC3_E/>
+  </IAmAlternate>
+  <IAmSequenceOfAlternates>
+    <in_MC4_C/>
+    <in_MC1_A/>
+  </IAmSequenceOfAlternates>
+  <IAmSequenceOfAlternates>
+    <in_MC3_A/>
+    <in_MC3_C/>
+  </IAmSequenceOfAlternates>
+  <IAmAlternateOfSequences>
+    <in_MC3_A/>
+    <in_MC1_A/>
+    <in_MC2_A/>
+  </IAmAlternateOfSequences>
+  <IAmAlternateOfSequences>
+    <in_MC1_A/>
+    <in_MC5_A/>
+    <in_MC6_A/>
+  </IAmAlternateOfSequences>
+  
+</test_elements>

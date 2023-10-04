@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>base ODD for testing a schemaSpec with no TEI at all</title>
+        <author>ATOP Task Force</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Published by TEI-C on their ATOP repository site.</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="htmlSubset" prefix="htsub_" ns="http://www.w3.org/1999/xhtml" start="html">
+        
+        <!-- Components required from tei module. -->
+        
+        <dataSpec ident="teidata.pointer">
+          <desc versionDate="2013-01-19" xml:lang="en">defines the range of attribute values used to provide a single
+            URI, absolute or relative, pointing to some other
+            resource, either within the current document or elsewhere.</desc>
+          <content>
+            <dataRef restriction="\S+" name="anyURI"/>
+          </content>
+        </dataSpec>
+        
+        <dataSpec ident="teidata.word">
+          <desc versionDate="2007-10-22" xml:lang="en">defines the range of attribute values expressed as a single
+            word or token.</desc>
+          <content>
+            <dataRef name="token" restriction="[^\p{C}\p{Z}]+"/>
+          </content>
+        </dataSpec>
+        
+        
+        
+      	<!--<moduleRef key="tei"/>
+      	<moduleSpec ident="htmlSubset">
+      		<desc xml:lang="en">Base schema module for all HTML elements defined in this ODD.</desc>
+      	</moduleSpec>-->
+        <elementSpec ident="html" ns="http://www.w3.org/1999/xhtml">
+          <gloss xml:lang="en">The main element forming the base of a page</gloss>
+          <classes>
+            <memberOf key="att.hasLang"/>
+          </classes>
+          <content>
+            <sequence>
+              <elementRef key="head" minOccurs="1" maxOccurs="1"/>
+              <elementRef key="body" minOccurs="1" maxOccurs="1"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="head" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <sequence>
+              <elementRef key="title" minOccurs="1" maxOccurs="1"/>
+              <elementRef key="meta" minOccurs="1" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="title" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+
+        
+        <elementSpec ident="meta" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <empty/>
+          </content>
+          <attList>
+            <attDef ident="charset">
+              <valList type="closed">
+                <valItem ident="UTF-8">
+                  <gloss xml:lang="en">UTF-8 should be all you ever need.</gloss>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="body" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <sequence>
+              <elementRef key="h1" minOccurs="1" maxOccurs="1"/>
+              <elementRef key="div" minOccurs="1" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="h1" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="div" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <sequence>
+              <elementRef key="h2" minOccurs="1" maxOccurs="1"/>
+              <elementRef key="p" minOccurs="1" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="h2" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="p" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <alternate minOccurs="1" maxOccurs="unbounded">
+              <textNode/>
+              <elementRef key="a"/>
+              <elementRef key="img"/>
+            </alternate>
+          </content>
+        </elementSpec>
+        
+        <elementSpec ident="a" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <textNode/>
+          </content>
+          <attList>
+            <attDef ident="href" usage="req">
+              <datatype>
+                <dataRef key="teidata.pointer"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        
+        <elementSpec ident="img" ns="http://www.w3.org/1999/xhtml">
+          <content>
+            <empty/>
+          </content>
+          <attList>
+            <attDef ident="src" usage="req">
+              <datatype>
+                <dataRef key="teidata.pointer"/>
+              </datatype>
+            </attDef>
+            <attDef ident="alt" usage="req">
+              <datatype>
+                <dataRef name="string"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <classSpec ident="att.hasLang" type="atts">
+          <!--<desc xml:lang="en">Groups elements which may have a language attribute.</desc>-->
+          <attList>
+            <attDef ident="lang" usage="opt">
+              <gloss xml:lang="en">Specifies the language of the content of the element.</gloss>
+              <datatype maxOccurs="1">
+                <dataRef key="teidata.word"/>
+              </datatype>
+              <valList type="semi">
+                <valItem ident="en"><gloss xml:lang="en">English</gloss></valItem>
+                <valItem ident="fr"><gloss xml:lang="fr">French</gloss></valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+	
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:at="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>test of various <gi>attList</gi>s using <att>org</att></title>
+      </titleStmt>
+      <publicationStmt>
+        <p>part of ATOP test suite</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>born digital</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="choice_of_attrs" prefix="coa_" ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs" start="tests">
+
+	<dataSpec ident="atop_test_string">
+	  <content>
+	    <textNode/>
+	  </content>
+	</dataSpec>
+
+	<elementSpec ident="tests">
+	  <content>
+	    <sequence>
+	      <elementRef key="group" minOccurs="1" maxOccurs="7"/>
+	      <elementRef key="choice" minOccurs="1" maxOccurs="7"/>
+	      <elementRef key="choice-in-group" minOccurs="1" maxOccurs="7"/>
+	      <elementRef key="group-in-choice" minOccurs="4" maxOccurs="7"/>
+	      <elementRef key="choice-in-choice" minOccurs="1" maxOccurs="7"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="group">
+	  <content>
+	    <textNode/>
+	  </content>
+	  <attList org="group">
+	    <attDef ident="req1" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attDef ident="req2" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attDef ident="req3" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+
+	<elementSpec ident="choice">
+	  <content>
+	    <textNode/>
+	  </content>
+	  <attList org="choice">
+	    <attDef ident="alt1" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attDef ident="alt2" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attDef ident="alt3" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+
+	<elementSpec ident="choice-in-group">
+	  <content>
+	    <textNode/>
+	  </content>
+	  <attList org="group">
+	    <attDef ident="req1" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attDef ident="req2" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attList org="choice">
+	      <attDef ident="alt1" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt2" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt3" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	    </attList>
+	    <attDef ident="req3" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+
+	<elementSpec ident="group-in-choice">
+	  <content>
+	    <textNode/>
+	  </content>
+	  <attList org="choice">
+	    <attDef ident="alt1" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attList org="group">
+	      <attDef ident="alt2req1" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt2req2" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt2req3" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	    </attList>
+	    <attList org="group">
+	      <attDef ident="alt3req1" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt3req2" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt3req3" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	    </attList>
+	    <attDef ident="alt4" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+
+	<elementSpec ident="choice-in-choice">
+	  <content>
+	    <textNode/>
+	  </content>
+	  <attList org="choice">
+	    <attDef ident="alt1" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	    <attList org="choice">
+	      <attDef ident="alt2alt1" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt2alt2" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt2alt3" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	    </attList>
+	    <attList org="choice">
+	      <attDef ident="alt3alt1" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt3alt2" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	      <attDef ident="alt3alt3" usage="req">
+		<datatype minOccurs="1" maxOccurs="1">
+		  <dataRef key="atop_test_string"/>
+		</datatype>
+	      </attDef>
+	    </attList>
+	    <attDef ident="alt4" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="atop_test_string"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

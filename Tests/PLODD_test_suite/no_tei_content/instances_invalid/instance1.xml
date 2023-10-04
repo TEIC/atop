@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Invalid instance of non-TEI content</title>
+        <meta charset="UTF-16" />
+    </head>
+    <body>
+        <h1>Invalid instance of non-TEI content</h1>
+        <div>
+            <h2>Section 1</h2>
+            <p>Some content here with a <a>link</a> missing its @href.</p>
+        </div>
+        <div>
+            <h2>Section 2</h2>
+            <p>More content here with a <a target="https://www.uvic.ca/">link</a> using the wrong attribute.
+                There is also an image here that's missing its @alt attribute: 
+                <img src="https://www.tei-c.org/release/doc/tei-p5-doc/en/html/Images/banner.jpg"/></p>
+            <p>There's also an image outside of its permitted locations:</p>
+            
+            <img src="https://tei-c.org/release/doc/tei-p5-doc/en/html/icons/e-book-icons/mdh_pdf_doc_32x32.png" alt="pdf icon"/>
+        </div>
+    </body>
+</html>

@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
   <teiHeader>
     <fileDesc>
       <titleStmt>
-	<title>test of various <gi>content</gi> using <gi>classRef</gi></title>
+        <title>test of various <gi>content</gi> using <gi>classRef</gi></title>
       </titleStmt>
       <publicationStmt>
-	<p>part of ATOP test suite</p>
+        <p>part of ATOP test suite</p>
       </publicationStmt>
       <sourceDesc>
-	<p>born digital</p>
+        <p>born digital</p>
       </sourceDesc>
     </fileDesc>
   </teiHeader>
@@ -20,169 +20,271 @@
     <body>
       <schemaSpec ident="classRef_content" prefix="cuc_" ns="http://www.tei-c.org/ns/atop/test_suite" start="test_elements">
         <!-- "cuc" is short for content using classRefs -->
-	<classSpec ident="MC1" type="model">
-	  <!-- model class one -->
-	</classSpec>
-	<classSpec ident="MC2" type="model">
-	  <!-- model class two -->
-	</classSpec>
-	<classSpec ident="MC3" type="model">
-	  <!-- model class three -->
-	</classSpec>
-	<elementSpec ident="test_elements">
-	  <content>
-	    <sequence>
-	      <elementRef key="IAmSequence"/>
-	      <elementRef key="IAmAlternate"/>
-	      <elementRef key="IAmSequenceOfAlternates"/>
-	      <elementRef key="IAmAlternateOfSequences"/>
-	    </sequence>
-	  </content>
-	</elementSpec>
-	<elementSpec ident="in_MC1_A">
-	  <classes>
-	    <memberOf key="MC1"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC1_B">
-	  <classes>
-	    <memberOf key="MC1"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC1_C">
-	  <classes>
-	    <memberOf key="MC1"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC1_D">
-	  <classes>
-	    <memberOf key="MC1"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC1_E">
-	  <classes>
-	    <memberOf key="MC1"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<!--  -->
-	<elementSpec ident="in_MC2_A">
-	  <classes>
-	    <memberOf key="MC2"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC2_B">
-	  <classes>
-	    <memberOf key="MC2"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC2_C">
-	  <classes>
-	    <memberOf key="MC2"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC2_D">
-	  <classes>
-	    <memberOf key="MC2"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC2_E">
-	  <classes>
-	    <memberOf key="MC2"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<!--  -->
-	<elementSpec ident="in_MC3_A">
-	  <classes>
-	    <memberOf key="MC3"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC3_B">
-	  <classes>
-	    <memberOf key="MC3"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC3_C">
-	  <classes>
-	    <memberOf key="MC3"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC3_D">
-	  <classes>
-	    <memberOf key="MC3"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<elementSpec ident="in_MC3_E">
-	  <classes>
-	    <memberOf key="MC3"/>
-	  </classes>
-	  <content><empty/></content>
-	</elementSpec>
-	<!--  -->
-	<elementSpec ident="IAmSequence">
-	  <content>
-	    <sequence>
-	      <classRef key="MC1"/>
-	      <classRef key="MC2"/>
-	      <classRef key="MC3"/>
-	    </sequence>
-	  </content>
-	</elementSpec>
-	<elementSpec ident="IAmAlternate">
-	  <content>
-	    <alternate>
-	      <classRef key="MC1"/>
-	      <classRef key="MC2"/>
-	      <classRef key="MC3"/>
-	    </alternate>
-	  </content>
-	</elementSpec>
-	<elementSpec ident="IAmSequenceOfAlternates">
-	  <content>
-	    <sequence>
-	      <alternate>
-		<classRef key="MC1"/>
-		<classRef key="MC2"/>
-		<classRef key="MC3"/>
-	      </alternate>
-	      <alternate>
-		<classRef key="MC4"/>
-		<classRef key="MC5"/>
-		<classRef key="MC6"/>
-	      </alternate>
-	    </sequence>
-	  </content>
-	</elementSpec>
-	<elementSpec ident="IAmAlternateOfSequences">
-	  <content>
-	    <alternate>
-	      <sequence>
-		<classRef key="MC1"/>
-		<classRef key="MC2"/>
-		<classRef key="MC3"/>
-	      </sequence>
-	      <sequence>
-		<classRef key="MC4"/>
-		<classRef key="MC5"/>
-		<classRef key="MC6"/>
-	      </sequence>
-	    </alternate>
-	  </content>
-	</elementSpec>
-
+        <classSpec ident="MC1" type="model">
+          <!-- model class one -->
+        </classSpec>
+        <classSpec ident="MC2" type="model">
+          <!-- model class two -->
+        </classSpec>
+        <classSpec ident="MC3" type="model">
+          <!-- model class three -->
+        </classSpec>
+        <classSpec ident="MC4" type="model">
+          <!-- model class one -->
+        </classSpec>
+        <classSpec ident="MC5" type="model">
+          <!-- model class two -->
+        </classSpec>
+        <classSpec ident="MC6" type="model">
+          <!-- model class three -->
+        </classSpec>
+        <elementSpec ident="test_elements">
+          <content>
+            <sequence>
+              <elementRef key="IAmSequence" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="IAmAlternate" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="IAmSequenceOfAlternates" minOccurs="1" maxOccurs="unbounded"/>
+              <elementRef key="IAmAlternateOfSequences" minOccurs="1" maxOccurs="unbounded"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="in_MC1_A">
+          <classes>
+            <memberOf key="MC1"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC1_B">
+          <classes>
+            <memberOf key="MC1"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC1_C">
+          <classes>
+            <memberOf key="MC1"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC1_D">
+          <classes>
+            <memberOf key="MC1"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC1_E">
+          <classes>
+            <memberOf key="MC1"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <!--  -->
+        <elementSpec ident="in_MC2_A">
+          <classes>
+            <memberOf key="MC2"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC2_B">
+          <classes>
+            <memberOf key="MC2"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC2_C">
+          <classes>
+            <memberOf key="MC2"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC2_D">
+          <classes>
+            <memberOf key="MC2"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC2_E">
+          <classes>
+            <memberOf key="MC2"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <!--  -->
+        <elementSpec ident="in_MC3_A">
+          <classes>
+            <memberOf key="MC3"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC3_B">
+          <classes>
+            <memberOf key="MC3"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC3_C">
+          <classes>
+            <memberOf key="MC3"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC3_D">
+          <classes>
+            <memberOf key="MC3"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC3_E">
+          <classes>
+            <memberOf key="MC3"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        
+        <elementSpec ident="in_MC4_A">
+          <classes>
+            <memberOf key="MC4"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC4_B">
+          <classes>
+            <memberOf key="MC4"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC4_C">
+          <classes>
+            <memberOf key="MC4"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC4_D">
+          <classes>
+            <memberOf key="MC4"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC4_E">
+          <classes>
+            <memberOf key="MC4"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        
+        <elementSpec ident="in_MC5_A">
+          <classes>
+            <memberOf key="MC5"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC5_B">
+          <classes>
+            <memberOf key="MC5"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC5_C">
+          <classes>
+            <memberOf key="MC5"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC5_D">
+          <classes>
+            <memberOf key="MC5"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC5_E">
+          <classes>
+            <memberOf key="MC5"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        
+        <elementSpec ident="in_MC6_A">
+          <classes>
+            <memberOf key="MC6"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC6_B">
+          <classes>
+            <memberOf key="MC6"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC6_C">
+          <classes>
+            <memberOf key="MC6"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC6_D">
+          <classes>
+            <memberOf key="MC6"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <elementSpec ident="in_MC6_E">
+          <classes>
+            <memberOf key="MC6"/>
+          </classes>
+          <content><empty/></content>
+        </elementSpec>
+        <!--  -->
+        <elementSpec ident="IAmSequence">
+          <content>
+            <sequence>
+              <classRef key="MC1"/>
+              <classRef key="MC2"/>
+              <classRef key="MC3"/>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="IAmAlternate">
+          <content>
+            <alternate>
+              <classRef key="MC1"/>
+              <classRef key="MC2"/>
+              <classRef key="MC3"/>
+            </alternate>
+          </content>
+        </elementSpec>
+        <elementSpec ident="IAmSequenceOfAlternates">
+          <content>
+            <sequence>
+              <alternate>
+                <classRef key="MC1"/>
+                <classRef key="MC2"/>
+                <classRef key="MC3"/>
+              </alternate>
+              <alternate>
+                <classRef key="MC4"/>
+                <classRef key="MC5"/>
+                <classRef key="MC6"/>
+              </alternate>
+            </sequence>
+          </content>
+        </elementSpec>
+        <elementSpec ident="IAmAlternateOfSequences">
+          <content>
+            <alternate>
+              <sequence>
+                <classRef key="MC1"/>
+                <classRef key="MC2"/>
+                <classRef key="MC3"/>
+              </sequence>
+              <sequence>
+                <classRef key="MC4"/>
+                <classRef key="MC5"/>
+                <classRef key="MC6"/>
+              </sequence>
+            </alternate>
+          </content>
+        </elementSpec>
+        
       </schemaSpec>
     </body>
   </text>

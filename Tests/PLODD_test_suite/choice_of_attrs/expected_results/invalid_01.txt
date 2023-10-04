@@ -1,0 +1,21 @@
+invalid_01.xml:4:53: error: element "group" missing required attribute "req1"
+invalid_01.xml:5:53: error: element "group" missing required attribute "req2"
+invalid_01.xml:6:53: error: element "group" missing required attribute "req3"
+invalid_01.xml:9:12: error: element "choice" missing one or more required attributes; expected attribute "alt1", "alt2" or "alt3"
+invalid_01.xml:12:40: error: found attribute "alt2", but no attributes allowed here
+invalid_01.xml:15:77: error: element "choice-in-group" missing required attribute "req1"
+invalid_01.xml:16:77: error: element "choice-in-group" missing required attribute "req2"
+invalid_01.xml:17:77: error: element "choice-in-group" missing required attribute "req3"
+invalid_01.xml:20:91: error: found attribute "alt2", but no attributes allowed here
+invalid_01.xml:21:91: error: found attribute "alt3", but no attributes allowed here
+invalid_01.xml:22:91: error: found attribute "alt1", but no attributes allowed here
+invalid_01.xml:25:21: error: element "group-in-choice" missing one or more required attributes; expected attribute "alt1", "alt2req1", "alt2req2", "alt2req3", "alt3req1", "alt3req2", "alt3req3" or "alt4"
+invalid_01.xml:26:75: error: element "group-in-choice" missing required attribute "alt2req2"
+invalid_01.xml:27:75: error: element "group-in-choice" missing required attribute "alt3req3"
+invalid_01.xml:30:53: error: found attribute "alt2req1", but no attributes allowed here
+invalid_01.xml:31:93: error: found attribute "alt3req1", but no attributes allowed here
+invalid_01.xml:32:89: error: found attribute "alt4", but no attributes allowed here
+invalid_01.xml:35:22: error: element "choice-in-choice" missing one or more required attributes; expected attribute "alt1", "alt2alt1", "alt2alt2", "alt2alt3", "alt3alt1", "alt3alt2", "alt3alt3" or "alt4"
+invalid_01.xml:38:54: error: found attribute "alt2alt2", but no attributes allowed here
+invalid_01.xml:39:58: error: found attribute "alt3alt3", but no attributes allowed here
+invalid_01.xml:40:50: error: found attribute "alt4", but no attributes allowed here

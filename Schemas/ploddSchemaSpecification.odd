@@ -28,25 +28,48 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-09-19">
+        We are 99% sure TEI is going to require a <att>context</att>
+        for each and every <gi>sch:assert</gi> and
+        <gi>sch:report</gi>. So I added the
+        <name>schematron_requires_context</name> to enforce that now
+        here. It should be removed if &amp; when TEI creates such a rule.
+      </change>
+      <change who="#SB" when="2023-09-15">
+        In anticipation of TEI adding <gi>interleave</gi>, modify its attributes
+        the same way we modify <gi>sequence</gi> and <gi>alternate</gi>
+      </change>
+      <change who="#SB" when="2023-08-15">
+        Add gloss_and_desc to <gi>classSpec</gi>
+      </change>
+      <change who="#SB" when="2023-06-28">
+        Per request #MH allow gloss or desc element (or both) as child
+        of schemaSpec (by referring to "gloss_amper_desc" macro).
+      </change>
+      <change who="#SB" when="2023-06-27">
+        Fix bug in "gloss_amper_desc" noticed by #MH: The 2nd
+        reference to &lt;gloss> had minOccurs=1 even though it needs
+        to be optional (i.e. minOccurs=0).
+      </change>
       <change who="#SB" when="2023-01-12">
-	Per yesterday’s meeting, require values of <att>start</att> of
-	<gi>schemaSpec</gi> to be the identifier of a defined element.
+        Per yesterday’s meeting, require values of <att>start</att> of
+        <gi>schemaSpec</gi> to be the identifier of a defined element.
       </change>
       <change who="#SB" when="2023-01-11">
-	Per today’s meeting, disallow <gi>gloss</gi> and <gi>desc</gi>
-	from each of <gi>classSpec</gi>, <gi>elementSpec</gi>, and
-	<gi>macroSpec</gi>.
+        Per today’s meeting, disallow <gi>gloss</gi> and <gi>desc</gi>
+        from each of <gi>classSpec</gi>, <gi>elementSpec</gi>, and
+        <gi>macroSpec</gi>.
       </change>
       <change who="#SB" when="2022-12-21">
-	Per today’s meeting, allow a PLODD to have <gi>front</gi> and
-	<gi>revisionDesc</gi>.
+        Per today’s meeting, allow a PLODD to have <gi>front</gi> and
+        <gi>revisionDesc</gi>.
       </change>
       <change who="#SB" when="2022-07-15">
-	Per recent meeting, allow a limited version of
-	<gi>moduleRef</gi>.
+        Per recent meeting, allow a limited version of
+        <gi>moduleRef</gi>.
       </change>
       <change who="#SB" when="2022-06-24">
-	Started from scratch.
+        Started from scratch.
       </change>
     </revisionDesc>
   </teiHeader>
@@ -58,33 +81,33 @@
     <body>
       <div type="section">
         <head>Purpose</head>
-	<p>This schema serves two distinct but <emph>very</emph>
-	closely related purposes. First and foremost, it expresses
-	constraints on the ODD that serves as input to transpilation,
-	i.e. the final derived ODD produced from the last ODD in an
-	ODD-derivation chain. It is pruned (i.e., has no prose bits
-	like <gi>remarks</gi> or <gi>exemplum</gi>) and localized
-	(i.e., there is at most one <gi>gloss</gi> and one <gi>desc</gi> child
-	of any given specification element, presumably in the
-	appropriate natural language).</p>
-	<p>Second, it expresses the constraints on our files used in
-	testing the transpiler before we have built the odd-chaining
-	software. This set of constraints is <emph>exactly</emph> like
-	those for the first purpose, but <gi>front</gi> and
-	<gi>revisionDesc</gi> are also permitted to allow documenting
-	our test procedures.</p>
+        <p>This schema serves two distinct but <emph>very</emph>
+        closely related purposes. First and foremost, it expresses
+        constraints on the ODD that serves as input to transpilation,
+        i.e. the final derived ODD produced from the last ODD in an
+        ODD-derivation chain. It is pruned (i.e., has no prose bits
+        like <gi>remarks</gi> or <gi>exemplum</gi>) and localized
+        (i.e., there is at most one <gi>gloss</gi> and one <gi>desc</gi> child
+        of any given specification element, presumably in the
+        appropriate natural language).</p>
+        <p>Second, it expresses the constraints on our files used in
+        testing the transpiler before we have built the odd-chaining
+        software. This set of constraints is <emph>exactly</emph> like
+        those for the first purpose, but <gi>front</gi> and
+        <gi>revisionDesc</gi> are also permitted to allow documenting
+        our test procedures.</p>
       </div>
       <div type="section">
-	<head>Usage</head>
-	<p>The schemas derived from this ODD are used to validate
-	PLODDs. Generating test PLODDs for the ATOP system without
-	using the ATOP ODD-chaining software (which is necessary
-	before we build the ATOP ODD-chaining software) can be done
-	by either <name type="cmd">generate_test_PLODDs.bash</name>
-	or by <name type="cmd">ant</name> with the <name
-	type="file">build_test_PLODDs.xml</name> build file.</p>
-	<p>That bash program does essentially the following.
-	<eg xml:lang="x-bash">
+        <head>Usage</head>
+        <p>The schemas derived from this ODD are used to validate
+        PLODDs. Generating test PLODDs for the ATOP system without
+        using the ATOP ODD-chaining software (which is necessary
+        before we build the ATOP ODD-chaining software) can be done
+        by either <name type="cmd">generate_test_PLODDs.bash</name>
+        or by <name type="cmd">ant</name> with the <name
+        type="file">build_test_PLODDs.xml</name> build file.</p>
+        <p>That bash program does essentially the following.
+        <eg xml:lang="x-bash">
           $ cd /tmp/
           $ mkdir -p CODDs PLODDs
           $ cp -p `find /path/to/atop -name '*.odd'` CODDs/
@@ -95,11 +118,13 @@
           $ for f in PLODDs/*.xml ; do echo "---------$f:" ; jing -i /path/to/atop/Schemas/ploddSchemaSpecification.rng $f ; echo ; done > /tmp/plodd_errors.txt 
           $ cd /path/to/atop/Lib/morgana
           $ time for f in /tmp/PLODDs/*.xml ; do o=`dirname $f`/`basename $f .xml`.rng ; ./Morgana.sh file:///home/syd/Documents/atop/Util/steps/transpile.xpl -input:source=$f -output:result=$o ; done
-	</eg>
-	</p>	
+        </eg>
+        </p>    
       </div>
     </body>
     <back>
+      <!-- Note: deliberately no source= on <schemaSpec> so that we, the ATOPers,
+           get caught if there is a backwards-incompatible change to P5 ODDs. -->
       <schemaSpec ident="ploddSchemaSpecification" targetLang="en"
                   docLang="en" prefix="plodd_" start="TEI schemaSpec">
         <gloss>derived schema specification</gloss>
@@ -168,12 +193,12 @@
           <content>
             <alternate minOccurs="0" maxOccurs="1">
               <sequence minOccurs="1" maxOccurs="1">
-                <classRef minOccurs="1" maxOccurs="1" key="model.glossLike"/>
+                <elementRef minOccurs="1" maxOccurs="1" key="gloss"/>
                 <classRef minOccurs="0" maxOccurs="1" key="model.descLike"/>
               </sequence>
               <sequence minOccurs="1" maxOccurs="1">
                 <classRef minOccurs="1" maxOccurs="1" key="model.descLike"/>
-                <classRef minOccurs="0" maxOccurs="1" key="model.glossLike"/>
+                <elementRef minOccurs="0" maxOccurs="1" key="gloss"/>
               </sequence>
             </alternate>
           </content>
@@ -197,10 +222,13 @@
 
         <elementSpec ident="schemaSpec" mode="change">
           <content>
-            <alternate minOccurs="1" maxOccurs="unbounded">
-              <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
-              <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
-            </alternate>
+            <sequence minOccurs="1" maxOccurs="1">
+              <macroRef key="gloss_amper_desc"/>
+              <alternate minOccurs="1" maxOccurs="unbounded">
+                <classRef key="model.oddDecl" minOccurs="1" maxOccurs="1"/>
+                <elementRef key="moduleRef" minOccurs="1" maxOccurs="1"/>
+              </alternate>
+            </sequence>
           </content>
           <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
             <constraint>
@@ -242,24 +270,24 @@
             <attDef ident="style"     mode="delete"/>
             <attDef ident="rendition" mode="delete"/>
             <attDef ident="start" mode="change" usage="req">
-	      <constraintSpec ident="only_defined_elements_can_be_starter" scheme="schematron">
-		<constraint>
-		  <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
-		  <!-- Note: this is not really a list of GIs, since
-		       some of the GIs may be created from
-		       <altIdent>. But it is what we want, the list of
-		       patterns, without @prefix, used to refer to
-		       those elements. -->
-		  <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
-		    Each value of @start must be the GI of a defined
-		    element (i.e., equal elementSpec/@ident); one of these
-		    ("<sch:value-of select="."/>") does not. The list
-		    of valid values is "<sch:value-of
-		    select="$GIs"/>".
-		  </sch:assert>
-		</constraint>
-	      </constraintSpec>
-	    </attDef>
+              <constraintSpec ident="only_defined_elements_can_be_starter" scheme="schematron">
+                <constraint>
+                  <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
+                  <!-- Note: this is not really a list of GIs, since
+                       some of the GIs may be created from
+                       <altIdent>. But it is what we want, the list of
+                       patterns, without @prefix, used to refer to
+                       those elements. -->
+                  <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
+                    Each value of @start must be the GI of a defined
+                    element (i.e., equal elementSpec/@ident); one of these
+                    ("<sch:value-of select="."/>") does not. The list
+                    of valid values is "<sch:value-of
+                    select="$GIs"/>".
+                  </sch:assert>
+                </constraint>
+              </constraintSpec>
+            </attDef>
           </attList>
         </elementSpec>
 
@@ -355,6 +383,7 @@
           <content>
             <sequence>
               <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
@@ -372,6 +401,17 @@
           <content>
             <anyElement minOccurs="1" maxOccurs="unbounded" require="http://purl.oclc.org/dsdl/schematron http://www.schematron-quickfix.com/validator/process"/>
           </content>
+          <constraintSpec scheme="schematron" ident="schematron_requires_context">
+            <constraint>
+              <sch:rule context="tei:constraint[ .//sch:assert | .//sch:report ]">
+                <sch:let name="we_need_context" value=".//sch:assert|.//sch:report"/>
+                <sch:let name="we_have_context" value="for $e in $we_need_context return $e/ancestor::sch:*[@context][1]"/>
+                <sch:report test="count( $we_need_context ) > count( $we_have_context )">
+                  Uh-oh. One or more sch:assert or sch:report elements in this constraint do not have a context explicitly specified.
+                </sch:report>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
           <attList>
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
@@ -571,6 +611,14 @@
         </elementSpec>
 
         <elementSpec ident="sequence" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="interleave" mode="change">
           <attList>
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>

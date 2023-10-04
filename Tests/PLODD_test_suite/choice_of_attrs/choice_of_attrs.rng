@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+             xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             xmlns="http://www.tei-c.org/ns/1.0"
+             xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+             xmlns:at="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs"
+             xmlns:atop="http://www.tei-c.org/ns/atop"
+             xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+             xmlns:map="http://www.w3.org/2005/xpath-functions/map">
+   <rng:start>
+      <rng:choice>
+         <rng:ref name="coa_tests"/>
+      </rng:choice>
+   </rng:start>
+   <rng:define name="atop_test_string">
+      <rng:text/>
+   </rng:define>
+   <rng:define name="coa_tests">
+      <rng:element name="tests"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <group xmlns="http://relaxng.org/ns/structure/1.0">
+            <rng:ref name="coa_group"/>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group"/>
+            </rng:optional>
+            <rng:ref name="coa_choice"/>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice"/>
+            </rng:optional>
+            <rng:ref name="coa_choice-in-group"/>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-group"/>
+            </rng:optional>
+            <rng:ref name="coa_group-in-choice"/>
+            <rng:ref name="coa_group-in-choice"/>
+            <rng:ref name="coa_group-in-choice"/>
+            <rng:ref name="coa_group-in-choice"/>
+            <rng:optional>
+               <rng:ref name="coa_group-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_group-in-choice"/>
+            </rng:optional>
+            <rng:ref name="coa_choice-in-choice"/>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+            <rng:optional>
+               <rng:ref name="coa_choice-in-choice"/>
+            </rng:optional>
+         </group>
+      </rng:element>
+   </rng:define>
+   <rng:define name="coa_group">
+      <rng:element name="group"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <rng:text/>
+         <rng:group>
+            <rng:attribute name="req1"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:attribute name="req2"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:attribute name="req3"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+         </rng:group>
+      </rng:element>
+   </rng:define>
+   <rng:define name="coa_choice">
+      <rng:element name="choice"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <rng:text/>
+         <rng:choice>
+            <rng:attribute name="alt1"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:attribute name="alt2"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:attribute name="alt3"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+         </rng:choice>
+      </rng:element>
+   </rng:define>
+   <rng:define name="coa_choice-in-group">
+      <rng:element name="choice-in-group"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <rng:text/>
+         <rng:group>
+            <rng:attribute name="req1"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:attribute name="req2"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:choice>
+               <rng:attribute name="alt1"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt2"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt3"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+            </rng:choice>
+            <rng:attribute name="req3"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+         </rng:group>
+      </rng:element>
+   </rng:define>
+   <rng:define name="coa_group-in-choice">
+      <rng:element name="group-in-choice"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <rng:text/>
+         <rng:choice>
+            <rng:attribute name="alt1"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:group>
+               <rng:attribute name="alt2req1"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt2req2"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt2req3"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+            </rng:group>
+            <rng:group>
+               <rng:attribute name="alt3req1"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt3req2"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt3req3"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+            </rng:group>
+            <rng:attribute name="alt4"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+         </rng:choice>
+      </rng:element>
+   </rng:define>
+   <rng:define name="coa_choice-in-choice">
+      <rng:element name="choice-in-choice"
+                   ns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+         <rng:text/>
+         <rng:choice>
+            <rng:attribute name="alt1"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+            <rng:choice>
+               <rng:attribute name="alt2alt1"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt2alt2"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt2alt3"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+            </rng:choice>
+            <rng:choice>
+               <rng:attribute name="alt3alt1"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt3alt2"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+               <rng:attribute name="alt3alt3"
+                              ns="">
+                  <rng:text/>
+               </rng:attribute>
+            </rng:choice>
+            <rng:attribute name="alt4"
+                           ns="">
+               <rng:text/>
+            </rng:attribute>
+         </rng:choice>
+      </rng:element>
+   </rng:define>
+</rng:grammar>

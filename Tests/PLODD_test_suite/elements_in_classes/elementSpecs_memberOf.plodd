@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>base ODD for testing class membership of element specifications</title>
+        <author>ATOP Task Force</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Published by TEI-C on their ATOP repository site.</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <schemaSpec ident="elmem" prefix="elm_" ns="http://www.tei-c.org/ns/atop/test_suite" start="transfusion">
+	<classSpec ident="model.ONE" type="model"/>
+	<classSpec ident="att.uno" type="atts">
+	  <attList>
+	    <attDef ident="ich">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef name="nonNegativeInteger"/>
+	      </datatype>
+	    </attDef>
+	  </attList>
+	</classSpec>
+	<classSpec ident="model.subONE" type="model">
+	  <classes>
+	    <memberOf key="mode.ONE"/>
+	  </classes>
+	</classSpec>
+
+	<elementSpec ident="transfusion">
+	  <content>
+	    <sequence>
+	      <elementRef key="univRecipient"/>
+	      <elementRef key="univDonor"/>
+	      <elementRef key="other_ONE"/>
+	      <elementRef key="other_subONE"/>
+	      <elementRef key="ONE_with_att"/>
+	      <elementRef key="subONE_with_att"/>
+	    </sequence>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="A">
+	  <classes>
+	    <memberOf key="model.ONE"/>
+	  </classes>
+	</elementSpec>
+
+	<elementSpec ident="B">
+	  <classes>
+	    <memberOf key="model.ONE"/>
+	  </classes>
+	</elementSpec>
+
+	<elementSpec ident="O">
+	  <content><empty/></content>
+	</elementSpec>
+
+	<elementSpec ident="AB">
+	  <classes>
+	    <memberOf key="att.uno"/>
+	    <memberOf key="model.subONE"/>
+	  </classes>
+	  <content><empty/></content>
+	</elementSpec>
+
+	<elementSpec ident="univRecipient">
+	  <content>
+	    <elementRef key="AB"/>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="univDonor">
+	  <content>
+	    <elementRef key="O"/>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="other_ONE">
+	  <content>
+	    <classRef key="model.ONE"/>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="other_subONE">
+	  <content>
+	    <classRef key="model.subONE"/>
+	  </content>
+	</elementSpec>
+
+	<elementSpec ident="ONE_with_att">
+	  <classes>
+	    <memberOf key="att.uno"/>
+	  </classes>
+	  <content>
+	    <classRef key="model.ONE"/>
+	  </content>
+	</elementSpec>
+	
+	<elementSpec ident="subONE_with_att">
+	  <classes>
+	    <memberOf key="att.uno"/>
+	  </classes>
+	  <content>
+	    <classRef key="model.subONE"/>
+	  </content>
+	</elementSpec>
+	
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

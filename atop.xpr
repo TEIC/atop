@@ -58,7 +58,7 @@
                                 <field name="schemaDescriptor">
                                     <docTypeSchema>
                                         <field name="type">
-                                            <Integer>2</Integer>
+                                            <Integer>6</Integer>
                                         </field>
                                         <field name="uri">
                                             <String>${pdu}/Schemas/ploddSchemaSpecification.rng</String>
@@ -2138,6 +2138,10 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
                         </documentTypeEntry-array>
                     </entry>
                     <entry>
+                        <String>enable.project.master.files.support</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
                         <String>key.editor.document.type.association.option.pane</String>
                         <Boolean>true</Boolean>
                     </entry>
@@ -2148,6 +2152,46 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
                     <entry>
                         <String>scenario.associations</String>
                         <scenarioAssociation-array>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>Schemas/ploddSchemaSpecification.odd</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>4/tei/teip5odd.framework/TEI ODD/TEI ODD to RelaxNG XML</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>ANT</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioStorageLocations">
+                                    <list>
+                                        <Byte>2</Byte>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>Tests/PLODD_test_suite/altIdents_and_nss/altIdents_and_nss.plodd</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>4/tei/teip5odd.framework/TEI ODD/TEI ODD to RelaxNG XML</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>ANT</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioStorageLocations">
+                                    <list>
+                                        <Byte>2</Byte>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
                             <scenarioAssociation>
                                 <field name="url">
                                     <String>Util/steps/transpile.xpl</String>
@@ -2350,6 +2394,9 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
         </options>
     </meta>
     <projectTree name="atop.xpr">
+        <folder masterFiles="true" name="Main Files">
+            <file name="XSLT/transpile.xslt"/>
+        </folder>
         <folder path="."/>
     </projectTree>
 </project>

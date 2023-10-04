@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description xmlns="http://www.jenitennison.com/xslt/xspec"
+             original-xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+             schematron="file:/home/dmaus/projects/schematron/schematron-schematron/src/main/resources/content/schematron.sch"
+             stylesheet="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/xspec/schematron-sch-preprocessed.xsl">
+   <xspec:scenario xmlns=""
+                   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                   xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                   xslt-version="3"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                   label="XSLT 2.0 query language binding">
+      <xspec:scenario xslt-version="3"
+                      xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                      label="The generate-id() function">
+         <xspec:context select="self::document-node()">
+            <sch:rule context="element[generate-id()]"/>
+         </xspec:context>
+         <xspec:expect label="not report unknown-function"
+                       test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unknown-function'])"/>
+      </xspec:scenario>
+      <xspec:scenario xslt-version="3"
+                      xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                      label="Namespace prefixes in QNames">
+         <xspec:scenario xslt-version="3"
+                         xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                         label="QName with undeclared prefix">
+            <xspec:context select="self::document-node()">
+               <sch:schema queryBinding="xslt2">
+                  <sch:pattern>
+                     <sch:rule context="@undeclared:lang"/>
+                  </sch:pattern>
+               </sch:schema>
+            </xspec:context>
+            <xspec:expect label="report unbound-qname-ns"
+                          test="exists(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+         </xspec:scenario>
+         <xspec:scenario xslt-version="3"
+                         xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                         label="QName with xml: prefix">
+            <xspec:context select="self::document-node()">
+               <sch:schema queryBinding="xslt2">
+                  <sch:pattern>
+                     <sch:rule context="@xml:lang"/>
+                  </sch:pattern>
+               </sch:schema>
+            </xspec:context>
+            <xspec:expect label="not report unbound-qname-ns"
+                          test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+         </xspec:scenario>
+      </xspec:scenario>
+   </xspec:scenario>
+   <xspec:scenario xmlns=""
+                   xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                   xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
+                   xslt-version="3"
+                   xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                   label="XSLT 3.0 query language binding">
+      <xspec:scenario xslt-version="3"
+                      xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                      label="The generate-id() function">
+         <xspec:context select="self::document-node()">
+            <sch:schema queryBinding="xslt3">
+               <sch:pattern>
+                  <sch:rule context="element[generate-id()]"/>
+               </sch:pattern>
+            </sch:schema>
+         </xspec:context>
+         <xspec:expect label="not report unknown-function"
+                       test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unknown-function'])"/>
+      </xspec:scenario>
+      <xspec:scenario xslt-version="3"
+                      xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                      label="Namespace prefixes in QNames">
+         <xspec:scenario xslt-version="3"
+                         xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                         label="QName with undeclared prefix">
+            <xspec:context select="self::document-node()">
+               <sch:schema queryBinding="xslt3">
+                  <sch:pattern>
+                     <sch:rule context="@undeclared:lang"/>
+                  </sch:pattern>
+               </sch:schema>
+            </xspec:context>
+            <xspec:expect label="report unbound-qname-ns"
+                          test="exists(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+         </xspec:scenario>
+         <xspec:scenario xslt-version="3"
+                         xspec="file:/home/dmaus/projects/schematron/schematron-schematron/src/test/xspec/schematron.xspec"
+                         label="QName with xml: prefix">
+            <xspec:context select="self::document-node()">
+               <sch:schema queryBinding="xslt3">
+                  <sch:pattern>
+                     <sch:rule context="@xml:lang"/>
+                  </sch:pattern>
+               </sch:schema>
+            </xspec:context>
+            <xspec:expect label="not report unbound-qname-ns"
+                          test="Q{http://purl.oclc.org/dsdl/svrl}schematron-output[Q{http://purl.oclc.org/dsdl/svrl}fired-rule] and empty(Q{http://purl.oclc.org/dsdl/svrl}schematron-output/Q{http://purl.oclc.org/dsdl/svrl}successful-report[(@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}fired-rule[1]/@id, preceding-sibling::Q{http://purl.oclc.org/dsdl/svrl}active-pattern[1]/@id)[1] = 'unbound-qname-ns'])"/>
+         </xspec:scenario>
+      </xspec:scenario>
+   </xspec:scenario>
+</description>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+        This is an invalid instance file for the content_with_elementRefs test 
+        file. It contains violations of all the key structures represented in the
+        schema.
+    -->
+<test_elements xmlns="http://www.tei-c.org/ns/atop/test_suite">
+    <IAmSequence>
+        <seq3/>
+        <seq2/>
+        <seq1/>
+    </IAmSequence>
+    <IAmAlternate>
+        <alt1/>
+        <alt2/>
+    </IAmAlternate>
+    <IAmSequenceOfAlternates>
+        <alt6/>
+        <alt2/>
+    </IAmSequenceOfAlternates>
+    <IAmAlternateOfSequences>
+        <seq1/>
+        <seq5/>
+        <seq6/>
+    </IAmAlternateOfSequences>
+    <IAmEmpty>
+        <seq1/>
+    </IAmEmpty>
+</test_elements>

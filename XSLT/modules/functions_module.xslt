@@ -213,7 +213,7 @@
   <xd:doc>
     <xd:desc><xd:ref name="atop:get-pattern-name"/>: Construct a viable pattern
       name for an RNG pattern created from a TEI classSpec, dataSpec, elementSpec, or macroSpec element. Delegates to <xd:ref name="atop:get-class-pattern-name"/>, <xd:ref name="atop:get-datatype-pattern-name"/>, <xd:ref name="atop:get-element-pattern-name"/>, or <xd:ref name="atop:get-macro-pattern-name"/> respectively.</xd:desc>
-    <xd:param name="pDataSpec">The dataSpec element for which a pattern name is required.</xd:param>
+    <xd:param name="pSpec">The dataSpec element for which a pattern name is required.</xd:param>
     <xd:return>A string value suitable for a pattern name.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-pattern-name" as="xs:string">
@@ -246,7 +246,7 @@
     <xd:param name="pSchemaSpec">The schemaSpec containing the parameter classSpec.</xd:param>
     <xd:param name="pClassSpecSeen">A list of zero or more classSpecs which have already been retrieved,
     used to check for circularity issues.</xd:param>
-    <xd:return>A sequence of zero or more classSpec or elementSpecs elements.</xd:return>
+    <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
   </xd:doc>
   <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
@@ -400,5 +400,134 @@
     </xsl:choose>
 
   </xsl:function>
-
+  
+  
+  <!-- NOTE: Questions for the ATOP team: Should we care about namespace declarations 
+       using sch:ns elements? -->
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-nearest-ns"/>: Gets the namespace-uri which is closest in 
+    the hierarchy for a tagdocs element. This function gets to work on a number of assumptions
+    because it will be called on elements from a PLODD file, not a file earlier in the
+    process.</xd:desc>
+    <xd:param name="pEl" as="element()">The PLODD file element for which we need to derive 
+      the namespace.</xd:param>
+    <xd:return as="xs:string">The nearest namespace, if any is defined; otherwise, 
+      the defaults, which are the empty string (for attDefs) or the TEI namespace 
+      (for other contexts).</xd:return>
+  </xd:doc>
+  <!-- NOTE: The new constraintDecl element which may appear should be 
+       handled here. -->
+  <xsl:function name="atop:get-nearest-ns" as="xs:string">
+    <xsl:param name="pEl" as="element()"/>
+    <xsl:variable name="vScopeEl" as="element()" select="$pEl/ancestor-or-self::*[self::attDef or self::elementSpec or self::schemaSpec][1]"/>
+    <xsl:choose>
+      <xsl:when test="$vScopeEl/self::attDef">
+        <xsl:sequence select="if ($vScopeEl/@ns) then $vScopeEl/@ns else ''"/>
+      </xsl:when>
+      <xsl:when test="$vScopeEl/@ns"><xsl:sequence select="$vScopeEl/@ns"/></xsl:when>
+      <xsl:when test="$vScopeEl/ancestor::*[@ns]"><xsl:sequence select="$vScopeEl/ancestor::*[@ns][1]/@ns"/></xsl:when>
+      <xsl:otherwise>
+        <!-- NOTE: we should use one of the global variables, but for testing the 
+             XSpec only knows about the functions module. Needs discussion. -->
+        <xsl:sequence select="'http://www.tei-c.org/ns/1.0'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-schematron-context"/>: Given a context (which is a Schematron
+      fragment, inside a constraint element, but lacking @context), derive XPath to serve 
+      as the @context value in a fully-realized Schematron rule. This is heavily based on 
+      SB's code in extract-isosch.xsl.
+    </xd:desc>
+    <xd:param name="pContext" as="element()">The highest-level Schematron element for 
+    which a context needs to be derived.</xd:param>
+    <xd:param name="pMapSchNs" as="map(xs:string, xs:string)">A map in which every prefix and namespace is a key to its
+      corresponding namespace or prefix.</xd:param>
+    <xd:return>A string value suitable for use as @context on a Schematron rule.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-schematron-context" as="xs:string">
+    <xsl:param name="pContext" as="element()"/>
+    <xsl:param name="pMapSchNs" as="map(xs:string, xs:string)"/>
+    <xsl:choose>
+      <xsl:when test="$pContext/ancestor::attDef[ancestor::elementSpec]">
+        <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
+        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
+        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vElNs)) then map:get($pMapSchNs, $vElNs) || ':' else 'tei:'"/>
+        <xsl:variable name="vAttName" as="xs:string" select="$pContext/ancestor::attDef[1]/@ident"/>
+        <xsl:variable name="vAttNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::attDef[1])"/>
+        <xsl:variable name="vAttPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vAttNs)) then map:get($pMapSchNs, $vAttNs) || ':' else ''"/>
+        <xsl:sequence select="$vElPrefix || $vElName || '/@' || $vAttPrefix || $vAttName"/>
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::elementSpec">
+        <xsl:variable name="vElName" as="xs:string" select="$pContext/ancestor::elementSpec/@ident"/>
+        <xsl:variable name="vElNs" as="xs:string" select="atop:get-nearest-ns($pContext/ancestor::elementSpec)"/>
+        <xsl:variable name="vElPrefix" as="xs:string" select="if (map:contains($pMapSchNs, $vElNs)) then map:get($pMapSchNs, $vElNs) || ':' else 'tei:'"/>
+        <xsl:sequence select="$vElPrefix || $vElName"/>
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::classSpec">
+        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a classSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::macroSpec">
+        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
+      </xsl:when>
+      <xsl:when test="$pContext/ancestor::schemaSpec">
+        <xsl:sequence select="'/'"/>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:function>
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:get-sch-ns-prefix-map"/>: Given a context (which is typically 
+    an XML document such as a PLODD file), construct a two-way map whereby every declared 
+    Schematron namespace is a key to a single prefix for that namespace, and every distinct 
+    prefix is a key to its matching namespace. This enables us to quickly look up the correct
+    ns for any prefix, or prefix for any ns, when processing Schematron fragments, and 
+    also to generate a collection of ns elements covering all the Schematron in the document.</xd:desc>
+    <xd:param name="pContext" as="node()">The context to process, which may be a complete document.</xd:param>
+    <xd:return as="map(xs:string, xs:string)">A map in which every prefix and namespace is a key to its
+    corresponding namespace or prefix.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:get-sch-ns-prefix-map" as="map(xs:string, xs:string)" new-each-time="no">
+    <xsl:param name="pContext" as="node()"/>
+    <xsl:variable name="vExplicitNs" as="element(sch:ns)*" select="$pContext/descendant::sch:ns"/>
+    <!-- Code thanks to @dmaus. -->
+    <xsl:variable name="vNamespaces" as="element(sch:ns)*">
+      <xsl:iterate select="$pContext/descendant::sch:*">
+        <xsl:param name="pNs" as="element(sch:ns)*" select="$vExplicitNs"/>
+        <xsl:on-completion select="$pNs"/>
+        <xsl:variable name="vCurrent" as="element()" select="."/>
+        <xsl:next-iteration>
+          <xsl:with-param name="pNs" as="element(sch:ns)*">
+            <xsl:sequence select="$pNs"/>
+            <xsl:for-each select="in-scope-prefixes($vCurrent)[not(. = ('', 'xml'))]">
+              <xsl:choose>
+                <xsl:when test="empty($pNs[@prefix eq current()])">
+                  <sch:ns prefix="{.}" uri="{namespace-uri-for-prefix(., $vCurrent)}"/>
+                </xsl:when>
+                <!-- We only warn when a prefix is used for two different namespaces; we discard all but the first. -->
+                <xsl:when test="$pNs[@prefix eq current()]/@uri ne namespace-uri-for-prefix(., $vCurrent)">
+                  <xsl:message expand-text="yes">WARNING: Ambiguous in-scope namespace declaration for prefix {.}</xsl:message>
+                </xsl:when>
+              </xsl:choose>
+            </xsl:for-each>
+          </xsl:with-param>
+        </xsl:next-iteration>
+      </xsl:iterate>
+      <!-- We also need any declarations in @ns attributes, which won't necessarily have discoverable prefixes. -->
+      <xsl:for-each select="$pContext/descendant::*[@ns]">
+        <sch:ns prefix="{generate-id(.)}" uri="{@ns}"/>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:map>
+      <xsl:for-each select="distinct-values($vNamespaces/@uri)">
+        <xsl:variable name="vCurrNs" as="xs:string" select="."/>
+        <xsl:message select="$vCurrNs"/>
+        <xsl:variable name="vCurrNs" as="element(sch:ns)" select="$vNamespaces[@uri=$vCurrNs][1]"/>
+        <xsl:map-entry key="xs:string($vCurrNs/@prefix)" select="xs:string($vCurrNs/@uri)"/>
+        <xsl:map-entry key="xs:string($vCurrNs/@uri)" select="xs:string($vCurrNs/@prefix)"/>
+      </xsl:for-each>
+    </xsl:map>
+  </xsl:function>
+  
 </xsl:stylesheet>

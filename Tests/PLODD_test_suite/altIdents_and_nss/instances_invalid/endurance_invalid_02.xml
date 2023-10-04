@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ts:sandefjord xmlns:ts="http://www.tei-c.org/ns/atop/test_suite"
+	    >
+  <ts:polaris xmlns="http://www.tei-c.org/ns/atop/test_suite"
+      	      xmlns:sir="http://www.tei-c.org/ns/atop/test_suite/sir"
+	      xmlns:si="https://en.wikipedia.org/wiki/International_System_of_Units"
+	      sir:christened="1912-12-17" length="44" beam="7.6">
+    <sir:shackleton/>
+    <sir:wild/>
+    <si:worsley/>
+    <ts:greenstreet/>
+    <crean/>
+    <cheetham/>
+    <hudson/>
+    <rickinson/>
+    <kerr/>
+    <macklin/>
+    <mcilroy/>
+    <sir:wordie/>
+    <hussey/>
+    <james/>
+    <clark/>
+    <hurley/>
+    <marston/>
+    <orde-Lees/>
+    <chippy/>
+    <green/>
+    <how/>
+    <bakewell/>
+    <mccarthy/>
+    <mcleod/>
+    <vincent/>
+    <holness/>
+    <stephenson/>
+    <blackborow/>
+  </ts:polaris>
+
+  <endurance xmlns="http://www.tei-c.org/ns/atop/test_suite">
+    <ErnestHenryShackletonOBE/>
+    <wild/>
+    <worsley/>
+    <greenstreet/>
+    <crean/>
+    <cheetham/>
+    <hudson/>
+    <rickinson/>
+    <kerr/>
+    <macklin/>
+    <mcilroy/>
+    <sir:wordie/>
+    <hussey/>
+    <james/>
+    <clark/>
+    <hurley/>
+    <marston/>
+    <orde-Lees/>
+    <chippy/>
+    <green/>
+    <how/>
+    <bakewell/>
+    <mccarthy/>
+    <mcleod/>
+    <vincent/>
+    <holness/>
+    <stephenson/>
+    <blackborow/>
+  </endurance>
+
+</ts:sandefjord>
