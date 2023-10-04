@@ -1,0 +1,118 @@
+<project basedir="." default="release">
+  <description>
+    This Ant build file generates a release package including only the 
+    components required by end users to process ODDs, along with end-user
+    documentation.
+  </description>
+  
+  <!-- Include ant-contrib. -->
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  
+  <!-- Used to make messages easier to separate. -->
+  <property name="echo.separator" value="************************************************"/>
+  
+  <!-- Handy property for today's date (in W3C)-->
+  <tstamp>
+    <format property="today" pattern="yyyy-MM-dd"/>
+  </tstamp>
+  
+  <!-- Get the current version number. -->
+  <loadfile property="versionRaw" srcfile="${basedir}/VERSION.txt"/>
+  
+  <!-- Make it usable. -->
+  <propertyregex property="versionUntrimmed"
+    input="${versionRaw}"
+    regexp="\."
+    replace="_"
+    global="true" />
+  
+  <!-- Trim any whitespace. -->
+  <propertyregex property="version"
+    input="${versionUntrimmed}"
+    regexp="\s+"
+    replace=""
+    defaultvalue="${versionUntrimmed}"
+    global="true" />
+  
+  <echo message="${version}"/>
+  
+  <!-- Build the folder/filename using date and version. -->
+  <property name="fName" value="atop_${version}_${today}"/>
+  
+  <!-- Fileset of all the files we need for processing. -->
+  <fileset id="processingFiles" dir="${basedir}">
+    <include name="README.md"/>
+    <include name="VERSION.txt"/>
+    <include name="Util/**"/>
+    <include name="build.xml"/>
+    <include name="buildGlobals.xml"/>
+    <include name="LICENSE.md"/>
+    <include name="XSLT/assemble-relaxng.xslt"/>
+    <include name="XSLT/extract-schematron.xslt"/>
+    <include name="XSLT/transpile.xslt"/>    
+    <include name="XSLT/modules/functions_module.xslt"/>
+    <include name="Schemas/ploddSchemaSpecification.rng"/>
+    <include name="Schemas/pre-transpile.sch"/>
+    <include name="Schemas/relaxng.rnc"/>
+    <include name="Schemas/schematron.rnc"/>
+    <include name="Schemas/schematron.sch"/>
+    <include name="Lib/**"/>
+    <exclude name="Lib/xspec/**"/>
+  </fileset>
+  
+  <!-- Fileset of end-user documentation. TO BE CREATED. -->
+  <fileset id="documentation" dir="${basedir}">
+    <include name="Documentation/end-user/**"/>
+  </fileset>
+  
+  <target name="clean">
+    <description>
+      TARGET clean
+      This creates the release folder if needed, or empties it
+      if it already exists.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Setting up release build in release/${fName}..."/>
+    <mkdir dir="${basedir}/release/${fName}"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${basedir}/release/${fName}">
+        <include name="*"/>
+        <include name="**/*"/>
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="copyFiles">
+    <description>
+      TARGET copyFiles
+      Copies all required files to the release folder.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Copying files..."/>
+    <copy todir="${basedir}/release/${fName}">
+      <fileset refid="processingFiles"/>
+      <fileset refid="documentation"/>
+    </copy>
+  </target>
+  
+  <target name="zipResults">
+    <description>
+      TARGET zipResults
+      This creates a zip archive of the release package.
+    </description>
+    <echo message="${echo.separator}"/>
+    <echo message="Creating a zip archive."/>
+    <zip destfile="${basedir}/release/${fName}.zip" basedir="${basedir}/release/${fName}"/>
+  </target>
+
+  <target name="release">
+    <description>
+      TARGET release
+      This runs the entire process.
+    </description>
+    <antcall target="clean"/>
+    <antcall target="copyFiles"/>
+    <antcall target="zipResults"/>
+  </target>
+
+</project>

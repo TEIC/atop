@@ -53,7 +53,7 @@
   <!--##### TESTING-RELATED PROPERTIES #####-->
   
   <!--Current PLODD for testing transpile step.-->
-  <property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>
+  <!--<property name="inputTestPlodd" value="${basedir}/Tests/resources/in_vitro_ODDs/transpile.plodd"/>-->
   
 
   
