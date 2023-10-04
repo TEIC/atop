@@ -139,7 +139,7 @@
     </description>
     <echo message="Transpiling ${inFile}"/>
     <ant antfile="${basedir}/build.xml" target="transpilePlodd">
-      <property name="inputTestPlodd" value="${inFile}"/>
+      <property name="inputPlodd" value="${inFile}"/>
     </ant>
   </target>
   
