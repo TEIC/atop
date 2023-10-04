@@ -284,22 +284,17 @@ ignored and the members of the value list are provided.
   </xsl:template>
 
   <!-- Process members of model.contentPart -->
-  <xsl:template match="alternate" as="element()*">
+  <xsl:template match="sequence | interleave | alternate" as="element()*">
+    <xsl:variable name="vRngOutputElementName" as="xs:NCName">
+      <xsl:choose>
+        <xsl:when test="self::alternate">choice</xsl:when>
+        <xsl:when test="self::sequence[ not( @preserveOrder eq 'false') ]">group</xsl:when>
+        <xsl:otherwise>interleave</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:call-template name="atop:repeat-content">
-      <xsl:with-param name="pContent" as="element()*">
-        <rng:choice>
-          <xsl:apply-templates/>
-        </rng:choice>
-      </xsl:with-param>
-      <xsl:with-param name="pMinOccurrence" as="xs:integer?" select="@minOccurs"/>
-      <xsl:with-param name="pMaxOccurrence" as="xs:string?" select="@maxOccurs"/>
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template match="sequence" as="element()*">
-    <xsl:call-template name="atop:repeat-content">
-      <xsl:with-param name="pContent" as="element()*">
-        <xsl:element name="{if (@preserveOrder eq 'false') then 'interleave' else 'group'}" namespace="http://relaxng.org/ns/structure/1.0">
+      <xsl:with-param name="pContent" as="element()">
+        <xsl:element name="{$vRngOutputElementName}" namespace="http://relaxng.org/ns/structure/1.0">
           <xsl:apply-templates/>
         </xsl:element>
       </xsl:with-param>
@@ -342,6 +337,10 @@ ignored and the members of the value list are provided.
       </xsl:message>
     </xsl:if>
 
+    <!-- This chunk of code (that deals with @generate) should be
+         removed as soon as TEI has deprecated and removed that
+         attribute. (See https://github.com/TEIC/TEI/issues/2369.)
+         — Syd, 2023-09-20 -->
     <!-- Create reference to class members -->
     <xsl:variable name="vExpand" as="xs:string" select="(@expand, 'alternation')[1]"/>
     <xsl:if test="exists(tokenize($vClassSpec/@generate))">

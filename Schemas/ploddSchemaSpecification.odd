@@ -28,6 +28,20 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2023-09-19">
+        We are 99% sure TEI is going to require a <att>context</att>
+        for each and every <gi>sch:assert</gi> and
+        <gi>sch:report</gi>. So I added the
+        <name>schematron_requires_context</name> to enforce that now
+        here. It should be removed if &amp; when TEI creates such a rule.
+      </change>
+      <change who="#SB" when="2023-09-15">
+        In anticipation of TEI adding <gi>interleave</gi>, modify its attributes
+        the same way we modify <gi>sequence</gi> and <gi>alternate</gi>
+      </change>
+      <change who="#SB" when="2023-08-15">
+        Add gloss_and_desc to <gi>classSpec</gi>
+      </change>
       <change who="#SB" when="2023-06-28">
         Per request #MH allow gloss or desc element (or both) as child
         of schemaSpec (by referring to "gloss_amper_desc" macro).
@@ -368,6 +382,7 @@
           <content>
             <sequence>
               <elementRef key="altIdent" minOccurs="0" maxOccurs="1"/>
+              <macroRef key="gloss_amper_desc"/>
               <elementRef key="classes" minOccurs="0" maxOccurs="1"/>
               <elementRef key="constraintSpec" minOccurs="0" maxOccurs="unbounded"/>
               <elementRef key="attList" minOccurs="0" maxOccurs="1"/>
@@ -384,6 +399,17 @@
           <content>
             <anyElement minOccurs="1" maxOccurs="unbounded" require="http://purl.oclc.org/dsdl/schematron http://www.schematron-quickfix.com/validator/process"/>
           </content>
+          <constraintSpec scheme="schematron" ident="schematron_requires_context">
+            <constraint>
+              <sch:rule context="tei:constraint[ .//sch:assert | .//sch:report ]">
+                <sch:let name="we_need_context" value=".//sch:assert|.//sch:report"/>
+                <sch:let name="we_have_context" value="for $e in $we_need_context return $e/ancestor::sch:*[@context][1]"/>
+                <sch:report test="count( $we_need_context ) > count( $we_have_context )">
+                  Uh-oh. One or more sch:assert or sch:report elements in this constraint do not have a context explicitly specified.
+                </sch:report>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
           <attList>
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>
@@ -583,6 +609,14 @@
         </elementSpec>
 
         <elementSpec ident="sequence" mode="change">
+          <attList>
+            <attDef ident="rend"      mode="delete"/>
+            <attDef ident="style"     mode="delete"/>
+            <attDef ident="rendition" mode="delete"/>
+          </attList>
+        </elementSpec>
+
+        <elementSpec ident="interleave" mode="change">
           <attList>
             <attDef ident="rend"      mode="delete"/>
             <attDef ident="style"     mode="delete"/>

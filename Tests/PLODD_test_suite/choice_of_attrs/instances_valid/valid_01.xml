@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+  <group req1="a" req2="b" req3="c"/>
+  <choice alt1="d"/>
+  <choice alt2="e"/>
+  <choice-in-group alt1="f" req1="g" req2="h" req3="i"/>
+  <choice-in-group req1="j" alt2="k" req2="l" req3="m"/>
+  <choice-in-group req1="n" req2="o" alt3="p" req3="q"/>
+  <group-in-choice alt1="r"/>
+  <group-in-choice alt2req1="s" alt2req2="t" alt2req3="u"/>
+  <group-in-choice alt3req1="v" alt3req2="w" alt3req3="x"/>
+  <group-in-choice alt4="y"/>
+  <choice-in-choice alt1="z"/>
+  <choice-in-choice alt2alt2="a"/>
+  <choice-in-choice alt3alt3="b"/>
+  <choice-in-choice alt4="c"/>
+</tests>

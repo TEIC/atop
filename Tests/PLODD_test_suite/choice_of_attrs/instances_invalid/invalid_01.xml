@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns="http://www.tei-c.org/ns/atop/test_suite/choice_of_attrs">
+  <!-- Invalid due to missing attr -->
+  <group               req2="val_01" req3="val_02"/>
+  <group req1="val_03"               req3="val_04"/>
+  <group req1="val_05" req2="val_06"              />
+
+  <!-- Invalid due to missing attr -->
+  <choice/>
+
+  <!-- Invalid due to extra attr -->
+  <choice alt1="val_07" alt2="val_08"/>
+
+  <!-- Invalid due to missing attr -->
+  <choice-in-group alt1="val_09"               req2="val_10" req3="val_11"/>
+  <choice-in-group req1="val_12" alt2="val_13"               req3="val_14"/>
+  <choice-in-group req1="val_15" req2="val_16" alt3="val_17"              />
+
+  <!-- Invalid due to extra attr -->
+  <choice-in-group alt1="val_18" req1="val_19" req2="val_20" req3="val_21" alt2="val_22"/>
+  <choice-in-group req1="val_23" alt2="val_24" req2="val_25" req3="val_26" alt3="val_27"/>
+  <choice-in-group req1="val_28" req2="val_29" alt3="val_30" req3="val_31" alt1="val_32"/>
+
+  <!-- Invalid due to missing attr -->
+  <group-in-choice/>
+  <group-in-choice alt2req1="val_33"                   alt2req3="val_34"/>
+  <group-in-choice alt3req1="val_35" alt3req2="val_36"                  />
+
+  <!-- Invalid due to extra attr -->
+  <group-in-choice alt1="val_37" alt2req1="val_38"/>
+  <group-in-choice alt2req1="val_39" alt2req2="val_40" alt2req3="val_41" alt3req1="val_42"/>
+  <group-in-choice alt3req1="val_43" alt3req2="val_44" alt3req3="val_45" alt4="val_46"/>
+
+  <!-- Invalid due to missing attr -->
+  <choice-in-choice/>
+
+  <!-- Invalid due to extra attr -->
+  <choice-in-choice alt1="val_47" alt2alt2="val_48"/>
+  <choice-in-choice alt2alt2="val_49" alt3alt3="val_50"/>
+  <choice-in-choice alt1="val_51" alt4="val_52"/>
+
+</tests>

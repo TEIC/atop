@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0">
   <teiHeader>
     <fileDesc>
@@ -22,26 +22,10 @@
 	  <gloss xml:lang="en">Sandefjord, NO</gloss>
 	  <desc xml:lang="en">
 	    City in which the <name type="ship">Polaris</name> was
-	    originally built. Contains a reference to 1 or 2
-	    <gi>polaris</gi> elements and to 0–3 <gi>endurance</gi>
-	    elements. Note that those two (<gi>polaris</gi> and
-	    <gi>endurance</gi>) are the same element, with <name
-	    type="alt">endurance</name> an alternate name for
-	    <ident>polaris</ident>. Thus only the the reference to
-	    <gi>polaris</gi> should be resolved. (From which we should
-	    get a RELAX NG <emph>pattern</emph> name that includes
-	    <mentioned>polaris</mentioned>, e.g.
-	    <name>aan_polaris</name>, but the <emph>element
-	    name</emph> should be <gi>endurance</gi>, and there should
-	    be only 1 or 2 of them, not 0–3.) The reference to
-	    <gi>endurance</gi> may or may note cause an error, but
-	    should not generate any output in the RELAX NG.
+	    originally built. 
 	  </desc>
           <content>
-            <sequence>
               <elementRef minOccurs="1" maxOccurs="2" key="polaris"/>
-              <elementRef minOccurs="0" maxOccurs="3" key="endurance"/>
-            </sequence>
           </content>
         </elementSpec>
 
