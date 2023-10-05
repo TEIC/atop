@@ -337,12 +337,7 @@ ignored and the members of the value list are provided.
       </xsl:message>
     </xsl:if>
 
-    <!-- This chunk of code (that deals with @generate) should be
-         removed as soon as TEI has deprecated and removed that
-         attribute. (See https://github.com/TEIC/TEI/issues/2369.)
-         — Syd, 2023-09-20 -->
     <!-- Create reference to class members -->
-    <xsl:variable name="vExpand" as="xs:string" select=""/>
     <xsl:if test="@expand and (@expand ne 'alternation')">
       <xsl:message terminate="yes">
         <xsl:text>ERROR: This version of ATOP does not support classRef expansion other than 'alternation'. See also https://github.com/TEIC/TEI/issues/2369.</xsl:text>
