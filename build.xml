@@ -29,7 +29,7 @@
   
   <target name="transpilePlodd" description="Run the experimental transpiler through Morgana: PLODD stage only">
     <dirname property="ploddDir" file="${inputPlodd}"/>
-    <echo message="Processing ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
+    <echo message="Transpiling ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
     <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
       <classpath>
         <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
@@ -50,7 +50,7 @@
       buildTest.xml ant file.
     </description>
     <ant antfile="buildTest.xml" target="runXSpecTests"/>
-    <ant antfile="buildTest.xml" target="runPloddTests"/>
+    <ant antfile="buildTest.xml" target="runTranspileTests"/>
   </target>
 
 
