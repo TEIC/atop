@@ -23,7 +23,7 @@
   
   
   <xd:doc>
-    <xd:desc>A special mode to enable us to process constraintSpecs in the 
+    <xd:desc>A special mode to enable us to process &lt;constraintSpecs> in the 
     specific location we want to.</xd:desc>
   </xd:doc>
   <xsl:mode name="schematron" on-no-match="shallow-copy"/>
@@ -34,25 +34,37 @@
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble-relaxng.xslt"/>
   
+
   <xd:doc>
     <xd:desc><xd:ref name="atop:vMapSchNs"/>: A map of all in-scope namespaces, each with 
     a selected prefix.</xd:desc>
   </xd:doc>
   <xsl:variable name="atop:vMapSchNs" as="map(xs:string, xs:string)" select="atop:get-sch-ns-prefix-map(/)"/>
 
+
   <xd:doc>
-    <xd:desc>The TEI schemaSpec becomes the rng:grammar.</xd:desc>
+    <xd:desc>The TEI &lt;schemaSpec> becomes the RELAX NG &lt;grammar>.</xd:desc>
   </xd:doc>
   <xsl:template match="schemaSpec" as="element(rng:grammar)">
-    <!-- We assume that if there is no @start attribute, the start element is TEI. -->
+    <!-- We assume that if there is no @start attribute, the start element is <TEI>. -->
     <xsl:variable name="vStartElementSpecs" as="element(elementSpec)+"
-                  select="key('atop:elementSpec', if (@start) then tokenize(@start, '\s+') else 'TEI', .)"/>
+                  select="key('atop:elementSpec', if (@start) then tokenize(@start) else 'TEI', .)"/>
     <rng:grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
-      <xsl:variable name="vContext" as="element(schemaSpec)" select="."/>
-      <xsl:for-each select="in-scope-prefixes($vContext)">
-        <xsl:namespace name="{.}" select="namespace-uri-for-prefix(., $vContext)"/>
-      </xsl:for-each>
+      <!--
+	  Make sure to keep namespace declarations, because in RELAX
+	  NG the namespace specified by the prefix of a QName in the
+	  @name attribute takes precedence over the @ns attribute.
+      -->
+      <xsl:copy-of select="namespace-node()"/>
 
+      <!--
+	  Start with an alternation of the @start elements. Note that
+	  if there is only 1 @start element we end up with a single
+	  <ref> inside a <choice>, which looks kinda weird but is no
+	  problem for RELAX NG. (As evidence, `trang` happily converts
+	  it to the compact syntax; when you convert back again, the
+	  <choice> has been dropped.)
+      -->
       <rng:start>
         <rng:choice>
           <xsl:for-each select="$vStartElementSpecs">
@@ -60,15 +72,21 @@
           </xsl:for-each>
         </rng:choice>
       </rng:start>
+
+      <!--
+	  Generate <define> patterns for <anyElement> descendants
+	  separately, as they are more complex.
+      -->
       <xsl:apply-templates mode="atop:anyElement">
-        <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1], '\s+')" tunnel="yes"/>
+        <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1])" tunnel="yes"/>
       </xsl:apply-templates>
+      <!-- Generate the rest of the schema based on the children of this <schemaSpec> -->
       <xsl:apply-templates/>
       
       <!-- Now we output any Schematron required. -->
-      <xsl:if test="descendant::constraintSpec[@scheme='schematron']">
+      <xsl:if test="descendant::constraintSpec[@scheme eq 'schematron']">
         <rng:div>
-          <xsl:comment><xsl:text>Schematron rules.</xsl:text></xsl:comment>
+          <xsl:comment> Schematron rules </xsl:comment>
           
           <!-- Now we build the collection of Schematron namespaces we need. -->
           <xsl:comment><xsl:sequence select="'Namespace declarations (' || map:size($atop:vMapSchNs) div 2 || ')'"/></xsl:comment>
@@ -77,10 +95,9 @@
           </xsl:for-each>
           
           <!-- Is this the right level at which to proceed? -->
-          <xsl:apply-templates select="descendant::constraintSpec[@scheme='schematron']" mode="schematron"/>          
+          <xsl:apply-templates select="descendant::constraintSpec[@scheme eq 'schematron']" mode="schematron"/>          
         </rng:div>
       </xsl:if>
-      
       
     </rng:grammar>
   </xsl:template>
@@ -110,7 +127,7 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="classSpec[@type = 'atts']" as="element(rng:define)">
+  <xsl:template match="classSpec[@type eq 'atts']" as="element(rng:define)">
     <rng:define name="{atop:get-class-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
@@ -142,7 +159,7 @@
     </rng:define>
   </xsl:template>
 
-  <xsl:template match="(elementSpec | classSpec[@type = 'atts'])/classes/memberOf" as="element(rng:ref)?">
+  <xsl:template match="(elementSpec | classSpec[@type eq 'atts'])/classes/memberOf" as="element(rng:ref)?">
     <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
     <xsl:if test="$vClassSpec/@type = 'atts'">
       <rng:ref name="{atop:get-class-pattern-name($vClassSpec)}"/>
@@ -152,13 +169,13 @@
   <!-- An attribute list transpiles to the sequence or alternate
        pattern. A fallback template catches unsupported attribute list
        types. -->
-  <xsl:template match="attList[empty(@org) or @org = 'group']" as="element(rng:group)">
+  <xsl:template match="attList[empty(@org) or @org eq 'group']" as="element(rng:group)">
     <rng:group>
       <xsl:apply-templates/>
     </rng:group>
   </xsl:template>
 
-  <xsl:template match="attList[@org = 'choice']" as="element(rng:choice)">
+  <xsl:template match="attList[@org eq 'choice']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
@@ -186,7 +203,7 @@
 
       <!--
 
-An attribute specification may contain an attribute list (attList) and
+An attribute specification may contain a value list (valList) and
 a datatype specification (datatype), one of either, or none.
 
 The current processor works as follows:
@@ -202,7 +219,7 @@ ignored and the members of the value list are provided.
 
       -->
       <xsl:choose>
-        <xsl:when test="valList[empty(@type) or @type = 'open']">
+        <xsl:when test="valList[empty(@type) or @type eq 'open']">
           <a:documentation>
             <xsl:variable name="vSampleValues" as="xs:string*">
               <xsl:for-each select="valList/valItem">
