@@ -55,7 +55,7 @@
 	  NG the namespace specified by the prefix of a QName in the
 	  @name attribute takes precedence over the @ns attribute.
       -->
-      <xsl:copy-of select="namespace-node()"/>
+      <xsl:sequence select="namespace-node()"/>
 
       <!--
 	  Start with an alternation of the @start elements. Note that
