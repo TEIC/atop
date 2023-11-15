@@ -148,17 +148,30 @@
   </xd:doc>
   <xsl:template match="desc|gloss|valDesc" as="element()?">
     <xsl:choose>
+      <!-- Currently unsolved: what if there are multiple siblings without @xml:lang, or 
+        with the same (target or en) @xml:lang? -->
+      <!-- If this one is in the target language, just use it. -->
       <xsl:when test="@xml:lang eq $atop:pLang">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
       </xsl:when>
-      <xsl:when test="@xml:lang and ( @xml:lang ne $atop:pLang )"/>
-      <xsl:when test="not( @xml:lang )
-                      and
-                      not( ../*[name(.) eq name(current())][ @xml:lang eq $atop:pLang ] )">
+      <!-- If this one has no @xml:lang, and there isn't a sibling in the target language, use it. -->
+      <xsl:when test="not(@xml:lang) and not(../*[name(.) eq name(current())][@xml:lang = $atop:pLang])">
         <xsl:copy>
-          <xsl:attribute name="xml:lang" select="$atop:pLang"/>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </xsl:when>
+      <!-- If this one is @xml:lang="en", and there isn't a sibling in the target language or without @xml:lang, use it. -->
+      <xsl:when test="@xml:lang='en' and not(../*[name(.) eq name(current())][@xml:lang = $atop:pLang or not(@xml:lang)])">
+        <xsl:copy>
+          <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+      </xsl:when>
+      <!-- If this is the first element in the set, and there is no other usable element
+        (i.e. no element with target lang, no lang, or en), then use this. -->
+      <xsl:when test="not(preceding-sibling::node()[name(.) eq name(current())]) and not(../*[name(.) eq name(current())][@xml:lang = ('en', $atop:pLang) or not(@xml:lang)])">
+        <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
       </xsl:when>
