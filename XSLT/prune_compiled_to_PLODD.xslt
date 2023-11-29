@@ -13,6 +13,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   version="3.0">
 
+  <!-- PROBABLY OBSOLETE: SEE DOCUMENTATION BELOW. -->
+
   <xd:doc>
     <xd:desc>Version number of this program</xd:desc>
   </xd:doc>
@@ -22,8 +24,9 @@
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> Jul 5, 2022</xd:p>
       <xd:p><xd:b>Author:</xd:b> syd</xd:p>
-      <xd:p>Routine to read in an ODD file “flattened” by the current Stylesheets
-      and try to convert it to a plausible PLODD.</xd:p>
+      <xd:p>Routine to read in an ODD file “flattened” by the original Stylesheets
+      and try to convert it to a plausible PLODD. THIS SHOULD NOT BE PART OF THE 
+      COMPLETED ATOP SUITE.</xd:p>
     </xd:desc>
   </xd:doc>
 
