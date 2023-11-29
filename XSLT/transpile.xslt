@@ -304,9 +304,9 @@ ignored and the members of the value list are provided.
   <xsl:template match="sequence | interleave | alternate" as="element()*">
     <xsl:variable name="vRngOutputElementName" as="xs:NCName">
       <xsl:choose>
-        <xsl:when test="self::alternate">choice</xsl:when>
-        <xsl:when test="self::sequence[ not( @preserveOrder eq 'false') ]">group</xsl:when>
-        <xsl:otherwise>interleave</xsl:otherwise>
+        <xsl:when test="self::alternate"><xsl:sequence select="xs:NCName('choice')"/></xsl:when>
+        <xsl:when test="self::sequence[ not( @preserveOrder eq 'false') ]"><xsl:sequence select="xs:NCName('group')"/></xsl:when>
+        <xsl:otherwise><xsl:sequence select="xs:NCName('interleave')"/></xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     <xsl:call-template name="atop:repeat-content">
