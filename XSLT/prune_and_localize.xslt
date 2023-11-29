@@ -13,20 +13,22 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   version="3.0">
 
-  <!-- PROBABLY OBSOLETE: SEE DOCUMENTATION BELOW. -->
-
   <xd:doc>
     <xd:desc>Version number of this program</xd:desc>
   </xd:doc>
-  <xsl:variable name="atop:vVersion" select="'0.1.5'" as="xs:string"/>
+  <xsl:variable name="atop:vVersion" select="'0.1.0'" as="xs:string"/>
   
   <xd:doc scope="stylesheet">
     <xd:desc>
-      <xd:p><xd:b>Created on:</xd:b> Jul 5, 2022</xd:p>
-      <xd:p><xd:b>Author:</xd:b> syd</xd:p>
-      <xd:p>Routine to read in an ODD file “flattened” by the original Stylesheets
-      and try to convert it to a plausible PLODD. THIS SHOULD NOT BE PART OF THE 
-      COMPLETED ATOP SUITE.</xd:p>
+      <xd:p><xd:b>Created:</xd:b> 2023-11-21, using
+      prune_compiled_to_PLODD.xslt as a starting point.</xd:p>
+      <xd:p><xd:b>Author:</xd:b> ATOP task force</xd:p>
+      <xd:p>Routine to read in a derived ODD (presumably the last
+      derived ODD in the chain) and convert it to a PLODD by
+      localizing (keeping only the &lt;gloss> and &lt;desc> elements
+      in the appropriate language), pruning (remove lots of stuff that does
+      not belong in a PLODD), and simplifying (e.g., move the &lt;schemaSpec>
+      to be a child of &lt;body>).</xd:p>
     </xd:desc>
   </xd:doc>
 
@@ -35,43 +37,9 @@
   </xd:doc>
   <xsl:param name="atop:pLang" select="'en'" as="xs:string"/>
   
-  <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"
-              exclude-result-prefixes="#all"/>
+  <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"/>
+
   <xsl:mode on-no-match="shallow-copy"/>
-  
-  <xd:doc>
-    <xd:desc>give empty &lt;content> &lt;empty> content</xd:desc>
-  </xd:doc>
-  <xsl:template match="content[ not(child::*) ]" as="element(content)">
-    <content><empty/></content>
-  </xsl:template>
-  
-  <xd:doc>
-    <xd:desc>give multi-child &lt;content> one child</xd:desc>
-    <xd:desc>That is, a &lt;content> that has more than 1 child should
-    instead have its content wrapped in a &lt;sequence> (or maybe
-    &lt;rng:group>) which is (now) its only 1 child.</xd:desc>
-  </xd:doc>
-  <xsl:template match="content[ count(child::*) > 1 ]" as="element(content)">
-    <content>
-      <xsl:choose>
-        <xsl:when test="child::rng:*">
-          <rng:group>
-            <xsl:apply-templates select="node()"/>
-          </rng:group>
-        </xsl:when>
-        <xsl:when test="child::tei:*">
-          <sequence>
-            <xsl:apply-templates select="node()"/>
-          </sequence>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:message select="'What the heck do you have in this &lt;content>? (To answer myself, you have: '||string-join( child::*/name(), ', ')||'!'"/>
-          <xsl:apply-templates select="node()"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </content>
-  </xsl:template>
   
   <xd:doc>
     <xd:desc>Simplify names</xd:desc>
@@ -152,7 +120,7 @@
   <xsl:template match="desc|gloss|valDesc" as="element()?">
     <xsl:choose>
       <!-- Currently unsolved: what if there are multiple siblings without @xml:lang, or 
-        with the same (target or en) @xml:lang? -->
+           with the same (target or en) @xml:lang? -->
       <!-- If this one is in the target language, just use it. -->
       <xsl:when test="@xml:lang eq $atop:pLang">
         <xsl:copy>
@@ -160,13 +128,13 @@
         </xsl:copy>
       </xsl:when>
       <!-- If this one has no @xml:lang, and there isn't a sibling in the target language, use it. -->
-      <xsl:when test="not(@xml:lang) and not(../*[name(.) eq name(current())][@xml:lang = $atop:pLang])">
+      <xsl:when test="not(@xml:lang) and not(../*[name(.) eq name(current())][@xml:lang eq $atop:pLang])">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
       </xsl:when>
       <!-- If this one is @xml:lang="en", and there isn't a sibling in the target language or without @xml:lang, use it. -->
-      <xsl:when test="@xml:lang='en' and not(../*[name(.) eq name(current())][@xml:lang = $atop:pLang or not(@xml:lang)])">
+      <xsl:when test="@xml:lang eq 'en' and not(../*[name(.) eq name(current())][@xml:lang eq $atop:pLang or not(@xml:lang)])">
         <xsl:copy>
           <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
@@ -195,12 +163,13 @@
   <xsl:template match="moduleRef[@url]" as="element(moduleRef)">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
-      <!-- Use a value of ‘.’ on @url to signify that the content is here and now, not external. -->
+      <!-- Use a value of ‘.’ (U+002E) on @url to signify that the content is here and now, not external. -->
       <xsl:attribute name="url" select="'.'"/>
       <content>
         <xsl:apply-templates select="content/@*"/>
         <xsl:apply-templates select="content/*"/>
         <xsl:if test="doc-available( @url )">
+          <xsl:comment select="'========= from '||normalize-space(@url)||' ========='"/>
           <xsl:copy-of select="doc(@url)"/>
         </xsl:if>
       </content>
@@ -212,7 +181,7 @@
       <xd:p>Kill various constructs that PLODDs should not have</xd:p>
     </xd:desc>
   </xd:doc>
-  <xsl:template as="item()*" name="atop:nuke" match="
+  <xsl:template as="empty-sequence()" name="atop:nuke" match="
      @source
     |@module
     |@predeclare
