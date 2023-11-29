@@ -115,6 +115,10 @@
     </rng:define>
   </xsl:template>-->
 
+  <xd:doc>
+    <xd:desc>macroSpec elements are converted to rng:define
+    with a name based on prefixes and their ident.</xd:desc>
+  </xd:doc>
   <xsl:template match="macroSpec" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
       <xsl:apply-templates/>
