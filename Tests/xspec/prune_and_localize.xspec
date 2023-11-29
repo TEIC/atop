@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
     xmlns:atop="http://www.tei-c.org/ns/atop" 
-    stylesheet="../../XSLT/prune_compiled_to_PLODD.xslt"
+    stylesheet="../../XSLT/prune_and_localize.xslt"
      xmlns="http://www.tei-c.org/ns/1.0"
      xmlns:tei="http://www.tei-c.org/ns/1.0"
      xmlns:xs="http://www.w3.org/2001/XMLSchema"
