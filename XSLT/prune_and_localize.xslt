@@ -113,11 +113,11 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>Ensure there is an appropriate language specification for &lt;gloss>,
-      &lt;desc>, and &lt;valDesc>. If the @xml:lang matches the parameter we were
-    given, take this one. </xd:desc>
+    <xd:desc>Ensure there is an appropriate language specification for
+      &lt;gloss>, &lt;desc>, &lt;valDesc>, and &lt;altIdent>. If the
+      @xml:lang matches the parameter we were given, take this one.</xd:desc>
   </xd:doc>
-  <xsl:template match="desc|gloss|valDesc" as="element()?">
+  <xsl:template match="desc|gloss|valDesc|altIdent" as="element()?">
     <xsl:choose>
       <!-- Currently unsolved: what if there are multiple siblings without @xml:lang, or 
            with the same (target or en) @xml:lang? -->
