@@ -22,7 +22,7 @@
       <include file="../Lib/xspec/build.xml"/>
       <target name="xspec-runner">
         <!-- For each of our XSpec files. -->
-        <xsl:for-each select="tokenize($files)">
+        <xsl:for-each select="tokenize($files, '&#x241d;')">
           <!-- call the xspec target in the build file. -->
           <antcall target="xspec.xspec" inheritall="false">
             <!-- Pass the location of the XSpec file we want to run. -->
