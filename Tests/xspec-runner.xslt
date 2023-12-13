@@ -2,7 +2,8 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:xspec="http://www.jenitennison.com/xslt/xspec"
-                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl">
+                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                expand-text="yes">
   <xd:doc>
     <xd:desc>This runner file submits a sequence of XSpec files to the XSpec
     lib's ant target to be run. This enables us to run all our tests as a block.</xd:desc>
@@ -13,7 +14,13 @@
     XSpec files.</xd:desc>
   </xd:doc>
   <xsl:param name="files" as="xs:string" required="true"/>
-
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="sequenceSeparator"/> is the character used to 
+    separate a sequence of filepaths.</xd:desc>
+  </xd:doc>
+  <xsl:param name="sequenceSeparator" as="xs:string" select="'&#x241d;'"/>
+  
   <xd:doc>
     <xd:desc>The root template that does the work.</xd:desc>
   </xd:doc>
@@ -22,7 +29,7 @@
       <include file="../Lib/xspec/build.xml"/>
       <target name="xspec-runner">
         <!-- For each of our XSpec files. -->
-        <xsl:for-each select="tokenize($files, '&#x241d;')">
+        <xsl:for-each select="tokenize($files, $sequenceSeparator)">
           <!-- call the xspec target in the build file. -->
           <antcall target="xspec.xspec" inheritall="false">
             <!-- Pass the location of the XSpec file we want to run. -->
