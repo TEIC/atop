@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:atop="http://www.tei-c.org/ns/atop" 
+    stylesheet="../../XSLT/prune_and_localize.xslt"
+     xmlns="http://www.tei-c.org/ns/1.0"
+     xmlns:tei="http://www.tei-c.org/ns/1.0"
+     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+     run-as="external"
+    >
+    <!-- This XSpec file is for testing the transformation which takes
+         the final derived ODD and prunes/localizes it to create a 
+         PLODD. -->
+    
+    <!-- Variables for testing language pruning. -->
+    
+    <x:variable name="testInputForLangs1" as="element(tei:elementSpec)">
+        <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+            <gloss xml:lang="en">English gloss</gloss>
+            <gloss xml:lang="es">Glosa en español</gloss>
+            <gloss>Gloss without @xml:lang</gloss>
+            <gloss xml:lang="fr">Glose en français</gloss>
+        </elementSpec>
+    </x:variable>
+    
+    <x:variable name="testInputForLangs2" as="element(tei:elementSpec)">
+        <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+            <gloss xml:lang="en">English gloss</gloss>
+            <gloss xml:lang="es">Glosa en español</gloss>
+            <gloss xml:lang="fr">Glose en français</gloss>
+        </elementSpec>
+    </x:variable>
+    
+    <x:variable name="testInputForLangs3" as="element(tei:elementSpec)">
+        <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+            <gloss xml:lang="es">Glosa en español</gloss>
+            <gloss xml:lang="fr">Glose en français</gloss>
+        </elementSpec>
+    </x:variable>
+    
+    <x:scenario label="Scenarios for testing template with match 'desc|gloss|valDesc">
+        <x:scenario label="Item in target language exists">
+            <x:param name="atop:pLang" as="xs:string" select="'fr'"/>
+            <x:context select="$testInputForLangs1"/>
+            <x:expect label="We should get what we asked for" as="element(tei:elementSpec)">
+                <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+                    <gloss xml:lang="fr">Glose en français</gloss>
+                </elementSpec>
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="Item in target language does not exist">
+            <x:param name="atop:pLang" as="xs:string" select="'it'"/>
+            <x:context select="$testInputForLangs1"/>
+            <x:expect label="We should get the one with no @xml:lang" as="element(tei:elementSpec)">
+                <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+                    <gloss>Gloss without @xml:lang</gloss>
+                </elementSpec>
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="Item in target language does not exist and neither does the one with no @xml:lang">
+            <x:param name="atop:pLang" as="xs:string" select="'it'"/>
+            <x:context select="$testInputForLangs2"/>
+            <x:expect label="We should get English" as="element(tei:elementSpec)">
+                <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+                    <gloss xml:lang="en">English gloss</gloss>
+                </elementSpec>
+            </x:expect>
+        </x:scenario>
+        <x:scenario label="Item in target language does not exist and neither does the one with no @xml:lang nor en">
+            <x:param name="atop:pLang" as="xs:string" select="'it'"/>
+            <x:context select="$testInputForLangs3"/>
+            <x:expect label="We should get the first one in the set" as="element(tei:elementSpec)">
+                <elementSpec ident="p" xmlns="http://www.tei-c.org/ns/1.0">
+                    <gloss xml:lang="es">Glosa en español</gloss>
+                </elementSpec>
+            </x:expect>
+        </x:scenario>
+    </x:scenario>
+    
+<!--    <x:scenario label="Scenario for testing template with match 'content[ not(child::*) ]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'content[ count(child::*) > 1 ]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'persName|placeName|orgName|surname|forename">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'body">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'schemaSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match '@ident">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'teiHeader">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>-->
+
+
+<!--    <x:scenario label="Scenario for testing template with match 'moduleRef[@url]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function nuke">
+        <x:call template="atop:nuke"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>-->
+</x:description>

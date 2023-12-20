@@ -18,6 +18,9 @@
   testing; the default must be overridden with -DstylesheetsPath=...-->  
   <property name="stylesheetsPath" value="${basedir}/../Stylesheets"/>
   
+  <!-- A group separator for avoiding spaces etc. -->
+  <property name="sequenceSeparator" value="&#x241d;"/>
+  
   
   <!-- We need ant-contrib to do foreach.   -->
   <!--

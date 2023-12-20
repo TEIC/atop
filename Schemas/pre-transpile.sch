@@ -10,22 +10,22 @@
   <sch:pattern>
     <sch:rule context="tei:schemaSpec">
       <sch:assert test="empty(tei:classRef)">
-        A self-contained schema specification does not contain any classRef child elements.
+        A classRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
       <sch:assert test="empty(tei:dataRef)">
-        A self-contained schema specification does not contain any dataRef child elements.
+        A dataRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
       <sch:assert test="empty(tei:elementRef)">
-        A self-contained schema specification does not contain any elementRef child elements.
+        A elementRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
       <sch:assert test="empty(tei:macroRef)">
-        A self-contained schema specification does not contain any macroRef child elements.
+        A macroRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
       <sch:assert test="empty(tei:moduleRef)">
-        A self-contained schema specification does not contain any moduleRef child elements.
+        A moduleRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
       <sch:assert test="empty(tei:specGrpRef)">
-        A self-contained schema specification does not contain any specGrpRef child elements.
+        A specGrpRef in a self-contained schema specification does not contain any child elements.
       </sch:assert>
     </sch:rule>
   </sch:pattern>

@@ -16,11 +16,21 @@
       files containing our tests. [Note: this is not working as of 2022-10-25,
       possibly because of the switch to Saxon 11.]
     </description>
-    <pathconvert refid="xspec-files" property="xspec.files" pathsep=" "/>
-    <xslt style="${basedir}/Tests/xspec-runner.xslt" in="build.xml" out="${basedir}/Tests/xspec-runner.xml">
+    <pathconvert refid="xspec-files" property="xspec.files" pathsep="${sequenceSeparator}"/>
+    <!--<xslt style="${basedir}/Tests/xspec-runner.xslt" in="build.xml" out="${basedir}/Tests/xspec-runner.xml">
       <classpath location="${saxon}"/>
       <param name="files" expression="${xspec.files}"/>
-    </xslt>
+    </xslt>-->
+    
+    <java fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" failonerror="true">
+      <jvmarg value="-Xmx1024m"/>
+      <arg value="-s:build.xml"/>
+      <arg value="-xsl:${basedir}/Tests/xspec-runner.xslt"/>
+      <arg value="-o:${basedir}/Tests/xspec-runner.xml"/>
+      <arg value="files=${xspec.files}"/>
+      <arg value="sequencesSeparator=${sequenceSeparator}"/>
+      <arg value="--suppressXsltNamespaceCheck:on"/>
+    </java>
     <!--<subant antfile="xspec-runner.xml" buildpath="Tests" target="xspec-runner"/>-->
     <exec executable="${antPath}" dir="Tests">
       <arg value="-f"/>
@@ -114,27 +124,27 @@
     </jing>
   </target>
   
-  <target name="buildPloddTestSchemas">
+  <target name="transpilePloddTestSchemas">
     <description>
-      TARGET buildPloddTestSchemas
+      TARGET transpilePloddTestSchemas
       This target invokes the transpile step to compile 
-      rng schemas from the PLODD files in the PLODD_test_suite
+      rng schemas from the PLODD files in the transpile_test_suite
       folder.
     </description>
-    <foreach target="buildPloddTestSchema" param="inFile">
+    <foreach target="transpilePloddTestSchema" param="inFile">
       <path>
-        <fileset dir="${basedir}/Tests/PLODD_test_suite">
+        <fileset dir="${basedir}/Tests/transpile_test_suite">
           <include name="**/*.plodd"/>
         </fileset>
       </path>
     </foreach>
   </target>
   
-  <target name="buildPloddTestSchema">
+  <target name="transpilePloddTestSchema">
     <description>
-      TARGET buildPloddTestSchema
+      TARGET transpilePloddTestSchema
       This target invokes the transpile step to compile 
-      a single rng schema from the PLODD_test_suite.
+      a single rng schema from the transpile_test_suite.
       folder.
     </description>
     <echo message="Transpiling ${inFile}"/>
@@ -274,15 +284,15 @@
     </trycatch>
   </target>
   
-  <target name="runPloddTests">
+  <target name="runTranspileTests">
     <description>
-      TARGET runPloddTests
+      TARGET runTranspileTests
       This target first calls the transpile step to create 
       rng schemas from all of the .plodd files in the PLODD_test_suite
       folder, then it runs the validation tests to check all the valid
       instances and invalid instances.
     </description>
-    <antcall target="buildPloddTestSchemas"/>
+    <antcall target="transpilePloddTestSchemas"/>
     <antcall target="checkValidInstances"/>
     <antcall target="checkInvalidInstances"/>
   </target>

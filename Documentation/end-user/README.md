@@ -5,6 +5,7 @@ The ATOP project is building its ODD processor in stages, starting from the fina
 You can use or test this final stage if you have a file which conforms to the PLODD specification; basically this means that 
 
  - It validates against the Schemas/ploddSchemaSpecification.rng file.
+ - It validates against the Schemas/pre-transpile.sch file.
  - It has documentation in only one language, or in one language plus English versions where there is no content in the target language.
  - It does not refer to any external components (ODDs, TEI datatypes, external RELAXNG files).
  
