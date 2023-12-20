@@ -358,19 +358,11 @@ ignored and the members of the value list are provided.
       </xsl:message>
     </xsl:if>
 
-    <!-- This chunk of code (that deals with @generate) should be
-         removed as soon as TEI has deprecated and removed that
-         attribute. (See https://github.com/TEIC/TEI/issues/2369.)
-         — Syd, 2023-09-20 -->
     <!-- Create reference to class members -->
-    <xsl:variable name="vExpand" as="xs:string" select="(@expand, 'alternation')[1]"/>
-    <xsl:if test="exists(tokenize($vClassSpec/@generate))">
-      <xsl:if test="not($vExpand = tokenize($vClassSpec/@generate))">
-        <xsl:message terminate="yes">
-          <xsl:text>ERROR: Cannot expand members of the class '{@key}' as '{$vExpand}' because the class only allows </xsl:text>
-          <xsl:value-of select='for $token in tokenize($vClassSpec/@generate) return concat("&apos;", $token, "&apos;")'/>
-        </xsl:message>
-      </xsl:if>
+    <xsl:if test="@expand and (@expand ne 'alternation')">
+      <xsl:message terminate="yes">
+        <xsl:text>ERROR: This version of ATOP does not support classRef expansion other than 'alternation'. See also https://github.com/TEIC/TEI/issues/2369.</xsl:text>
+      </xsl:message>
     </xsl:if>
 
     <xsl:variable name="vAllClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec, ())"/>
@@ -407,40 +399,11 @@ ignored and the members of the value list are provided.
     <xsl:if test="exists($vClassMembers)">
 
       <xsl:variable name="vContent" as="element()">
-        <xsl:element name="{if ($vExpand eq 'alternation') then 'rng:choice' else 'rng:group'}">
-
+        <rng:choice>
           <xsl:for-each select="$vClassMembers">
-            <xsl:variable name="vReference" as="element()">
-              <xsl:choose>
-                <xsl:when test="$vExpand eq 'sequenceRepeatable'">
-                  <rng:oneOrMore>
-                    <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-                  </rng:oneOrMore>
-                </xsl:when>
-                <xsl:when test="$vExpand eq 'sequenceOptionalRepeatable'">
-                  <rng:zeroOrMore>
-                    <rng:ref name="{atop:get-pattern-name(.)}"/>
-                  </rng:zeroOrMore>
-                </xsl:when>
-                <xsl:otherwise>
-                  <rng:ref name="{atop:get-element-pattern-name(.)}"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-
-            <xsl:choose>
-              <xsl:when test="$vExpand = ('sequenceOptional')">
-                <rng:optional>
-                  <xsl:sequence select="$vReference"/>
-                </rng:optional>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:sequence select="$vReference"/>
-              </xsl:otherwise>
-            </xsl:choose>
-
+            <rng:ref name="{atop:get-element-pattern-name(.)}"/>
           </xsl:for-each>
-        </xsl:element>
+        </rng:choice>
       </xsl:variable>
 
       <xsl:call-template name="atop:repeat-content">
