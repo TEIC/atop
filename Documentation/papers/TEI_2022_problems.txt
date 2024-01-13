@@ -1,0 +1,34 @@
+____________Suggestions from reviewers_______________
+
+This attempts to distill various reviewer suggestions into points we can address
+in distinct commits.
+
+ - Fix typos like "constraintiung" and "identifers"
+ 
+ - Fix doubled words
+ 
+ - Stress more clearly, early on, why the paper and the ATOP project is important.
+ 
+ - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
+ 
+ - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
+    TEI tagset (as Paragraph 3 does now) for the purposes of distinguishing Section 22 from the rest of TEI; ODD; ODD customization (or TEI ODD customization files); "TEI Stylesheets" (proper noun); roma; Roma (and difference from roma); XSPEC, XSpec Suite; PLODD; FLOSS.
+    
+ - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list.
+ 
+ - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. 
+ 
+ - Instead, include a section on what is wrong with the current stylesheets and why they are a major barrier to TEI usage. This is the whole justification for ATOP.
+ 
+ - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.)
+ 
+ - Consider adding sections on Deliverables, Workflow, Consistency and Testing, and Component Testing. (MH thinks the How section above should cover much of this, so perhaps a section ATOP with subsections Why, What, How, Deliverables).
+ 
+ - Consider saving space by losing the Emerson quote.
+ 
+ - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail.
+ 
+ - Consider explaining why XSLT 1.0 is not your SW of choice. (MH thinks this is redundant; the current Stylesheets use XSLT 2.0 features, and there's no reason any developer with the option to use XSLT 3 would prefer 1.0.) 
+ 
+ 
+
