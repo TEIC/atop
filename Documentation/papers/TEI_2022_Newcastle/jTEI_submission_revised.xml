@@ -160,7 +160,7 @@
         <list rend="bulleted">
           <item>describing elements and their attributes;</item>
           <item>providing content models for elements;</item>
-          <item>constraintiung attribute values, including with controlled vocabularies;</item>
+          <item>constraining attribute values, including with controlled vocabularies;</item>
           <item>providing examples and discussion of the use of elements and attributes;</item>
           <item>organizing elements and attributes into classes, for easier use.</item>
         </list>
@@ -207,7 +207,7 @@
           specialized modules for drama, feature structures, manuscript description, etc., then only
           ~61 different element types would be listed as possible children of <gi>p</gi>, and only
           ~197 as members of the class att.global. This makes documentation much easier to read when
-          compared to to TEI All, in which ~207 elements would be listed as possible children of
+          compared to TEI All, in which ~207 elements would be listed as possible children of
             <gi>p</gi>, and ~590 as members of the class att.global.</p>
         <p>We need to generate usable schemas from the TEI system because no software exists that
           will directly validate a document against an XML language written in TEI ODD, let alone
@@ -332,7 +332,7 @@
               target="https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing"
               >https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing)</ref>).</p>
           <p>Another problem with the current suite is inconsistent terminology. In order to try to
-            avoid this pitfall, we agreed to (and are are trying to stick to) a defined glossary of
+            avoid this pitfall, we agreed to (and are trying to stick to) a defined glossary of
             terms that we develop within the first month of the project (<ref
               target="https://github.com/TEIC/atop/wiki/Terminology"
               >https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
@@ -366,10 +366,10 @@
               metadata and all glosses and descriptions are kept).</item>
             <item>Stage 2: <hi rend="bold">Customization ODD + Base ODD → Derived ODD </hi>— The
               output of stage 1 is read in and whatever base ODD it refers to is validated and read
-              in. The ODDs are are combined by following the instructions in the assembled
-              customization ODD and applying them to the base ODD. All internationalization
-              information (i.e., all languages of glosses, descriptions, and alternate identifers)
-              is kept. The output is referred to as a <term>derived ODD</term>.</item>
+              in. The ODDs are combined by following the instructions in the assembled customization
+              ODD and applying them to the base ODD. All internationalization information (i.e., all
+              languages of glosses, descriptions, and alternate identifiers) is kept. The output is
+              referred to as a <term>derived ODD</term>.</item>
             <item>Stage 3: <hi rend="bold">Customization ODD + Derived ODD → Derived ODD</hi> — This
               stage is very similar to stage 2, except that the customization ODD used is the next
               ODD in the chain, and the output of the previous stage is used as if it were the base
@@ -456,8 +456,8 @@
         <p>The main programs will be written in XSLT 3 (using XPath 3.1) without any extended
           functionality. Even if and when XSLT 4 is available, we plan to stick with XSLT 3. These
           programs should run in any standard XML-friendly environment, including the GNU/Linux
-          commandline and oXygen. We make use of oXygen, and the end product should run quite nicely
-          in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
+          command-line and oXygen. We make use of oXygen, and the end product should run quite
+          nicely in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
         <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that
           tests the input and runs the required XSLT programs in the right order will
           probably be written in ant or XProc.</p>
