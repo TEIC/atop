@@ -90,7 +90,6 @@
       </langUsage>
       <textClass>
         <keywords>
-          <?ATOP check terms, for sure ?>
           <term>TEI</term>
           <term>ODD</term>
           <term>ATOP</term>
@@ -111,9 +110,6 @@
   <text>
     <front>
       <div type="abstract" xml:id="abstract">
-        <?ATOP to be written — should be 1 or 2 <p> elements 
-        HBS: I added a very rough draft
-        SB: Wow, nicely done! ?>
         <p>The TEI XSL Stylesheets is a tool that tackles the transformation of TEI XML documents to
           (and from) various formats. This includes the crucial activity of generating schemas from
           TEI ODD, the TEI XML-conformant specification format that allows one to write a schema language
@@ -234,7 +230,7 @@
         <head>History — who, what, and why</head>
         <p>The software currently used to convert TEI ODD into custom documentation and custom
           schemas is a large set of XSLT stylesheets commonly referred to by the somewhat
-          <?ATOP (insouciant | blasé | lackadaisical | passionless | spiritless ) ?> name <name>the
+          generic name <name>the
             TEI Stylesheets</name>. (You might think they are called that because the name of the
           GitHub repository where they live is <name>Stylesheets</name>, but in fact the repo is
           named after the software.) The Stylesheets also convert TEI into many other formats
