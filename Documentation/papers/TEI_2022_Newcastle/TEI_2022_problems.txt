@@ -3,9 +3,9 @@ ____________Suggestions from reviewers_______________
 This attempts to distill various reviewer suggestions into points we can address
 in distinct commits.
 
- - Fix typos like "constraintiung" and "identifers"
+DONE - Fix typos like "constraintiung" and "identifers"
  
- - Fix doubled words
+DONE - Fix doubled words
  
  - Stress more clearly, early on, why the paper and the ATOP project is important.
  

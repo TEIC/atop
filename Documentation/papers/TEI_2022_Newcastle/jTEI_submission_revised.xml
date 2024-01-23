@@ -134,12 +134,20 @@
         The fourth section addresses the decisions we have made so far.</p>
       <div xml:id="disclosures">
         <head>Disclosures</head>
-        <p>Two of the authors are currently members of the TEI Council. A third is the author of
-          SchXslt ([ʃˈɛksl̩t] – An XSLT-based Schematron processor), mentioned herein, which is
-          quickly becoming the favorite Schematron processor not just in the TEI community, but in
-          much of the XML world. The fourth is the author of the first paper to directly address the
-          problem head-on,[A] and thus spurred the entire endeavor. Thus in one way or another, each
-          of us has a vested interest in the success of this project.</p>
+        <p>Two of the authors<?oxy_insert_start author="mholmes" timestamp="20240123T101720-0800"?>,
+          Syd Bauman and Helena Bermúdez Sabel,<?oxy_insert_end?> are currently members of the TEI
+          Council. A third<?oxy_insert_start author="mholmes" timestamp="20240123T101754-0800"?>,
+          David Maus,<?oxy_insert_end?> is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based
+          Schematron processor), mentioned
+          <?oxy_delete author="mholmes" timestamp="20240123T101808-0800" content="herein"?><?oxy_insert_start author="mholmes" timestamp="20240123T101808-0800"?>below<?oxy_insert_end?>,
+          which is quickly becoming the favorite Schematron processor not just in the TEI community,
+          but in much of the XML world. The
+          fourth<?oxy_insert_start author="mholmes" timestamp="20240123T101818-0800"?>, Martin
+          Holmes,<?oxy_insert_end?> is the author of the first paper to directly address the problem
+          head-on,[A] and thus spurred the entire endeavor.
+          <?oxy_delete author="mholmes" timestamp="20240123T101841-0800" content="Thus in one way or another, each of us has"?><?oxy_insert_start author="mholmes" timestamp="20240123T101841-0800"?>All
+          of the authors have been involved in trying to maintain the current TEI Stylesheets, and
+          therefore have<?oxy_insert_end?> a vested interest in the success of this project.</p>
       </div>
       <div xml:id="rev">
         <head>TEI ODD processing — a review</head>
@@ -530,3 +538,4 @@
     </back>
   </text>
 </TEI>
+<?oxy_options track_changes="on"?>
