@@ -149,6 +149,38 @@
           of the authors have been involved in trying to maintain the current TEI Stylesheets, and
           therefore have<?oxy_insert_end?> a vested interest in the success of this project.</p>
       </div>
+      <?oxy_insert_start author="mholmes" timestamp="20240123T102913-0800"?>
+      <div xml:id="terminology">
+        <head>Terminology</head>
+        <head/>
+        <p>This is a list of terminology, acronyms, and initialisms used in this paper.</p>
+        <list>
+          <item><emph>ATOP</emph>: Another TEI ODD Processor. (<q>Another</q> because it is intended to be a replacement for the existing TEI Stylesheets.)</item>
+          <item><emph>FLOSS</emph>: Free, Libre, Open-Source Software. All TEI software is FLOSS.</item>
+          <item><emph>ODD</emph> (One Document Does it All): 
+              <quote source="#teicODD1">a TEI XML format used to express schema fragments, prose documentation, and
+                reference documentation for any XML markup scheme as a single document. It is the
+                language in which the TEI is itself defined, and which should also be used to
+                express a customization of the TEI scheme. </quote>
+            <ref xml:id="teicODD1" target="#teicODD" type="bibl">TEI Consortium n.d.</ref>
+            </item>
+          <item><emph>ODD Customization</emph>: an ODD file which describes modifications to the base TEI schema. </item>
+          <item><emph>PLODD</emph>: Pruned and Localized ODD. An ATOP-specific term, referring to the final state of an ODD customization undergoing transformation, immediately before it is turned into RELAXNG and/or Schematron schemas.</item>
+          <item><emph>tagset</emph>: an inventory of elements, attributes, and values constituting a custom
+            markup language.</item>
+          <item><emph>RELAX NG</emph>: An industry-standard grammar-based schema language. RELAX NG schemas can be generated from TEI ODD files.</item>
+          <item><emph>Roma/roma</emph>: Roma (capital R) is a web-based service that provides a user-friendly interface for creating ODD customization files and generating schemas and documentation from them. roma (lower-case r) is a command-line tool for generating schemas and documentation from ODD customizations.</item>
+          <item><emph>Schematron</emph>: A validation language based on assertions about document structure and patterns. Schematron serves as a useful adjunct to RELAX NG, and is also supported by ODD.</item>
+          <item><emph>TEIGarage</emph>: A web service which offers various transformations to and from TEI, based on the TEI Stylesheets.</item>
+          <item><emph>TEI Stylesheets</emph>: A library of tools for converting between TEI and other document formats,
+          primarily using XSLT, originally created by Sebastian Rahtz, and now maintained by the TEI Council
+          and other volunteers.</item>
+          <item><emph>XSLT</emph>: eXtensible Stylesheet Language Transformations, the language primarily used to
+          transform TEI and other XML languages into other document formats.</item>
+          <item><emph>XSpec</emph>: an XML language for writing and running unit tests for XSLT, XQuery, and Schematron.</item>
+        </list>
+      </div>
+      <?oxy_insert_end?>
       <div xml:id="rev">
         <head>TEI ODD processing — a review</head>
         <p>The TEI system is, in general, a tagset for describing the structure of, and other
@@ -237,13 +269,12 @@
       <div xml:id="hx">
         <head>History — who, what, and why</head>
         <p>The software currently used to convert TEI ODD into custom documentation and custom
-          schemas is a large set of XSLT stylesheets commonly referred to by the somewhat
-          generic name <name>the
-            TEI Stylesheets</name>. (You might think they are called that because the name of the
-          GitHub repository where they live is <name>Stylesheets</name>, but in fact the repo is
-          named after the software.) The Stylesheets also convert TEI into many other formats
-          (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into TEI.
-          These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/"
+          schemas is a large set of XSLT stylesheets commonly referred to by the somewhat generic
+          name <name>the TEI Stylesheets</name>. (You might think they are called that because the
+          name of the GitHub repository where they live is <name>Stylesheets</name>, but in fact the
+          repo is named after the software.) The Stylesheets also convert TEI into many other
+          formats (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into
+          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/"
             >[https://github.com/TEIC/Stylesheets/</ref>] are both a work of genius (the genius of
           Sebastian Rahtz, to be precise) and somewhat of an obstacle to the growth of the TEI
           language. The Stylesheets are very impressive in that they perform a large set of
@@ -348,22 +379,18 @@
         </div>
         <div xml:id="workflow">
           <head>Workflow</head>
-          <p>Our intended workflow will involve at least four
-  	    stages. See <ptr target="#fig02" type="crossref"/> Each stage will likely
-  	    begin with a validation step. In most cases invalidity
-  	    would result in the entire process being aborted. There
-  	    may be some cases for which a warning will be issued and
-  	    processing continues. One advantage to this methodology is
-  	    that we will, by necessity, generate a rigorous definition
-  	    of a derived ODD file and of a Pruned Localized ODD
-  	    (PLODD). It may mean that intermediate files need be
-  	    written out at every stage (which some might consider a
-  	    disadvantage); however, writing those intermediate files
-  	    will be very useful in debugging the system.</p>
-	  <figure xml:id="fig02">
-	    <graphic url="datapath.png" width="184px" height="497px"/>
-	    <head type="legend">Stages for generating schemas from a customization</head>
-	  </figure>
+          <p>Our intended workflow will involve at least four stages. See <ptr target="#fig02"
+              type="crossref"/> Each stage will likely begin with a validation step. In most cases
+            invalidity would result in the entire process being aborted. There may be some cases for
+            which a warning will be issued and processing continues. One advantage to this
+            methodology is that we will, by necessity, generate a rigorous definition of a derived
+            ODD file and of a Pruned Localized ODD (PLODD). It may mean that intermediate files need
+            be written out at every stage (which some might consider a disadvantage); however,
+            writing those intermediate files will be very useful in debugging the system.</p>
+          <figure xml:id="fig02">
+            <graphic url="datapath.png" width="184px" height="497px"/>
+            <head type="legend">Stages for generating schemas from a customization</head>
+          </figure>
           <list>
             <item>Stage 1: <hi rend="bold">Assemble customization ODD</hi> — References to external
               components, if any are read into the ODD; prose may be dropped at this stage (but most
@@ -439,14 +466,13 @@
             are writing another <hi rend="italic">in vitro</hi> test suite for processing of
             PLODDs.</p>
           <p>When testing the final RELAX NG result, we plan to perform both comparison testing
-            (checking that the output file matches a previously agreed upon expected
-            output file) and behavioral testing
-            (checking that the output file flags a known to be correct file as valid, and a known to
-            be incorrect file as invalid). The latter is necessary because there are often multiple
-            RELAX NG patterns that will match the same XML constructs. For example, the content
-            models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and <code>( blort,
-              blort?, blort* )</code> all mean the same thing: <q>one ore more
-            <gi>blort</gi>s</q>.</p>
+            (checking that the output file matches a previously agreed upon expected output file)
+            and behavioral testing (checking that the output file flags a known to be correct file
+            as valid, and a known to be incorrect file as invalid). The latter is necessary because
+            there are often multiple RELAX NG patterns that will match the same XML constructs. For
+            example, the content models <code>( blort+ )</code>, <code>( blort, blort* )</code>, and
+              <code>( blort, blort?, blort* )</code> all mean the same thing: <q>one ore more
+                <gi>blort</gi>s</q>.</p>
         </div>
       </div>
       <div xml:id="deliverables">
@@ -462,9 +488,9 @@
           programs should run in any standard XML-friendly environment, including the GNU/Linux
           command-line and oXygen. We make use of oXygen, and the end product should run quite
           nicely in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
-        <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that
-          tests the input and runs the required XSLT programs in the right order will
-          probably be written in ant or XProc.</p>
+        <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that tests the input
+          and runs the required XSLT programs in the right order will probably be written in ant or
+          XProc.</p>
       </div>
       <div xml:id="foreshadowing">
         <head>Side effects (and foreshadowing)</head>
@@ -538,4 +564,5 @@
     </back>
   </text>
 </TEI>
+
 <?oxy_options track_changes="on"?>

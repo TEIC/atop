@@ -7,9 +7,9 @@ DONE - Fix typos like "constraintiung" and "identifers"
  
 DONE - Fix doubled words
  
- - Stress more clearly, early on, why the paper and the ATOP project is important.
+ - Stress more clearly, early on, why the paper and the ATOP project is important. MH: Not sure where this should be done, yet.
  
- - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
+DONE - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
  
  - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
     TEI tagset (as Paragraph 3 does now) for the purposes of distinguishing Section 22 from the rest of TEI; ODD; ODD customization (or TEI ODD customization files); "TEI Stylesheets" (proper noun); roma; Roma (and difference from roma); XSPEC, XSpec Suite; PLODD; FLOSS.
