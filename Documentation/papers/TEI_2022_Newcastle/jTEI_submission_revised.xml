@@ -127,62 +127,85 @@
       <p>This paper is an introduction to a new TEI enterprise to create a utility for generating
         schemas (RELAX NG and Schematron) from descriptions of encoding systems written in TEI ODD,
         including chaining (i.e., customizations, customizations of customizations, customizations
-        of customizations of customizations, etc.). The first section is a review of what TEI ODD is
-        and an overview of how it is currently processed. The second section will address why this
-        is an important endeavor, explain how it came to be, and describe the very limited intended
-        goals. The third section discusses how the work is taking place and where it can be found.
-        The fourth section addresses the decisions we have made so far.</p>
+        of customizations of customizations, etc.). <?oxy_delete author="heb" timestamp="20240124T180417+0100" content="The first"?>
+        <?oxy_insert_start author="heb" timestamp="20240124T180421+0100"?><ref target="#rev"
+          type="crossref"
+          >S<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240124T180420+0100" content="s"?>ection
+          <?oxy_insert_start author="heb" timestamp="20240124T180424+0100"?>3</ref>
+        <?oxy_insert_end?>is a review of what TEI ODD is and
+        a<?oxy_delete author="heb" timestamp="20240124T181151+0100" content="n"?><?oxy_insert_start author="heb" timestamp="20240124T181153+0100"?>
+        broad<?oxy_insert_end?> overview of how it is currently processed. The
+        <?oxy_delete author="heb" timestamp="20240124T181209+0100" content="second"?><?oxy_insert_start author="heb" timestamp="20240124T181209+0100"?>next<?oxy_insert_end?>
+        section will address why this is an important endeavor, explain how it came to be, and
+        describe the very limited intended goals. The third section discusses how the work is taking
+        place and where it can be found. The fourth section addresses the decisions we have made so
+        far.</p>
       <div xml:id="disclosures">
         <head>Disclosures</head>
-        <p>Two of the authors<?oxy_insert_start author="mholmes" timestamp="20240123T101720-0800"?>,
-          Syd Bauman and Helena Bermúdez Sabel,<?oxy_insert_end?> are currently members of the TEI
-          Council. A third<?oxy_insert_start author="mholmes" timestamp="20240123T101754-0800"?>,
-          David Maus,<?oxy_insert_end?> is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based
-          Schematron processor), mentioned
-          <?oxy_delete author="mholmes" timestamp="20240123T101808-0800" content="herein"?><?oxy_insert_start author="mholmes" timestamp="20240123T101808-0800"?>below<?oxy_insert_end?>,
-          which is quickly becoming the favorite Schematron processor not just in the TEI community,
-          but in much of the XML world. The
-          fourth<?oxy_insert_start author="mholmes" timestamp="20240123T101818-0800"?>, Martin
-          Holmes,<?oxy_insert_end?> is the author of the first paper to directly address the problem
-          head-on,[A] and thus spurred the entire endeavor.
-          <?oxy_delete author="mholmes" timestamp="20240123T101841-0800" content="Thus in one way or another, each of us has"?><?oxy_insert_start author="mholmes" timestamp="20240123T101841-0800"?>All
-          of the authors have been involved in trying to maintain the current TEI Stylesheets, and
-          therefore have<?oxy_insert_end?> a vested interest in the success of this project.</p>
+        <p>Two of the authors, Syd Bauman and Helena Bermúdez Sabel, are currently members of the
+          TEI Council. A third, David Maus, is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based
+          Schematron processor), mentioned below, which is quickly becoming the favorite Schematron
+          processor not just in the TEI community, but in much of the XML world. The fourth, Martin
+          Holmes, is the author of the first paper to directly address the problem head-on,[A] and
+          thus spurred the entire endeavor. All of the authors have been involved in trying to
+          maintain the current TEI Stylesheets, and therefore have a vested interest in the success
+          of this project.</p>
       </div>
-      <?oxy_insert_start author="mholmes" timestamp="20240123T102913-0800"?>
       <div xml:id="terminology">
         <head>Terminology</head>
-        <head/>
+        <?oxy_delete author="heb" timestamp="20240124T175548+0100" content="&lt;head/&gt;"?>
         <p>This is a list of terminology, acronyms, and initialisms used in this paper.</p>
         <list>
-          <item><emph>ATOP</emph>: Another TEI ODD Processor. (<q>Another</q> because it is intended to be a replacement for the existing TEI Stylesheets.)</item>
-          <item><emph>FLOSS</emph>: Free, Libre, Open-Source Software. All TEI software is FLOSS.</item>
-          <item><emph>ODD</emph> (One Document Does it All): 
-              <quote source="#teicODD1">a TEI XML format used to express schema fragments, prose documentation, and
-                reference documentation for any XML markup scheme as a single document. It is the
-                language in which the TEI is itself defined, and which should also be used to
-                express a customization of the TEI scheme. </quote>
-            <ref xml:id="teicODD1" target="#teicODD" type="bibl">TEI Consortium n.d.</ref>
-            </item>
-          <item><emph>ODD Customization</emph>: an ODD file which describes modifications to the base TEI schema. </item>
-          <item><emph>PLODD</emph>: Pruned and Localized ODD. An ATOP-specific term, referring to the final state of an ODD customization undergoing transformation, immediately before it is turned into RELAXNG and/or Schematron schemas.</item>
-          <item><emph>tagset</emph>: an inventory of elements, attributes, and values constituting a custom
-            markup language.</item>
-          <item><emph>RELAX NG</emph>: An industry-standard grammar-based schema language. RELAX NG schemas can be generated from TEI ODD files.</item>
-          <item><emph>Roma/roma</emph>: Roma (capital R) is a web-based service that provides a user-friendly interface for creating ODD customization files and generating schemas and documentation from them. roma (lower-case r) is a command-line tool for generating schemas and documentation from ODD customizations.</item>
-          <item><emph>Schematron</emph>: A validation language based on assertions about document structure and patterns. Schematron serves as a useful adjunct to RELAX NG, and is also supported by ODD.</item>
-          <item><emph>TEIGarage</emph>: A web service which offers various transformations to and from TEI, based on the TEI Stylesheets.</item>
-          <item><emph>TEI Stylesheets</emph>: A library of tools for converting between TEI and other document formats,
-          primarily using XSLT, originally created by Sebastian Rahtz, and now maintained by the TEI Council
-          and other volunteers.</item>
-          <item><emph>XSLT</emph>: eXtensible Stylesheet Language Transformations, the language primarily used to
-          transform TEI and other XML languages into other document formats.</item>
-          <item><emph>XSpec</emph>: an XML language for writing and running unit tests for XSLT, XQuery, and Schematron.</item>
+          <item><emph>ATOP</emph>: Another TEI ODD Processor. (<q>Another</q> because it is intended
+            to be a replacement for the existing TEI Stylesheets.)</item>
+          <item><emph>FLOSS</emph>: Free, Libre, Open-Source Software. All TEI software is
+            FLOSS.</item>
+          <item><emph>ODD</emph> (One Document Does it All): <quote source="#teicODD1">a TEI XML
+              format used to express schema fragments, prose documentation, and reference
+              documentation for any XML markup scheme as a single document. It is the language in
+              which the TEI is itself defined, and which should also be used to express a
+              customization of the TEI scheme. </quote>
+            <ref xml:id="teicODD1" target="#teicODD" type="bibl">TEI Consortium
+              <?oxy_delete author="heb" timestamp="20240124T174154+0100" content="n.d."?><?oxy_insert_start author="heb" timestamp="20240124T174154+0100"?>2020
+              <?oxy_insert_end?></ref>
+          </item>
+          <item><emph>ODD Customization</emph>: an ODD file which describes modifications to the
+            base TEI schema. </item>
+          <item><emph>PLODD</emph>: Pruned and Localized ODD. An ATOP-specific
+            term<?oxy_delete author="heb" timestamp="20240124T174232+0100" content=","?> referring
+            to the final state of an ODD customization undergoing transformation, immediately before
+            it is turned into RELAX<?oxy_insert_start author="heb" timestamp="20240124T174425+0100"?>
+            <?oxy_insert_end?>NG
+            and<?oxy_delete author="heb" timestamp="20240124T174335+0100" content="/or"?> Schematron
+            schemas.</item>
+          <item><emph>tagset</emph>: an inventory of elements, attributes, and values constituting a
+            custom markup language.</item>
+          <item><emph>RELAX NG</emph>: An industry-standard grammar-based schema language. RELAX NG
+            schemas can be generated from TEI ODD files.</item>
+          <item><emph>Roma/roma</emph>: Roma (capital R) is a web-based service that provides a
+            user-friendly interface for creating ODD customization files and generating schemas and
+            documentation from them. roma (lower-case r) is a command-line tool for generating
+            schemas and documentation from ODD customizations.</item>
+          <item><emph>Schematron</emph>: A validation language based on assertions about document
+            structure and patterns. Schematron serves as a useful adjunct to RELAX NG, and is also
+            supported by ODD.</item>
+          <item><emph>TEIGarage</emph>: A web service which offers various transformations to and
+            from TEI, based on the TEI Stylesheets.</item>
+          <item><emph>TEI Stylesheets</emph>: A library of tools for converting between TEI and
+            other document formats, primarily using XSLT, originally created by Sebastian Rahtz, and
+            now maintained by the TEI Council and other volunteers.</item>
+          <item><emph>XSLT</emph>:<?oxy_delete author="heb" timestamp="20240124T175502+0100" content=" eXtensible Stylesheet Language Transformations, the language primarily used to transform TEI and other XML languages into other document formats."?><?oxy_insert_start author="heb" timestamp="20240124T175502+0100"?>
+            eXtensible Stylesheet Language Transformations, an XML language designed to read in an
+            XML document and write out a transformed version thereof. E.g., XSLT can be used to
+            transform TEI into other document formats.<?oxy_insert_end?></item>
+          <item><emph>XSpec</emph>: an XML language for writing and running unit tests for XSLT,
+            XQuery, and Schematron.</item>
         </list>
       </div>
-      <?oxy_insert_end?>
       <div xml:id="rev">
-        <head>TEI ODD processing — a review</head>
+        <head>TEI ODD processing — a
+          <?oxy_insert_start author="heb" timestamp="20240124T181108+0100"?>broad
+          over<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240124T181114+0100" content="re"?>view</head>
         <p>The TEI system is, in general, a tagset for describing the structure of, and other
           interesting bits about, extant texts. While it is intended to promote the
           interchangeability and processability of transcriptions of texts of interest to humanities
@@ -294,8 +317,8 @@
           <item>They are written in an outdated dialect of XSLT (basically XSLT 1.0 with a few 2.0
             constructs).</item>
           <item>They are full of redundancy (e.g., there are two functions,
-              <code>whatsTheDate()</code> and <code>tei:whatsTheDate()</code>, that do exactly the
-            same thing).</item>
+            <?oxy_delete author="heb" timestamp="20240124T182124+0100" content="&lt;code&gt;whatsTheDate()&lt;/code&gt; and &lt;code&gt;tei:whatsTheDate()&lt;/code&gt;"?><?oxy_insert_start author="heb" timestamp="20240124T182151+0100"?>named <code>tei:includeMember()</code> which are used during the ODD processing<?oxy_insert_end?>,
+            that do exactly the same thing).</item>
           <item>They are almost completely undocumented.</item>
         </list>
         <p>Thus fixing bugs, let alone adding new features, to the Stylesheets is quite difficult,
@@ -552,7 +575,8 @@
             <ref target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
               >https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
           <bibl xml:id="teicODD"><author>TEI Consortium</author>
-            <date>n.d.</date>. Getting Started with P5 ODDs. <ref
+            <date><?oxy_delete author="heb" timestamp="20240124T174203+0100" content="n.d."?><?oxy_insert_start author="heb" timestamp="20240124T174203+0100"?>2020<?oxy_insert_end?></date>.
+            Getting Started with P5 ODDs. <ref
               target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
               >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
           <bibl xml:id="teicFAQ"><author>TEI Consortium</author>
