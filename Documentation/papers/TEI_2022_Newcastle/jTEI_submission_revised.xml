@@ -77,8 +77,7 @@
       </projectDesc>
       <appInfo>
         <application ident="TEIGarage" version="1.1.1">
-          <desc> A <ref target="https://annuel2.framapad.org/p/TEI_ATOP_jTEI_2022_(Newcastle)_paper"
-              >Framapad document</ref> was used as the original scratch pad for writing this paper.
+          <desc> A <ref target="https://annuel2.framapad.org/p/TEI_ATOP_jTEI_2022_(Newcastle)_paper">Framapad document</ref> was used as the original scratch pad for writing this paper.
             It was converted to Markdown using the Framapad export feature. That Markdown was
             converted to rudimentary TEI by TEIGarage 11.0.16+8, 1.1.1. </desc>
         </application>
@@ -128,9 +127,7 @@
         schemas (RELAX NG and Schematron) from descriptions of encoding systems written in TEI ODD,
         including chaining (i.e., customizations, customizations of customizations, customizations
         of customizations of customizations, etc.). <?oxy_delete author="heb" timestamp="20240124T180417+0100" content="The first"?>
-        <?oxy_insert_start author="heb" timestamp="20240124T180421+0100"?><ref target="#rev"
-          type="crossref"
-          >S<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240124T180420+0100" content="s"?>ection
+        <?oxy_insert_start author="heb" timestamp="20240124T180421+0100"?><ref target="#rev" type="crossref">S<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240124T180420+0100" content="s"?>ection
           <?oxy_insert_start author="heb" timestamp="20240124T180424+0100"?>3</ref>
         <?oxy_insert_end?>is a review of what TEI ODD is and
         a<?oxy_delete author="heb" timestamp="20240124T181151+0100" content="n"?><?oxy_insert_start author="heb" timestamp="20240124T181153+0100"?>
@@ -210,8 +207,7 @@
           interesting bits about, extant texts. While it is intended to promote the
           interchangeability and processability of transcriptions of texts of interest to humanities
           scholars, it can be used for a variety of other text encoding purposes. For example, this
-          paper is written in TEI. But a portion of the TEI system (chapter 22 of the <hi
-            rend="italic">Guidelines</hi>) is dedicated not to describing extant texts, but rather
+          paper is written in TEI. But a portion of the TEI system (chapter 22 of the <hi rend="italic">Guidelines</hi>) is dedicated not to describing extant texts, but rather
           to describing markup languages intended for describing extant texts (or anything else, for
           that matter). Thus, because TEI is currently represented in XML, ODD has elements and
           attributes for describing an XML encoding language. For example, ODD has constructs
@@ -225,12 +221,9 @@
         </list>
         <p>The TEI system itself is, of course, described using this sub-system, which is
           affectionately called ODD (see <ref target="#burnard2004" type="bibl">Burnard and Rahtz
-            2004</ref>, <ref target="#burnard2013a" type="bibl">Burnard and Rahtz 2013a</ref>, <ref
-            target="#burnard2013b" type="bibl">Burnard and Rahtz 2013b</ref>, <ref target="#teicODD"
-            type="bibl">TEI Consortium n.d.</ref>).</p>
+            2004</ref>, <ref target="#burnard2013a" type="bibl">Burnard and Rahtz 2013a</ref>, <ref target="#burnard2013b" type="bibl">Burnard and Rahtz 2013b</ref>, <ref target="#teicODD" type="bibl">TEI Consortium n.d.</ref>).</p>
         <p>While ODD can be used for a variety of purposes, its two main uses are 1) defining the
-          TEI Guidelines, and 2) creating customizations thereof. (See <ref type="bibl"
-            target="#bauman2019">Bauman 2019</ref>) The remainder of this section is an overview of
+          TEI Guidelines, and 2) creating customizations thereof. (See <ref type="bibl" target="#bauman2019">Bauman 2019</ref>) The remainder of this section is an overview of
           the current system for generating schemas and documentation from TEI ODD customization
           files.</p>
         <p>The TEI Guidelines are written in TEI ODD. That is, the source for the Guidelines you
@@ -250,8 +243,7 @@
           the TEI Guidelines. The customization file expresses which bits of the TEI will be used,
           and which will not, and adds additional explanations, constraints, and examples where
           needed. One of the most well-known customizations is TEI Lite, a large and complex
-          customization that produces a slimmed-down version of the TEI intended <quote
-            source="#teiLite">to meet 90% of the needs of 90% of the TEI user community</quote>
+          customization that produces a slimmed-down version of the TEI intended <quote source="#teiLite">to meet 90% of the needs of 90% of the TEI user community</quote>
             (<ref target="#teicFAQ" type="bibl" xml:id="teiLite">TEI Consortium 2023: What is TEI
             Lite?</ref>). A customization that is very commonly used for experimentation (but not
           appropriate for use in actual encoding projects) is TEI All, a very small customization
@@ -277,8 +269,7 @@
           converted to other languages. (In particular, the Stylesheets will convert the closed
           schema language constructs into the W3C XML Schema Language or to the DTD language from
           the XML specification.)</p>
-        <p>Following the principles of literate programming (<ref target="#knuth1984" type="bibl"
-            >Knuth 1984</ref>), the process of generating custom documentation from a customization
+        <p>Following the principles of literate programming (<ref target="#knuth1984" type="bibl">Knuth 1984</ref>), the process of generating custom documentation from a customization
           file and the TEI Guidelines is called <hi rend="italic">weaving</hi>, and the process of
           generating schemas is called <hi rend="italic">tangling</hi>. The TEI Consortium provides
           software (called <name>roma</name>, not to be confused with <name>Roma</name> [linked to
@@ -297,16 +288,14 @@
           name of the GitHub repository where they live is <name>Stylesheets</name>, but in fact the
           repo is named after the software.) The Stylesheets also convert TEI into many other
           formats (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into
-          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/"
-            >[https://github.com/TEIC/Stylesheets/</ref>] are both a work of genius (the genius of
+          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/">[https://github.com/TEIC/Stylesheets/</ref>] are both a work of genius (the genius of
           Sebastian Rahtz, to be precise) and somewhat of an obstacle to the growth of the TEI
           language. The Stylesheets are very impressive in that they perform a large set of
           intricate tasks reasonably well, and in that they were written amazingly fast. But they
           are very difficult to maintain. The source of the problem was summed up by Holmes in 2021:
             <quote source="#holmes">Sebastian was such a genius he really found it impossible to
             imagine how dim the rest of us actually are.</quote>. For a detailed discussion of the
-          problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl"
-            target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
+          problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
           purposes:</p>
         <list rend="bulleted">
           <item>The Stylesheets are <hi rend="bold">very</hi> complex. <list>
@@ -326,8 +315,7 @@
           problems. Furthermore, it is common to find new bugs when fixing known bugs. David Maus
           went so far as to say in an issue comment <quote source="#comment">I consider the
             Stylesheets as broken beyond repair. They work … to a certain degree[,] but they are,
-            from my point of view, effectively unmaintainable.</quote> (<ref target="#maus2021"
-            type="bibl" xml:id="comment">Maus 2021</ref>)</p>
+            from my point of view, effectively unmaintainable.</quote> (<ref target="#maus2021" type="bibl" xml:id="comment">Maus 2021</ref>)</p>
         <p>The natural consequence to the Stylesheets being simultaneously so difficult to maintain
           and being so central to the TEI Technical Council’s mission is that the Council spends a
           lot of its time trying to fix bugs in the Stylesheets. There is a monthly meeting devoted
@@ -372,8 +360,7 @@
           for many years). We have an aspirational goal of having working code for Council to start
           testing in summer 2023, and an initial full release by the end of 2023. However, it will
           neither surprise us nor upset us if we do not meet those temporal goals.</p>
-        <p>So far almost all work takes place on a TEIC GitHub repository (<ref
-            target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
+        <p>So far almost all work takes place on a TEIC GitHub repository (<ref target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
           repository includes the code (including tests), issues \&amp; pull requests, a glossary of
           terms, documentation of goals, namespaces, error codes, etc., and minutes of our
           meetings.</p>
@@ -386,24 +373,18 @@
           <p>The current Stylesheets include over 330 XSLT files; of those only ~25–33 are part of
             the process we are duplicating. However, the division of labor among these is, at best,
             confusing, and has been described (several years after the death of the primary author)
-            on a TEI wiki page (<ref
-              target="https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing"
-              >https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing)</ref>).</p>
+            on a TEI wiki page (<ref target="https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing">https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing)</ref>).</p>
           <p>Another problem with the current suite is inconsistent terminology. In order to try to
             avoid this pitfall, we agreed to (and are trying to stick to) a defined glossary of
-            terms that we develop within the first month of the project (<ref
-              target="https://github.com/TEIC/atop/wiki/Terminology"
-              >https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
+            terms that we develop within the first month of the project (<ref target="https://github.com/TEIC/atop/wiki/Terminology">https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
           <p>We anticipate that ATOP will not be <hi rend="italic">nearly</hi> as complicated as the
-            current suite, in large part because it will do so much less. It <hi rend="italic"
-              >may</hi> end up as complicated as the portion of the current suite that handles the
+            current suite, in large part because it will do so much less. It <hi rend="italic">may</hi> end up as complicated as the portion of the current suite that handles the
             same process, but probably not; and even if it does, it will be well-documented, clear,
             comparatively easy-to-understand code.</p>
         </div>
         <div xml:id="workflow">
           <head>Workflow</head>
-          <p>Our intended workflow will involve at least four stages. See <ptr target="#fig02"
-              type="crossref"/> Each stage will likely begin with a validation step. In most cases
+          <p>Our intended workflow will involve at least four stages. See <ptr target="#fig02" type="crossref"/> Each stage will likely begin with a validation step. In most cases
             invalidity would result in the entire process being aborted. There may be some cases for
             which a warning will be issued and processing continues. One advantage to this
             methodology is that we will, by necessity, generate a rigorous definition of a derived
@@ -445,7 +426,7 @@
           <p>We have spent some time developing a set of coding conventions to help ensure
             consistency of the code we produce.
             <?oxy_delete author="heb" timestamp="20240127T123443+0100" content="When the topic of consistency comes up, one often hears the famous quotation from Ralph Waldo &lt;ref type=&quot;bibl&quot; target=&quot;#emerson&quot; xml:id=&quot;self-reliance&quot;&gt;Emerson’s 1841&lt;/ref&gt; essay &lt;title&gt;Self-Reliance&lt;/title&gt;, that &lt;quote source=&quot;#self-reliance&quot;&gt;consistency is the hobgoblin of little minds&lt;/quote&gt;. First off, Emerson was not a computer programmer. Second, he was not talking about consistency in notation, or that 2+2 consistently is 4, or if there should be a consistent left margin on a printed page. Third, he was not even suggesting that consistency itself is bad, only that a desire to be consistent should not thwart one from changing one’s mind or expressing a point of view contradictory to a previous point of view, as is evident from the entire quotation: &lt;quote source=&quot;#self-reliance&quot;&gt;A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines. With consistency a great soul has simply nothing to do. He may as well concern himself with his shadow on the wall. Speak what you think now in hard words, and to-morrow speak what to-morrow thinks in hard words again, though it contradict every thing you said to-day. — &lt;q&gt;Ah, so you shall be sure to be misunderstood.&lt;/q&gt; — Is it so bad, then, to be misunderstood? Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great is to be misunderstood.&lt;/quote&gt;"?></p>
-          <p><?oxy_delete author="heb" timestamp="20240127T123443+0100" content="Our desired consistency is not that of philosophy or religion, but"?><?oxy_insert_start author="heb" timestamp="20240127T123405+0100"?>These
+            <?oxy_delete author="heb" timestamp="20240127T123443+0100" content="Our desired consistency is not that of philosophy or religion, but"?><?oxy_insert_start author="heb" timestamp="20240127T123405+0100"?><p>These
             conventions focus<?oxy_insert_end?> mostly
             <?oxy_delete author="heb" timestamp="20240127T123413+0100" content="that of"?><?oxy_insert_start author="heb" timestamp="20240127T123516+0100"?>on<?oxy_insert_end?>
             naming and usage. For example, if a subroutine is going to return a node, we use a
@@ -500,18 +481,43 @@
           and runs the required XSLT programs in the right order will probably be written in ant or
           XProc.</p>
       </div>
-      <div xml:id="foreshadowing">
-        <head>Side effects (and foreshadowing)</head>
+      <div xml:id="issues">
+        <head><?oxy_delete author="heb" timestamp="20240127T141352+0100" content="Side effects (and foreshadowing)"?><?oxy_insert_start author="heb" timestamp="20240127T141352+0100"?>Issues
+          with the current ODD language specifications<?oxy_insert_end?></head>
         <p>It is not surprising that our work runs into places where ODD must be more cleanly
-          specified. E.g., there is no mechanism in the ODD language for a user to specify the query
-          binding language used in her Schematron contexts and tests. We are raising issues in the
-          TEI (<ref target="https://github.com/TEIC/TEI/labels/atop"
+          specified. <?oxy_delete author="heb" timestamp="20240127T141934+0100" content="E.g., there is no mechanism in the ODD language for a user to specify the query binding language used in her Schematron contexts and tests."?>
+          <?oxy_insert_start author="heb" timestamp="20240127T142521+0100"?>A brief commentary of
+          some of these issues follows:<note>These examples are taken form a presentation by the
+            authors delivered at the joint MEC and TEI Conference 2023 (Padeborn, September 6–9,
+            2023). See <ref type="bibl" target="#baumanetal2023">Bauman et al. 2023</ref></note><list>
+            <label>Schematron query language binding</label>
+            <item>There is no mechanism in the ODD language for a user to specify the query binding
+              language used in her Schematron contexts and tests. Driven by the atop working group,
+              a new element, <gi>constraintDecl</gi>, will be created. </item>
+              <label>Duplicate definitions of the same attribute</label>
+              <item>An XML element cannot have two attributes with the same name
+, but the current ODD schema allows sibling <gi>attDef</gi> elements with the same <att>ident</att>.</item>
+              <label>Documentation elements allowed almost anywhere</label>
+              <item>The class <ident>model.oddDecl</ident> is a member of <ident>model.inter</ident> 
+                (which groups elements that can appear either within or between paragraph-like elements). This means that, for example,
+                the element <gi>rdg</gi> (reading) may contain e
+                lements such as <gi>classSpec</gi>, <gi>constraintSpec</gi>,
+                <gi>dataSpec</gi> or <gi>elementSpec</gi>.   </item>
+              <label>Schematron contexts</label>
+              <item>Schematron constraints depend on the definition of two XPath patterns: the <emph>context</emph> and the <emph>test</emph>. 
+                The first one is defined in the <att>context</att> attribute of the element <gi>sch:rule</gi>, while the tests are defined within 
+                the elements <gi>sch:assert</gi> or <gi>sch:report</gi> which are direct descendants of <gi>sch:rule</gi>. In ODD, <gi>sch:rule</gi> is optional, 
+                on the basis that if the context is not explicit, it means that it could be inferred. However, the TEI Guidelines do not specify how the context
+                should be inferred when it is not explicit.</item>
+          </list><?oxy_insert_end?><?oxy_insert_start author="heb" timestamp="20240127T141950+0100" type="split"?></p>
+        <p><?oxy_insert_end?>We are raising issues in the TEI (<ref
+            target="https://github.com/TEIC/TEI/labels/atop"
             >https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref
             target="https://github.com/TEIC/Stylesheets/labels/atop"
             >https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we go.
           In some cases our findings will likely result in changes that require fixes to previous
-          Stylesheets. Furthermore, we are proposing a paper for the 2023 TEI Conference in
-          Paderborn that focuses on these issues.</p>
+          Stylesheets.
+          <?oxy_delete author="heb" timestamp="20240127T142012+0100" content="Furthermore, we are proposing a paper for the 2023 TEI Conference in Paderborn that focuses on these issues."?></p>
       </div>
     </body>
     <back>
@@ -522,6 +528,16 @@
             <date>2019</date>. <title level="a">A TEI Customization for Writing TEI
               Customizations</title>. <title level="j">Journal of the Text Encoding
               Initiative</title>, Issue 12. doi:10.4000/jtei.2573.</bibl>
+          <?oxy_insert_start author="heb" timestamp="20240127T143533+0100"?>
+          <bibl xml:id="baumanetal2023"><author>Bauman, Syd</author>, 
+            <author>Bermúdez Sabel, Helena</author>, <author>Maus, David</author>, and 
+            <author>Holmes, Martin</author> <date>2023</date>. <title level="a">ODD ODDities: some 
+              problems with the ODD language unearthed by an attempt to write a processor</title>.  
+            In <title level="m"><q>Encoding Cultures</q> Joint MEC TEI conference 2023 – Book of Abstracts</title>
+            <q>Encoding Cultures</q> Joint MEC TEI conference 2023 (TEIMEC2023) , Paderborn, Germany, 5–8 September 2023. <ref
+              target="https://doi.org/10.5281/zenodo.10427826"
+              >https://doi.org/10.5281/zenodo.10427826</ref>, pp. 185–187.</bibl>
+          <?oxy_insert_end?>
           <bibl xml:id="burnard2004"><author>Burnard, Lou</author>, and <author>Rahtz,
               Sebastian</author>
             <date>2004</date>. <title level="a">RelaxNG with Son of ODD</title>. Presented at the
@@ -539,11 +555,7 @@
               2013</title>. Presented at XML London 2013, June 15-16th, 2013. <ref
               target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
               >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
-          <bibl xml:id="emerson">Emerson, Ralph Waldo <date>1907</date>. <title level="a"
-              >Self-Reliance</title>. In <title level="m">Essays</title>. Edited by Edna H. L.
-            Turpin. New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. <ref
-              target="https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE"
-              >https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE</ref>.</bibl>
+          <?oxy_delete author="heb" timestamp="20240127T141759+0100" content="&lt;bibl xml:id=&quot;emerson&quot;&gt;Emerson, Ralph Waldo &lt;date&gt;1907&lt;/date&gt;. &lt;title level=&quot;a&quot;&gt;Self-Reliance&lt;/title&gt;. In &lt;title level=&quot;m&quot;&gt;Essays&lt;/title&gt;. Edited by Edna H. L. Turpin. New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. &lt;ref target=&quot;https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE&quot;&gt;https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE&lt;/ref&gt;.&lt;/bibl&gt;"?>
           <bibl xml:id="holmes2021"><author>Holmes, Martin</author>
             <date>2021</date>. <title level="a">Are the TEI Stylesheets really broken beyond
               repair?</title>. Text Encoding Initiative Conference (Online), 25/10/2021. <ref
