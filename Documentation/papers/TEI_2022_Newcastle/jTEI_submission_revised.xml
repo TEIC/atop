@@ -494,27 +494,26 @@
             <item>There is no mechanism in the ODD language for a user to specify the query binding
               language used in her Schematron contexts and tests. Driven by the atop working group,
               a new element, <gi>constraintDecl</gi>, will be created. </item>
-              <label>Duplicate definitions of the same attribute</label>
-              <item>An XML element cannot have two attributes with the same name
-, but the current ODD schema allows sibling <gi>attDef</gi> elements with the same <att>ident</att>.</item>
-              <label>Documentation elements allowed almost anywhere</label>
-              <item>The class <ident>model.oddDecl</ident> is a member of <ident>model.inter</ident> 
-                (which groups elements that can appear either within or between paragraph-like elements). This means that, for example,
-                the element <gi>rdg</gi> (reading) may contain e
-                lements such as <gi>classSpec</gi>, <gi>constraintSpec</gi>,
-                <gi>dataSpec</gi> or <gi>elementSpec</gi>.   </item>
-              <label>Schematron contexts</label>
-              <item>Schematron constraints depend on the definition of two XPath patterns: the <emph>context</emph> and the <emph>test</emph>. 
-                The first one is defined in the <att>context</att> attribute of the element <gi>sch:rule</gi>, while the tests are defined within 
-                the elements <gi>sch:assert</gi> or <gi>sch:report</gi> which are direct descendants of <gi>sch:rule</gi>. In ODD, <gi>sch:rule</gi> is optional, 
-                on the basis that if the context is not explicit, it means that it could be inferred. However, the TEI Guidelines do not specify how the context
-                should be inferred when it is not explicit.</item>
+            <label>Duplicate definitions of the same attribute</label>
+            <item>An XML element cannot have two attributes with the same name , but the current ODD
+              schema allows sibling <gi>attDef</gi> elements with the same <att>ident</att>.</item>
+            <label>Documentation elements allowed almost anywhere</label>
+            <item>The class <ident>model.oddDecl</ident> is a member of <ident>model.inter</ident>
+              (which groups elements that can appear either within or between paragraph-like
+              elements). This means that, for example, the element <gi>rdg</gi> (reading) may
+              contain e lements such as <gi>classSpec</gi>, <gi>constraintSpec</gi>,
+                <gi>dataSpec</gi> or <gi>elementSpec</gi>. </item>
+            <label>Schematron contexts</label>
+            <item>Schematron constraints depend on the definition of two XPath patterns: the
+                <emph>context</emph> and the <emph>test</emph>. The first one is defined in the
+                <att>context</att> attribute of the element <gi>sch:rule</gi>, while the tests are
+              defined within the elements <gi>sch:assert</gi> or <gi>sch:report</gi> which are
+              direct descendants of <gi>sch:rule</gi>. In ODD, <gi>sch:rule</gi> is optional, on the
+              basis that if the context is not explicit, it means that it could be inferred.
+              However, the TEI Guidelines do not specify how the context should be inferred when it
+              is not explicit.</item>
           </list><?oxy_insert_end?><?oxy_insert_start author="heb" timestamp="20240127T141950+0100" type="split"?></p>
-        <p><?oxy_insert_end?>We are raising issues in the TEI (<ref
-            target="https://github.com/TEIC/TEI/labels/atop"
-            >https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref
-            target="https://github.com/TEIC/Stylesheets/labels/atop"
-            >https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we go.
+        <p><?oxy_insert_end?>We are raising issues in the TEI (<ref target="https://github.com/TEIC/TEI/labels/atop">https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref target="https://github.com/TEIC/Stylesheets/labels/atop">https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we go.
           In some cases our findings will likely result in changes that require fixes to previous
           Stylesheets.
           <?oxy_delete author="heb" timestamp="20240127T142012+0100" content="Furthermore, we are proposing a paper for the 2023 TEI Conference in Paderborn that focuses on these issues."?></p>
@@ -522,7 +521,6 @@
     </body>
     <back>
       <div type="bibliography" xml:id="bibl">
-        <head>Bibliography</head>
         <listBibl>
           <bibl xml:id="bauman2019"><author>Bauman, Syd</author>
             <date>2019</date>. <title level="a">A TEI Customization for Writing TEI
@@ -534,9 +532,7 @@
             <author>Holmes, Martin</author> <date>2023</date>. <title level="a">ODD ODDities: some 
               problems with the ODD language unearthed by an attempt to write a processor</title>.  
             In <title level="m"><q>Encoding Cultures</q> Joint MEC TEI conference 2023 – Book of Abstracts</title>
-            <q>Encoding Cultures</q> Joint MEC TEI conference 2023 (TEIMEC2023) , Paderborn, Germany, 5–8 September 2023. <ref
-              target="https://doi.org/10.5281/zenodo.10427826"
-              >https://doi.org/10.5281/zenodo.10427826</ref>, pp. 185–187.</bibl>
+            <q>Encoding Cultures</q> Joint MEC TEI conference 2023 (TEIMEC2023) , Paderborn, Germany, 5–8 September 2023. <ref target="https://doi.org/10.5281/zenodo.10427826">https://doi.org/10.5281/zenodo.10427826</ref>, pp. 185–187.</bibl>
           <?oxy_insert_end?>
           <bibl xml:id="burnard2004"><author>Burnard, Lou</author>, and <author>Rahtz,
               Sebastian</author>
@@ -544,42 +540,28 @@
             Extreme Markup Languages 2004, Montreal, QC, Canada, August 2.</bibl>
           <bibl xml:id="burnard2013a"><author>Burnard, Lou</author>, and <author>Rahtz,
               Sebastian</author>
-            <date>2013</date>. <title level="a">Reviewing the TEI ODD system</title>. <title
-              level="m">DocEng ’13: Proceedings of the 2013 ACM symposium on Document engineering
-              September 2013</title>, 193–196. <ref target="https://doi.org/10.1145/2494266.2494321"
-              >https://doi.org/10.1145/2494266.2494321</ref>.</bibl>
+            <date>2013</date>. <title level="a">Reviewing the TEI ODD system</title>. <title level="m">DocEng ’13: Proceedings of the 2013 ACM symposium on Document engineering
+              September 2013</title>, 193–196. <ref target="https://doi.org/10.1145/2494266.2494321">https://doi.org/10.1145/2494266.2494321</ref>.</bibl>
           <bibl xml:id="burnard2013b"><author>Burnard, Lou</author>, and <author>Rahtz,
               Sebastian</author>
             <date>2013</date>. <title level="a">A complete schema definition language for the Text
               Encoding Initiative</title>. In <title level="m">Proceedings of XML London
-              2013</title>. Presented at XML London 2013, June 15-16th, 2013. <ref
-              target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01"
-              >https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
+              2013</title>. Presented at XML London 2013, June 15-16th, 2013. <ref target="https://dx.doi.org/10.14337/XMLLondon13.Rahtz01">https://dx.doi.org/10.14337/XMLLondon13.Rahtz01</ref>.</bibl>
           <?oxy_delete author="heb" timestamp="20240127T141759+0100" content="&lt;bibl xml:id=&quot;emerson&quot;&gt;Emerson, Ralph Waldo &lt;date&gt;1907&lt;/date&gt;. &lt;title level=&quot;a&quot;&gt;Self-Reliance&lt;/title&gt;. In &lt;title level=&quot;m&quot;&gt;Essays&lt;/title&gt;. Edited by Edna H. L. Turpin. New York: Charles E. Merrill Co. Retrieved from Project Gutenberg. &lt;ref target=&quot;https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE&quot;&gt;https://www.gutenberg.org/files/16643/16643-h/16643-h.htm#SELF-RELIANCE&lt;/ref&gt;.&lt;/bibl&gt;"?>
           <bibl xml:id="holmes2021"><author>Holmes, Martin</author>
             <date>2021</date>. <title level="a">Are the TEI Stylesheets really broken beyond
-              repair?</title>. Text Encoding Initiative Conference (Online), 25/10/2021. <ref
-              target="https://zenodo.org/record/6522554"
-            >https://zenodo.org/record/6522554</ref>.</bibl>
+              repair?</title>. Text Encoding Initiative Conference (Online), 25/10/2021. <ref target="https://zenodo.org/record/6522554">https://zenodo.org/record/6522554</ref>.</bibl>
           <bibl xml:id="knuth1984"><author>Knuth, Donald E.</author>
             <date>1984</date>. <title level="a">Literate Programming</title>. <title level="j">The
-              Computer Journal</title>. British Computer Society. 27 (2): 97–111. <idno type="DOI"
-              >10.1093/comjnl/27.2.97</idno>. <ref
-              target="http://www.literateprogramming.com/knuthweb.pdf"
-              >http://www.literateprogramming.com/knuthweb.pdf</ref>.</bibl>
+              Computer Journal</title>. British Computer Society. 27 (2): 97–111. <idno type="DOI">10.1093/comjnl/27.2.97</idno>. <ref target="http://www.literateprogramming.com/knuthweb.pdf">http://www.literateprogramming.com/knuthweb.pdf</ref>.</bibl>
           <bibl xml:id="maus2021"><author>Maus, David</author>
             <date>2021</date>
-            <ref target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553"
-              >https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
+            <ref target="https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553">https://github.com/TEIC/Stylesheets/pull/477#issuecomment-805138553</ref>.</bibl>
           <bibl xml:id="teicODD"><author>TEI Consortium</author>
             <date><?oxy_delete author="heb" timestamp="20240124T174203+0100" content="n.d."?><?oxy_insert_start author="heb" timestamp="20240124T174203+0100"?>2020<?oxy_insert_end?></date>.
-            Getting Started with P5 ODDs. <ref
-              target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/"
-              >https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
+            Getting Started with P5 ODDs. <ref target="https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/">https://tei-c.org/guidelines/customization/getting-started-with-p5-odds/</ref>.</bibl>
           <bibl xml:id="teicFAQ"><author>TEI Consortium</author>
-            <date>n.d.</date>. Frequently Asked Questions. <ref
-              target="https://tei-c.org/about/frequently-asked-questions/"
-              >https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
+            <date>n.d.</date>. Frequently Asked Questions. <ref target="https://tei-c.org/about/frequently-asked-questions/">https://tei-c.org/about/frequently-asked-questions/</ref>.</bibl>
         </listBibl>
       </div>
     </back>
