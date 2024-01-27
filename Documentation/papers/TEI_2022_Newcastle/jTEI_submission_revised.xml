@@ -443,26 +443,11 @@
         <div xml:id="consistency">
           <head>Consistency and Conventions</head>
           <p>We have spent some time developing a set of coding conventions to help ensure
-            consistency of the code we produce. When the topic of consistency comes up, one often
-            hears the famous quotation from Ralph Waldo <ref type="bibl" target="#emerson"
-              xml:id="self-reliance">Emerson’s 1841</ref> essay <title>Self-Reliance</title>, that
-              <quote source="#self-reliance">consistency is the hobgoblin of little minds</quote>.
-            First off, Emerson was not a computer programmer. Second, he was not talking about
-            consistency in notation, or that 2+2 consistently is 4, or if there should be a
-            consistent left margin on a printed page. Third, he was not even suggesting that
-            consistency itself is bad, only that a desire to be consistent should not thwart one
-            from changing one’s mind or expressing a point of view contradictory to a previous point
-            of view, as is evident from the entire quotation: <quote source="#self-reliance">A
-              foolish consistency is the hobgoblin of little minds, adored by little statesmen and
-              philosophers and divines. With consistency a great soul has simply nothing to do. He
-              may as well concern himself with his shadow on the wall. Speak what you think now in
-              hard words, and to-morrow speak what to-morrow thinks in hard words again, though it
-              contradict every thing you said to-day. — <q>Ah, so you shall be sure to be
-                misunderstood.</q> — Is it so bad, then, to be misunderstood? Pythagoras was
-              misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and
-              Newton, and every pure and wise spirit that ever took flesh. To be great is to be
-              misunderstood.</quote></p>
-          <p>Our desired consistency is not that of philosophy or religion, but mostly that of
+            consistency of the code we produce.
+            <?oxy_delete author="heb" timestamp="20240127T123443+0100" content="When the topic of consistency comes up, one often hears the famous quotation from Ralph Waldo &lt;ref type=&quot;bibl&quot; target=&quot;#emerson&quot; xml:id=&quot;self-reliance&quot;&gt;Emerson’s 1841&lt;/ref&gt; essay &lt;title&gt;Self-Reliance&lt;/title&gt;, that &lt;quote source=&quot;#self-reliance&quot;&gt;consistency is the hobgoblin of little minds&lt;/quote&gt;. First off, Emerson was not a computer programmer. Second, he was not talking about consistency in notation, or that 2+2 consistently is 4, or if there should be a consistent left margin on a printed page. Third, he was not even suggesting that consistency itself is bad, only that a desire to be consistent should not thwart one from changing one’s mind or expressing a point of view contradictory to a previous point of view, as is evident from the entire quotation: &lt;quote source=&quot;#self-reliance&quot;&gt;A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines. With consistency a great soul has simply nothing to do. He may as well concern himself with his shadow on the wall. Speak what you think now in hard words, and to-morrow speak what to-morrow thinks in hard words again, though it contradict every thing you said to-day. — &lt;q&gt;Ah, so you shall be sure to be misunderstood.&lt;/q&gt; — Is it so bad, then, to be misunderstood? Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great is to be misunderstood.&lt;/quote&gt;"?></p>
+          <p><?oxy_delete author="heb" timestamp="20240127T123443+0100" content="Our desired consistency is not that of philosophy or religion, but"?><?oxy_insert_start author="heb" timestamp="20240127T123405+0100"?>These
+            conventions focus<?oxy_insert_end?> mostly
+            <?oxy_delete author="heb" timestamp="20240127T123413+0100" content="that of"?><?oxy_insert_start author="heb" timestamp="20240127T123516+0100"?>on<?oxy_insert_end?>
             naming and usage. For example, if a subroutine is going to return a node, we use a
             template for that routine; if it does not, we use a function.</p>
           <p>We are using XML validation technology (in particular, Schematron) to enforce
