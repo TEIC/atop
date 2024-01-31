@@ -289,17 +289,15 @@
           problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
           purposes:</p>
         <list rend="bulleted">
-          <item>The Stylesheets are <hi rend="bold">very</hi> complex. <list>
-              <item>This is in large part because they do a <hi rend="bold">lot</hi> more than
+          <item>The Stylesheets are <hi rend="bold">very</hi> complex. This is in large part because they do a <hi rend="bold">lot</hi> more than
                 convert TEI ODD into custom documentation and custom schemas, which are the core
                 activities the TEI Council needs to support.</item>
-            </list></item>
           <item>They are written in an outdated dialect of XSLT (basically XSLT 1.0 with a few 2.0
             constructs).<?oxy_insert_start author="mholmes" timestamp="20240131T084542-0800"?> XSLT
             2.0 and 3.0 provide many new constructs which contribute to clarity, concision, and
             easier documentation.<?oxy_insert_end?></item>
-          <item>They are full of redundancy (e.g., there are two functions, named
-              <code>tei:includeMember()</code> which are used during the ODD processing, that do
+          <item>They are full of redundancy (e.g., there are two functions named
+              <code>tei:includeMember()</code> which are used during the ODD processing that do
             exactly the same thing).</item>
           <item>They are almost completely undocumented.</item>
         </list>

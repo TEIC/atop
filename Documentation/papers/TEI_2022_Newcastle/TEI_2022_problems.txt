@@ -14,11 +14,9 @@ DONE - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the a
 DONE  - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
     TEI tagset (as Paragraph 3 does now) for the purposes of distinguishing Section 22 from the rest of TEI; ODD; ODD customization (or TEI ODD customization files); "TEI Stylesheets" (proper noun); roma; Roma (and difference from roma); XSPEC, XSpec Suite; PLODD; FLOSS.
     
- - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list.
+ - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list. TO BE DONE BY HBS.
  
- - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. (Also in this section there are some errors: whatsTheDate is a template, tei:whatsTheDate is a function. -- THIS ERROR IS NOW CORRECTED) MH and HBS feel we should keep the section, but rewrite it and trim it down.
- 
- - Instead, include a section on what is wrong with the current stylesheets and why they are a major barrier to TEI usage. This is the whole justification for ATOP. MH and HBS think this should be part of the rewritten section above.
+ - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. (Also in this section there are some errors: whatsTheDate is a template, tei:whatsTheDate is a function. -- THIS ERROR IS NOW CORRECTED) MH and HBS feel we should keep the section, but rewrite it and trim it down. Instead, include a section on what is wrong with the current stylesheets and why they are a major barrier to TEI usage. This is the whole justification for ATOP. MH and HBS think this should be part of the rewritten section above. TO BE DONE BY MH: What we think is required is a minor rewrite, since we think the history is partly the cause of some of the problems. 
  
  - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.) Maybe ATOP: Plans (including deliverables, workflow and testing) and ATOP: Progress? -- TO BE DONE BY SB
  
