@@ -28,7 +28,7 @@ DONE - Consider saving space by losing the Emerson quote. MH: Agreed. It's a cli
  
 DONE - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail. MH and HBS agree: we should import some content from the Paderborn presentation to provide specific issues relevant now, rather than wait two years to see the Paderborn info appear. -- TO BE STARTED BY HBS (with warning)
  
- - Consider explaining why XSLT 1.0 is not your SW of choice. (MH thinks this is redundant; the current Stylesheets use XSLT 2.0 features, and there's no reason any developer with the option to use XSLT 3 would prefer 1.0.) 
+DONE: Short explanation in history section. - Consider explaining why XSLT 1.0 is not your SW of choice. (MH thinks this is redundant; the current Stylesheets use XSLT 2.0 features, and there's no reason any developer with the option to use XSLT 3 would prefer 1.0.) 
  
  
 

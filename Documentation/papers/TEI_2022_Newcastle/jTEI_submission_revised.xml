@@ -295,7 +295,9 @@
                 activities the TEI Council needs to support.</item>
             </list></item>
           <item>They are written in an outdated dialect of XSLT (basically XSLT 1.0 with a few 2.0
-            constructs).</item>
+            constructs).<?oxy_insert_start author="mholmes" timestamp="20240131T084542-0800"?> XSLT
+            2.0 and 3.0 provide many new constructs which contribute to clarity, concision, and
+            easier documentation.<?oxy_insert_end?></item>
           <item>They are full of redundancy (e.g., there are two functions, named
               <code>tei:includeMember()</code> which are used during the ODD processing, that do
             exactly the same thing).</item>
