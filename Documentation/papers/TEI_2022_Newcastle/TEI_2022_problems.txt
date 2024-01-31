@@ -11,22 +11,22 @@ DONE - Fix doubled words
  
 DONE - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
  
- - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
+DONE  - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
     TEI tagset (as Paragraph 3 does now) for the purposes of distinguishing Section 22 from the rest of TEI; ODD; ODD customization (or TEI ODD customization files); "TEI Stylesheets" (proper noun); roma; Roma (and difference from roma); XSPEC, XSpec Suite; PLODD; FLOSS.
     
  - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list.
  
- - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. (Also in this section there are some errors: whatsTheDate is a template, tei:whatsTheDate is a function.) MH and HBS feel we should keep the section, but rewrite it and trim it down.
+ - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. (Also in this section there are some errors: whatsTheDate is a template, tei:whatsTheDate is a function. -- THIS ERROR IS NOW CORRECTED) MH and HBS feel we should keep the section, but rewrite it and trim it down.
  
  - Instead, include a section on what is wrong with the current stylesheets and why they are a major barrier to TEI usage. This is the whole justification for ATOP. MH and HBS think this should be part of the rewritten section above.
  
- - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.) Maybe ATOP: Plans (including deliverables, workflow and testing) and ATOP: Progress?
+ - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.) Maybe ATOP: Plans (including deliverables, workflow and testing) and ATOP: Progress? -- TO BE DONE BY SB
  
  - Consider adding sections on Deliverables, Workflow, Consistency and Testing, and Component Testing. (MH thinks the How section above should cover all of this).
  
- - Consider saving space by losing the Emerson quote. MH: Agreed. It's a cliche, and every citation of this quote has to explain that he didn't mean what he appeared to say.
+DONE - Consider saving space by losing the Emerson quote. MH: Agreed. It's a cliche, and every citation of this quote has to explain that he didn't mean what he appeared to say. -- TO BE DONE BY HBS
  
- - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail. MH and HBS agree: we should import some content from the Paderborn presentation to provide specific issues relevant now, rather than wait two years to see the Paderborn info appear.
+DONE - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail. MH and HBS agree: we should import some content from the Paderborn presentation to provide specific issues relevant now, rather than wait two years to see the Paderborn info appear. -- TO BE STARTED BY HBS (with warning)
  
  - Consider explaining why XSLT 1.0 is not your SW of choice. (MH thinks this is redundant; the current Stylesheets use XSLT 2.0 features, and there's no reason any developer with the option to use XSLT 3 would prefer 1.0.) 
  
