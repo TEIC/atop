@@ -134,11 +134,11 @@
         The fourth section addresses the decisions we have made so far.</p>
       <div xml:id="disclosures">
         <head>Disclosures</head>
-        <p>Two of the authors<?oxy_insert_start author="mholmes" timestamp="20240123T101720-0800"?>,
-          Syd Bauman and Helena Bermúdez Sabel,<?oxy_insert_end?> are currently members of the TEI
-          Council. A third<?oxy_insert_start author="mholmes" timestamp="20240123T101754-0800"?>,
-          David Maus,<?oxy_insert_end?> is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based
-          Schematron processor), mentioned
+        <p>Two of the authors, Syd Bauman and Helena Bermúdez Sabel, are currently members of the
+          TEI Council. A
+          third<?oxy_insert_start author="mholmes" timestamp="20240123T101754-0800"?>, David
+          Maus,<?oxy_insert_end?> is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based Schematron
+          processor), mentioned
           <?oxy_delete author="mholmes" timestamp="20240123T101808-0800" content="herein"?><?oxy_insert_start author="mholmes" timestamp="20240123T101808-0800"?>below<?oxy_insert_end?>,
           which is quickly becoming the favorite Schematron processor not just in the TEI community,
           but in much of the XML world. The
