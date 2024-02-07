@@ -126,22 +126,17 @@
       <p>This paper is an introduction to a new TEI enterprise to create a utility for generating
         schemas (RELAX NG and Schematron) from descriptions of encoding systems written in TEI ODD,
         including chaining (i.e., customizations, customizations of customizations, customizations
-        of customizations of customizations, etc.). <?oxy_delete author="heb" timestamp="20240124T180417+0100" content="The first"?>
-        <?oxy_insert_start author="heb" timestamp="20240124T180421+0100"?><ref target="#rev" type="crossref">S<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240124T180420+0100" content="s"?>ection
-          <?oxy_insert_start author="heb" timestamp="20240124T180424+0100"?>3</ref>
-        <?oxy_insert_end?>is a review of what TEI ODD is and
-        a<?oxy_delete author="heb" timestamp="20240124T181151+0100" content="n"?><?oxy_insert_start author="heb" timestamp="20240124T181153+0100"?>
-        broad<?oxy_insert_end?> overview of how it is currently processed. The
-        <?oxy_delete author="heb" timestamp="20240124T181209+0100" content="second"?><?oxy_insert_start author="heb" timestamp="20240124T181209+0100"?>next<?oxy_insert_end?>
-        section will address why this is an important endeavor, explain how it came to be, and
-        describe the very limited intended goals. The third section discusses how the work is taking
-        place and where it can be found. The fourth section addresses the decisions we have made so
-        far.</p>
+        of customizations of customizations, etc.).  <ref target="#rev" type="crossref">Section
+          3</ref> is a review of what TEI ODD is and a broad overview of how it is currently
+        processed. The next section will address why this is an important endeavor, explain how it
+        came to be, and describe the very limited intended goals. The third section discusses how
+        the work is taking place and where it can be found. The fourth section addresses the
+        decisions we have made so far.</p>
       <div xml:id="disclosures">
         <head>Disclosures</head>
         <p>Two of the authors, Syd Bauman and Helena Bermúdez Sabel, are currently members of the
-          TEI Council. A third, David Maus, is the author of SchXslt ([ʃˈɛksl̩t] – An XSLT-based
-          Schematron processor), mentioned below, which is quickly becoming the favorite Schematron
+          TEI Council. A third, David Maus, is the author of <ref target="https://schxslt.github.io/schxslt/">SchXslt
+          ([ʃˈɛksl̩t] – An XSLT-based Schematron processor)</ref>, mentioned below, which is quickly becoming the favorite Schematron
           processor not just in the TEI community, but in much of the XML world. The fourth, Martin
           Holmes, is the author of the first paper to directly address the problem head-on,[A] and
           thus spurred the entire endeavor. All of the authors have been involved in trying to
@@ -150,7 +145,6 @@
       </div>
       <div xml:id="terminology">
         <head>Terminology</head>
-        <?oxy_delete author="heb" timestamp="20240124T175548+0100" content="&lt;head/&gt;"?>
         <p>This is a list of terminology, acronyms, and initialisms used in this paper.</p>
         <list>
           <item><emph>ATOP</emph>: Another TEI ODD Processor. (<q>Another</q> because it is intended
@@ -279,23 +273,24 @@
           name of the GitHub repository where they live is <name>Stylesheets</name>, but in fact the
           repo is named after the software.) The Stylesheets also convert TEI into many other
           formats (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into
-          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/">[https://github.com/TEIC/Stylesheets/</ref>] are both a work of genius (the genius of
+          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/">[https://github.com/TEIC/Stylesheets/</ref>]
+          are both an extraordinarily impressive accomplishment (that of
           Sebastian Rahtz, to be precise) and somewhat of an obstacle to the growth of the TEI
-          language. The Stylesheets are very impressive in that they perform a large set of
+          language. The Stylesheets are magnificent in that they perform a large set of
           intricate tasks reasonably well, and in that they were written amazingly fast. But they
           are very difficult to maintain. The source of the problem was summed up by Holmes in 2021:
             <quote source="#holmes">Sebastian was such a genius he really found it impossible to
             imagine how dim the rest of us actually are.</quote>. For a detailed discussion of the
-          problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
+          problems the Stylesheets pose see the rest of Holmes’ paper
+          (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
           purposes:</p>
         <list rend="bulleted">
           <item>The Stylesheets are <hi rend="bold">very</hi> complex. This is in large part because they do a <hi rend="bold">lot</hi> more than
                 convert TEI ODD into custom documentation and custom schemas, which are the core
                 activities the TEI Council needs to support.</item>
           <item>They are written in an outdated dialect of XSLT (basically XSLT 1.0 with a few 2.0
-            constructs).<?oxy_insert_start author="mholmes" timestamp="20240131T084542-0800"?> XSLT
-            2.0 and 3.0 provide many new constructs which contribute to clarity, concision, and
-            easier documentation.<?oxy_insert_end?></item>
+            constructs). XSLT 2.0 and 3.0 provide many new constructs which contribute to clarity,
+            concision, and easier documentation.</item>
           <item>They are full of redundancy (e.g., there are two functions named
               <code>tei:includeMember()</code> which are used during the ODD processing that do
             exactly the same thing).</item>
@@ -342,20 +337,32 @@
       </div>
       <div xml:id="work">
         <head>Work processes</head>
-        <p>Work on ATOP is being performed by a task force that consists of the four authors. While
-          we have no hard limit to how often or how rarely we meet, so far we have been meeting for
-          1 hour per week via videoconference call (with screen share capability), and have found
-          this pace quite comfortable. We have deliberately set no hard deadlines for ourselves,
-          purposefully putting the goal of maintainable code over and above the goal of finishing
-          our work rapidly. (After all, the world has been making due with the current Stylesheets
-          for many years). We have an aspirational goal of having working code for Council to start
-          testing in summer 2023, and an initial full release by the end of 2023. However, it will
-          neither surprise us nor upset us if we do not meet those temporal goals.</p>
-        <p>So far almost all work takes place on a TEIC GitHub repository (<ref target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
-          repository includes the code (including tests), issues \&amp; pull requests, a glossary of
-          terms, documentation of goals, namespaces, error codes, etc., and minutes of our
-          meetings.</p>
-        <p>We also occasionally make use of a dedicated channel in the TEI Slack space.</p>
+        <p>Work on ATOP is being performed by a task force that
+        consists of the four authors. While we have no hard limit to
+        how often or how rarely we meet, so far we have been meeting
+        for 1 hour per week via videoconference call (with screen
+        share capability), and have found this pace quite
+        comfortable. We also occasionally make use of a dedicated
+        channel in the TEI Slack space.</p>
+        <p>So far almost all work takes place on a TEIC GitHub
+        repository (<ref
+        target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
+        repository includes the code (including tests), issues &amp;
+        pull requests, a glossary of terms, documentation of goals,
+        namespaces, error codes, etc., and minutes of our meetings.</p>
+        <p>We have deliberately set no hard deadlines for ourselves,
+        putting the goal of maintainable code over and above the goal
+        of finishing our work rapidly. (After all, the world has been
+        making do with the current Stylesheets for many years). We
+        had an aspirational goal of having working code for Council
+        to start testing in summer 2023, and an initial full release
+        by the end of 2023.</p>
+        <p>However, it neither surprises us nor upsets us that we have
+        not met those temporal goals, although we did release an interim
+        package in October 2023 containing components to run the final
+        stage of the process only. This may already be useful to some
+        ODD creators who directly author complete ODD files rather
+        than starting from a customization of P5.</p>
       </div>
       <div xml:id="plans">
         <head>Plans and progress</head>
@@ -364,7 +371,7 @@
           <p>The current Stylesheets include over 330 XSLT files; of those only ~25–33 are part of
             the process we are duplicating. However, the division of labor among these is, at best,
             confusing, and has been described (several years after the death of the primary author)
-            on a TEI wiki page (<ref target="https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing">https://wiki.tei-c.org/index.php?title=Mapping\_ODD\_processing)</ref>).</p>
+            on a TEI wiki page (<ref target="https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing">https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing)</ref>).</p>
           <p>Another problem with the current suite is inconsistent terminology. In order to try to
             avoid this pitfall, we agreed to (and are trying to stick to) a defined glossary of
             terms that we develop within the first month of the project (<ref target="https://github.com/TEIC/atop/wiki/Terminology">https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
@@ -450,35 +457,31 @@
               <code>( blort, blort?, blort* )</code> all mean the same thing: <q>one ore more
                 <gi>blort</gi>s</q>.</p>
         </div>
-      </div>
-      <div xml:id="deliverables">
-        <head>Deliverables</head>
-        <p>The main deliverable will be a set of XSLT programs that convert a chain of one or more
+        <div xml:id="deliverables">
+          <head>Deliverables</head>
+          <p>The main deliverable will be a set of XSLT programs that convert a chain of one or more
           ODDs into RELAX NG and Schematron. Ancillary deliverables will be a driver or glue program
           for an end-user to run, a schema with which to test the input document(s), a schema with
           which to test the intermediate document(s) (although they may be hidden from the user
           unless she asks for them), and documentation of the entire system. Each of these will, of
           course, be FLOSS, probably under the same license as other TEI software.</p>
-        <p>The main programs will be written in XSLT 3 (using XPath 3.1) without any extended
+          <p>The main programs will be written in XSLT 3 (using XPath 3.1) without any extended
           functionality. Even if and when XSLT 4 is available, we plan to stick with XSLT 3. These
           programs should run in any standard XML-friendly environment, including the GNU/Linux
           command-line and oXygen. We make use of oXygen, and the end product should run quite
           nicely in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
-        <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that tests the input
+          <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that tests the input
           and runs the required XSLT programs in the right order will probably be written in ant or
           XProc.</p>
+        </div>
       </div>
       <div xml:id="issues">
-        <head><?oxy_delete author="heb" timestamp="20240127T141352+0100" content="Side effects (and foreshadowing)"?><?oxy_insert_start author="heb" timestamp="20240127T141352+0100"?>Issues
-          with the current ODD language specifications<?oxy_insert_end?></head>
+        <head>Issues with the current ODD language specifications</head>
         <p>It is not surprising that our work runs into places where ODD must be more cleanly
-          specified. <?oxy_delete author="heb" timestamp="20240127T141934+0100" content="E.g., there is no mechanism in the ODD language for a user to specify the query binding language used in her Schematron contexts and tests."?>
-          <?oxy_insert_start author="heb" timestamp="20240127T142521+0100"?>A brief commentary of
-          some of these issues follows:<note>These examples are taken
-            f<?oxy_insert_end?><?oxy_insert_start author="mholmes" timestamp="20240131T082836-0800"?>ro<?oxy_insert_end?><?oxy_delete author="mholmes" timestamp="20240131T082836-0800" content="or"?><?oxy_insert_start author="heb" timestamp="20240127T142521+0100"?>m
-            a presentation by the authors delivered at the joint MEC and TEI Conference 2023
-            (Padeborn, September 6–9, 2023). See <ref type="bibl" target="#baumanetal2023">Bauman et
-              al. 2023</ref></note><list>
+          specified.  A brief commentary of some of these issues follows:<note>These examples are
+            taken from a presentation by the authors delivered at the joint MEC and TEI Conference
+            2023 (Padeborn, September 6–9, 2023). See <ref type="bibl" target="#baumanetal2023"
+              >Bauman et al. 2023</ref></note><list>
             <label>Schematron query language binding</label>
             <item>There is no mechanism in the ODD language for a user to specify the query binding
               language used in her Schematron contexts and tests. Driven by the atop working group,
@@ -501,9 +504,8 @@
               basis that if the context is not explicit, it means that it could be inferred.
               However, the TEI Guidelines do not specify how the context should be inferred when it
               is not explicit.</item>
-          </list><?oxy_insert_end?><?oxy_insert_start author="heb" timestamp="20240127T141950+0100" type="split"?></p>
-        <p><?oxy_insert_end?>We are raising issues in the TEI (<ref
-            target="https://github.com/TEIC/TEI/labels/atop"
+          </list></p>
+        <p>We are raising issues in the TEI (<ref target="https://github.com/TEIC/TEI/labels/atop"
             >https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref
             target="https://github.com/TEIC/Stylesheets/labels/atop"
             >https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we go.
@@ -571,6 +573,7 @@
     </back>
   </text>
 </TEI>
+
 
 
 
