@@ -272,18 +272,18 @@
           name <name>the TEI Stylesheets</name>. (You might think they are called that because the
           name of the GitHub repository where they live is <name>Stylesheets</name>, but in fact the
           repo is named after the software.) The Stylesheets also convert TEI into many other
-          formats (including DocBook, HTML, PDF, NLM, OpenDocument), and many of those formats into
-          TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/">[https://github.com/TEIC/Stylesheets/</ref>]
-          are both an extraordinarily impressive accomplishment (that of
-          Sebastian Rahtz, to be precise) and somewhat of an obstacle to the growth of the TEI
-          language. The Stylesheets are magnificent in that they perform a large set of
-          intricate tasks reasonably well, and in that they were written amazingly fast. But they
-          are very difficult to maintain. The source of the problem was summed up by Holmes in 2021:
-            <quote source="#holmes">Sebastian was such a genius he really found it impossible to
-            imagine how dim the rest of us actually are.</quote>. For a detailed discussion of the
-          problems the Stylesheets pose see the rest of Holmes’ paper
-          (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize here for our
-          purposes:</p>
+          formats (including DocBook, HTML, PDF, NLM, and OpenDocument), and many of those formats
+          into TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/"
+            >[https://github.com/TEIC/Stylesheets/</ref>] are both an extraordinarily impressive
+          accomplishment (that of Sebastian Rahtz, to be precise) and somewhat of an obstacle to the
+          growth of the TEI language. The Stylesheets are magnificent in that they perform a large
+          set of intricate tasks reasonably well, and in that they were written very quickly.
+          However, they are very difficult to maintain. The source of the problem was summed up by
+          Holmes in 2021: <quote source="#holmes">Sebastian was such a genius he really found it
+            impossible to imagine how dim the rest of us actually are.</quote>. For a detailed
+          discussion of the problems the Stylesheets pose see the rest of Holmes’ paper (<ref
+            type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize
+          here for our purposes:</p>
         <list rend="bulleted">
           <item>The Stylesheets are <hi rend="bold">very</hi> complex. This is in large part because they do a <hi rend="bold">lot</hi> more than
                 convert TEI ODD into custom documentation and custom schemas, which are the core
@@ -292,41 +292,43 @@
             constructs). XSLT 2.0 and 3.0 provide many new constructs which contribute to clarity,
             concision, and easier documentation.</item>
           <item>They are full of redundancy (e.g., there are two functions named
-              <code>tei:includeMember()</code> which are used during the ODD processing that do
-            exactly the same thing).</item>
+              <code>tei:includeMember()</code> which are used during ODD processing that do exactly
+            the same thing).</item>
           <item>They are almost completely undocumented.</item>
         </list>
-        <p>Thus fixing bugs, let alone adding new features, to the Stylesheets is quite difficult,
-          in part because it is very difficult to be confident that a bug fix does not cause other
-          problems. Furthermore, it is common to find new bugs when fixing known bugs. David Maus
-          went so far as to say in an issue comment <quote source="#comment">I consider the
-            Stylesheets as broken beyond repair. They work … to a certain degree[,] but they are,
-            from my point of view, effectively unmaintainable.</quote> (<ref target="#maus2021" type="bibl" xml:id="comment">Maus 2021</ref>)</p>
+        <p>Thus fixing bugs in, let alone adding new features to, the Stylesheets is quite
+          difficult, in part because it is very difficult to be confident that a change does not
+          introduce other problems. Furthermore, it is common to find new bugs when fixing known
+          bugs. David Maus went so far as to say in an issue comment <quote source="#comment">I
+            consider the Stylesheets as broken beyond repair. They work … to a certain degree[,] but
+            they are, from my point of view, effectively unmaintainable.</quote> (<ref
+            target="#maus2021" type="bibl" xml:id="comment">Maus 2021</ref>)</p>
         <p>The natural consequence to the Stylesheets being simultaneously so difficult to maintain
           and being so central to the TEI Technical Council’s mission is that the Council spends a
-          lot of its time trying to fix bugs in the Stylesheets. There is a monthly meeting devoted
-          to the task, and it is not nearly enough. It is worth mentioning, though, that people
-          other than those on Council can contribute to the Stylesheets. In fact, the Stylesheets
-          repository was deliberately (and some would say unwisely) separated from the repository
-          used for the TEI Guidelines themselves in order to encourage and foster work on the
-          Stylesheets by programmers other than those on Council. This has not been entirely
-          successful, though. Fewer than 4% of commits to the dev branch are by people who have
-          never served on Council.</p>
+          lot of its time trying to address issues in the Stylesheets. There is a monthly meeting
+          devoted to the task, and it is not nearly enough. It is worth mentioning, though, that
+          people other than those on Council can contribute to the Stylesheets. In fact, the
+          Stylesheets repository was deliberately (and some would say unwisely) separated from the
+          repository used for the TEI Guidelines themselves in order to encourage and foster work on
+          the Stylesheets by programmers other than those on Council. This has not been entirely
+          successful, though. Fewer than 4% of commits to the primary development branch are by
+          people who have never served on Council.</p>
         <p>Two of the authors (Bauman and Holmes) had been fantasizing about re-writing the
           Stylesheets from scratch for several years. In 2021 at the virtual TEI conference Holmes
-          presented the paper cited above, laying out the argument that the Stylesheets are becoming
-          a hindrance to progress within the TEI. It seemed that most Council members were quite
-          sympathetic to Holmes’ position. Bauman saw this as an opportunity, and asked Council to
-          create a task force for the purpose of creating a new ODD processor from scratch that
-          generates RELAX NG and Schematron schemas from the ODD language. This deliberately left
-          out many of the tasks the Stylesheets perform. However, Council feels that the only tasks
-          performed by the Stylesheets that are core parts of its mission are generation of the
-          Guidelines themselves, and generation of custom documentation and schemas. But even
-          considering only those 3 core tasks, 2 are not covered by the charge to the new task
-          force. This is for a variety of reasons, the largest of which is that another group will
-          be tackling (or more likely, by the time you read this, has tackled) the other activities
-          that are part of Council’s core mission: generating the Guidelines themselves and
-          generating customized documentation.</p>
+          presented the paper cited above (<ref type="bibl" target="#holmes2021">Holmes 2021</ref>),
+          laying out the argument that the Stylesheets are becoming a hindrance to progress within
+          the TEI. It seemed that most Council members were quite sympathetic to Holmes’ position.
+          Bauman saw this as an opportunity, and asked Council to create a task force for the
+          purpose of creating a new ODD processor from scratch that generates RELAX NG and
+          Schematron schemas from the ODD language. This deliberately left out many of the tasks the
+          Stylesheets perform. However, Council feels that the only tasks performed by the
+          Stylesheets that are core parts of its mission are 1) generation of the Guidelines
+          themselves, 2) generation of custom documentation, and 3) generation of custom schemas.
+          But even considering only those 3 core tasks, 2 are not covered by the charge to the new
+          task force. This is for a variety of reasons, the largest of which is that another group
+          will be tackling (or more likely, by the time you read this, has tackled) the other
+          activities that are part of Council’s core mission: generating the Guidelines themselves
+          and generating customized documentation.</p>
         <p>Thus ATOP will be an ODD processor that takes as input a chain of one or more ODD files
           and produces as output both a RELAX NG schema (representing the grammar expressed by the
           chained ODDs) and an ISO Schema (representing the additional ISO Schematron constraints in
@@ -344,12 +346,11 @@
         share capability), and have found this pace quite
         comfortable. We also occasionally make use of a dedicated
         channel in the TEI Slack space.</p>
-        <p>So far almost all work takes place on a TEIC GitHub
-        repository (<ref
-        target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
-        repository includes the code (including tests), issues &amp;
-        pull requests, a glossary of terms, documentation of goals,
-        namespaces, error codes, etc., and minutes of our meetings.</p>
+        <p>So far almost all work takes place on a TEIC GitHub repository (<ref
+            target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
+          repository includes the code (including tests), issues and pull requests, a glossary of
+          terms, documentation of goals, namespaces, error codes, etc., and minutes of our
+          meetings.</p>
         <p>We have deliberately set no hard deadlines for ourselves,
         putting the goal of maintainable code over and above the goal
         of finishing our work rapidly. (After all, the world has been
@@ -357,12 +358,10 @@
         had an aspirational goal of having working code for Council
         to start testing in summer 2023, and an initial full release
         by the end of 2023.</p>
-        <p>However, it neither surprises us nor upsets us that we have
-        not met those temporal goals, although we did release an interim
-        package in October 2023 containing components to run the final
-        stage of the process only. This may already be useful to some
-        ODD creators who directly author complete ODD files rather
-        than starting from a customization of P5.</p>
+        <p>However, it neither surprises us nor upsets us that we have not met those temporal goals.
+          We did manage to release an interim package in October 2023 containing components to run
+          the final stage of the process only. This may already be useful to some ODD creators who
+          directly author complete ODD files rather than starting from a customization of P5.</p>
       </div>
       <div xml:id="plans">
         <head>Plans and progress</head>
@@ -374,7 +373,9 @@
             on a TEI wiki page (<ref target="https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing">https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing)</ref>).</p>
           <p>Another problem with the current suite is inconsistent terminology. In order to try to
             avoid this pitfall, we agreed to (and are trying to stick to) a defined glossary of
-            terms that we develop within the first month of the project (<ref target="https://github.com/TEIC/atop/wiki/Terminology">https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
+            terms that we developed within the first month of the project (<ref
+              target="https://github.com/TEIC/atop/wiki/Terminology"
+              >https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
           <p>We anticipate that ATOP will not be <hi rend="italic">nearly</hi> as complicated as the
             current suite, in large part because it will do so much less. It <hi rend="italic">may</hi> end up as complicated as the portion of the current suite that handles the
             same process, but probably not; and even if it does, it will be well-documented, clear,
@@ -573,8 +574,3 @@
     </back>
   </text>
 </TEI>
-
-
-
-
-<?oxy_options track_changes="on"?>
