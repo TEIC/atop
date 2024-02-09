@@ -1,32 +1,43 @@
 ____________Suggestions from reviewers_______________
 
-This attempts to distill various reviewer suggestions into points we can address
-in distinct commits.
+We thank the reviewers for their helpful responses. Here we list their concerns, and explain how we've addressed each one (IN CAPS):
 
-DONE - Fix typos like "constraintiung" and "identifers"
+ - Fix typos like "constraintiung" and "identifers"
+DONE
  
-DONE - Fix doubled words
+ - Fix doubled words
+DONE
  
- - Stress more clearly, early on, why the paper and the ATOP project is important. MH: Not sure where this should be done, yet.
+ - Stress more clearly, early on, why the paper and the ATOP project is important.
+INTRODUCTORY SECTIONS HAVE BEEN MODIFIED SLIGHTLY, BUT WE THINK THAT ANYONE LIKELY TO BE READING THIS PAPER WILL 
+ALREADY UNDERSTAND WHAT ODD PROCESSING IS ABOUT AND WHY IT'S IMPORTANT. WHETHER THE PAPER ITSELF IS IMPORTANT
+IS IN THE EYES OF THE READER, SURELY.
  
-DONE - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
+ - Rewrite section 1 DISCLOSURE to be more formal and detailed, naming the authors.
+DONE
  
-DONE  - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
+ - Add a new TERMINOLOGY section which pre-introduces and glosses key terms, including:
     TEI tagset (as Paragraph 3 does now) for the purposes of distinguishing Section 22 from the rest of TEI; ODD; ODD customization (or TEI ODD customization files); "TEI Stylesheets" (proper noun); roma; Roma (and difference from roma); XSPEC, XSpec Suite; PLODD; FLOSS.
+DONE
     
- - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list. TO BE DONE BY HBS.
+ - Rewrite the section on TEI ODD processing to provide what it promises to ("a review of what TEI ODD is and an overview of how it is currently processed"), rather than a laundry list.
+SOME MODIFICATIONS TO THIS SECTION HAVE BEEN MADE, BUT WE THINK THAT IF YOU'RE READING A PAPER ON ODD PROCESSING, YOU PROBABLY KNOW WHAT ODD IS. IF NOT, THE TEI GUIDELINES PROVIDE SUFFICIENT EXPLANATION.
  
- - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed. (Also in this section there are some errors: whatsTheDate is a template, tei:whatsTheDate is a function. -- THIS ERROR IS NOW CORRECTED) MH and HBS feel we should keep the section, but rewrite it and trim it down. Instead, include a section on what is wrong with the current stylesheets and why they are a major barrier to TEI usage. This is the whole justification for ATOP. MH and HBS think this should be part of the rewritten section above. TO BE DONE BY MH: What we think is required is a minor rewrite, since we think the history is partly the cause of some of the problems. 
+ - Consider dropping the section on the history of the Stylesheets. If the terminology gloss of TEI Stylesheets is clear enough (without being too long), this section should not be needed.
+WE DISAGREE HERE; THE HISTORY OF THE STYLESHEETS (RAPID AD-HOC DEVELOPMENT ALONGSIDE THE ODD SPECIFICATION) IS PART OF THE REASON THAT THEY ARE PROBLEMATIC NOW.
  
- - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.) Maybe ATOP: Plans (including deliverables, workflow and testing) and ATOP: Progress? -- TO BE DONE BY SB
+ - Consider combining the sections on Work Processes and Plans and Progress with a section ATOP, organized into Why, What, and How. (The why section might just point at the previous section -- we need ATOP because the current stylesheets are flawed and unmaintainable.) Maybe ATOP: Plans (including deliverables, workflow and testing) and ATOP: Progress? Consider adding sections on Deliverables, Workflow, Consistency and Testing, and Component Testing.
+WE HAVE REORGANIZED THOSE SECTIONS, ALTHOUGH WE HAVE CHOSEN NOT TO USE WHY, WHAT, AND HOW.
  
- - Consider adding sections on Deliverables, Workflow, Consistency and Testing, and Component Testing. (MH thinks the How section above should cover all of this).
+ - Consider saving space by losing the Emerson quote. 
+DONE
  
-DONE - Consider saving space by losing the Emerson quote. MH: Agreed. It's a cliche, and every citation of this quote has to explain that he didn't mean what he appeared to say. -- TO BE DONE BY HBS
+ - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail. 
+DONE; WE HAVE BROUGHT IN SOME ILLUSTRATIVE EXAMPLES OF SPECIFIC ISSUES FROM OUR PADERBORN PAPER.
  
-DONE - Consider titling the last section "Issues with the current ODD" and enumerating some of these in more detail. MH and HBS agree: we should import some content from the Paderborn presentation to provide specific issues relevant now, rather than wait two years to see the Paderborn info appear. -- TO BE STARTED BY HBS (with warning)
- 
-DONE: Short explanation in history section. - Consider explaining why XSLT 1.0 is not your SW of choice. (MH thinks this is redundant; the current Stylesheets use XSLT 2.0 features, and there's no reason any developer with the option to use XSLT 3 would prefer 1.0.) 
+ - Consider explaining why XSLT 1.0 is not your SW of choice. 
+WE THINK THIS IS POINTLESS. THE CURRENT STYLESHEETS ALREADY USE XSLT 2.0 FEATURES, AND THERE'S NO REASON WHY ANY DEVELOPER WITH THE OPTION TO USE XSLT 3 WOULD PREFER 1.0.
+
  
  
 
