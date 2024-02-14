@@ -109,67 +109,50 @@
   <text>
     <front>
       <div type="abstract" xml:id="abstract">
-        <p>The TEI XSL Stylesheets is a tool that tackles the transformation of TEI XML documents to
-          (and from) various formats. This includes the crucial activity of generating schemas from
-          TEI ODD, the TEI XML-conformant specification format that allows one to write a schema language
-          (for example, TEI P5 itself is written in ODD) or to customize TEI P5 in
+        <p>The TEI XSL Stylesheets codebase is a tool that tackles the transformation of TEI XML
+          documents to and from various formats. This includes the crucial activity of generating
+          schemas from TEI ODD, the TEI XML-conformant specification format that allows one to write
+          a schema language (for example, TEI P5 itself is written in ODD) or to customize TEI P5 in
           a literate programming fashion. Due to the difficulties of maintaining this current set of
           Stylesheets, a Task Force was created with the mission of developing, from scratch, an ODD
-          processor that reads in a series of one or more TEI ODD customization files, merges them with a TEI
-          language (likely, but not necessarily, TEI P5 itself), and generates RELAX NG and
-          Schematron schemas. This paper presents a rationale of this task and the initial steps of
-          this work.</p>
+          processor that reads in a series of one or more TEI ODD customization files, merges them
+          with a TEI language (likely, but not necessarily, TEI P5 itself), and generates RELAX NG
+          and Schematron schemas. This paper presents a rationale of this task and the initial steps
+          of this work.</p>
       </div>
     </front>
     <body xml:id="atop">
       <head>ATOP: Another TEI ODD Processor</head>
-      <p>This paper is an introduction to a new TEI enterprise to create a utility for generating
+      <p>This paper is an introduction to a TEI enterprise to create a utility for generating
         schemas (RELAX NG and Schematron) from descriptions of encoding systems written in TEI ODD,
-        including chaining (i.e., customizations, customizations of customizations, customizations
-        of customizations of customizations,
-        etc.).<?oxy_insert_start author="heb" timestamp="20240211T140055+0100"?> The paper begins
-        with <ref target="#terminology" type="crossref">a glossary</ref> of common terms used
-        throughout the paper.<?oxy_insert_end?>
-        <ref target="#rev" type="crossref">Section 3</ref> is a review of what TEI ODD is and a
-        broad overview of how it is currently processed. The
-          <?oxy_insert_start author="heb" timestamp="20240211T135348+0100" type="surround"?><ref target="#hx" type="crossref"><?oxy_insert_end?>next section</ref>
-        <?oxy_delete author="heb" timestamp="20240211T134849+0100" content="will address"?><?oxy_insert_start author="heb" timestamp="20240211T134849+0100"?>addresses<?oxy_insert_end?>
-        why this is an important endeavor,
-        explain<?oxy_insert_start author="heb" timestamp="20240211T134855+0100"?>s<?oxy_insert_end?>
-        how it came to be, and
-        describe<?oxy_insert_start author="heb" timestamp="20240211T134858+0100"?>s<?oxy_insert_end?>
-        the very limited intended goals.
-          <?oxy_insert_start author="heb" timestamp="20240211T134938+0100"?><ref type="crossref" target="#work">Section
-        5</ref><?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240211T134935+0100" content="The third section"?>
-        discusses how the work is taking place and where it can be found. The
-        <?oxy_delete author="heb" timestamp="20240211T135238+0100" content="fourth"?><?oxy_insert_start author="heb" timestamp="20240211T135238+0100"?>sixth<?oxy_insert_end?>
-        section addresses the
-        decisions<?oxy_insert_start author="heb" timestamp="20240211T135649+0100"?> and the
-        work<?oxy_insert_end?> we have made so
-        far.<?oxy_insert_start author="heb" timestamp="20240211T135657+0100"?> To conclude the
-        paper, we present some of the issues we have encountered with the current ODD language
-        specifications (<ref target="#issues" type="crossref">Section 7</ref>).<?oxy_insert_end?></p>
+        including chaining (i.e., customizations, customizations of customizations, etc.). The paper
+        begins with <ref target="#terminology" type="crossref">a glossary</ref> of common terms used
+        throughout the paper. <ref target="#rev" type="crossref">Section 3</ref> is a review of what
+        TEI ODD is and a broad overview of how it is currently processed. The <ref target="#hx"
+          type="crossref">next section</ref> addresses why this is an important endeavor, explains
+        how it came to be, and describes the very limited intended goals. <ref type="crossref"
+          target="#work">Section 5</ref> discusses how the work is taking place and where it can be
+        found. The sixth section addresses the decisions and the work we have made so far. To
+        conclude the paper, we present some of the issues we have encountered with the current ODD
+        language specifications (<ref target="#issues" type="crossref">Section 7</ref>).</p>
       <div xml:id="disclosures">
         <head>Disclosures</head> 
         <p>Two of the authors, Syd Bauman and Helena Bermúdez Sabel, are currently members of the
-          TEI Council. A third, David Maus, is the author of <ref target="https://schxslt.github.io/schxslt/">SchXslt ([ʃˈɛksl̩t] – An XSLT-based
+          TEI Council. A third, David Maus, is the author of <ref
+            target="https://schxslt.github.io/schxslt/">SchXslt ([ʃˈɛksl̩t] – An XSLT-based
             Schematron processor)</ref>, mentioned below, which is quickly becoming the favorite
           Schematron processor not just in the TEI community, but in much of the XML world. The
           fourth, Martin Holmes, is the author of the first paper to directly address the problem
-          head-on<?oxy_insert_start author="heb" timestamp="20240211T135937+0100"?> (<ref type="bibl" target="#holmes2021">Holmes
-          2021</ref>)<?oxy_insert_end?>,<?oxy_delete author="heb" timestamp="20240211T135929+0100" content="[A]"?>
-          and thus spurred the entire endeavor. All of the authors have been involved in trying to
-          maintain the current TEI Stylesheets, and therefore have a vested interest in the success
-          of this project.</p>
+          head-on (<ref type="bibl" target="#holmes2021">Holmes 2021</ref>), and thus spurred the
+          entire endeavor. All of the authors have been involved in trying to maintain the current
+          TEI Stylesheets, and therefore have a vested interest in the success of this project.</p>
       </div>
       <div xml:id="terminology">
         <head>Terminology</head>
         <p>This is a list of terminology, acronyms, and initialisms used in this paper.</p>
         <list>
           <item><emph>ATOP</emph>: Another TEI ODD Processor. (<q>Another</q> because it is intended
-            to be a replacement for the existing
-            <?oxy_insert_start author="heb" timestamp="20240211T140344+0100"?>one within the
-            <?oxy_insert_end?>TEI Stylesheets.)</item>
+            to be a replacement for the existing one within the TEI Stylesheets.)</item>
           <item><emph>FLOSS</emph>: Free, Libre, Open-Source Software. All TEI software is
             FLOSS.</item>
           <item><emph>ODD</emph> (One Document Does it All): <quote source="#teicODD1">a TEI XML
@@ -179,34 +162,31 @@
               customization of the TEI scheme. </quote>
             <ref xml:id="teicODD1" target="#teicODD" type="bibl">TEI Consortium 2020 </ref>
           </item>
-          <item><emph>ODD Customization</emph>: an ODD file which describes modifications to
-            <?oxy_delete author="heb" timestamp="20240211T140558+0100" content="the"?><?oxy_insert_start author="heb" timestamp="20240211T140558+0100"?>a<?oxy_insert_end?>
-            base<?oxy_delete author="heb" timestamp="20240211T140602+0100" content=" TEI"?>
-            schema<?oxy_insert_start author="heb" timestamp="20240211T140612+0100"?>, most commonly
-            a TEI schema<?oxy_insert_end?>. </item>
+          <item><emph>ODD Customization</emph>: an ODD file which describes modifications to a base
+            schema, most commonly a TEI schema. </item>
           <item><emph>PLODD</emph>: Pruned and Localized ODD. An ATOP-specific term referring to the
             final state of an ODD customization undergoing transformation, immediately before it is
             turned into RELAX NG and Schematron schemas.</item>
           <item><emph>tagset</emph>: an inventory of elements, attributes, and values constituting a
             custom markup language.</item>
-          <item><emph>RELAX NG</emph>: An industry-standard grammar-based schema language. RELAX NG
+          <item><emph>RELAX NG</emph>: an industry-standard grammar-based schema language. RELAX NG
             schemas can be generated from TEI ODD files.</item>
           <item><emph>Roma/roma</emph>: Roma (capital R) is a web-based service that provides a
             user-friendly interface for creating ODD customization files and generating schemas and
             documentation from them. roma (lower-case r) is a command-line tool for generating
             schemas and documentation from ODD customizations.</item>
-          <item><emph>Schematron</emph>: A validation language based on assertions about document
+          <item><emph>Schematron</emph>: a validation language based on assertions about document
             structure and patterns. Schematron serves as a useful adjunct to RELAX NG, and is also
             supported by ODD.</item>
-          <?oxy_insert_start author="heb" timestamp="20240211T140836+0100"?>
-          <item><emph>TEI Stylesheets</emph>: A library of tools for converting between TEI and other document formats, primarily 
-            using XSLT, originally created by Sebastian Rahtz, and now maintained by the TEI Council and other volunteers.</item>
+          <item><emph>TEI Stylesheets</emph>: a library of tools for converting between TEI and
+            other document formats, primarily using XSLT, originally created by Sebastian Rahtz, and
+            now maintained by the TEI Council and other
+            volunteers.<?oxy_insert_start author="heb" timestamp="20240211T140836+0100"?></item>
           <?oxy_insert_end?>
-          <item><emph>TEIGarage</emph>: A web service which offers various transformations to and
+          <item><emph>TEIGarage</emph>: a web service which offers various transformations to and
             from TEI, based on the TEI Stylesheets.</item>
-          <item><?oxy_delete author="heb" timestamp="20240211T140825+0100" content="&lt;emph&gt;TEI Stylesheets&lt;/emph&gt;: A library of tools for converting between TEI and other document formats, primarily using XSLT, originally created by Sebastian Rahtz, and now maintained by the TEI Council and other volunteers."?></item>
           <item><emph>XSLT</emph>: eXtensible Stylesheet Language Transformations, an XML language
-            designed to read in an XML document and write out a transformed version thereof. E.g.,
+            designed to read in an XML document and write out a transformed version of it. E.g.,
             XSLT can be used to transform TEI into other document formats.</item>
           <item><emph>XSpec</emph>: an XML language for writing and running unit tests for XSLT,
             XQuery, and Schematron.</item>
@@ -215,10 +195,11 @@
       <div xml:id="rev">
         <head>TEI ODD processing — a broad overview</head>
         <p>The TEI system is, in general, a tagset for describing the structure of, and other
-          interesting bits about, extant texts. While it is intended to promote the
+          interesting information relating to, extant texts. While it is intended to promote the
           interchangeability and processability of transcriptions of texts of interest to humanities
           scholars, it can be used for a variety of other text encoding purposes. For example, this
-          paper is written in TEI. But a portion of the TEI system (chapter 22 of the <hi rend="italic">Guidelines</hi>) is dedicated not to describing extant texts, but rather
+          paper is written in TEI. But a portion of the TEI system (chapter 22 of the <hi
+            rend="italic">Guidelines</hi>) is dedicated not to describing extant texts, but rather
           to describing markup languages intended for describing extant texts (or anything else, for
           that matter). Thus, because TEI is currently represented in XML, ODD has elements and
           attributes for describing an XML encoding language. For example, ODD has constructs
@@ -234,60 +215,61 @@
           affectionately called ODD (see <ref target="#burnard2004" type="bibl">Burnard and Rahtz
             2004</ref>, <ref target="#burnard2013a" type="bibl">Burnard and Rahtz 2013a</ref>, <ref target="#burnard2013b" type="bibl">Burnard and Rahtz 2013b</ref>, <ref target="#teicODD" type="bibl">TEI Consortium n.d.</ref>).</p>
         <p>While ODD can be used for a variety of purposes, its two main uses are 1) defining the
-          TEI Guidelines, and 2) creating customizations thereof (see <ref type="bibl" target="#bauman2019">Bauman 2019</ref>). The remainder of this section is an overview of
+          TEI Guidelines, and 2) creating customizations of the TEI tagset (see <ref type="bibl"
+            target="#bauman2019">Bauman 2019</ref>). The remainder of this section is an overview of
           the current system for generating schemas and documentation from TEI ODD customization
           files.</p>
-        <p>The TEI Guidelines are written in TEI ODD. That is, the source for the Guidelines you
-          read on the web or via an ePub or PDF viewer is a single TEI document. It has a
-            <gi>TEI</gi> start-tag at the beginning, a <gi>TEI</gi> end-tag at the end, and a
-            <gi>teiHeader</gi> just like any other TEI document. It is filled with <gi>div</gi>,
-            <gi>head</gi>, and <gi>p</gi> elements as you might expect. But it also contains
-            <gi>elementSpec</gi> elements for describing elements and <gi>moduleSpec</gi> elements
-          for grouping those element specifications, and a host of other constructs dedicated to
-          describing an XML markup language in detail. This single TEI document is stored in over
-          800 separate files for the convenience of those maintaining the TEI, but those files
-          comprise a single TEI document.</p>
+        <p>The <title level="m">TEI Guidelines</title> are written in TEI ODD. That is, the source
+          for the <title level="m">Guidelines</title> you read on the web or via an ePub or PDF
+          viewer is a single TEI document. It has a <gi>TEI</gi> start-tag at the beginning, a
+            <gi>TEI</gi> end-tag at the end, and a <gi>teiHeader</gi> just like any other TEI
+          document. It is filled with <gi>div</gi>, <gi>head</gi>, and <gi>p</gi> elements as you
+          might expect. But it also contains <gi>elementSpec</gi> elements for describing elements
+          and <gi>moduleSpec</gi> elements for grouping those element specifications, and a host of
+          other constructs dedicated to describing an XML markup language in detail. This single TEI
+          document is stored in over 800 separate files for the convenience of those maintaining the
+          TEI, but those files comprise a single TEI document.</p>
         <p>This single TEI document that defines an XML language is not intended to be used on its
           own, however. This is in large part because the TEI covers many fields of study, and a
           user from one field may not be interested in the TEI elements and attributes that support
           another. Thus a customization file — also written in TEI ODD — is used in conjunction with
-          the TEI Guidelines. The customization file expresses which bits of the TEI will be used,
+          the TEI Guidelines. The customization file expresses which parts of the TEI will be used,
           and which will not, and adds additional explanations, constraints, and examples where
           needed. One of the most well-known customizations is TEI Lite, a large and complex
-          customization that produces a slimmed-down version of the TEI intended <quote source="#teiLite">to meet 90% of the needs of 90% of the TEI user community</quote>
+          customization that produces a slimmed-down version of the TEI intended <quote
+            source="#teiLite">to meet 90% of the needs of 90% of the TEI user community</quote>
             (<ref target="#teicFAQ" type="bibl" xml:id="teiLite">TEI Consortium 2023: What is TEI
             Lite?</ref>). A customization that is very commonly used for experimentation (but not
           appropriate for use in actual encoding projects) is TEI All, a very small customization
           that simply says <q>use all bits of TEI without any further explanations, examples, or
             constraints</q>.</p>
-        <p>Given a TEI customization, two of the main tasks we wish to accomplish are to convert the
+        <p>Given a TEI customization, the main tasks we wish to accomplish are to convert the
           combination of the TEI customization and the TEI source document into 1) customized
-          documentation and 2) usable schemas. Customized documentation is a version of the TEI
-          Guidelines, or at least of the reference section, that reflects the changes expressed in
-          the customization ODD. For example, if the customization ODD says <q>I only need the
-            required modules plus the <gi>metDecl</gi> element</q> — i.e., it does not include the
-          specialized modules for drama, feature structures, manuscript description, etc., then only
-          ~61 different element types would be listed as possible children of <gi>p</gi>, and only
-          ~197 as members of the class att.global. This makes documentation much easier to read when
-          compared to TEI All, in which ~207 elements would be listed as possible children of
-            <gi>p</gi>, and ~590 as members of the class att.global.</p>
+          documentation and 2) usable schemas. Customized documentation is a version of the <title
+            level="m">TEI Guidelines</title>, or at least of the reference section, that reflects
+          the changes expressed in the customization ODD. For example, if the customization ODD says
+            <q>I only need the required modules plus the <gi>metDecl</gi> element</q> — i.e., it
+          does not include the specialized modules for drama, feature structures, manuscript
+          description, etc., then only ~61 different element types would be listed as possible
+          children of <gi>p</gi>, and only ~197 as members of the class att.global. This makes
+          documentation much easier to read when compared to TEI All, in which ~207 elements would
+          be listed as possible children of <gi>p</gi>, and ~590 as members of the class
+          att.global.</p>
         <p>We need to generate usable schemas from the TEI system because no software exists that
           will directly validate a document against an XML language written in TEI ODD, let alone
           provide assistance in writing a document that conforms to it. The TEI ODD language is
           specifically designed to be converted to schema languages for which such software is
           commonly available: RELAX NG (for the closed schema language constructs) and ISO
           Schematron (for the open schema language constructs). Furthermore, the ODD language can be
-          converted to other languages. (In particular, the Stylesheets will convert the closed
-          schema language constructs into the W3C XML Schema Language or to the DTD language from
-          the XML specification.)</p>
-        <p>Following the principles of literate programming (<ref target="#knuth1984" type="bibl">Knuth 1984</ref>), the process of generating custom documentation from a customization
+          converted to other languages. </p>
+        <p>Following the principles of literate programming (<ref target="#knuth1984" type="bibl"
+            >Knuth 1984</ref>), the process of generating custom documentation from a customization
           file and the TEI Guidelines is called <hi rend="italic">weaving</hi>, and the process of
           generating schemas is called <hi rend="italic">tangling</hi>. The TEI Consortium provides
-          software (called <name>roma</name>, not to be confused with
-            <name>Roma</name><?oxy_delete author="heb" timestamp="20240211T141942+0100" content=" [linked to new Roma]"?>,<?oxy_insert_start author="heb" timestamp="20240211T142342+0100"?><note>See
-              <ref target="https://roma.tei-c.org/">https://roma.tei-c.org/</ref>.</note>
-          <?oxy_insert_end?> the web interface to that software) which performs these tangle and
-          weave functions. See <ptr target="#fig01" type="crossref"/>.</p>
+          software (called <name>roma</name>, not to be confused with <name>Roma</name>,<note>See
+              <ref target="https://roma.tei-c.org/">https://roma.tei-c.org/</ref>.</note>  the web
+          interface to that software) which performs these tangle and weave functions. See <ptr
+            target="#fig01" type="crossref"/>.</p>
         <figure xml:id="fig01">
           <graphic url="tei_odd_customization_detail_iconed.png" width="676px" height="538px"/>
           <head type="legend">Generation of customized documentation and schemas from TEI</head>
@@ -297,20 +279,21 @@
         <head>History — who, what, and why</head>
         <p>The software currently used to convert TEI ODD into custom documentation and custom
           schemas is a large set of XSLT stylesheets commonly referred to by the somewhat generic
-          name <name>the TEI
-            Stylesheets</name>.<?oxy_delete author="heb" timestamp="20240211T143243+0100" content=" ("?><?oxy_insert_start author="heb" timestamp="20240211T143301+0100" type="surround"?><note><?oxy_insert_end?>You
-            might think they are called that because the name of the GitHub repository where they
-            live is <name>Stylesheets</name>, but in fact the repo is named after the
-            software.</note><?oxy_delete author="heb" timestamp="20240211T143248+0100" content=")"?>
-          The Stylesheets also convert TEI into many other formats (including DocBook, HTML, PDF,
-          NLM, and OpenDocument), and many of those formats into TEI. These Stylesheets <ref target="https://github.com/TEIC/Stylesheets/">[https://github.com/TEIC/Stylesheets/</ref>] are both an extraordinarily impressive
+          name <name>the TEI Stylesheets</name>.<note>You might think they are called that because
+            the name of the GitHub repository where they live is <name>Stylesheets</name>, but in
+            fact the repo is named after the software.</note> The Stylesheets also convert TEI into
+          many other formats (including DocBook, HTML, PDF, NLM, and OpenDocument), and many of
+          those formats into TEI. These Stylesheets <ref
+            target="https://github.com/TEIC/Stylesheets/"
+            >[https://github.com/TEIC/Stylesheets/</ref>] are both an extraordinarily impressive
           accomplishment (that of Sebastian Rahtz, to be precise) and somewhat of an obstacle to the
           growth of the TEI language. The Stylesheets are magnificent in that they perform a large
           set of intricate tasks reasonably well, and in that they were written very quickly.
           However, they are very difficult to maintain. The source of the problem was summed up by
           Holmes in 2021: <quote source="#holmes">Sebastian was such a genius he really found it
             impossible to imagine how dim the rest of us actually are.</quote>. For a detailed
-          discussion of the problems the Stylesheets pose see the rest of Holmes’ paper (<ref type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize
+          discussion of the problems the Stylesheets pose see the rest of Holmes’ paper (<ref
+            type="bibl" target="#holmes2021" xml:id="holmes">Holmes 2021</ref>). But to summarize
           here for our purposes:</p>
         <list rend="bulleted">
           <item>The Stylesheets are <hi rend="bold">very</hi> complex. This is in large part because they do a <hi rend="bold">lot</hi> more than
@@ -353,10 +336,8 @@
           themselves, 2) generation of custom documentation, and 3) generation of custom schemas.
           But even considering only those 3 core tasks, 2 are not covered by the charge to the new
           task force. This is for a variety of reasons, the largest of which is that another group
-          <?oxy_delete author="heb" timestamp="20240211T143741+0100" content="will be"?><?oxy_insert_start author="heb" timestamp="20240211T143741+0100"?>is<?oxy_insert_end?>
-          tackling<?oxy_delete author="heb" timestamp="20240211T143733+0100" content=" (or more likely, by the time you read this, has tackled)"?>
-          the other activities that are part of Council’s core mission: generating the Guidelines
-          themselves and generating customized documentation.</p>
+          is tackling the other activities that are part of Council’s core mission: generating the
+          Guidelines themselves and generating customized documentation.</p>
         <p>Thus ATOP will be an ODD processor that takes as input a chain of one or more ODD files
           and produces as output both a RELAX NG schema (representing the grammar expressed by the
           chained ODDs) and an ISO Schema (representing the additional ISO Schematron constraints in
@@ -374,26 +355,19 @@
         share capability), and have found this pace quite
         comfortable. We also occasionally make use of a dedicated
         channel in the TEI Slack space.</p>
-        <p>So far almost all work takes place on a TEIC GitHub repository (<ref target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
+        <p>Almost all work takes place on a TEIC GitHub repository (<ref
+            target="https://github.com/TEIC/atop">https://github.com/TEIC/atop)</ref>). This
           repository includes the code (including tests), issues and pull requests, a glossary of
           terms, documentation of goals, namespaces, error codes, etc., and minutes of our
           meetings.</p>
-        <p>We have deliberately set no hard deadlines for ourselves,
-        putting the goal of maintainable code over and above the goal
-        of finishing our work rapidly. (After all, the world has been
-        making do with the current Stylesheets for many years). We
-        had an aspirational goal of having working code for Council
-        to start testing in summer 2023, and an initial full release
-        by the end of 2023.</p>
-        <p>However, it neither surprises us nor upsets us that we have not met those temporal goals.
-          We
-          <?oxy_delete author="heb" timestamp="20240211T150645+0100" content="did manage to"?><?oxy_insert_start author="heb" timestamp="20240211T150645+0100"?>have<?oxy_insert_end?>
-          release<?oxy_insert_start author="heb" timestamp="20240211T150648+0100"?>s<?oxy_insert_end?>
-          an interim package in October 2023
-          <?oxy_delete author="heb" timestamp="20240211T150657+0100" content="containing components to run the final stage of the process only. This"?><?oxy_insert_start author="heb" timestamp="20240211T150657+0100"?>which<?oxy_insert_end?>
-          may already be useful to some ODD
-          creators<?oxy_insert_start author="heb" timestamp="20240211T150715+0100"?>: See <ref target="#deliverables" type="crossref">section 6.5</ref> for further
-          details<?oxy_insert_end?><?oxy_delete author="heb" timestamp="20240211T150713+0100" content=" who directly author complete ODD files rather than starting from a customization of P5"?>.</p>
+        <p>We have deliberately set no hard deadlines for ourselves, putting the goal of
+          maintainable code over and above the goal of finishing our work rapidly. (After all, the
+          world has been making do with the current Stylesheets for many years). We had an
+          aspirational goal of having working code for Council to start testing in summer 2023, and
+          an initial full release by the end of 2023. However, it neither surprises us nor upsets us
+          that we have not met those temporal goals. We released an interim package in October 2023
+          which may already be useful to some ODD creators: See <ref target="#deliverables"
+            type="crossref">section 6.5</ref> for further details.</p>
       </div>
       <div xml:id="plans">
         <head>Plans and progress</head>
@@ -402,10 +376,14 @@
           <p>The current Stylesheets include over 330 XSLT files; of those only ~25–33 are part of
             the process we are duplicating. However, the division of labor among these is, at best,
             confusing, and has been described (several years after the death of the primary author)
-            on a TEI wiki page (<ref target="https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing">https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing<?oxy_delete author="heb" timestamp="20240211T144343+0100" content=")"?></ref>).</p>
+            on a TEI wiki page (<ref
+              target="https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing"
+              >https://wiki.tei-c.org/index.php?title=Mapping_ODD_processing</ref>).</p>
           <p>Another problem with the current suite is inconsistent terminology. In order to try to
-            avoid this pitfall, we agreed to (and are trying to stick to) a defined glossary of
-            terms that we developed within the first month of the project (<ref target="https://github.com/TEIC/atop/wiki/Terminology">https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
+            avoid this pitfall, we agreed to a defined glossary of terms that we developed within
+            the first month of the project (<ref
+              target="https://github.com/TEIC/atop/wiki/Terminology"
+              >https://github.com/TEIC/atop/wiki/Terminology)</ref>).</p>
           <p>We anticipate that ATOP will not be <hi rend="italic">nearly</hi> as complicated as the
             current suite, in large part because it will do so much less. It <hi rend="italic">may</hi> end up as complicated as the portion of the current suite that handles the
             same process, but probably not; and even if it does, it will be well-documented, clear,
@@ -426,8 +404,8 @@
           </figure>
           <list>
             <item>Stage 1: <hi rend="bold">Assemble customization ODD</hi> — References to external
-              components, if any are read into the ODD; prose may be dropped at this stage (but most
-              metadata and all glosses and descriptions are kept).</item>
+              components, if any, are read into the ODD; prose may be dropped at this stage (but
+              most metadata and all glosses and descriptions are kept).</item>
             <item>Stage 2: <hi rend="bold">Customization ODD + Base ODD → Derived ODD </hi>— The
               output of stage 1 is read in and whatever base ODD it refers to is validated and read
               in. The ODDs are combined by following the instructions in the assembled customization
@@ -453,35 +431,30 @@
         <div xml:id="consistency">
           <head>Consistency and Conventions</head>
           <p>We have spent some time developing a set of coding conventions to help ensure
-            consistency of the code we produce. These conventions focus mostly on naming and usage. For example, if a subroutine is
-            going to return a node, we use a template for that routine; if it does not, we use a
-            function.</p>
-          <p>We are using XML validation technology (in particular, Schematron) to enforce
-            consistency in our own coding conventions:</p>
+            consistency of the code we produce. These conventions focus mostly on naming and usage.
+            For example, if a subroutine is going to return a node, we use a template for that
+            routine; if it returns something other than a node, we use a function.</p>
+          <p>We are using XML validation technology (in particular, Schematron) to enforce addition
+            of documentation, along with consistency in our coding conventions:</p>
           <list>
             <item>of variable names (e.g., <code>$atop:vVersion</code>)</item>
             <item>of parameter names (e.g., <code>$atop:pPatternPrefix</code>,
                 <code>$atop:tpFun</code>)</item>
             <item>of function names (e.g., <code>atop:unique-ident()</code>)</item>
             <item>in global use of <code>@as</code> attribute</item>
-            <item>to require internal documentation</item>
           </list>
         </div>
         <div xml:id="testing">
           <head>Component testing</head>
-          <p>We<?oxy_delete author="heb" timestamp="20240211T145147+0100" content=" plan to"?> test
-            each component rigorously while it is being developed. This
-            <?oxy_delete author="heb" timestamp="20240211T145157+0100" content="will involve"?><?oxy_insert_start author="heb" timestamp="20240211T145157+0100"?>involves<?oxy_insert_end?>
-            developing an XSpec suite to test functions and named templates, and perhaps for larger
-            components. We <?oxy_insert_start author="heb" timestamp="20240211T145308+0100"?>are
-            <?oxy_insert_end?>also
-            <?oxy_delete author="heb" timestamp="20240211T145315+0100" content="anticipate having"?><?oxy_insert_start author="heb" timestamp="20240211T145315+0100"?>working
-            on<?oxy_insert_end?> a sizeable suite of test ODDs. We have already gathered, in
-            response to a request on TEI-L, well over 50 customization ODDs written by TEI users —
-            our <hi rend="italic">in vivo</hi> test suite. In addition we plan to generate both
-            language ODDs and customization ODDs specifically designed to test particular features
-            of the ODD language — our <hi rend="italic">in vitro</hi> test suite. Furthermore, since
-            we have (deliberately) written the stage 5 program first, we are writing another <hi rend="italic">in vitro</hi> test suite for processing of PLODDs.</p>
+          <p>We test each component rigorously while it is being developed. This involves developing
+            an XSpec suite to test functions and named templates, and perhaps for larger components.
+            We are also working on a sizeable suite of test ODDs. We have already gathered, through
+            a request on TEI-L, well over 50 customization ODDs written by TEI users — our <hi
+              rend="italic">in vivo</hi> test suite. In addition we plan to generate both language
+            ODDs and customization ODDs specifically designed to test particular features of the ODD
+            language — our <hi rend="italic">in vitro</hi> test suite. Furthermore, since we have
+            (deliberately) written the stage 5 program first, we are writing another <hi
+              rend="italic">in vitro</hi> test suite for processing of PLODDs.</p>
           <p>When testing the final RELAX NG result, we plan to perform both comparison testing
             (checking that the output file matches a previously agreed upon expected output file)
             and behavioral testing (checking that the output file flags a known to be correct file
@@ -503,29 +476,27 @@
           <p>The main programs will be written in XSLT 3 (using XPath 3.1) without any extended
             functionality. Even if and when XSLT 4 is available, we plan to stick with XSLT 3. These
             programs should run in any standard XML-friendly environment, including the GNU/Linux
-            command-line and oXygen. We make use of oXygen, and the end product should run
-            <?oxy_delete author="heb" timestamp="20240211T145650+0100" content="quite nicely"?><?oxy_insert_start author="heb" timestamp="20240211T145650+0100"?>easily<?oxy_insert_end?>
-            in oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
+            command-line and oXygen. We make use of oXygen, and the end product should run easily in
+            oXygen, but nothing should <hi rend="italic">require</hi> oXygen.</p>
           <p>The <soCalled>glue</soCalled> or <soCalled>driver</soCalled> program that tests the
             input and runs the required XSLT programs in the right order will probably be written in
-            ant<?oxy_delete author="heb" timestamp="20240211T145606+0100" content=" or XProc"?>.</p>
-          <?oxy_insert_start author="heb" timestamp="20240211T150551+0100"?>
-          <p>In October 2023 we have released an interim package containing components to run the
-            final stage of the process (<ref target="https://github.com/TEIC/atop/releases"
+            ant.</p>
+          <p>In October 2023 we released an interim package containing components to run the final
+            stage of the process (<ref target="https://github.com/TEIC/atop/releases"
               >https://github.com/TEIC/atop/releases</ref>. As mentioned above, besides the
             transformation files, the release includes the schemas that enable a user to test
             whether the input files conform to the PLODD specification before running the
             transformation. The released components may already be useful to ODD creators who
             directly author complete ODD files rather than starting from a customization of P5. </p>
-          <?oxy_insert_end?>
         </div>
       </div>
       <div xml:id="issues">
         <head>Issues with the current ODD language specifications</head>
-        <p>It is not surprising that our work runs into places where ODD must be more cleanly
-          specified.  A brief commentary of some of these issues follows:<note>These examples are
+        <p>It is not surprising that our work runs into places where ODD must be more clearly
+          specified. A brief commentary of some of these issues follows:<note>These examples are
             taken from a presentation by the authors delivered at the joint MEC and TEI Conference
-            2023 (Padeborn, September 6–9, 2023). See <ref type="bibl" target="#baumanetal2023">Bauman et al. 2023</ref></note><list>
+            2023 (Padeborn, September 6–9, 2023). See <ref type="bibl" target="#baumanetal2023"
+              >Bauman et al. 2023</ref></note><list>
             <label>Schematron query language binding</label>
             <item>There is no mechanism in the ODD language for a user to specify the query binding
               language used in her Schematron contexts and tests. Driven by the atop working group,
@@ -539,21 +510,22 @@
             <item>The class <ident>model.oddDecl</ident> is a member of <ident>model.inter</ident>
               (which groups elements that can appear either within or between paragraph-like
               elements). This means that, for example, the element <gi>rdg</gi> (reading) may
-              contain
-              e<?oxy_delete author="heb" timestamp="20240211T144144+0100" content=" "?>lements such
-              as <gi>classSpec</gi>, <gi>constraintSpec</gi>, <gi>dataSpec</gi> or
-                <gi>elementSpec</gi>. </item>
+              contain elements such as <gi>classSpec</gi>, <gi>constraintSpec</gi>,
+                <gi>dataSpec</gi> or <gi>elementSpec</gi>. </item>
             <label>Schematron contexts</label>
             <item>Schematron constraints depend on the definition of two XPath patterns: the
                 <emph>context</emph> and the <emph>test</emph>. The first one is defined in the
                 <att>context</att> attribute of the element <gi>sch:rule</gi>, while the tests are
               defined within the elements <gi>sch:assert</gi> or <gi>sch:report</gi> which are
               direct descendants of <gi>sch:rule</gi>. In ODD, <gi>sch:rule</gi> is optional, on the
-              basis that if the context is not explicit, it means that it could be inferred.
+              basis that if the context is not explicit, it should be inferred by the processor.
               However, the TEI Guidelines do not specify how the context should be inferred when it
-              is not explicit.</item>
+              is not explicit, and in some contexts, unambiguous inference is impossible.</item>
           </list></p>
-        <p>We are raising issues in the TEI (<ref target="https://github.com/TEIC/TEI/labels/atop">https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref target="https://github.com/TEIC/Stylesheets/labels/atop">https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we go.
+        <p>We are raising issues in the TEI (<ref target="https://github.com/TEIC/TEI/labels/atop"
+            >https://github.com/TEIC/TEI/labels/atop)</ref>) and Stylesheets (<ref
+            target="https://github.com/TEIC/Stylesheets/labels/atop"
+            >https://github.com/TEIC/Stylesheets/labels/atop)</ref>) GitHub repositories as we work.
           In some cases our findings will likely result in changes that require fixes to previous
           Stylesheets. </p>
       </div>
@@ -604,4 +576,3 @@
   </text>
 </TEI>
 
-<?oxy_options track_changes="on"?>
