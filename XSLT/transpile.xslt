@@ -191,7 +191,7 @@
     </xsl:message>
   </xsl:template>
 
-  <!-- An attribute specifcation transpiles to an (optional) attribute
+  <!-- An attribute specification transpiles to an (optional) attribute
        pattern. -->
   <xsl:template match="attDef[empty(@usage) or @usage = ('opt', 'rec')]" as="element(rng:optional)">
     <rng:optional>
