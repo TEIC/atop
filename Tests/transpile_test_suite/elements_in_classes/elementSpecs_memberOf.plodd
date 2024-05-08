@@ -43,9 +43,7 @@
 							<elementRef key="other_subONE"/>
 							<elementRef key="ONE_with_att"/>
 							<elementRef key="subONE_with_att"/>
-							
-							<!-- This needs to be uncommented once ATOP issue #25 is dealt with. -->
-							<!--<elementRef key="no_class_but_attRef"/>-->
+							<elementRef key="no_class_but_attRef"/>
 						</sequence>
 					</content>
 				</elementSpec>
@@ -120,15 +118,14 @@
 					</content>
 				</elementSpec>
 
-<!-- This needs to be uncommented once ATOP issue #25 is dealt with. -->
-				<!--<elementSpec ident="no_class_but_attRef">
+				<elementSpec ident="no_class_but_attRef">
 					<content>
 						<empty/>
 					</content>
 					<attList>
 						<attRef class="att.uno" name="ichi"/>
 					</attList>
-				</elementSpec>-->
+				</elementSpec>
 
 			</schemaSpec>
 		</body>
