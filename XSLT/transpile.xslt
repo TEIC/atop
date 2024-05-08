@@ -530,6 +530,11 @@ ignored and the members of the value list are provided.
       <xsl:text>Unsupported datatype specification reference. This version of atop only supports references to XML Schema datatypes (@name) and ODD datatype specifications (@key).</xsl:text>
     </xsl:message>
   </xsl:template>
+  
+  <xsl:template match="attRef[@name and @class]" as="element()">
+    <xsl:variable name="vAttDef" as="element(attDef)" select="key('atop:attDef', @class || '_' || @name, ancestor::schemaSpec)"/>
+    <xsl:apply-templates select="$vAttDef"/>
+  </xsl:template>
 
   <xsl:template match="rng:define/@name | rng:ref/@name" as="attribute(name)">
     <xsl:param name="tpNamePrefix" tunnel="yes" as="xs:string?"/>

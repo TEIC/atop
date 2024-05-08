@@ -27,6 +27,7 @@
   <xsl:key name="atop:classSpec" match="classSpec" use="@ident"/>
   <xsl:key name="atop:elementSpec" match="elementSpec" use="@ident"/>
   <xsl:key name="atop:macroSpec" match="macroSpec" use="@ident"/>
+  <xsl:key name="atop:attDef" match="classSpec/attList/attDef" use="ancestor::classSpec/@ident || '_' || @ident"/>
 
   <xd:doc>
     <xd:desc><xd:ref name="atop:classMembers"/> is a key for accessing elementSpecs and classSpecs
