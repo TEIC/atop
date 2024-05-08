@@ -20,7 +20,8 @@
 
   <xd:doc>
     <xd:desc><xd:ref name="atop:dataSpec"/>, <xd:ref name="atop:classSpec"/>,
-      <xd:ref name="atop:elementSpec"/>, and <xd:ref name="atop:macroSpec"/> are
+      <xd:ref name="atop:elementSpec"/>, <xd:ref name="atop:macroSpec"/>, 
+      and <xd:ref name="atop:attDef"/> are
       handy keys for accessing elements by their idents.</xd:desc>
   </xd:doc>
   <xsl:key name="atop:dataSpec" match="dataSpec" use="@ident"/>
