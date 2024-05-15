@@ -151,6 +151,12 @@
     <ant antfile="${basedir}/build.xml" target="transpilePlodd">
       <property name="inputPlodd" value="${inFile}"/>
     </ant>
+    <dirname property="ploddDir" file="${inFile}"/>
+    <basename property="ploddName" file="${inFile}" suffix=".plodd"/>
+    <echo message="Validating generated RNG file ${ploddDir}/${ploddName}.rng"/>
+    <jing rngfile="${basedir}/Schemas/relaxng.rng">
+      <fileset dir="${ploddDir}" includes="${ploddName}.rng"/>
+    </jing>
   </target>
   
   <target name="checkValidInstances">
