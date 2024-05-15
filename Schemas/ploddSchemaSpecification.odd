@@ -1,6 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" version="4.5.0"
-     xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://teijenkins.hcmc.uvic.ca/job/TEIP5-dev/lastSuccessfulBuild/artifact/P5/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="https://teijenkins.hcmc.uvic.ca/job/TEIP5-dev/lastSuccessfulBuild/artifact/P5/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron">
   <teiHeader>
     <fileDesc>
       <titleStmt>
@@ -28,6 +29,19 @@
       <sourceDesc><p>Born digital</p></sourceDesc>
     </fileDesc>
     <revisionDesc>
+      <change who="#SB" when="2024-05-15">
+        <list>
+          <item>Added <gi>sch:rule</gi> elements which will be required in
+          the near future of ODD.</item>
+          <item>Added <gi>sequence</gi> to avoid a <gi>content</gi>
+          with > 1 child</item>
+          <item>Per request <name ref="#MH">Martin</name> use
+          <name>xml-model</name> PIs instead of <att>version</att> of
+          our root <gi>TEI</gi>; I used tei_odds rather than tei_all
+          because it seems more appropriate, and the correct schema (p5odds)
+          is not (I don’t think).</item>
+        </list>
+      </change>
       <change who="#SB" when="2023-09-19">
         We are 99% sure TEI is going to require a <att>context</att>
         for each and every <gi>sch:assert</gi> and
@@ -232,22 +246,23 @@
           </content>
           <constraintSpec ident="only_1_elementSpec_each" scheme="schematron">
             <constraint>
-              <!-- generate sequence of the QName of each child <elementSpec> -->
-              <sch:let name="elementSpecs"
-                       value="for $e in ./tei:elementSpec
-                              return concat('{', ($e/ancestor-or-self::*/@ns)[last()], '}', $e/@ident )"/>
-              <sch:let name="unique_elementSpecs"
-                       value="distinct-values( $elementSpecs )"/>
-              <sch:assert test="count( $elementSpecs ) eq count( $unique_elementSpecs )">
-                <!-- Oops. If the number of unique elementSpecs (by
-                     QName) is not the same as the number of
-                     elementSpecs, then there is at least one
-                     duplicate (maybe more) -->
-                Duplicate elementSpec(s); the element specifications
-                for the following each occur more than once: <sch:value-of select="string-join(
-                ( for $qname in $unique_elementSpecs return if (count($elementSpecs[. eq $qname]) gt 1) then $qname else '' )[normalize-space(.)],
-                ', ' ) "/>
-              </sch:assert>
+              <sch:rule context="tei:schemaSpec">
+                <!-- generate sequence of the QName of each child <elementSpec> -->
+                <sch:let name="elementSpecs"
+                         value="for $e in ./tei:elementSpec
+                                return concat('{', ($e/ancestor-or-self::*/@ns)[last()], '}', $e/@ident )"/>
+                <sch:let name="unique_elementSpecs" value="distinct-values( $elementSpecs )"/>
+                <sch:assert test="count( $elementSpecs ) eq count( $unique_elementSpecs )">
+                  <!-- Oops. If the number of unique elementSpecs (by
+                       QName) is not the same as the number of
+                       elementSpecs, then there is at least one
+                       duplicate (maybe more) -->
+                  Duplicate elementSpec(s); the element specifications
+                  for the following each occur more than once: <sch:value-of select="string-join(
+                  ( for $qname in $unique_elementSpecs return if (count($elementSpecs[. eq $qname]) gt 1) then $qname else '' )[normalize-space(.)],
+                  ', ' ) "/>
+                </sch:assert>
+              </sch:rule>
             </constraint>
           </constraintSpec>
           <attList>
@@ -272,19 +287,21 @@
             <attDef ident="start" mode="change" usage="req">
               <constraintSpec ident="only_defined_elements_can_be_starter" scheme="schematron">
                 <constraint>
-                  <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
-                  <!-- Note: this is not really a list of GIs, since
-                       some of the GIs may be created from
-                       <altIdent>. But it is what we want, the list of
-                       patterns, without @prefix, used to refer to
-                       those elements. -->
-                  <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
-                    Each value of @start must be the GI of a defined
-                    element (i.e., equal elementSpec/@ident); one of these
-                    ("<sch:value-of select="."/>") does not. The list
-                    of valid values is "<sch:value-of
-                    select="$GIs"/>".
-                  </sch:assert>
+                  <sch:rule context="tei:schemaSpec/@start">
+                    <sch:let name="GIs" value="//tei:elementSpec/@ident"/>
+                    <!-- Note: this is not really a list of GIs, since
+                         some of the GIs may be created from
+                         <altIdent>. But it is what we want, the list of
+                         patterns, without @prefix, used to refer to
+                         those elements. -->
+                    <sch:assert test="every $gi in tokenize(.) satisfies $gi = $GIs">
+                      Each value of @start must be the GI of a defined
+                      element (i.e., equal elementSpec/@ident); one of these
+                      ("<sch:value-of select="."/>") does not. The list
+                      of valid values is "<sch:value-of
+                      select="$GIs"/>".
+                    </sch:assert>
+                  </sch:rule>
                 </constraint>
               </constraintSpec>
             </attDef>
@@ -421,8 +438,10 @@
 
         <elementSpec ident="constraintSpec" mode="change">
           <content>
-            <macroRef key="gloss_amper_desc"/>
-            <elementRef key="constraint" minOccurs="0" maxOccurs="1"/>
+            <sequence>
+              <macroRef key="gloss_amper_desc"/>
+              <elementRef key="constraint" minOccurs="0" maxOccurs="1"/>
+            </sequence>
           </content>
           <attList>
             <attDef ident="rend"      mode="delete"/>
@@ -566,10 +585,12 @@
           </content>
           <constraintSpec ident="only_rng_in_moduleRef_content" scheme="schematron">
             <constraint>
-              <sch:report test="tei:content/*[ not( self::rng:* or self::a:* ) ]">
-                The content of an ATOP PLODD module reference needs to
-                be RELAX NG and RELAX NG *only*.
-              </sch:report>
+              <sch:rule context="tei:moduleRef/tei:content">
+                <sch:report test="*[ not( self::rng:* or self::a:* ) ]">
+                  The content of an ATOP PLODD module reference needs to
+                  be RELAX NG and RELAX NG *only*.
+                </sch:report>
+              </sch:rule>
             </constraint>
           </constraintSpec>
           <attList>
