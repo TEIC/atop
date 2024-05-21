@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transfusion xmlns="http://www.tei-c.org/ns/atop/test_suite">
+    
+    <univRecipient>
+        <!-- @ichi should be a non-negative integer. -->
+        <AB ichi="one"/>
+        <!-- univRecipient should not include A. -->    
+        <A/>
+    </univRecipient>
+    <!-- univDonor should contain only one O element. -->
+    <univDonor>
+        <O/>
+        <O/>
+    </univDonor>
+    <other_ONE>
+        <!-- other_ONE should contain one of A, AB, or B. -->
+    </other_ONE>
+    <other_subONE>
+        <AB/>
+    </other_subONE>
+    <ONE_with_att ichi="2">
+        <!-- other_ONE should contain one of A, AB, or B. -->
+        <O/>
+    </ONE_with_att>
+    <subONE_with_att ichi="3">
+        <!-- subONE_with_att should have only one of A, AB, or B. -->
+        <AB ichi="4"/>
+        <B/>
+    </subONE_with_att>
+    <!-- no_class_but_attRef should have the @ichi attribute. -->
+    <no_class_but_attRef/>
+    
+</transfusion>

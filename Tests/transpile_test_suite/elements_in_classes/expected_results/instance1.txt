@@ -1,0 +1,9 @@
+instance1.xml:6:25: error: value of attribute "ichi" is invalid; must be an integer
+instance1.xml:8:13: error: element "A" not allowed here; expected the element end-tag
+instance1.xml:13:13: error: element "O" not allowed here; expected the element end-tag
+instance1.xml:17:17: error: element "other_ONE" incomplete; expected element "A", "AB" or "B"
+instance1.xml:19:14: error: element "AB" missing required attribute "ichi"
+instance1.xml:23:13: error: element "O" not allowed here; expected element "A", "AB" or "B"
+instance1.xml:24:20: error: element "ONE_with_att" incomplete; expected element "A", "AB" or "B"
+instance1.xml:28:13: error: element "B" not allowed here; expected the element end-tag
+instance1.xml:31:27: error: element "no_class_but_attRef" missing required attribute "ichi"

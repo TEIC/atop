@@ -21,7 +21,7 @@
 				<classSpec ident="model.ONE" type="model"/>
 				<classSpec ident="att.uno" type="atts">
 					<attList>
-						<attDef ident="ichi">
+						<attDef ident="ichi" usage="req">
 							<datatype minOccurs="1" maxOccurs="1">
 								<dataRef name="nonNegativeInteger"/>
 							</datatype>
