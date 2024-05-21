@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transfusion xmlns="http://www.tei-c.org/ns/atop/test_suite">
+    
+    <univRecipient>
+        <AB ichi="1">
+            
+        </AB>
+    </univRecipient>
+    <univDonor>
+        <O/>
+    </univDonor>
+    <other_ONE>
+        <A/>
+    </other_ONE>
+    <other_subONE>
+        <AB/>
+    </other_subONE>
+    <ONE_with_att ichi="2">
+        <B/>
+    </ONE_with_att>
+    <subONE_with_att ichi="3">
+        <AB/>
+    </subONE_with_att>
+    <no_class_but_attRef ichi="4"/>
+    
+</transfusion>
