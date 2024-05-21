@@ -30,7 +30,7 @@
 				</classSpec>
 				<classSpec ident="model.subONE" type="model">
 					<classes>
-						<memberOf key="mode.ONE"/>
+						<memberOf key="model.ONE"/>
 					</classes>
 				</classSpec>
 
