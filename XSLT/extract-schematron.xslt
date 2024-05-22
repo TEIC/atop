@@ -48,6 +48,12 @@
              See https://github.com/TEIC/TEI/issues/2330. -->
         
         <title><xsl:text>Schematron extracted from </xsl:text><xsl:sequence select="tokenize(base-uri(.), '[/\\]')[last()]"/></title>
+        <xsl:if test="not(//child::sch:*)">
+          <pattern>
+            <p><xsl:text>There were no Schematron rules in the processed ODD file.</xsl:text></p>
+          </pattern>
+        </xsl:if>
+        
         <xsl:apply-templates select="//rng:*/child::sch:*"/>
       </schema>
     <!--</xsl:result-document>-->
