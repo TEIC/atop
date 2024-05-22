@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0">
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
   <teiHeader>
     <fileDesc>
       <titleStmt>
@@ -19,6 +20,11 @@
       <schemaSpec ident="htmlSubset" prefix="htsub_" ns="http://www.w3.org/1999/xhtml" start="html">
         
         <!-- Components required from tei module. -->
+        <constraintSpec ident="namespaces" scheme="schematron">
+          <constraint>
+            <sch:ns prefix="xh" uri="http://www.w3.org/1999/xhtml"/>
+          </constraint>
+        </constraintSpec>
         
         <dataSpec ident="teidata.pointer">
           <desc versionDate="2013-01-19" xml:lang="en">defines the range of attribute values used to provide a single
@@ -128,11 +134,24 @@
         </elementSpec>
         
         <elementSpec ident="a" ns="http://www.w3.org/1999/xhtml">
+          <gloss xml:lang="en">An anchor element, serving as a link or a target</gloss>
+          <classes>
+            <memberOf key="att.hasId"/>
+          </classes>
           <content>
             <textNode/>
           </content>
+          <constraintSpec ident="mustHaveHrefOrId" scheme="schematron">
+            <constraint>
+              <sch:rule context="xh:a">
+                <sch:assert test="@href or @id">
+                  ERROR: An anchor element must have @href or @id.
+                </sch:assert>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
           <attList>
-            <attDef ident="href" usage="req">
+            <attDef ident="href" usage="opt">
               <datatype>
                 <dataRef key="teidata.pointer"/>
               </datatype>
@@ -160,7 +179,7 @@
         </elementSpec>
         
         <classSpec ident="att.hasLang" type="atts">
-          <!--<desc xml:lang="en">Groups elements which may have a language attribute.</desc>-->
+          <desc xml:lang="en">Groups elements which may have a language attribute.</desc>
           <attList>
             <attDef ident="lang" usage="opt">
               <gloss xml:lang="en">Specifies the language of the content of the element.</gloss>
@@ -171,6 +190,18 @@
                 <valItem ident="en"><gloss xml:lang="en">English</gloss></valItem>
                 <valItem ident="fr"><gloss xml:lang="fr">French</gloss></valItem>
               </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+        
+        <classSpec ident="att.hasId" type="atts">
+          <desc xml:lang="en">Groups elements which may have an id attribute.</desc>
+          <attList>
+            <attDef ident="id" usage="opt">
+              <gloss xml:lang="en">Specifies the unique identifier.</gloss>
+              <datatype maxOccurs="1">
+                <dataRef name="NCName"/>
+              </datatype>
             </attDef>
           </attList>
         </classSpec>

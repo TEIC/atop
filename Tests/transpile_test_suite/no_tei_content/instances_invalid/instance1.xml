@@ -12,7 +12,7 @@
         </div>
         <div>
             <h2>Section 2</h2>
-            <p>More content here with a <a target="https://www.uvic.ca/">link</a> using the wrong attribute.
+            <p>More content here with a <a id="anchor1" target="https://www.uvic.ca/">link</a> using the wrong attribute. <a>This link</a> has no id or href, so should also be invalid.
                 There is also an image here that's missing its @alt attribute: 
                 <img src="https://www.tei-c.org/release/doc/tei-p5-doc/en/html/Images/banner.jpg"/></p>
             <p>There's also an image outside of its permitted locations:</p>
