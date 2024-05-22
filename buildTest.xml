@@ -157,6 +157,10 @@
     <jing rngfile="${basedir}/Schemas/relaxng.rng">
       <fileset dir="${ploddDir}" includes="${ploddName}.rng"/>
     </jing>
+    <echo message="Validating generated Schematron file ${ploddDir}/${ploddName}.sch"/>
+    <jing rngfile="${basedir}/Schemas/schematron.rng">
+      <fileset dir="${ploddDir}" includes="${ploddName}.sch"/>
+    </jing>
   </target>
   
   <target name="checkValidInstances">
