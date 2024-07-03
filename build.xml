@@ -43,6 +43,21 @@
     </java>
   </target>
   
+  <target name="extractSchematron" description="Extract the Schematron from the RELAXNG file.">
+    <description>
+      TARGET extractSchematron
+      This target extracts the Schematron (if any) from the RELAXNG file generated from 
+      a PLODD, and outputs it to a Schematron file with the same name.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Extracting Schematron from ${ploddDir}/${ploddName}.rng to ${ploddDir}/${ploddName}.sch"/>
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/extract-schematron.xslt"/>
+      <arg value="-s:${ploddDir}/${ploddName}.rng"/>
+      <arg value="-o:${ploddDir}/${ploddName}.sch"/>
+    </java>
+  </target>
+  
   <target name="test">
     <description>
       TARGET test
