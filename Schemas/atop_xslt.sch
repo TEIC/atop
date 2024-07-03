@@ -71,7 +71,7 @@
             <extends rule="local-name"/>
             <extends rule="param-name-re"/>
         </rule>
-        <rule context="xsl:function | xsl:template[@name]">
+        <rule context="xsl:function | xsl:template[@name and not(@name eq 'xsl:initial-template')]">
             <extends rule="global-name"/>
             <assert test="matches(@name, $reFunctionName)" role="error" id="assert-function-name-re">
                 ERROR: The name of a <value-of select="name()"/> must match the regular expression <value-of select="$reFunctionName"/>.
