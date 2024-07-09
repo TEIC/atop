@@ -43,6 +43,15 @@
     </java>
   </target>
   
+  <target name="preValidatePloddWithSch" description="Validate the incoming PLODD with Schematron.">
+    <description>
+      TARGET preValidatePloddWithSch
+      This target validates the incoming unprocessed PLODD file with a local Schematron schema.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="TODO (not implemented yet): validate ${ploddDir}/${ploddName}.plodd with pre-transpile.sch."/>
+  </target>
+  
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
     <description>
       TARGET preprocessPlodd
@@ -87,7 +96,26 @@
     </java>
   </target>
   
+  <target name="validateRngWithRnc" description="Validate generated RELAXNG with its own schema.">
+    <description>
+      TARGET validateRngWithRnc
+      This target validates the generated RELAX NG file with its own RELAX NG (rnc) schema.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="TODO (not implemented yet): validate ${ploddDir}/${ploddName}.rng with ../Schemas/relaxng.rnc."/>
+  </target>
   
+  <target name="transpilePlodd" description="Run the full sequence of steps to create RNG and Schematron from a PLODD file.">
+    <description>
+      TARGET transpilePlodd
+      This runs the sequence of steps required to create RELAX NG and Schematron from a PLODD file.
+    </description>
+    <antcall target="preValidatePloddWithSch"/>
+    <antcall target="preprocessPlodd"/>
+    <antcall target="ploddToRng"/>
+    <antcall target="extractSchematron"/>
+    <antcall target="validateRngWithRnc"/>
+  </target>
   
   <target name="test">
     <description>
