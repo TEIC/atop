@@ -27,7 +27,7 @@
     </java>
   </target>
   
-  <target name="transpilePlodd" description="Run the experimental transpiler through Morgana: PLODD stage only">
+  <target name="transpilePloddMorgana" description="Run the experimental transpiler through Morgana: PLODD stage only">
     <dirname property="ploddDir" file="${inputPlodd}"/>
     <echo message="Transpiling ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
     <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
@@ -57,6 +57,21 @@
     </java>
   </target>
   
+  <target name="ploddToRng" description="Do the final transpile to create RNG/SCH from the preprocessed PLODD file.">
+    <description>
+      TARGET ploddToRng
+      This runs the final transpile of the preprocessed PLODD to output a RELAX NG file 
+      incorporating Schematron.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Preprocessing ${ploddDir}/${ploddName}_preprocessed.plodd to ${ploddDir}/${ploddName}.rng"/>
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/transpile.xslt"/>
+      <arg value="-s:${ploddDir}/${ploddName}_preprocessed.plodd"/>
+      <arg value="-o:${ploddDir}/${ploddName}.rng"/>
+    </java>
+  </target>
+  
   <target name="extractSchematron" description="Extract the Schematron from the RELAXNG file.">
     <description>
       TARGET extractSchematron
@@ -71,6 +86,8 @@
       <arg value="-o:${ploddDir}/${ploddName}.sch"/>
     </java>
   </target>
+  
+  
   
   <target name="test">
     <description>
