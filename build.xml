@@ -43,6 +43,20 @@
     </java>
   </target>
   
+  <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
+    <description>
+      TARGET preprocessPlodd
+      This target runs some XSLT to do minor fix-ups on the PLODD file before the full transpile is run.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Preprocessing ${ploddDir}/${ploddName}.plodd to ${ploddDir}/${ploddName}_preprocessed.plodd"/>
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/pre-transpile.xslt"/>
+      <arg value="-s:${ploddDir}/${ploddName}.plodd"/>
+      <arg value="-o:${ploddDir}/${ploddName}_preprocessed.plodd"/>
+    </java>
+  </target>
+  
   <target name="extractSchematron" description="Extract the Schematron from the RELAXNG file.">
     <description>
       TARGET extractSchematron
