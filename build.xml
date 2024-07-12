@@ -43,6 +43,20 @@
     </java>
   </target>
   
+  <target name="preclean" description="Clean out the results of any previous runs">
+    <description>
+      TARGET preClean
+      This target is designed to clean out the results of any previous processing
+      runs so that they don't get in the way or get re-transformed.
+    </description>
+    
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Cleaning out prior build detritus from ${ploddDir}."/>
+    <delete dir="${ploddDir}">
+      <include name="*_preprocessed.plodd"/>
+    </delete>
+  </target>
+  
   <target name="preValidatePloddWithSch" description="Validate the incoming PLODD with Schematron.">
     <description>
       TARGET preValidatePloddWithSch
@@ -110,6 +124,7 @@
       TARGET transpilePlodd
       This runs the sequence of steps required to create RELAX NG and Schematron from a PLODD file.
     </description>
+    <antcall target="preclean"/>
     <antcall target="preValidatePloddWithSch"/>
     <antcall target="preprocessPlodd"/>
     <antcall target="ploddToRng"/>
