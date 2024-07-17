@@ -74,6 +74,7 @@
     <echo message="Cleaning out prior build detritus from ${ploddDir}."/>
     <delete dir="${ploddDir}">
       <include name="*_preprocessed.plodd"/>
+      <include name="*_svrl"/>
     </delete>
   </target>
   
