@@ -10,6 +10,26 @@
   <import file="buildGlobals.xml"/>
   
   <basename property="ploddName" file="${inputPlodd}" suffix=".plodd"/>
+  
+  <!-- Any single Schematron file we want to compile and use. -->
+  <property name="schSchemaFile" value=""/>
+  
+  <target name="compileSchematron">
+    <description>
+      TARGET compileSchematron
+      This uses the schxslt XSLT to compile a Schematron file
+      into XSLT which can then be used for validation.
+    </description>
+    <echo message="Compiling ${schSchemaFile} into XSLT..."/>
+    <!-- Properties derived from the Schematron input file. -->
+    <basename property="schSchemaName" file="${schSchemaFile}" suffix=".sch"/>
+    <dirname property="schSchemaDir" file="${schSchemaFile}"/>
+    <java jar="${saxon}" fork="true" failonerror="true">
+      <arg line="-s:${schSchemaFile}"/>
+      <arg line="-o:${schSchemaDir}/${schSchemaName}.xsl"/>
+      <arg line="-xsl:'${schxsltCompiler}'"/>
+    </java>
+  </target>
 
   <target name="transpile" description="Run the experimental transpiler through Morgana">
     <dirname property="ploddDir" file="${inputPlodd}"/>
@@ -63,7 +83,11 @@
       This target validates the incoming unprocessed PLODD file with a local Schematron schema.
     </description>
     <dirname property="ploddDir" file="${inputPlodd}"/>
-    <echo message="TODO (not implemented yet): validate ${ploddDir}/${ploddName}.plodd with pre-transpile.sch."/>
+    <echo message="Compile pre-transpile.sch."/>
+    <antcall target="compileSchematron">
+      <param name="schSchemaFile" value="${basedir}/Schemas/pre-transpile.sch"/>
+    </antcall>
+    <echo message="Validate ${ploddDir}/${ploddName}.plodd with pre-transpile.sch."/>
   </target>
   
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
@@ -140,6 +164,18 @@
     </description>
     <ant antfile="buildTest.xml" target="runXSpecTests"/>
     <ant antfile="buildTest.xml" target="runTranspileTests"/>
+  </target>
+  
+  <target name="showProperties" description="Simple debug output to show the input properties and their derivations.">
+    <description>
+      TARGET showProperties
+      This is a utility debugging target which simply echoes a number of properties
+      which are passed as parameters, or are derived from those parameters.
+    </description>
+    <echo message="schSchemaFile = ${schSchemaFile}"/>
+    <echo message="schSchemaName = ${schSchemaName}"/>
+    <echo message="schSchemaDir  = ${schSchemaDir}"/>
+    <echo message="schSchemaXslt = ${schSchemaXslt}"/>
   </target>
 
 
