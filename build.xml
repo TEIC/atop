@@ -26,7 +26,7 @@
     <dirname property="schSchemaDir" file="${schSchemaFile}"/>
     <java jar="${saxon}" fork="true" failonerror="true">
       <arg line="-s:${schSchemaFile}"/>
-      <arg line="-o:${schSchemaDir}/${schSchemaName}.xsl"/>
+      <arg line="-o:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
       <arg line="-xsl:'${schxsltCompiler}'"/>
     </java>
   </target>
@@ -83,11 +83,17 @@
       This target validates the incoming unprocessed PLODD file with a local Schematron schema.
     </description>
     <dirname property="ploddDir" file="${inputPlodd}"/>
-    <echo message="Compile pre-transpile.sch."/>
     <antcall target="compileSchematron">
       <param name="schSchemaFile" value="${basedir}/Schemas/pre-transpile.sch"/>
     </antcall>
     <echo message="Validate ${ploddDir}/${ploddName}.plodd with pre-transpile.sch."/>
+    <echo message="Process ${ploddDir}/${ploddName}.plodd with compiles pre-transpile_sch.xslt."/>
+    <!-- Generate the SVRL needed. -->
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/Schemas/pre-transpile_sch.xslt"/>
+      <arg value="-s:${ploddDir}/${ploddName}.plodd"/>
+      <arg value="-o:${ploddDir}/${ploddName}.svrl"/>
+    </java>
   </target>
   
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
