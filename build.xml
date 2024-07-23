@@ -163,7 +163,10 @@
       This target validates the generated RELAX NG file with its own RELAX NG (rnc) schema.
     </description>
     <dirname property="ploddDir" file="${inputPlodd}"/>
-    <echo message="TODO (not implemented yet): validate ${ploddDir}/${ploddName}.rng with ../Schemas/relaxng.rnc."/>
+    <echo message="Validate ${ploddDir}/${ploddName}.rng with ../Schemas/relaxng.rnc."/>
+    <jing compactsyntax="true" rngfile="${basedir}/Schemas/relaxng.rnc" failonerror="true">
+      <fileset file="${ploddDir}/${ploddName}.rng"/>
+    </jing>
   </target>
   
   <target name="transpilePlodd" description="Run the full sequence of steps to create RNG and Schematron from a PLODD file.">

@@ -13,7 +13,6 @@
   <!--Jing in the Lib directory.-->
   <property name="jing" value="${basedir}/Lib/jing.jar"/>
   
-  
   <!--We expect a local installation of the TEI Stylesheets for this early 
   testing; the default must be overridden with -DstylesheetsPath=...-->  
   <property name="stylesheetsPath" value="${basedir}/../Stylesheets"/>
