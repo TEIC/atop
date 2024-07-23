@@ -74,7 +74,8 @@
     <echo message="Cleaning out prior build detritus from ${ploddDir}."/>
     <delete dir="${ploddDir}">
       <include name="*_preprocessed.plodd"/>
-      <include name="*_svrl"/>
+      <include name="*.svrl"/>
+      <include name="*_svrl.txt"/>
     </delete>
   </target>
   
@@ -95,6 +96,21 @@
       <arg value="-s:${ploddDir}/${ploddName}.plodd"/>
       <arg value="-o:${ploddDir}/${ploddName}.svrl"/>
     </java>
+    <!-- Process with SVRL parser. -->
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/svrl2msgs.xslt"/>
+      <arg value="-s:${ploddDir}/${ploddName}.svrl"/>
+      <arg value="-o:${ploddDir}/${ploddName}_svrl.txt"/>
+    </java>
+    <!-- Read the output to see if there's anything there. Make it quiet so
+         there's no error message when the file is empty. -->
+    <loadfile property="svrlMessages" srcFile="${ploddDir}/${ploddName}_svrl.txt" quiet="true"/>
+    <!-- Fail if there's anything in the file other than a linebreak. -->
+    <fail message="${ploddDir}/${ploddName}.plodd: ${svrlMessages}">
+      <condition>
+        <length length="2" file="${ploddDir}/${ploddName}_svrl.txt" when="gt"/>
+      </condition>
+    </fail>
   </target>
   
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
