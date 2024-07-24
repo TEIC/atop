@@ -108,7 +108,7 @@
     <!-- Fail if there's anything in the file other than a linebreak. -->
     <fail message="${ploddDir}/${ploddName}.plodd: ${svrlMessages}">
       <condition>
-        <length length="2" file="${ploddDir}/${ploddName}_svrl.txt" when="gt"/>
+        <length length="2" string="${svrlMessages}" when="gt"/>
       </condition>
     </fail>
   </target>
@@ -172,14 +172,19 @@
   <target name="transpilePlodd" description="Run the full sequence of steps to create RNG and Schematron from a PLODD file.">
     <description>
       TARGET transpilePlodd
-      This runs the sequence of steps required to create RELAX NG and Schematron from a PLODD file.
+      This runs the sequence of steps required to check the validity of a PLODD,
+      create RELAX NG and Schematron from a PLODD file, and thoroughly check the 
+      results.
     </description>
     <antcall target="preclean"/>
+    <!-- TODO: <antcall target="preValidatePloddWithRng"/> -->
     <antcall target="preValidatePloddWithSch"/>
     <antcall target="preprocessPlodd"/>
     <antcall target="ploddToRng"/>
     <antcall target="extractSchematron"/>
     <antcall target="validateRngWithRnc"/>
+    <!-- TODO: <antcall target="validateSchematronWithRng"/> -->
+    <!-- TODO: <antcall target="validateSchematronWithSch"/> -->
   </target>
   
   <target name="test">
