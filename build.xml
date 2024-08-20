@@ -113,6 +113,19 @@
     </fail>
   </target>
   
+  <target name="preValidatePloddWithRng" description="Validate the incoming PLODD with RELAXNG.">
+    <description>
+      TARGET preValidatePloddWithRng
+      This target validates the incoming unprocessed PLODD file with a local RELAXNG schema.
+    </description>
+    <dirname property="ploddDir" file="${inputPlodd}"/>
+    <echo message="Validating ${ploddDir}/${ploddName}.plodd with ../Schemas/ploddSchemaSpecification.rng"/>
+    <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng" failonerror="true">
+      <fileset file="${ploddDir}/${ploddName}.plodd"/>
+    </jing>
+    
+  </target>
+  
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
     <description>
       TARGET preprocessPlodd
@@ -177,7 +190,7 @@
       results.
     </description>
     <antcall target="preclean"/>
-    <!-- TODO: <antcall target="preValidatePloddWithRng"/> -->
+    <antcall target="preValidatePloddWithRng"/> 
     <antcall target="preValidatePloddWithSch"/>
     <antcall target="preprocessPlodd"/>
     <antcall target="ploddToRng"/>
