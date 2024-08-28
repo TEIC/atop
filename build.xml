@@ -47,22 +47,6 @@
     </java>
   </target>
   
-  <target name="transpilePloddMorgana" description="Run the experimental transpiler through Morgana: PLODD stage only">
-    <dirname property="ploddDir" file="${inputPlodd}"/>
-    <echo message="Transpiling ${inputPlodd} to ${ploddDir}/${ploddName}.rng"/>
-    <java failonerror="true" fork="true" classname="com.xml_project.morganaxproc3.XProcEngine" dir="${basedir}">
-      <classpath>
-        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse.jar"/>
-        <pathelement location="${basedir}/Lib/morgana/MorganaXProc-IIIse_lib/*" />
-      </classpath>
-      <arg value="-config=${basedir}/Lib/morgana/config.xml"/>
-      <arg value="${basedir}/Util/pipeline_plodd.xpl"/>
-      <arg value="-option:teiOddSpecification=${inputPlodd}"/>
-      <arg value="-output:result=${ploddDir}/${ploddName}.rng"/>
-      <arg value="-output:schematron=${ploddDir}/${ploddName}.sch"/>
-    </java>
-  </target>
-  
   <target name="preclean" description="Clean out the results of any previous runs">
     <description>
       TARGET preClean
