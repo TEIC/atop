@@ -5,4 +5,7 @@ Tests/transpile_test_suite/*/actual_results
 Tests/transpile_test_suite/schematron_in_contexts/
 Tests/transpile_test_suite/*/*.rng
 Tests/transpile_test_suite/*/*.sch
+**/*.svrl
+**/*.svrl.txt
+**/*_preprocessed.plodd
 
