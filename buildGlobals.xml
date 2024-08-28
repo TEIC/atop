@@ -13,7 +13,6 @@
   <!--Jing in the Lib directory.-->
   <property name="jing" value="${basedir}/Lib/jing.jar"/>
   
-  
   <!--We expect a local installation of the TEI Stylesheets for this early 
   testing; the default must be overridden with -DstylesheetsPath=...-->  
   <property name="stylesheetsPath" value="${basedir}/../Stylesheets"/>
@@ -21,6 +20,11 @@
   <!-- A group separator for avoiding spaces etc. -->
   <property name="sequenceSeparator" value="&#x241d;"/>
   
+  <!-- Directory where we store the Schxslt resources. -->
+  <property name="schxsltDir" value="${basedir}/Lib/schxslt"/>
+  
+  <!-- File which compiles Schematron to XSLT. -->
+  <property name="schxsltCompiler" value="${schxsltDir}/xslt/2.0/pipeline-for-svrl.xsl"/>
   
   <!-- We need ant-contrib to do foreach.   -->
   <!--
