@@ -30,7 +30,6 @@
   <xd:doc>
     <xd:desc>Default processing is to copy myself and continue processing …</xd:desc>
   </xd:doc>
-  <xsl:mode on-no-match="shallow-copy" name="atop:slurpInnards"/>
   <xsl:mode on-no-match="shallow-copy"/>
   
   <xd:doc>
@@ -85,11 +84,11 @@
   </xd:doc>
   <xsl:template match="*" mode="atop:slurp" as="element()">
     <xsl:copy>
-      <xsl:apply-templates select="@*" mode="atop:slurpInnards"/>
+      <xsl:apply-templates select="@*" mode="#default"/>
       <xsl:if test="@mode eq 'add' or not( @mode )">
         <xsl:attribute name="mode" select="'replace'"/>
       </xsl:if>
-      <xsl:apply-templates select="node()" mode="atop:slurpInnards"/>
+      <xsl:apply-templates select="node()" mode="#default"/>
     </xsl:copy>
   </xsl:template>
 
