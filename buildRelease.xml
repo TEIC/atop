@@ -47,8 +47,8 @@
     <include name="build.xml"/>
     <include name="buildGlobals.xml"/>
     <include name="LICENSE.md"/>
-    <include name="XSLT/assemble-relaxng.xslt"/>
-    <include name="XSLT/extract-schematron.xslt"/>
+    <include name="XSLT/assemble_relaxng.xslt"/>
+    <include name="XSLT/extract_schematron.xslt"/>
     <include name="XSLT/transpile.xslt"/>    
     <include name="XSLT/modules/functions_module.xslt"/>
     <include name="Schemas/ploddSchemaSpecification.rng"/>
