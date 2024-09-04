@@ -32,7 +32,7 @@
               exclude-result-prefixes="#all"/>
 
   <xsl:include href="modules/functions_module.xslt"/>
-  <xsl:include href="assemble-relaxng.xslt"/>
+  <xsl:include href="assemble_relaxng.xslt"/>
   
 
   <xd:doc>

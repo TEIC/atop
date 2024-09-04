@@ -148,7 +148,7 @@
     <dirname property="ploddDir" file="${inputPlodd}"/>
     <echo message="Extracting Schematron from ${ploddDir}/${ploddName}.rng to ${ploddDir}/${ploddName}.sch"/>
     <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
-      <arg value="-xsl:${basedir}/XSLT/extract-schematron.xslt"/>
+      <arg value="-xsl:${basedir}/XSLT/extract_schematron.xslt"/>
       <arg value="-s:${ploddDir}/${ploddName}.rng"/>
       <arg value="-o:${ploddDir}/${ploddName}.sch"/>
     </java>
