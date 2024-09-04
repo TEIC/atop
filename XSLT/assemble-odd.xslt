@@ -18,9 +18,10 @@
     <xd:desc>
       <xd:p><xd:b>Created:</xd:b> 2024-08-22.</xd:p>
       <xd:p><xd:b>Author:</xd:b> ATOP task force</xd:p>
-      <xd:p>Routine to read in a an ODD (whether a customization ODD or
-        a base ODD, although will likely not have much work to do on the latter)
-        and writes out the same with external references resolved.</xd:p>
+      <xd:p>Routine to read in an ODD (whether a customization ODD or
+      a base ODD, although will likely not have much work to do on the
+      latter) and writes out the same with external references
+      resolved.</xd:p>
     </xd:desc>
   </xd:doc>
   
