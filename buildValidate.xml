@@ -1,0 +1,28 @@
+<project basedir=".">
+  <description>
+    This Ant build file provides generic validation targets to be called from 
+    other targets.
+  </description>
+  
+  <import file="buildGlobals.xml"/>
+  
+  <target name="temp">
+    <!--<antcall target="validateWithRng">
+      <param name="rngFile" value="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
+      <param name="xmlFile" value="${basedir}/Tests/transpile_test_suite/altIdents_and_nss/altIdents_and_nss.plodd"/>
+    </antcall>-->
+  </target>
+  
+  <target name="validateWithRng" description="Validate an XML file with a RELAXNG schema.">
+    <description>
+      TARGET validateWithRng
+      This target an XML file with an RNG file. Both are passed in as parameters.
+    </description>
+    <!--<param name="xmlFile"/>
+    <param name="rngFile"/>-->
+    <echo message="Validating ${xmlFile} with ${rngFile}"/>
+    <jing rngfile="${rngFile}" failonerror="true">
+      <fileset file="${xmlFile}"/>
+    </jing>
+  </target>
+</project>
