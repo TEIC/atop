@@ -135,6 +135,7 @@
       <path>
         <fileset dir="${basedir}/Tests/transpile_test_suite">
           <include name="**/*.plodd"/>
+          <exclude name="**/*_preprocessed.plodd"/>
         </fileset>
       </path>
     </foreach>
