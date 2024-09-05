@@ -22,8 +22,6 @@
       TARGET validateWithRng
       This target an XML file with an RNG file. Both are passed in as parameters.
     </description>
-    <!--<param name="xmlFile"/>
-    <param name="rngFile"/>-->
     <echo message="Validating ${xmlFile} with ${rngFile}"/>
     <jing rngfile="${rngFile}" failonerror="true">
       <fileset file="${xmlFile}"/>

@@ -38,33 +38,10 @@
       TARGET preValidatePloddWithSch
       This target validates the incoming unprocessed PLODD file with a local Schematron schema.
     </description>
-    <dirname property="ploddDir" file="${inputPlodd}"/>
-    <antcall target="compileSchematron">
+    <antcall target="validateWithSchematron">
+      <param name="xmlFile" value="${inputPlodd}"/>
       <param name="schSchemaFile" value="${basedir}/Schemas/pre-transpile.sch"/>
     </antcall>
-    <echo message="Validate ${ploddDir}/${ploddName}.plodd with pre-transpile.sch."/>
-    <echo message="Process ${ploddDir}/${ploddName}.plodd with compiles pre-transpile_sch.xslt."/>
-    <!-- Generate the SVRL needed. -->
-    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
-      <arg value="-xsl:${basedir}/Schemas/pre-transpile_sch.xslt"/>
-      <arg value="-s:${ploddDir}/${ploddName}.plodd"/>
-      <arg value="-o:${ploddDir}/${ploddName}.svrl"/>
-    </java>
-    <!-- Process with SVRL parser. -->
-    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
-      <arg value="-xsl:${basedir}/XSLT/svrl2msgs.xslt"/>
-      <arg value="-s:${ploddDir}/${ploddName}.svrl"/>
-      <arg value="-o:${ploddDir}/${ploddName}_svrl.txt"/>
-    </java>
-    <!-- Read the output to see if there's anything there. Make it quiet so
-         there's no error message when the file is empty. -->
-    <loadfile property="svrlMessages" srcFile="${ploddDir}/${ploddName}_svrl.txt" quiet="true"/>
-    <!-- Fail if there's anything in the file other than a linebreak. -->
-    <fail message="${ploddDir}/${ploddName}.plodd: ${svrlMessages}">
-      <condition>
-        <length length="2" string="${svrlMessages}" when="gt"/>
-      </condition>
-    </fail>
   </target>
   
   <target name="preValidatePloddWithRng" description="Validate the incoming PLODD with RELAXNG.">
@@ -153,32 +130,10 @@
       This target validates an extracted Schematron file with a local Schematron schema.
     </description>
     <dirname property="ploddDir" file="${inputPlodd}"/>
-    <antcall target="compileSchematron">
+    <antcall target="validateWithSchematron">
+      <param name="xmlFile" value="${ploddDir}/${ploddName}.sch"/>
       <param name="schSchemaFile" value="${basedir}/Schemas/schematron.sch"/>
     </antcall>
-    <echo message="Validate ${ploddDir}/${ploddName}.sch with schematron.sch."/>
-    <echo message="Process ${ploddDir}/${ploddName}.sch with compiled schematron_sch.xslt."/>
-    <!-- Generate the SVRL needed. -->
-    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
-      <arg value="-xsl:${basedir}/Schemas/schematron_sch.xslt"/>
-      <arg value="-s:${ploddDir}/${ploddName}.sch"/>
-      <arg value="-o:${ploddDir}/${ploddName}_sch.svrl"/>
-    </java>
-    <!-- Process with SVRL parser. -->
-    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
-      <arg value="-xsl:${basedir}/XSLT/svrl2msgs.xslt"/>
-      <arg value="-s:${ploddDir}/${ploddName}_sch.svrl"/>
-      <arg value="-o:${ploddDir}/${ploddName}_sch_svrl.txt"/>
-    </java>
-    <!-- Read the output to see if there's anything there. Make it quiet so
-         there's no error message when the file is empty. -->
-    <loadfile property="svrlMessages" srcFile="${ploddDir}/${ploddName}_sch_svrl.txt" quiet="true"/>
-    <!-- Fail if there's anything in the file other than a linebreak. -->
-    <fail message="${ploddDir}/${ploddName}.sch: ${svrlMessages}">
-      <condition>
-        <length length="2" string="${svrlMessages}" when="gt"/>
-      </condition>
-    </fail>
   </target>
   
   <target name="transpilePlodd" description="Run the full sequence of steps to create RNG and Schematron from a PLODD file.">
