@@ -11,6 +11,10 @@
       <param name="rngFile" value="${basedir}/Schemas/ploddSchemaSpecification.rng"/>
       <param name="xmlFile" value="${basedir}/Tests/transpile_test_suite/altIdents_and_nss/altIdents_and_nss.plodd"/>
     </antcall>-->
+    <antcall target="validateWithSchematron">
+      <param name="schSchemaFile" value="${basedir}/Schemas/pre-transpile.sch"/>
+      <param name="xmlFile" value="${basedir}/Tests/transpile_test_suite/altIdents_and_nss/altIdents_and_nss.plodd"/>
+    </antcall>
   </target>
   
   <target name="validateWithRng" description="Validate an XML file with a RELAXNG schema.">
@@ -25,4 +29,61 @@
       <fileset file="${xmlFile}"/>
     </jing>
   </target>
+  
+  <target name="compileSchematron">
+    <description>
+      TARGET compileSchematron
+      This uses the schxslt XSLT to compile a Schematron file
+      into XSLT which can then be used for validation.
+    </description>
+    <echo message="Compiling ${schSchemaFile} into XSLT..."/>
+    <!-- Properties derived from the Schematron input file. -->
+    <basename property="schSchemaName" file="${schSchemaFile}" suffix=".sch"/>
+    <dirname property="schSchemaDir" file="${schSchemaFile}"/>
+    <java jar="${saxon}" fork="true" failonerror="true">
+      <arg line="-s:${schSchemaFile}"/>
+      <arg line="-o:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
+      <arg line="-xsl:'${schxsltCompiler}'"/>
+    </java>
+  </target>
+  
+  <target name="validateWithSchematron" description="Validate an XML file with a Schematron file.">
+    <description>
+      TARGET validateWithSchematron
+      This target validates an XML file with a Schematron schema, and fails if it is invalid.
+      Parameters xmlFile and SchematronFile are passed in as parameters.
+    </description>
+    <echo message="Validate ${xmlFile} with ${schSchemaFile}."/>
+    <basename property="schSchemaName" file="${schSchemaFile}" suffix=".sch"/>
+    <dirname property="schSchemaDir" file="${schSchemaFile}"/>
+    <basename property="xmlFileName" file="${xmlFile}"/>
+    <dirname property="xmlFileDir" file="${xmlFile}"/>
+    <dirname property="xmlFileDir" file="${xmlFile}"/>
+    <antcall target="compileSchematron">
+      <param name="schSchemaFile" value="${schSchemaFile}"/>
+    </antcall>
+    <echo message="Process ${xmlFile} with compiled ${schSchemaDir}/${schSchemaName}_sch.xslt."/>
+    <!-- Generate the SVRL needed. -->
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
+      <arg value="-s:${xmlFile}"/>
+      <arg value="-o:${xmlFileDir}/${xmlFileName}.svrl"/>
+    </java>
+    <!-- Process with SVRL parser. -->
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/svrl2msgs.xslt"/>
+      <arg value="-s:${xmlFileDir}/${xmlFileName}.svrl"/>
+      <arg value="-o:${xmlFileDir}/${xmlFileName}_svrl.txt"/>
+    </java>
+    <!-- Read the output to see if there's anything there. Make it quiet so
+         there's no error message when the file is empty. -->
+    <loadfile property="svrlMessages" srcFile="${xmlFileDir}/${xmlFileName}_svrl.txt" quiet="true"/>
+    <!-- Fail if there's anything in the file other than a linebreak. -->
+    <fail message="${xmlFileDir}/${xmlFileName}.plodd: ${svrlMessages}">
+      <condition>
+        <length length="2" string="${svrlMessages}" when="gt"/>
+      </condition>
+    </fail>
+  </target>
+  
 </project>

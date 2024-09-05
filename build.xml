@@ -9,27 +9,14 @@
   <!-- Globals file which defines various properties and also imports build.properties. -->
   <import file="buildGlobals.xml"/>
   
+  <!-- Validation file which provides generic validation targets. -->
+  <import file="buildValidate.xml"/>
+  
   <basename property="ploddName" file="${inputPlodd}" suffix=".plodd"/>
   
   <!-- Any single Schematron file we want to compile and use. -->
   <property name="schSchemaFile" value=""/>
   
-  <target name="compileSchematron">
-    <description>
-      TARGET compileSchematron
-      This uses the schxslt XSLT to compile a Schematron file
-      into XSLT which can then be used for validation.
-    </description>
-    <echo message="Compiling ${schSchemaFile} into XSLT..."/>
-    <!-- Properties derived from the Schematron input file. -->
-    <basename property="schSchemaName" file="${schSchemaFile}" suffix=".sch"/>
-    <dirname property="schSchemaDir" file="${schSchemaFile}"/>
-    <java jar="${saxon}" fork="true" failonerror="true">
-      <arg line="-s:${schSchemaFile}"/>
-      <arg line="-o:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
-      <arg line="-xsl:'${schxsltCompiler}'"/>
-    </java>
-  </target>
 
   <target name="transpile" description="Run the experimental transpiler through Morgana">
     <dirname property="ploddDir" file="${inputPlodd}"/>
@@ -107,7 +94,6 @@
     <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng" failonerror="true">
       <fileset file="${ploddDir}/${ploddName}.plodd"/>
     </jing>
-    
   </target>
   
   <target name="preprocessPlodd" description="Do some minor preprocessing on the PLODD file before the transpile stage.">
