@@ -67,14 +67,14 @@
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
     <xsl:variable name="vSourceDoc" select="document( atop:source-to-url( $vSource ) )" as="document-node()"/>
     <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:source-to-url( $vSource )"/>
-    <xsl:variable name="vSpecToSlurpIn" as="element()*">
+    <xsl:variable name="vSpecToGrab" as="element()*">
       <xsl:evaluate context-item="$vSourceDoc" xpath="'//'||$vSpecName||'[ @ident eq &quot;'||$vKey||'&quot; ]'"/>
     </xsl:variable>
     <xsl:message select="'debug: I have '
-      ||count($vSpecToSlurpIn)
+      ||count($vSpecToGrab)
       ||' to slurp in, name(s): '
-      ||$vSpecToSlurpIn!name() => string-join(', ')"/>
-    <xsl:apply-templates select="$vSpecToSlurpIn" mode="atop:slurp"/>
+      ||$vSpecToGrab!name() => string-join(', ')"/>
+    <xsl:apply-templates select="$vSpecToGrab" mode="atop:replacement"/>
   </xsl:template>
 
   <xd:doc>
@@ -82,7 +82,7 @@
     At the moment, proccessing is just copying it over, except that the @mode
     of the outermost element copied from the source is set to "replace".</xd:desc>
   </xd:doc>
-  <xsl:template match="*" mode="atop:slurp" as="element()">
+  <xsl:template match="*" mode="atop:replacement" as="element()">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#default"/>
       <xsl:if test="@mode eq 'add' or not( @mode )">
