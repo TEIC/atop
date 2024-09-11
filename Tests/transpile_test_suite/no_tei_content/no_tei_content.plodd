@@ -188,7 +188,7 @@
               </datatype>
               <valList type="semi">
                 <valItem ident="en"><gloss xml:lang="en">English</gloss></valItem>
-                <valItem ident="fr"><gloss xml:lang="fr">French</gloss></valItem>
+                <valItem ident="fr"><gloss xml:lang="en">French</gloss></valItem>
               </valList>
             </attDef>
           </attList>
