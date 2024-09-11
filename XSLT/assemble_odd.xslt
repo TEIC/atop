@@ -56,12 +56,14 @@
   </xsl:template>
   
   <xd:doc>
-    <xd:desc>Read in a <gi>*Ref</gi> that points to an external source,
-    replace it with the correpsonding <gi>*Spec</gi>s from that source.</xd:desc>
+    <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
+    specification in an external source (i.e., has a @key), replace it
+    with the correpsonding <gi>*Spec</gi>s from that source.</xd:desc>
   </xd:doc>
-  <xsl:template match="(classRef|dataRef|elementRef|macroRef|moduleRef)
+  <!-- moduleRef/@url is handled above; what to do about dataRef/@name, dataRef/@ref ? -->
+  <xsl:template match="( classRef | dataRef | elementRef | macroRef | moduleRef )
                        [ parent::schemaSpec | parent::specGrp ]
-                       [ @source ]" as="node()">
+                       [ @key  and  @source ]" as="node()">
     <xsl:variable name="vKey" select="normalize-space(@key)" as="xs:string"/>
     <xsl:variable name="vSource" select="normalize-space(@source)" as="xs:string"/>
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
