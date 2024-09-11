@@ -288,7 +288,7 @@ ignored and the members of the value list are provided.
     </rng:choice>
   </xsl:template>
 
-  <xsl:template match="valList[@type eq 'semi']" as="element(rng:value)+">
+  <xsl:template match="valList[@type eq 'semi']" as="element()+">
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -298,11 +298,26 @@ ignored and the members of the value list are provided.
     </xsl:message>
   </xsl:template>
 
-  <xsl:template match="valItem" as="element(rng:value)">
+  <xsl:template match="valItem" as="element()+">
     <rng:value>
       <xsl:text>{@ident}</xsl:text>
     </rng:value>
+    <xsl:where-populated>
+      <a:documentation>
+        <xsl:apply-templates select="gloss"/>
+        <xsl:apply-templates select="desc"/>
+      </a:documentation>
+    </xsl:where-populated>
   </xsl:template>
+  
+  <xsl:template match="valItem/gloss" as="xs:string">
+    <xsl:sequence select="'(' || normalize-space(.) || ') '"/>
+  </xsl:template>
+  
+  <xsl:template match="valItem/desc" as="xs:string">
+    <xsl:sequence select="normalize-space(.)"/>
+  </xsl:template>
+  
 
   <!-- Process members of model.contentPart -->
   <xsl:template match="sequence | interleave | alternate" as="element()*">
