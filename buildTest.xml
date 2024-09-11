@@ -118,7 +118,6 @@
         </exec>
       </then>
     </if>
-    
     <jing rngfile="${basedir}/Schemas/ploddSchemaSpecification.rng">
       <fileset dir="${basedir}/tmp/PLODDs" includes="*.odd"/>
     </jing>
@@ -194,10 +193,6 @@
       global="true"/>
     <echo>Schema is: ${testSchema}...</echo>
     <jing rngfile="${testSchema}" file="${inFile}"/>
-    <!--<java jar="${basedir}/Lib/jing.jar" fork="yes" failonerror="true">
-      <arg value="${testSchema}" />
-      <arg line="${inFile}" />
-    </java>-->
   </target>
   
   <target name="checkInvalidInstances">
