@@ -54,13 +54,27 @@
       </content>
     </xsl:copy>
   </xsl:template>
-  
+
+  <xd:doc>
+    <xd:desc>If we find a <gi>dataRef</gi> with a <att>ref</att>
+    attribute, we have no idea how to process it, so just warn the
+    user that we are not going to.</xd:desc>
+  </xd:doc>
+  <xsl:template match="dataRef[ @ref ]" as="empty()">
+    <xsl:message terminate="no" expand-text="true">WARNING: The ATOP
+    processor does not know how to handle a reference to the {@ref}
+    external datatype library, so this dataRef element is being
+    summarily ignored.</xsl:message>
+  </xsl:template>
+
   <xd:doc>
     <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
     specification in an external source (i.e., has a @key), replace it
     with the correpsonding <gi>*Spec</gi>s from that source.</xd:desc>
   </xd:doc>
-  <!-- moduleRef/@url is handled above; what to do about dataRef/@name, dataRef/@ref ? -->
+  <!-- moduleRef/@url and dataRef/@ref are handled above; we do not
+       need to process dataRef/@name here, as it does not point to
+       anything external and will be processed by transpilation. -->
   <xsl:template match="( classRef | dataRef | elementRef | macroRef | moduleRef )
                        [ parent::schemaSpec | parent::specGrp ]
                        [ @key  and  @source ]" as="node()">
