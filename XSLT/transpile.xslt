@@ -117,7 +117,7 @@
 
   <xd:doc>
     <xd:desc>macroSpec elements are converted to rng:define
-    with a name based on prefixes and their ident.</xd:desc>
+    (named pattern) with a name based on prefixes and their ident.</xd:desc>
   </xd:doc>
   <xsl:template match="macroSpec" as="element(rng:define)">
     <rng:define name="{atop:get-macro-pattern-name(.)}">
@@ -125,22 +125,37 @@
     </rng:define>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>dataSpec elements are converted to rng:define
+      (named pattern) with a name based on their ident.</xd:desc>
+  </xd:doc>
   <xsl:template match="dataSpec" as="element(rng:define)">
     <rng:define name="{atop:get-datatype-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>Attribute classSpec elements are converted to rng:define
+      (named pattern) with a name based on prefixes and their ident.</xd:desc>
+  </xd:doc>
   <xsl:template match="classSpec[@type eq 'atts']" as="element(rng:define)">
     <rng:define name="{atop:get-class-pattern-name(.)}">
       <xsl:apply-templates/>
     </rng:define>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>Kill classSpecs that don't match any existing template,
+      i.e. model classes; they are a grouping mechanism rather than
+      a pattern generator.</xd:desc>
+  </xd:doc>
   <xsl:template match="classSpec" as="empty-sequence()" priority="-10"/>
 
-  <!-- An element specification transpiles to a named RelaxNG pattern
-       w/ defining the element. -->
+  <xd:doc>
+    <xd:desc>An element specification transpiles to a named RelaxNG pattern
+      defining the element.</xd:desc>
+  </xd:doc>
   <xsl:template match="elementSpec" as="element(rng:define)">
     <xsl:variable name="vQName" as="xs:QName" select="atop:get-element-qname(.)"/>
     <xsl:variable name="vContent" as="element()*">
