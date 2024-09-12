@@ -199,11 +199,17 @@
     </rng:optional>
   </xsl:template>
 
-  <xsl:template match="attDef" as="element(rng:attribute)">
+  <xsl:template match="attDef" as="element()+">
     <xsl:variable name="vQName" as="xs:QName" select="atop:get-attribute-qname(.)"/>
 
     <rng:attribute name="{local-name-from-QName($vQName)}"
                    ns="{namespace-uri-from-QName($vQName)}">
+      <xsl:where-populated>
+        <a:documentation>
+          <xsl:apply-templates select="gloss"/>
+          <xsl:apply-templates select="desc"/>
+        </a:documentation>
+      </xsl:where-populated>
 
       <!--
 
@@ -236,14 +242,14 @@ ignored and the members of the value list are provided.
         </xsl:when>
         <xsl:when test="valList[@type eq 'semi']">
           <rng:choice>
-            <xsl:apply-templates/>
+            <xsl:apply-templates select="*[not(self::gloss or self::desc)]"/>
           </rng:choice>
         </xsl:when>
         <xsl:when test="valList[@type eq 'closed']">
           <xsl:apply-templates select="valList"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates/>
+          <xsl:apply-templates select="*[not(self::gloss or self::desc)]"/>
         </xsl:otherwise>
       </xsl:choose>
     </rng:attribute>
@@ -310,11 +316,11 @@ ignored and the members of the value list are provided.
     </xsl:where-populated>
   </xsl:template>
   
-  <xsl:template match="valItem/gloss" as="xs:string">
+  <xsl:template match="valItem/gloss | attDef/gloss" as="xs:string">
     <xsl:sequence select="'(' || normalize-space(.) || ') '"/>
   </xsl:template>
   
-  <xsl:template match="valItem/desc" as="xs:string">
+  <xsl:template match="valItem/desc | attDef/desc" as="xs:string">
     <xsl:sequence select="normalize-space(.)"/>
   </xsl:template>
   

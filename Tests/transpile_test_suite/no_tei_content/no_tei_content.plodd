@@ -166,6 +166,8 @@
           </content>
           <attList>
             <attDef ident="src" usage="req">
+              <gloss xml:lang="en">source of graphic</gloss>
+              <desc xml:lang="en">points to the location of the image file to be rendered</desc>
               <datatype>
                 <dataRef key="teidata.pointer"/>
               </datatype>
