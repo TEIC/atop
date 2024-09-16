@@ -177,7 +177,11 @@
       </rng:element>
     </rng:define>
   </xsl:template>
-
+  
+  <xd:doc>
+    <xd:desc>memberOf elements in elementSpec and classSpec compile to rng:ref references to 
+    patterns IFF there is a matching classSpec in the schema; otherwise they are dropped.</xd:desc>
+  </xd:doc>
   <xsl:template match="(elementSpec | classSpec[@type eq 'atts'])/classes/memberOf" as="element(rng:ref)?">
     <xsl:variable name="vClassSpec" as="element(classSpec)" select="key('atop:classSpec', @key, ancestor::schemaSpec)"/>
     <xsl:if test="$vClassSpec/@type = 'atts'">
@@ -185,35 +189,62 @@
     </xsl:if>
   </xsl:template>
 
-  <!-- An attribute list transpiles to the sequence or alternate
-       pattern. A fallback template catches unsupported attribute list
-       types. -->
+  <xd:doc>
+    <xd:desc>An attribute list transpiles to the sequence or alternate
+      pattern. A fallback template catches unsupported attribute list
+      types.</xd:desc>
+  </xd:doc>
   <xsl:template match="attList[empty(@org) or @org eq 'group']" as="element(rng:group)">
     <rng:group>
       <xsl:apply-templates/>
     </rng:group>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>An attList with @org="choice" is compiled to an rng:choice element.</xd:desc>
+  </xd:doc>
   <xsl:template match="attList[@org eq 'choice']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>In case other values of attList/@org appear at some point, we throw an error.</xd:desc>
+  </xd:doc>
   <xsl:template match="attList" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
-      <xsl:text>The attribute list type '{@org}' is not supported. This version of only supports the types 'choice' and 'group'.</xsl:text>
+      <xsl:text>The attribute list type '{@org}' is not supported. This version of TEI/ATOP only supports the types 'choice' and 'group'.</xsl:text>
     </xsl:message>
   </xsl:template>
 
-  <!-- An attribute specification transpiles to an (optional) attribute
-       pattern. -->
+  <xd:doc>
+    <xd:desc>An attribute specification transpiles to an (optional) attribute
+      pattern.</xd:desc>
+  </xd:doc>
   <xsl:template match="attDef[empty(@usage) or @usage = ('opt', 'rec')]" as="element(rng:optional)">
     <rng:optional>
       <xsl:next-match/>
     </rng:optional>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>An attribute specification may contain a value list (valList) and
+      a datatype specification (datatype), one of either, or none. It may also generate
+    a child documentation element if it has a gloss and/or a desc. valLists are handled as
+    follows:
+    <xd:ul>
+      <xd:li>If the attDef contains a valList[@type = 'open'], we use the datatype
+      specification and list the members of the value list in an annotation.</xd:li>
+      
+      <xd:li>If the attDef contains a valList[@type = 'semi'], the content model is
+      a choice between the datatype and the members of the value list.</xd:li>
+      
+      <xd:li>If the attDef contains a valList[@type = 'closed'], the datatype is
+      ignored and the members of the value list are provided.</xd:li>
+    </xd:ul>
+    </xd:desc>
+  </xd:doc>
   <xsl:template match="attDef" as="element()+">
     <xsl:variable name="vQName" as="xs:QName" select="atop:get-attribute-qname(.)"/>
 
@@ -225,24 +256,7 @@
           <xsl:apply-templates select="desc"/>
         </a:documentation>
       </xsl:where-populated>
-
-      <!--
-
-An attribute specification may contain a value list (valList) and
-a datatype specification (datatype), one of either, or none.
-
-The current processor works as follows:
-
-If the attDef contains a valList[@type = 'open'], we use the datatype
-specification and list the members of the value list in an annotation.
-
-If the attDef contains a valList[@type = 'semi'], the content model is
-a choice between the datatype and the members of the value list.
-
-If the attDef contains a valList[@type = 'closed'], the datatype is
-ignored and the members of the value list are provided.
-
-      -->
+      
       <xsl:choose>
         <xsl:when test="valList[empty(@type) or @type eq 'open']">
           <a:documentation>
@@ -270,6 +284,7 @@ ignored and the members of the value list are provided.
     </rng:attribute>
   </xsl:template>
 
+  
   <xsl:template match="datatype" as="element()">
     <xsl:variable name="vDatatypeContent" as="element()+">
       <xsl:apply-templates/>
