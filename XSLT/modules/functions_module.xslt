@@ -313,9 +313,9 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p><xd:ref name="atop:resolve-private-uri"/>:
-        Given a private URI and an optional context node, convert the private URI to
-        a fully-qualified URI. URIs using the tei: prefix and conforming to
+      <xd:p><xd:ref name="atop:resolve-uri"/>:
+        Given a URI and an optional context node, convert the URI to
+        a fully-qualified URI if needed. URIs using the tei: prefix and conforming to
       TEI version patterns are treated as special, and resolved to point to
       the appropriate p5subset.xml. Other prefixes are resolved using any in-scope
       tei prefixDef elements.</xd:p>
