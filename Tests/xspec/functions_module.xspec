@@ -270,44 +270,58 @@
     
   </x:scenario>
   
-  <x:scenario label="Scenarios for testing atop:resolve-private-uri()">
-    <x:scenario label="Simple test with TEI Vault version">
-      <x:call function="atop:resolve-private-uri">
-        <x:param name="pUri" as="xs:string" select="'tei:4.4.2'"/>
-        <x:param name="pContext" as="node()"><tei:TEI></tei:TEI></x:param>
+  <x:scenario label="Scenarios for testing atop:resolve-uri()">
+    <x:scenario label="Simple test with TEI Vault version and no context">
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" as="xs:anyURI" select="xs:anyURI('tei:4.4.2')"/>
+        <x:param name="pContext" as="node()?"/>
       </x:call>
       <x:expect label="Expanded URI" select="'https://www.tei-c.org/Vault/P5/4.4.2/xml/tei/odd/p5subset.xml'"/>
     </x:scenario>
     <x:scenario label="Simple test with ill-formed TEI Vault version" catch="yes">
-      <x:call function="atop:resolve-private-uri">
-        <x:param name="pUri" as="xs:string" select="'tei:4.4.'"/>
-        <x:param name="pContext" as="node()"><tei:TEI></tei:TEI></x:param>
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" as="xs:anyURI" select="xs:anyURI('tei:4.4.')"/>
+        <x:param name="pContext" as="node()?"/>
       </x:call>
       <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-invalidOrMalformedURI')"/>
     </x:scenario>
     <x:scenario label="Simple case with private URI scheme">
-      <x:call function="atop:resolve-private-uri">
-        <x:param name="pUri" as="xs:string" select="'mol:HOLM3'"/>
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" as="xs:anyURI" select="xs:anyURI('mol:HOLM3')"/>
         <x:param name="pContext" as="node()">
           <tei:listPrefixDev>
             <tei:prefixDef ident="mol" matchPattern="(.+)" replacementPattern="https://mapoflondon.uvic.ca/$1.htm"/>
-          </tei:listPrefixDev>
+          </tei:listPrefixDev>            
         </x:param>
       </x:call>
       <x:expect label="Expanded URI" select="'https://mapoflondon.uvic.ca/HOLM3.htm'"/>
     </x:scenario>
     <x:scenario label="Unresolvable case where the input should be returned">
-      <x:call function="atop:resolve-private-uri">
-        <x:param name="pUri" as="xs:string" select="'notmol:HOLM3'"/>
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" as="xs:anyURI" select="xs:anyURI('notmol:HOLM3')"/>
         <x:param name="pContext" as="node()">
-          <tei:listPrefixDev>
-            <tei:prefixDef ident="mol" matchPattern="(.+)" replacementPattern="https://mapoflondon.uvic.ca/$1.htm"/>
-          </tei:listPrefixDev>
+            <tei:listPrefixDev>
+              <tei:prefixDef ident="mol" matchPattern="(.+)" replacementPattern="https://mapoflondon.uvic.ca/$1.htm"/>
+            </tei:listPrefixDev>
         </x:param>
       </x:call>
-      <x:expect label="Expanded URI" select="'notmol:HOLM3'"/>
+      <x:expect label="Expanded URI" select="'notmol:HOLM3'"/>      
     </x:scenario>
-  </x:scenario>
+    <x:scenario label="Simple case with external URL">
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" as="xs:anyURI" select="xs:anyURI('http://example.com')"/>
+        <x:param name="pContext" as="node()?"/>
+      </x:call>
+      <x:expect label="Expanded URI" select="'http://example.com'"/>
+    </x:scenario> 
+   <!-- <x:scenario label="Case with invalid type" catch="yes">
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" select="'https://tei-c.org/something#other#else'"/>
+        <x:param name="pContext" as="node()?"/>
+      </x:call>
+      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-invalidOrMalformedURI')"/>
+    </x:scenario> -->
+  </x:scenario> 
   
   <x:scenario label="Scenarios for testing atop:get-nearest-ns">
     <x:variable name="allTeiNoNs" as="element(tei:schemaSpec)">
