@@ -284,7 +284,13 @@
     </rng:attribute>
   </xsl:template>
 
-  
+  <xd:doc>
+    <xd:desc>The datatype element needs to be handled in two ways:
+    if it's a simple text datatype, then it can just be output as
+    an rng:text element, but if not, then the @minOccurs and 
+    @maxOccurs values need to be taken into account and the result
+    is output using an rng:list.</xd:desc>
+  </xd:doc>
   <xsl:template match="datatype" as="element()">
     <xsl:variable name="vDatatypeContent" as="element()+">
       <xsl:apply-templates/>
@@ -316,24 +322,42 @@
     </xsl:choose>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>valLists which are open or empty can just be suppressed.</xd:desc>
+  </xd:doc>
   <xsl:template match="valList[empty(@type) or @type = 'open']" as="empty-sequence()"/>
 
+  <xd:doc>
+    <xd:desc>valLists which are closed become rng:choice elements.</xd:desc>
+  </xd:doc>
   <xsl:template match="valList[@type eq 'closed']" as="element(rng:choice)">
     <rng:choice>
       <xsl:apply-templates/>
     </rng:choice>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>A semi-closed valList needs no wrapper; only the rng:item
+    values for its defined valItems are required.</xd:desc>
+  </xd:doc>
   <xsl:template match="valList[@type eq 'semi']" as="element()+">
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>Safety net to catch valLists which don't meet any of the 
+    criteria we're expecting.</xd:desc>
+  </xd:doc>
   <xsl:template match="valList" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
       <xsl:text>The value list type '{@type}' is not supported. This version of atop only supports the types 'open', 'semi', and 'closed'.</xsl:text>
     </xsl:message>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>A valItem becomes an rng:value element, with an optional
+    a:documentation element where there is a gloss or desc.</xd:desc>
+  </xd:doc>
   <xsl:template match="valItem" as="element()+">
     <rng:value>
       <xsl:text>{@ident}</xsl:text>
@@ -346,16 +370,32 @@
     </xsl:where-populated>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>gloss elements are output as strings in parentheses; these will
+    appear in a:documentation elements to support hinting and auto-completion 
+    in user agents such as Oxygen.</xd:desc>
+  </xd:doc>
   <xsl:template match="valItem/gloss | attDef/gloss" as="xs:string">
     <xsl:sequence select="'(' || normalize-space(.) || ') '"/>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>desc elements are output as strings; these will
+      appear in a:documentation elements to support hinting and auto-completion 
+      in user agents such as Oxygen.</xd:desc>
+  </xd:doc>
   <xsl:template match="valItem/desc | attDef/desc" as="xs:string">
     <xsl:sequence select="normalize-space(.)"/>
   </xsl:template>
   
 
   <!-- Process members of model.contentPart -->
+  <xd:doc>
+    <xd:desc>Processing for members of model.contentPart. Depending on 
+    the name of the element being processed, the output will be an rng:choice,
+    rng:group, or rng:interleave element, and then the called template 
+    atop:repeat-content takes care of @minOccurs and @maxOccurs constraints.</xd:desc>
+  </xd:doc>
   <xsl:template match="sequence | interleave | alternate" as="element()*">
     <xsl:variable name="vRngOutputElementName" as="xs:NCName">
       <xsl:choose>
@@ -375,14 +415,21 @@
     </xsl:call-template>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>The TEI empty element becomes rng:empty.</xd:desc>
+  </xd:doc>
   <xsl:template match="empty" as="element(rng:empty)">
     <rng:empty/>
   </xsl:template>
-
+  
+  <xd:doc>
+    <xd:desc>The TEI textNode element becomes rng:text.</xd:desc>
+  </xd:doc>
   <xsl:template match="textNode" as="element(rng:text)">
     <rng:text/>
   </xsl:template>
 
+  
   <xsl:template match="elementRef" as="element()+">
     <xsl:variable name="vElementSpec" as="element(elementSpec)" select="key('atop:elementSpec', @key)"/>
     <xsl:call-template name="atop:repeat-content">
