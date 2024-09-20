@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:atop="http://www.tei-c.org/ns/atop" stylesheet="../../XSLT/assemble_odd.xslt"
+    xmlns="http://www.tei-c.org/ns/1.0"
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    run-as="external">
+    
+    <!-- This module tests the templates in the assemble stage of ODD processing. -->
+    
+    <x:scenario label="Scenario for testing template with match 'moduleRef[@url]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataRef[ @ref ]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match '( classRef | dataRef | elementRef | macroRef | moduleRef )                        [ parent::schemaSpec | parent::specGrp ]                        [ @key  and  @source ]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match '*' and mode 'atop:replacement'">
+        <x:context mode="atop:replacement"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function source-to-url">
+        <x:call function="atop:source-to-url">
+            <x:param name="pSource" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+</x:description>
