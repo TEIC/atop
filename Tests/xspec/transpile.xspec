@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    stylesheet="../../XSLT/transpile.xslt"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    xmlns:atop="http://www.tei-c.org/ns/atop"
+    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    >
+    
+    <x:scenario
+        label="Scenario for testing template with match 'constraintSpec' and mode 'schematron'">
+        <x:context mode="schematron">
+            <tei:constraintSpec ident="test">
+                <tei:constraint>
+                    <tei:desc>This is a test description.</tei:desc>
+                </tei:constraint>
+            </tei:constraintSpec>
+        </x:context>
+        <x:expect label="There should be a documentation element" test="$x:result/descendant::a:documentation => count() gt 0"/>
+    </x:scenario>
+    
+    <x:scenario
+        label="Scenarios for testing template with match 'attDef[empty(@usage) or @usage = ('opt', 'rec')]">
+        <x:scenario label="Check for documentation elements.">
+            <x:context>
+                <tei:attDef ident="test">
+                    <tei:gloss>Test attribute</tei:gloss>
+                    <tei:desc>Attribute just for testing</tei:desc>
+                </tei:attDef>
+            </x:context>
+            <x:expect label="We expect a documentation element in a specific format" test="$x:result/descendant::a:documentation[matches(., '^\([^\)]+\)\s.+$')] => count() eq 1"/>
+        </x:scenario>
+    </x:scenario>
+    
+    <!-- This XSpec file is designed to test specific templates in transpile.xslt. -->
+    
+    <!--<x:scenario label="Scenario for testing template with match 'schemaSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'macroSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'classSpec[@type eq 'atts']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'classSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'elementSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match '(elementSpec | classSpec[@type eq 'atts'])/classes/memberOf">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'attList[empty(@org) or @org eq 'group']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'attList[@org eq 'choice']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'attList">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    
+
+    <x:scenario label="Scenario for testing template with match 'attDef">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'datatype">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'valList[empty(@type) or @type = 'open']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valList[@type eq 'closed']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valList[@type eq 'semi']">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valList">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valItem">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valItem/gloss | attDef/gloss">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'valItem/desc | attDef/desc">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'sequence | interleave | alternate">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'empty">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'textNode">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'elementRef">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'classRef">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'anyElement' and mode 'atop:anyElement'">
+        <x:context mode="atop:anyElement">
+            <x:param name="tpDefaultExceptions" select="'no_value'" tunnel="yes"/>
+        </x:context>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'anyElement">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'macroRef">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataRef[@name]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataFacet">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataRef[@key]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'dataRef">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'attRef[@name and @class]">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'rng:define/@name | rng:ref/@name">
+        <x:context>
+            <x:param name="tpNamePrefix" select="'no_value'" tunnel="yes"/>
+        </x:context>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'rng:*">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'moduleRef[@url]/content">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'constraintSpec">
+        <x:context/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'constraintSpec' and mode 'schematron'">
+        <x:context mode="schematron"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'constraintSpec/desc' and mode 'schematron'">
+        <x:context mode="schematron"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing template with match 'constraint' and mode 'schematron'">
+        <x:context mode="schematron"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario
+        label="Scenario for testing template with match 'sch:rule[not(@context)]' and mode 'schematron'">
+        <x:context mode="schematron"/>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>-->
+</x:description>
