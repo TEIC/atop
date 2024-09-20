@@ -674,7 +674,7 @@
   <xsl:template match="constraintSpec" as="item()*" mode="schematron">
     <rng:div>
       <xsl:if test="not(child::desc)">
-        <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+        <a:documentation>
           <xsl:sequence select="@ident"/>
         </a:documentation>
       </xsl:if>
@@ -687,7 +687,7 @@
     annotation in the RNG.</xd:desc>
   </xd:doc>
   <xsl:template match="constraintSpec/desc" as="element(a:documentation)" mode="schematron">
-    <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+    <a:documentation>
       <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
       <xsl:sequence select="xs:string(.)"/>
     </a:documentation>
