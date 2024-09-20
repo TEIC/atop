@@ -657,6 +657,9 @@
     </rng:param>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>For dataRef with @key, we retrieve the target dataSpec and process its contents.</xd:desc>
+  </xd:doc>
   <xsl:template match="dataRef[@key]" as="element()">
     <xsl:variable name="vDataSpec" as="element(dataSpec)*" select="key('atop:dataSpec', @key, ancestor::schemaSpec)"/>
     <!-- Sanity check. -->
@@ -666,15 +669,21 @@
     <xsl:apply-templates select="$vDataSpec/*"/>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>A dataRef without @name or @key should generate an error.</xd:desc>
+  </xd:doc>
   <xsl:template match="dataRef" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
       <xsl:text>Unsupported datatype specification reference. This version of atop only supports references to XML Schema datatypes (@name) and ODD datatype specifications (@key).</xsl:text>
     </xsl:message>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>When attRef has @name and @class, we retrieve the target attDef and
+    apply templates directly to it.</xd:desc>
+  </xd:doc>
   <xsl:template match="attRef[@name and @class]" as="element()">
     <xsl:variable name="vAttDef" as="element(attDef)*" select="key('atop:attDef', @class || '_' || @name, ancestor::schemaSpec)"/>
-    
     <!-- Sanity check. -->
     <xsl:if test="count($vAttDef) ne 1">
       <xsl:sequence select="atop:bad-spec-pointer(count($vAttDef), xs:string(@class || ': ' || @name), 'attDef')"/>
@@ -682,11 +691,21 @@
     <xsl:apply-templates select="$vAttDef"/>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>The @name attribute on rng:define and rng:ref elements
+    needs to have the prefix applied to it. TODO: WHERE IS tpNamePrefix
+    DECLARED? SHOULD IT BE THE tpPrefix PARAM BELOW?</xd:desc>
+    <xd:param name="tpNamePrefix">A prefix to be prepended to the name.</xd:param>
+  </xd:doc>
   <xsl:template match="rng:define/@name | rng:ref/@name" as="attribute(name)">
     <xsl:param name="tpNamePrefix" tunnel="yes" as="xs:string?"/>
     <xsl:attribute name="name" select="concat($tpNamePrefix, .)"/>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>Elements in the rng namespace are mostly just copied to the 
+    output.</xd:desc>
+  </xd:doc>
   <xsl:template match="rng:*" as="element()">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
@@ -694,6 +713,12 @@
     </xsl:copy>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>A moduleRef with both @url and a content child causes the 
+    RNG from the URL to be retrieved and processed into place, followed
+    by the contents of the content element. NOTE: WHY WAS THIS NOT DONE
+    AT THE assemble STAGE?</xd:desc>
+  </xd:doc>
   <xsl:template match="moduleRef[@url]/content" as="element(content)">
     <xsl:variable name="vInclusion" as="node()">
       <xsl:apply-templates mode="atop:rngCombine" select="doc(../@url)"/>
