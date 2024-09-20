@@ -429,7 +429,10 @@
     <rng:text/>
   </xsl:template>
 
-  
+  <xd:doc>
+    <xd:desc>With an elementRef, we retrieve the target elementSpec and then call the atop:repeat-content
+    template to handle @minOccurs and @maxOccurs</xd:desc>
+  </xd:doc>
   <xsl:template match="elementRef" as="element()+">
     <xsl:variable name="vElementSpec" as="element(elementSpec)" select="key('atop:elementSpec', @key)"/>
     <xsl:call-template name="atop:repeat-content">

@@ -23,4 +23,8 @@
         <seq5/>
         <seq6/>
     </IAmAlternateOfSequences>
+    <IHaveMinAndMaxContent>
+        <alt1/>
+        <alt1/>
+    </IHaveMinAndMaxContent>
 </test_elements>

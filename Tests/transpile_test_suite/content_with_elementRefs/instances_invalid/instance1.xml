@@ -26,4 +26,17 @@
     <IAmEmpty>
         <seq1/>
     </IAmEmpty>
+    <!-- Should have at least two and less than 7 alt1 elements. -->
+    <IHaveMinAndMaxContent>
+        <alt1/>
+    </IHaveMinAndMaxContent>
+    <IHaveMinAndMaxContent>
+        <alt1/>
+        <alt1/>
+        <alt1/>
+        <alt1/>
+        <alt1/>
+        <alt1/>
+        <alt1/>
+    </IHaveMinAndMaxContent>
 </test_elements>

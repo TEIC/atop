@@ -8,5 +8,7 @@ instance1.xml:19:16: error: element "alt2" not allowed here; expected the elemen
 instance1.xml:23:16: error: element "seq5" not allowed here; expected element "seq2"
 instance1.xml:24:16: error: element "seq6" not allowed here; expected element "seq2"
 instance1.xml:25:31: error: element "IAmAlternateOfSequences" incomplete; missing required element "seq2"
-instance1.xml:26:15: error: element "IAmEmpty" not allowed here; expected the element end-tag
+instance1.xml:26:15: error: element "IAmEmpty" not allowed here; expected element "IHaveMinAndMaxContent"
 instance1.xml:27:16: error: element "seq1" not allowed here; expected the element end-tag
+instance1.xml:32:29: error: element "IHaveMinAndMaxContent" incomplete; missing required element "alt1"
+instance1.xml:40:16: error: element "alt1" not allowed here; expected the element end-tag
