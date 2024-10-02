@@ -331,7 +331,8 @@
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
-          <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidOrMalformedURI">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+          <xsl:message terminate="yes" expand-text="yes"
+		       error-code="atop:error-invalidOrMalformedURI">Invalid or malformed private URI using the "tei:" scheme: '{$pUri}'</xsl:message>
         </xsl:if>
         <xsl:value-of select="concat('https://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
