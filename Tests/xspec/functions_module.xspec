@@ -314,6 +314,13 @@
       </x:call>
       <x:expect label="Expanded URI" select="'http://example.com'"/>
     </x:scenario> 
+   <!-- <x:scenario label="Case with invalid type" catch="yes">
+      <x:call function="atop:resolve-uri">
+        <x:param name="pUri" select="'https://tei-c.org/something#other#else'"/>
+        <x:param name="pContext" as="node()?"/>
+      </x:call>
+      <x:expect label="Map including an error message." test="$x:result?err?code eq QName('http://www.tei-c.org/ns/atop', 'error-invalidOrMalformedURI')"/>
+    </x:scenario> -->
   </x:scenario> 
   
   <x:scenario label="Scenarios for testing atop:get-nearest-ns">
