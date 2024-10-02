@@ -532,4 +532,28 @@
     </xsl:map>
   </xsl:function>  
   
+  
+  <xd:doc>
+    <xd:desc>This function is called when a *Ref element points to no spec element or more than 
+      one spec element; it fails the build with an appropriate error.</xd:desc>
+    <xd:param name="pSpecCount" as="xs:integer">The number of spec elements found (0 or > 1)</xd:param>
+    <xd:param name="pSpecIdent" as="xs:string">The ident of the target spec element</xd:param> 
+    <xd:param name="pSpecType" as="xs:string">The type (element name) of the target spec element</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:bad-spec-pointer" as="item()*">
+    <xsl:param name="pSpecCount" as="xs:integer"/>
+    <xsl:param name="pSpecIdent" as="xs:string"/> 
+    <xsl:param name="pSpecType" as="xs:string"/>
+    <xsl:if test="$pSpecCount lt 1">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is no {$pSpecType} class '{$pSpecIdent}' in the current schema.</xsl:text>
+      </xsl:message>
+    </xsl:if>
+    <xsl:if test="$pSpecCount > 1">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is more then one {$pSpecType} '{$pSpecIdent}' in the current schema.</xsl:text>
+      </xsl:message>
+    </xsl:if>
+  </xsl:function>
+  
 </xsl:stylesheet>

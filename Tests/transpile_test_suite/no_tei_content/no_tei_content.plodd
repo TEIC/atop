@@ -124,6 +124,9 @@
         </elementSpec>
         
         <elementSpec ident="p" ns="http://www.w3.org/1999/xhtml">
+          <classes>
+            <memberOf key="att.hasData-notes"/>
+          </classes>
           <content>
             <alternate minOccurs="1" maxOccurs="unbounded">
               <textNode/>
@@ -166,6 +169,8 @@
           </content>
           <attList>
             <attDef ident="src" usage="req">
+              <gloss xml:lang="en">source of graphic</gloss>
+              <desc xml:lang="en">points to the location of the image file to be rendered</desc>
               <datatype>
                 <dataRef key="teidata.pointer"/>
               </datatype>
@@ -189,6 +194,29 @@
               <valList type="semi">
                 <valItem ident="en"><gloss xml:lang="en">English</gloss></valItem>
                 <valItem ident="fr"><gloss xml:lang="en">French</gloss></valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </classSpec>
+        
+        <classSpec ident="att.hasData-notes" type="atts">
+          <desc xml:lang="en">Groups elements which may have a data-notes attribute.
+          This attribute has some suggested values.</desc>
+          <attList>
+            <attDef ident="data-notes" usage="opt">
+              <gloss xml:lang="en">Provides for some frequently-used annotations.</gloss>
+              <datatype maxOccurs="1">
+                <dataRef key="teidata.word"/>
+              </datatype>
+              <valList type="open">
+                <valItem ident="important">
+                  <gloss xml:lang="en">Important</gloss>
+                  <desc xml:lang="en">This item is deemed important.</desc>
+                </valItem>
+                <valItem ident="unimportant">
+                  <gloss xml:lang="en">Unimportant</gloss>
+                  <desc xml:lang="en">This item is deemed unimportant.</desc>
+                </valItem>
               </valList>
             </attDef>
           </attList>

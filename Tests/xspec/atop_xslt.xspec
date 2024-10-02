@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" run-as="external" schematron="../../Schemas/atop_xslt.sch">
+    <!-- This XSpec is designed to test the Schematron we use to enforce 
+         conformity in programming style in the ATOP project. -->
     <x:scenario label="Validating global names">
         <x:scenario label="A global variable with no prefix">
             <x:context>
