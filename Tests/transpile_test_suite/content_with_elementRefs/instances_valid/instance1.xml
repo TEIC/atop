@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <test_elements xmlns="http://www.tei-c.org/ns/atop/test_suite">
-    <!-- 
-        This is a valid instance file for the content_with_elementRefs test 
-        file. It contains instances of all the key structures represented in the
-        schema.
-    -->
-    <IAmEmpty></IAmEmpty>
-    <IAmSequence>
-        <seq1/>
-        <seq2/>
-        <seq3/>
-    </IAmSequence>
-    <IAmAlternate>
-        <alt2/>
-    </IAmAlternate>
-    <IAmSequenceOfAlternates>
-        <alt2/>
-        <alt6/>
-    </IAmSequenceOfAlternates>
-    <IAmAlternateOfSequences>
-        <seq4/>
-        <seq5/>
-        <seq6/>
-    </IAmAlternateOfSequences>
-    <IHaveMinAndMaxContent>
-        <alt1/>
-        <alt1/>
-    </IHaveMinAndMaxContent>
+  <!-- 
+       This is a valid instance file for the content_with_elementRefs test 
+       file. It contains instances of all the key structures represented in the
+       schema.
+  -->
+  <IAmEmpty><!-- Yup, since comments don’t count, this is empty --></IAmEmpty>
+  <IAmSequence>
+    <seq1/>
+    <seq2/>
+    <seq3/>
+  </IAmSequence>
+  <IAmAlternate>
+    <alt2/>
+  </IAmAlternate>
+  <IAmSequenceOfAlternates>
+    <alt2/>
+    <alt6/>
+  </IAmSequenceOfAlternates>
+  <IAmAlternateOfSequences>
+    <seq4/>
+    <seq5/>
+    <seq6/>
+  </IAmAlternateOfSequences>
+  <IHaveMinAndMaxContent>
+    <alt1/>
+    <alt1/>
+  </IHaveMinAndMaxContent>
 </test_elements>

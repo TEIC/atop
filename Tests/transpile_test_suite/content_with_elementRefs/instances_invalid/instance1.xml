@@ -1,42 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-        This is an invalid instance file for the content_with_elementRefs test 
-        file. It contains violations of all the key structures represented in the
-        schema.
-    -->
+This is an invalid instance file for the content_with_elementRefs test 
+file. It contains violations of all the key structures represented in the
+schema.
+-->
 <test_elements xmlns="http://www.tei-c.org/ns/atop/test_suite">
-    <IAmSequence>
-        <seq3/>
-        <seq2/>
-        <seq1/>
-    </IAmSequence>
-    <IAmAlternate>
-        <alt1/>
-        <alt2/>
-    </IAmAlternate>
-    <IAmSequenceOfAlternates>
-        <alt6/>
-        <alt2/>
-    </IAmSequenceOfAlternates>
-    <IAmAlternateOfSequences>
-        <seq1/>
-        <seq5/>
-        <seq6/>
-    </IAmAlternateOfSequences>
-    <IAmEmpty>
-        <seq1/>
-    </IAmEmpty>
-    <!-- Should have at least two and less than 7 alt1 elements. -->
-    <IHaveMinAndMaxContent>
-        <alt1/>
-    </IHaveMinAndMaxContent>
-    <IHaveMinAndMaxContent>
-        <alt1/>
-        <alt1/>
-        <alt1/>
-        <alt1/>
-        <alt1/>
-        <alt1/>
-        <alt1/>
-    </IHaveMinAndMaxContent>
+  <IAmSequence>
+    <!-- Invalid: should be seq1, seq2, seq3 in that order, but is not -->
+    <seq3/>
+    <seq2/>
+    <seq1/>
+  </IAmSequence>
+  <IAmAlternate>
+    <!-- Invalid: should be one of alt1, alt2, alt3, but has 2 of ’em -->
+    <alt1/>
+    <alt2/>
+  </IAmAlternate>
+  <IAmSequenceOfAlternates>
+    <!-- Invalid: should be alt1, alt2, or alt3 followed by alt4, alt5, or alt6 -->
+    <alt6/>
+    <alt2/>
+  </IAmSequenceOfAlternates>
+  <IAmAlternateOfSequences>
+    <!-- Invalid: should be either seq1, seq2, and seq3 (in that
+         order) or seq4, seq5, seq6 (in that order) -->
+    <seq1/>
+    <seq5/>
+    <seq6/>
+  </IAmAlternateOfSequences>
+  <IAmEmpty>
+    <!-- Invalid: not empty -->
+    <seq1/>
+  </IAmEmpty>
+  <IHaveMinAndMaxContent>
+    <!-- Invalid: should have 2–6 <alt1> element children. -->
+    <alt1/>
+  </IHaveMinAndMaxContent>
+  <IHaveMinAndMaxContent>
+    <!-- Invalid: should have 2–6 <alt1> element children. -->
+    <alt1/>
+    <alt1/>
+    <alt1/>
+    <alt1/>
+    <alt1/>
+    <alt1/>
+    <alt1/>
+  </IHaveMinAndMaxContent>
 </test_elements>
