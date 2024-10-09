@@ -25,6 +25,11 @@
     </xd:desc>
   </xd:doc>
   
+  <xd:doc>
+    <xd:desc>We use the global functions module.</xd:desc>
+  </xd:doc>
+  <xsl:include href="modules/functions_module.xslt"/>
+  
   <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"/>
   
   <xd:doc>
@@ -81,8 +86,8 @@
     <xsl:variable name="vKey" select="normalize-space(@key)" as="xs:string"/>
     <xsl:variable name="vSource" select="normalize-space(@source)" as="xs:string"/>
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
-    <xsl:variable name="vSourceDoc" select="document( atop:source-to-url( $vSource ) )" as="document-node()"/>
-    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:source-to-url( $vSource )"/>
+    <xsl:variable name="vSourceDoc" select="document( atop:resolve-uri( $vSource cast as xs:anyURI, () ) )" as="document-node()"/>
+    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:resolve-uri( $vSource cast as xs:anyURI, () )"/>
     <xsl:variable name="vSpecToGrab" as="element()*">
       <xsl:evaluate context-item="$vSourceDoc" xpath="'//'||$vSpecName||'[ @ident eq &quot;'||$vKey||'&quot; ]'"/>
     </xsl:variable>
@@ -107,14 +112,5 @@
       <xsl:apply-templates select="node()" mode="#default"/>
     </xsl:copy>
   </xsl:template>
-
-  <xd:doc>
-    <xd:desc>DUMMY function — real version will be in XSLT/modules/functions_module.xslt soon</xd:desc>
-    <xd:param name="pSource"/>
-  </xd:doc>
-  <xsl:function name="atop:source-to-url" as="xs:anyURI" visibility="public">
-    <xsl:param name="pSource" as="xs:string"/>
-    <xsl:sequence select="'https://tei-c.org/Vault/P5/2.0.0/xml/tei/odd/p5subset.xml' cast as xs:anyURI"/>
-  </xsl:function>
   
 </xsl:stylesheet>

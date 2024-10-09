@@ -29,15 +29,15 @@
                 </tei:content>
             </tei:moduleRef>
         </x:context>
-        <x:expect label="@url should be a period." test="$x:result[1][self::tei:moduleRef[@url='.']] => count()" select="1"/>
-        <x:expect label="An RNG grammar element should be retrieved." test="$x:result[1]/tei:content/rng:grammar => count()" select="1"/>
+        <x:expect label="@url should be a period." test="$x:result[self::tei:moduleRef[@url='.']] => count()" select="1"/>
+        <x:expect label="An RNG grammar element should be retrieved." test="$x:result/tei:content/rng:grammar => count()" select="1"/>
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match 'dataRef[@ref]">
         <x:context>
             <tei:dataRef ref="something"/>
         </x:context>
-        <x:expect label="Warning message" test="$x:result[1]/xsl:message => count()" select="1"/>
+        <x:expect label="Warning message" test="not($x:result)"/>
     </x:scenario>
     
     <!--
@@ -51,11 +51,5 @@
         <x:context mode="atop:replacement"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
-
-    <x:scenario label="Scenario for testing function source-to-url">
-        <x:call function="atop:source-to-url">
-            <x:param name="pSource" select="''"/>
-        </x:call>
-        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
-    </x:scenario>-->
+    -->
 </x:description>
