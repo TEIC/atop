@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
-    xmlns:atop="http://www.tei-c.org/ns/atop" stylesheet="../../XSLT/assemble_odd.xslt"
-    xmlns="http://www.tei-c.org/ns/1.0"
+<x:description
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" 
     xmlns:tei="http://www.tei-c.org/ns/1.0"
+    xmlns:atop="http://www.tei-c.org/ns/atop"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map" 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:rng="http://relaxng.org/ns/structure/1.0"
+    xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+    stylesheet="../../XSLT/assemble_odd.xslt"
     run-as="external">
     
     <!-- This module tests the templates in the assemble stage of ODD processing. -->
     
     <x:scenario label="Scenario for testing template with match 'moduleRef[@url]">
-        <x:context/>
-        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+        <x:context>
+            <!-- Example taken from TEI Exemplars; requires network access. -->
+            <tei:moduleRef url="https://www.tei-c.org/release/xml/tei/Exemplars/its.rng">
+                <tei:content>
+                    <rng:div>
+                        <rng:define name="tei_model.teiHeaderPart" combine="choice">
+                            <rng:ref name="its_rules"/>
+                        </rng:define>
+                        <rng:define name="tei_model.inter" combine="choice">
+                            <rng:ref name="its_span"/>
+                        </rng:define>
+                    </rng:div>
+                </tei:content>
+            </tei:moduleRef>
+        </x:context>
+        <x:expect label="@url should be a period." test="$x:result[1][self::tei:moduleRef[@url='.']] => count()" select="1"/>
+        <x:expect label="An RNG grammar element should be retrieved." test="$x:result[1]/tei:content/rng:grammar => count()" select="1"/>
     </x:scenario>
 
-    <x:scenario label="Scenario for testing template with match 'dataRef[ @ref ]">
-        <x:context/>
-        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    <x:scenario label="Scenario for testing template with match 'dataRef[@ref]">
+        <x:context>
+            <tei:dataRef ref="something"/>
+        </x:context>
+        <x:expect label="Warning message" test="$x:result[1]/xsl:message => count()" select="1"/>
     </x:scenario>
-
+    
+    <!--
     <x:scenario
         label="Scenario for testing template with match '( classRef | dataRef | elementRef | macroRef | moduleRef )                        [ parent::schemaSpec | parent::specGrp ]                        [ @key  and  @source ]">
         <x:context/>
@@ -34,5 +57,5 @@
             <x:param name="pSource" select="''"/>
         </x:call>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
-    </x:scenario>
+    </x:scenario>-->
 </x:description>

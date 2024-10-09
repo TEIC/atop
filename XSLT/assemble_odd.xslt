@@ -39,7 +39,7 @@
       signify that the content is here and now, and no longer
       external.</xd:desc>
   </xd:doc>
-  <xsl:template match="moduleRef[@url]" as="element(moduleRef)">
+  <xsl:template match="moduleRef[@url[not(. eq '.')]]" as="element(moduleRef)">
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <!-- Use a value of ‘.’ (U+002E) on @url to signify that the content is here and now, not external. -->
@@ -60,7 +60,7 @@
     attribute, we have no idea how to process it, so just warn the
     user that we are not going to.</xd:desc>
   </xd:doc>
-  <xsl:template match="dataRef[ @ref ]" as="empty()">
+  <xsl:template match="dataRef[ @ref ]" as="item()*">
     <xsl:message terminate="no" expand-text="true">WARNING: The ATOP
     processor does not know how to handle a reference to the {@ref}
     external datatype library, so this dataRef element is being
