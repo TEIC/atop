@@ -313,9 +313,9 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p><xd:ref name="atop:resolve-private-uri"/>:
-        Given a private URI and a context node, convert the private URI to
-        a fully-qualified URI. URIs using the tei: prefix and conforming to
+      <xd:p><xd:ref name="atop:resolve-uri"/>:
+        Given a URI and an optional context node, convert the URI to
+        a fully-qualified URI if needed. URIs using the tei: prefix and conforming to
       TEI version patterns are treated as special, and resolved to point to
       the appropriate p5subset.xml. Other prefixes are resolved using any in-scope
       tei prefixDef elements.</xd:p>
@@ -325,18 +325,18 @@
     <xd:return>A fully-qualified URI, if the process succeeds, or the original
     string if it isn't possible to resolve the URI with the resources available.</xd:return>
   </xd:doc>
-  <xsl:function name="atop:resolve-private-uri" as="xs:string">
-    <xsl:param name="pUri" as="xs:string"/>
-    <xsl:param name="pContext" as="node()"/>
-
+  <xsl:function name="atop:resolve-uri" as="xs:anyURI">
+    <xsl:param name="pUri" as="xs:anyURI"/>
+    <xsl:param name="pContext" as="node()?"/>
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
-          <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidOrMalformedURI">Invalid or malformed tei: private URI: '{$pUri}'</xsl:message>
+          <xsl:message terminate="yes" expand-text="yes"
+		       error-code="atop:error-invalidOrMalformedURI">Invalid or malformed private URI using the "tei:" scheme: '{$pUri}'</xsl:message>
         </xsl:if>
         <xsl:value-of select="concat('https://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
-      <xsl:when test="matches($pUri, $atop:vUriSchemeRegex)">
+      <xsl:when test="matches($pUri, $atop:vUriSchemeRegex) and $pContext">
         <xsl:variable name="vPrefix" as="xs:string" select="substring-before($pUri, ':')"/>
         <xsl:variable name="vPath" as="xs:string" select="substring-after($pUri, ':')"/>
         <xsl:variable name="vDef" as="element(prefixDef)?" select="key('atop:prefixDef', $vPrefix, $pContext)"/>
@@ -345,8 +345,8 @@
             <xsl:value-of select="$pUri"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:variable name="vUri" as="xs:string" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern)"/>
-            <xsl:value-of select="atop:resolve-private-uri($vUri, $pContext)"/>
+            <xsl:variable name="vUri" as="xs:anyURI" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern) => xs:anyURI()"/>
+            <xsl:value-of select="atop:resolve-uri($vUri, $pContext)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -530,6 +530,30 @@
         <xsl:map-entry key="xs:string($vCurrNs/@uri)" select="xs:string($vCurrNs/@prefix)"/>
       </xsl:for-each>
     </xsl:map>
+  </xsl:function>  
+  
+  
+  <xd:doc>
+    <xd:desc>This function is called when a *Ref element points to no spec element or more than 
+      one spec element; it fails the build with an appropriate error.</xd:desc>
+    <xd:param name="pSpecCount" as="xs:integer">The number of spec elements found (0 or > 1)</xd:param>
+    <xd:param name="pSpecIdent" as="xs:string">The ident of the target spec element</xd:param> 
+    <xd:param name="pSpecType" as="xs:string">The type (element name) of the target spec element</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:bad-spec-pointer" as="item()*">
+    <xsl:param name="pSpecCount" as="xs:integer"/>
+    <xsl:param name="pSpecIdent" as="xs:string"/> 
+    <xsl:param name="pSpecType" as="xs:string"/>
+    <xsl:if test="$pSpecCount lt 1">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is no {$pSpecType} class '{$pSpecIdent}' in the current schema.</xsl:text>
+      </xsl:message>
+    </xsl:if>
+    <xsl:if test="$pSpecCount > 1">
+      <xsl:message terminate="yes">
+        <xsl:text>Unable to resolve class reference. There is more then one {$pSpecType} '{$pSpecIdent}' in the current schema.</xsl:text>
+      </xsl:message>
+    </xsl:if>
   </xsl:function>
   
 </xsl:stylesheet>
