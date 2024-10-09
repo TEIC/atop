@@ -75,7 +75,7 @@
   <xd:doc>
     <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
     specification in an external source (i.e., has a @key), replace it
-    with the correpsonding <gi>*Spec</gi>s from that source.</xd:desc>
+    with the corresponding <gi>*Spec</gi>s from that source.</xd:desc>
   </xd:doc>
   <!-- moduleRef/@url and dataRef/@ref are handled above; we do not
        need to process dataRef/@name here, as it does not point to
