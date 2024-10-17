@@ -12,7 +12,7 @@
   <xd:doc>
     <xd:desc>Version number of this program</xd:desc>
   </xd:doc>
-  <xsl:variable name="atop:vVersion" select="'0.0.1'" as="xs:string"/>
+  <xsl:variable name="atop:vVersion" select="'0.0.4'" as="xs:string"/>
   
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -72,6 +72,48 @@
     summarily ignored.</xsl:message>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>A <gi>specGrpRef</gi> gets replaced not with the entire
+    <gi>specGrp</gi> to which it refers, but rather only with the
+    output of processing the <emph>contents</emph> of the <gi>specGrp</gi>
+    to which it refers.</xd:desc>
+  </xd:doc>
+  <xsl:template match="specGrpRef" as="element()*">
+    <!-- Get the target (it should point to a <specGrp>) -->
+    <xsl:variable name="vTargetVal" select="normalize-space(@target)" as="xs:string"/>
+    <!-- Get the <sepcGrp> to which it points -->
+    <xsl:variable name="vTargetSpecGrp" as="element(specGrp)">
+      <xsl:choose>
+        <!--
+          If it starts with a ‘#’, it should be just a bare name fragment identifier
+          (at least, that is the only kind of fragment identifier we know how to
+          process). Retrieve the <specGrp> in this document that it points to.
+        -->
+        <xsl:when test="starts-with( $vTargetVal, '#')">
+          <xsl:sequence select="id( substring( $vTargetVal, 2 ) )"/>
+        </xsl:when>
+        <!--
+          If it contains a ‘#’, grab the document referred to first, then the
+          <specGrp> within that document.
+        -->
+        <xsl:when test="contains( $vTargetVal, '#')">
+          <xsl:variable name="vTargetUriPart" select="substring-before( $vTargetVal, '#')" as="xs:string"/>
+          <xsl:variable name="vTargetFragment" select="substring-after( $vTargetVal, '#')" as="xs:string"/>
+          <xsl:variable name="vTargetDoc" select="document( atop:resolve-uri( $vTargetUriPart cast as xs:anyURI, () ) )" as="document-node()"/>
+          <xsl:sequence select="id( $vTargetFragment, $vTargetDoc )"/>
+        </xsl:when>
+        <!--
+          If it does not contain a ‘#’, then it points to an entire document. Must be that
+          the outermost of element of that document is a <specGrp>, so return it.
+        -->
+        <xsl:otherwise>
+          <xsl:sequence select="document( atop:resolve-uri( $vTargetVal cast as xs:anyURI, () ) )/specGrp"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:apply-templates select="$vTargetSpecGrp/*"/>
+  </xsl:template>
+  
   <xd:doc>
     <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
     specification in an external source (i.e., has a @key), replace it
