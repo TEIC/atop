@@ -328,6 +328,8 @@
   <xsl:function name="atop:resolve-uri" as="xs:anyURI">
     <xsl:param name="pUri" as="xs:anyURI"/>
     <xsl:param name="pContext" as="node()?"/>
+    <xsl:variable name="vNode" as="node()"><duck/></xsl:variable>
+    <xsl:variable name="vContext" as="node()" select="if (empty($pContext)) then $vNode else $pContext"/>
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
@@ -348,12 +350,12 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="vUri" as="xs:anyURI" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern) => xs:anyURI()"/>
-            <xsl:sequence select="atop:resolve-uri($vUri, $pContext)"/>
+            <xsl:sequence select="atop:resolve-uri($vUri, $vContext)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence select="resolve-uri( $pUri, base-uri( $pContext ) ) cast as xs:anyURI"/>
+        <xsl:sequence select="resolve-uri( $pUri, base-uri( $vContext ) ) cast as xs:anyURI"/>
       </xsl:otherwise>
     </xsl:choose>
 
