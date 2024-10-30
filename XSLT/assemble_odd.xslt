@@ -111,25 +111,30 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:apply-templates select="$vTargetSpecGrp/*"/>
+    <xsl:apply-templates select="$vTargetSpecGrp/( classRef
+                                                 | classSpec
+                                                 | constraintSpec
+                                                 | dataRef
+                                                 | dataSpec
+                                                 | elementRef
+                                                 | elementSpec
+                                                 | listRef
+                                                 | macroRef
+                                                 | macroSpec
+                                                 | moduleRef
+                                                 | moduleSpec
+                                                 | outputRendition
+                                                 | specGrp
+                                                 | specGrpRef
+                                                 )"/>
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>A <gi>specGrp</gi> that is pointed to by a
-    <gi>specGrpRef</gi> gets ignored (as it is processed
-    when &amp; where the <gi>specGrpRef</gi> occurs).</xd:desc>
+    <xd:desc><gi>specGrp</gi> elements are only processed when we hit
+    the corresponding <gi>specGrpRef</gi>, if any. So if we hit one in
+    normal processing, ignore it.</xd:desc>
   </xd:doc>
-  <xsl:template match="specGrp[ //specGrpRef[ @target => normalize-space() => substring(2) eq current()/@xml:id ] ]"/>
-
-  <xd:doc>
-    <xd:desc>QUESTION: What happens to a <gi>specGrp</gi> that is
-    <emph>not</emph> referred to by a <gi>specGrpRef</gi>?</xd:desc>
-  </xd:doc>
-  <xsl:template match="specGrp">
-    <!-- Only matches those that are NOT pointed at by a local <specGrpRef>,
-	 as previous template catches those at a higher priority. -->
-    <xsl:message>DEBUG: WTF? :GUBED</xsl:message>
-  </xsl:template>
+  <xsl:template match="specGrp"/>
   
   <xd:doc>
     <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
