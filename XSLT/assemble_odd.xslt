@@ -100,7 +100,7 @@
 
   <xd:doc>
     <xd:desc>process the <gi>*Spec</gi> from source (as opposed to the input).
-    At the moment, proccessing is just copying it over, except that the @mode
+    At the moment, processing is just copying it over, except that the @mode
     of the outermost element copied from the source is set to "replace".</xd:desc>
   </xd:doc>
   <xsl:template match="*" mode="atop:replacement" as="element()">
