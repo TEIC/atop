@@ -328,13 +328,17 @@
   <xsl:function name="atop:resolve-uri" as="xs:anyURI">
     <xsl:param name="pUri" as="xs:anyURI"/>
     <xsl:param name="pContext" as="node()?"/>
+    <xsl:variable name="vNode" as="node()"><duck/></xsl:variable>
+    <xsl:variable name="vContext" as="node()" select="if (empty($pContext)) then $vNode else $pContext"/>
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
           <xsl:message terminate="yes" expand-text="yes"
 		       error-code="atop:error-invalidOrMalformedURI">Invalid or malformed private URI using the "tei:" scheme: '{$pUri}'</xsl:message>
         </xsl:if>
-        <xsl:value-of select="concat('https://www.tei-c.org/Vault/P5/', substring-after($pUri, ':'), '/xml/tei/odd/p5subset.xml')"/>
+        <xsl:sequence select="xs:anyURI( 'https://www.tei-c.org/Vault/P5/'
+			               || substring-after($pUri, ':')
+				       || '/xml/tei/odd/p5subset.xml')"/>
       </xsl:when>
       <xsl:when test="matches($pUri, $atop:vUriSchemeRegex) and $pContext">
         <xsl:variable name="vPrefix" as="xs:string" select="substring-before($pUri, ':')"/>
@@ -342,16 +346,16 @@
         <xsl:variable name="vDef" as="element(prefixDef)?" select="key('atop:prefixDef', $vPrefix, $pContext)"/>
         <xsl:choose>
           <xsl:when test="empty($vDef)">
-            <xsl:value-of select="$pUri"/>
+            <xsl:sequence select="$pUri"/>
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="vUri" as="xs:anyURI" select="replace($vPath, $vDef/@matchPattern, $vDef/@replacementPattern) => xs:anyURI()"/>
-            <xsl:value-of select="atop:resolve-uri($vUri, $pContext)"/>
+            <xsl:sequence select="atop:resolve-uri($vUri, $vContext)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="$pUri"/>
+        <xsl:sequence select="resolve-uri( $pUri, base-uri( $vContext ) ) cast as xs:anyURI"/>
       </xsl:otherwise>
     </xsl:choose>
 

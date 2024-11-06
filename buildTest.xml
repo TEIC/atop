@@ -32,7 +32,7 @@
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
     <!--<subant antfile="xspec_runner.xml" buildpath="Tests" target="xspec_runner"/>-->
-    <exec executable="${antPath}" dir="Tests">
+    <exec executable="${antPath}" dir="Tests" failonerror="true" failifexecutionfails="true">
       <arg value="-f"/>
       <arg file="${basedir}/Tests/xspec_runner.xml"/>
       <arg value="-Dbuildpath=${basedir}/Tests"/>
