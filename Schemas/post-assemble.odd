@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://teijenkins.hcmc.uvic.ca/job/TEIP5-dev/lastSuccessfulBuild/artifact/P5/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="https://teijenkins.hcmc.uvic.ca/job/TEIP5-dev/lastSuccessfulBuild/artifact/P5/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>ODD for validating post-assembling results</title>
+        <author xml:id="SB">Syd Bauman</author>
+        <author xml:id="HBS">Helena Bermúdez Sabel</author>
+        <author xml:id="MH">Martin Holmes</author>
+      </titleStmt>
+      <publicationStmt>
+        <publisher>TEI-C / ATOP project</publisher>
+        <availability status="restricted">
+          <licence>Made available under both the CC+BY and BSD-2 licences; see ../LICENSE.md for
+            details.</licence>
+          <p>There are very few restrictions on copying, modifying, and publishing this code or
+            variations thereof. Basically give credit where credit is due, and allow others to do
+            the same. That said, unless you are dealing with TEI ODD files derived by combining one
+            or more TEI customization ODD files with a markup language that is itself defined in TEI
+            ODD, it is probably not a good idea to copy and use this. It is pretty much useless for
+            anything else.</p>
+        </availability>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital</p>
+      </sourceDesc>
+    </fileDesc>
+    <revisionDesc>
+      <change when="2024-11-03" who="#HBS">The <title>PLODD Schema Specification</title> is used as
+        source for certain constraints and overall structure.</change>
+    </revisionDesc>
+  </teiHeader>
+  <text>
+    <front>
+      <head>Schema for post-assemble ODD</head>
+      <divGen type="toc"/>
+    </front>
+    <body>
+      <div type="section">
+        <head>Purpose</head>
+        <p>This schema is used to validate the post-assembling ODD.</p>
+      </div>
+      <div type="section">
+        <head>Usage</head>
+        <p>The schemas derived from this ODD are used to validate the ODD generated from the
+          assembling process.</p>
+      </div>
+    </body>
+    <back>
+      <!-- Note: deliberately no source= on <schemaSpec> so that we, the ATOPers,
+           get caught if there is a backwards-incompatible change to P5 ODDs. -->
+      <schemaSpec docLang="en" ident="ploddSchemaSpecification" prefix="plodd_"
+        start="TEI schemaSpec" targetLang="en">
+        <gloss>derived schema specification</gloss>
+        <desc>the ATOP derived schema document type</desc>
+
+        <!-- ******* -->
+        <!-- Modules -->
+        <!-- ******* -->
+        <moduleRef key="tei"/>
+        <moduleRef key="header"/>
+        <moduleRef key="textstructure"/>
+        <moduleRef key="core"/>
+        <moduleRef except="specGrp specGrpRef" key="tagdocs"/>
+
+        <!-- ******************************************** -->
+        <!-- General high-level constraint specifications -->
+        <!-- ******************************************** -->
+        <constraintSpec ident="define_RNG_annotation_namespace" scheme="schematron">
+          <desc>We will be testing for <tag>a:*</tag> elements as allowed children of
+              <gi>content</gi> in <gi>moduleRef</gi>.</desc>
+          <constraint>
+            <sch:ns prefix="a" uri="http://relaxng.org/ns/compatibility/annotations/1.0"/>
+          </constraint>
+        </constraintSpec>
+        <constraintSpec ident="no_XInclude" scheme="schematron">
+          <desc>By this point in the pipeline, any and all XInclude processing should have already
+            occurred. Note that this means that XInclude elements cannot be exemplified in their own
+            namespace in an <gi>egXML</gi> (which is usually problematic, anyway).</desc>
+          <constraint>
+            <sch:ns prefix="xi" uri="http://www.w3.org/2001/XInclude"/>
+            <sch:rule context="/">
+              <sch:report role="fatal" test="//xi:*">There should be no XInclude elements in a
+                derived PLODD</sch:report>
+            </sch:rule>
+          </constraint>
+        </constraintSpec>
+
+
+        <!-- ********************************************************** -->
+        <!-- Alterations to <schemaSpec> itself and elements “above” it -->
+        <!-- ********************************************************** -->
+        <elementSpec ident="body" mode="change">
+          <desc>Contains a single schema specification</desc>
+          <content>
+            <elementRef key="schemaSpec" maxOccurs="1" minOccurs="1"/>
+          </content>
+        </elementSpec>
+
+
+        <!-- ********************************* -->
+        <!-- Alterations to other ODD elements -->
+        <!-- ********************************* -->
+
+        <elementSpec ident="moduleRef">
+          <desc>At this point of the processing, module references that point to external schemas
+            has been expanded.</desc>
+          <content>
+            <elementRef key="content" maxOccurs="1" minOccurs="1"/>
+          </content>
+          <constraintSpec ident="only_rng_in_moduleRef_content" scheme="schematron">
+            <constraint>
+              <sch:rule context="tei:moduleRef/tei:content">
+                <sch:report test="*[ not( self::rng:* or self::a:* ) ]"> The content of an ATOP
+                  PLODD module reference needs to be RELAX NG and RELAX NG *only*. </sch:report>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
+          <attList>
+            <attDef ident="url" mode="replace" usage="req">
+              <desc>No other value than '.' is allowed in @url,</desc>
+              <datatype maxOccurs="1" minOccurs="1">
+                <dataRef key="teidata.enumerated"/>
+              </datatype>
+              <valList type="closed">
+                <valItem ident=".">
+                  <gloss>here, this file, local</gloss>
+                  <desc>In an ATOP PLODD each <gi>moduleRef</gi> should have a <att>url</att> with
+                    the value <val>.</val> both so that it is clear and explicit that the reference
+                    has been resolved, only the content is to be copied over to the RELAX NG; and so
+                    that the <gi>moduleRef</gi> is valid against vanilla tei_all or tei_odds.</desc>
+                </valItem>
+              </valList>
+            </attDef>
+          </attList>
+        </elementSpec>
+
+
+        <!-- *********************************** -->
+        <!-- Attributes that have been processed -->
+        <!-- *********************************** -->
+        <classSpec ident="att.global.source" mode="delete" type="atts"/>
+      </schemaSpec>
+    </back>
+  </text>
+</TEI>
