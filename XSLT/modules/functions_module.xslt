@@ -560,4 +560,40 @@
     </xsl:if>
   </xsl:function>
   
+  <xd:doc>
+    <xd:desc>This function is passed an attribute expected to contain one or more 
+    pointers to XML resources, local or remote; it then tokenizes the pointers,
+    resolves them all, retrieves the target resources, and returns them as a sequence.</xd:desc>
+    <xd:param name="pPointerAtt" as="attribute()">The attribute containing the pointers. We want the
+    attribute rather than its value so that if necessary we can traverse the tree
+    that contains it.</xd:param>
+    <xd:result as="item()*">Zero or more items, which are the retrieved targets.</xd:result>
+  </xd:doc>
+  <xsl:function name="atop:retrieve-targets" as="item()*">
+    <xsl:param name="pPointerAtt" as="attribute()"/>
+    <xsl:choose>
+      <xsl:when test="string-length(normalize-space($pPointerAtt)) lt 1">
+        <xsl:sequence select="()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="vPointers" as="xs:string+" select="tokenize(normalize-space($pPointerAtt), '\s+')"/>        <xsl:variable name="vResolvedPtrs" as="xs:anyURI+" 
+          select="for $p in $vPointers return atop:resolve-uri(xs:anyURI($p), $pPointerAtt)"/>
+        <xsl:for-each select="$vResolvedPtrs">
+          <xsl:try>
+            <xsl:choose>
+              <xsl:when test="contains(., '#')">
+                <xsl:variable name="vBits" as="xs:string+" select="tokenize(., '#')"/>
+                <xsl:sequence select="doc($vBits[1])//*[@xml:id=$vBits[2]]"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:sequence select="doc(.)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+              <xsl:message expand-text="yes">Failed to retrieve resource from {.}.</xsl:message>
+          </xsl:try>
+        </xsl:for-each>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
 </xsl:stylesheet>
