@@ -568,7 +568,7 @@
     attribute rather than its value so that we can traverse the tree
     that contains it. This function is intended to work for pointers in TEI documents, 
     but will also handle any other XML document which uses @xml:id.</xd:param>
-    <xd:result as="item()*">Zero or more elements, which are the retrieved targets.</xd:result>
+    <xd:result as="element()*">Zero or more elements, which are the retrieved targets.</xd:result>
   </xd:doc>
   <xsl:function name="atop:retrieve-target-elements" as="element()*">
     <xsl:param name="pPointerAtt" as="attribute()"/>
@@ -582,7 +582,9 @@
           <xsl:try>
             <xsl:choose>
               <xsl:when test="starts-with(., '#')">
-                <xsl:sequence select="$pPointerAtt/ancestor::*[last()]/descendant::*[@xml:id eq substring-after(., '#')]"/>
+                <xsl:message expand-text="yes">Pointer is {.}.</xsl:message>
+                <xsl:message expand-text="yes">Parameter attribute is {xs:string($pPointerAtt)}</xsl:message>
+                <xsl:sequence select="root($pPointerAtt)/descendant::*[@xml:id eq substring-after(., '#')]"/>
               </xsl:when>
               <xsl:when test="contains(., '#')">
                 <xsl:variable name="vResolvedPtr" as="xs:anyURI" select="atop:resolve-uri(xs:anyURI(.), $pPointerAtt)"/>
