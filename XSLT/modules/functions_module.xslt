@@ -589,7 +589,9 @@
                 <xsl:sequence select="doc(.)"/>
               </xsl:otherwise>
             </xsl:choose>
+            <xsl:catch>
               <xsl:message expand-text="yes">Failed to retrieve resource from {.}.</xsl:message>
+            </xsl:catch>
           </xsl:try>
         </xsl:for-each>
       </xsl:otherwise>
