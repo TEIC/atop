@@ -406,4 +406,26 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test for the function atop:retrieve-target-elements">
+    <x:variable name="someTeiForRTE" as="element(tei:p)">
+      <tei:p>
+        <tei:name xml:id="fred">Fred</tei:name>
+        <tei:ptr xml:id="ptr" target="#fred"/>
+      </tei:p>
+    </x:variable>
+    <x:scenario label="Simple local file with target pointer">
+      <x:call function="atop:retrieve-target-elements">
+        <x:param name="pPointerAtt" as="attribute()" select="$someTeiForRTE//tei:ptr[@xml:id='ptr']/@target"/>
+      </x:call>
+      <x:expect label="The tei:name element" 
+        test="$x:result/text()"
+        select="'Fred'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  
+  
+  
+  
+  
 </x:description>

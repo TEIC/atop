@@ -562,15 +562,15 @@
   
   <xd:doc>
     <xd:desc>This function is passed an attribute expected to contain one or more 
-    pointers to XML resources, local or remote; it then tokenizes the pointers,
+    pointers to XML elements, local or remote; it then tokenizes the pointers,
     resolves them all, retrieves the target resources, and returns them as a sequence.</xd:desc>
     <xd:param name="pPointerAtt" as="attribute()">The attribute containing the pointers. We need the
     attribute rather than its value so that we can traverse the tree
     that contains it. This function is intended to work for pointers in TEI documents, 
     but will also handle any other XML document which uses @xml:id.</xd:param>
-    <xd:result as="item()*">Zero or more items, which are the retrieved targets.</xd:result>
+    <xd:result as="item()*">Zero or more elements, which are the retrieved targets.</xd:result>
   </xd:doc>
-  <xsl:function name="atop:retrieve-targets" as="item()*">
+  <xsl:function name="atop:retrieve-target-elements" as="element()*">
     <xsl:param name="pPointerAtt" as="attribute()"/>
     <xsl:choose>
       <xsl:when test="string-length(normalize-space($pPointerAtt)) lt 1">
@@ -578,20 +578,20 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="vPointers" as="xs:string+" select="tokenize(normalize-space($pPointerAtt), '\s+')"/>
-        <xsl:variable name="vResolvedPtrs" as="xs:anyURI+" 
-          select="for $p in $vPointers return atop:resolve-uri(xs:anyURI($p), $pPointerAtt)"/>
-        <xsl:for-each select="$vResolvedPtrs">
+        <xsl:for-each select="$vPointers">
           <xsl:try>
             <xsl:choose>
               <xsl:when test="starts-with(., '#')">
-                <xsl:sequence select="$pPointerAtt/root()//*[@xml:id eq substring-after(., '#')]"/>
+                <xsl:sequence select="$pPointerAtt/ancestor::*[last()]/descendant::*[@xml:id eq substring-after(., '#')]"/>
               </xsl:when>
               <xsl:when test="contains(., '#')">
-                <xsl:variable name="vBits" as="xs:string+" select="tokenize(., '#')"/>
+                <xsl:variable name="vResolvedPtr" as="xs:anyURI" select="atop:resolve-uri(xs:anyURI(.), $pPointerAtt)"/>
+                <xsl:variable name="vBits" as="xs:string+" select="tokenize($vResolvedPtr, '#')"/>
                 <xsl:sequence select="doc($vBits[1])//*[@xml:id eq $vBits[2]]"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:sequence select="doc(.)"/>
+                <xsl:variable name="vResolvedPtr" as="xs:anyURI" select="atop:resolve-uri(xs:anyURI(.), $pPointerAtt)"/>
+                <xsl:sequence select="doc($vResolvedPtr)/*"/>
               </xsl:otherwise>
             </xsl:choose>
             <xsl:catch>
