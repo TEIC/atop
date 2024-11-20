@@ -18,6 +18,12 @@
     
     <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
+    <!-- 
+         Note XPath variables such as simple "for" binding variables do not have to follow
+         this pattern because they are only instantiated momentarily. So $p is fine in 
+         e.g. 'for $p in $vParagraphs return $p/@n'.
+    -->
+    
     <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
     
     <let name="reFunctionName" value="concat('^', $atopNamespacePrefix, ':[a-z][a-z\-]+[a-z]$')"/>
