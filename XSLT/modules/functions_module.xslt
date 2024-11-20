@@ -576,7 +576,8 @@
         <xsl:sequence select="()"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="vPointers" as="xs:string+" select="tokenize(normalize-space($pPointerAtt), '\s+')"/>        <xsl:variable name="vResolvedPtrs" as="xs:anyURI+" 
+        <xsl:variable name="vPointers" as="xs:string+" select="tokenize(normalize-space($pPointerAtt), '\s+')"/>
+        <xsl:variable name="vResolvedPtrs" as="xs:anyURI+" 
           select="for $p in $vPointers return atop:resolve-uri(xs:anyURI($p), $pPointerAtt)"/>
         <xsl:for-each select="$vResolvedPtrs">
           <xsl:try>
