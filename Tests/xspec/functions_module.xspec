@@ -414,13 +414,13 @@
         <tei:ptr xml:id="ptr2" target="https://www.tei-c.org/release/xml/tei/Exemplars/its.rng"/>
       </tei:p>
     </x:variable>
-    <!--<x:scenario label="Simple local file with target pointer">
+    <x:scenario label="Simple local file with target pointer">
       <x:call function="atop:retrieve-target-elements">
         <x:param name="pPointerAtt" as="attribute()" select="$someTeiForRTE//tei:ptr[@xml:id='ptr1']/@target"/>
       </x:call>
       <x:expect label="The tei:name element" 
-        test="$x:result/local-name()" select="'name'"/>
-    </x:scenario>-->
+        test="local-name($x:result)" select="'name'"/>
+    </x:scenario>
     
     <x:scenario label="Remote file with no target pointer">
       <x:call function="atop:retrieve-target-elements">
