@@ -328,7 +328,7 @@
   <xsl:function name="atop:resolve-uri" as="xs:anyURI">
     <xsl:param name="pUri" as="xs:anyURI"/>
     <xsl:param name="pContext" as="node()?"/>
-    <xsl:variable name="vNode" as="node()"><duck/></xsl:variable>
+    <xsl:variable name="vNode" as="node()"><dummy/></xsl:variable>
     <xsl:variable name="vContext" as="node()" select="if (empty($pContext)) then $vNode else $pContext"/>
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
@@ -564,9 +564,10 @@
     <xd:desc>This function is passed an attribute expected to contain one or more 
     pointers to XML resources, local or remote; it then tokenizes the pointers,
     resolves them all, retrieves the target resources, and returns them as a sequence.</xd:desc>
-    <xd:param name="pPointerAtt" as="attribute()">The attribute containing the pointers. We want the
-    attribute rather than its value so that if necessary we can traverse the tree
-    that contains it.</xd:param>
+    <xd:param name="pPointerAtt" as="attribute()">The attribute containing the pointers. We need the
+    attribute rather than its value so that we can traverse the tree
+    that contains it. This function is intended to work for pointers in TEI documents, 
+    but will also handle any other XML document which uses @xml:id.</xd:param>
     <xd:result as="item()*">Zero or more items, which are the retrieved targets.</xd:result>
   </xd:doc>
   <xsl:function name="atop:retrieve-targets" as="item()*">
@@ -582,9 +583,12 @@
         <xsl:for-each select="$vResolvedPtrs">
           <xsl:try>
             <xsl:choose>
+              <xsl:when test="starts-with(., '#')">
+                <xsl:sequence select="$pPointerAtt/root()//*[@xml:id eq substring-after(., '#')]"/>
+              </xsl:when>
               <xsl:when test="contains(., '#')">
                 <xsl:variable name="vBits" as="xs:string+" select="tokenize(., '#')"/>
-                <xsl:sequence select="doc($vBits[1])//*[@xml:id=$vBits[2]]"/>
+                <xsl:sequence select="doc($vBits[1])//*[@xml:id eq $vBits[2]]"/>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:sequence select="doc(.)"/>
