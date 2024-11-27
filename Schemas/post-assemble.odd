@@ -51,7 +51,7 @@
     <back>
       <!-- Note: deliberately no source= on <schemaSpec> so that we, the ATOPers,
            get caught if there is a backwards-incompatible change to P5 ODDs. -->
-      <schemaSpec docLang="en" ident="ploddSchemaSpecification" prefix="plodd_"
+      <schemaSpec docLang="en" ident="post-assembleSchemaSpecification" prefix="assemble_"
         start="TEI schemaSpec" targetLang="en">
         <gloss>derived schema specification</gloss>
         <desc>the ATOP derived schema document type</desc>
@@ -60,10 +60,27 @@
         <!-- Modules -->
         <!-- ******* -->
         <moduleRef key="tei"/>
-        <moduleRef key="header"/>
+        <moduleRef key="header"/> 
+        <moduleRef key="core"/> 
         <moduleRef key="textstructure"/>
-        <moduleRef key="core"/>
-        <moduleRef except="specGrp specGrpRef" key="tagdocs"/>
+        <moduleRef key="gaiji"/>
+        <moduleRef key="verse"/>
+        <moduleRef key="drama"/>
+        <moduleRef key="spoken"/>
+        <moduleRef key="cmc"/>
+        <moduleRef key="dictionaries"/>
+        <moduleRef key="msdescription"/>
+        <moduleRef key="transcr"/>
+        <moduleRef key="textcrit"/>
+        <moduleRef key="namesdates"/>
+        <moduleRef key="figures"/>
+        <moduleRef key="corpus"/>
+        <moduleRef key="linking"/>
+        <moduleRef key="analysis"/>
+        <moduleRef key="iso-fs"/>
+        <moduleRef key="nets"/>
+        <moduleRef key="certainty"/> 
+        <moduleRef except="specGrp specGrpRef moduleRef" key="tagdocs"/>
 
         <!-- ******************************************** -->
         <!-- General high-level constraint specifications -->
@@ -83,22 +100,10 @@
             <sch:ns prefix="xi" uri="http://www.w3.org/2001/XInclude"/>
             <sch:rule context="/">
               <sch:report role="fatal" test="//xi:*">There should be no XInclude elements in a
-                derived PLODD</sch:report>
+                assembled ODD</sch:report>
             </sch:rule>
           </constraint>
         </constraintSpec>
-
-
-        <!-- ********************************************************** -->
-        <!-- Alterations to <schemaSpec> itself and elements “above” it -->
-        <!-- ********************************************************** -->
-        <elementSpec ident="body" mode="change">
-          <desc>Contains a single schema specification</desc>
-          <content>
-            <elementRef key="schemaSpec" maxOccurs="1" minOccurs="1"/>
-          </content>
-        </elementSpec>
-
 
         <!-- ********************************* -->
         <!-- Alterations to other ODD elements -->
@@ -114,7 +119,7 @@
             <constraint>
               <sch:rule context="tei:moduleRef/tei:content">
                 <sch:report test="*[ not( self::rng:* or self::a:* ) ]"> The content of an ATOP
-                  PLODD module reference needs to be RELAX NG and RELAX NG *only*. </sch:report>
+                  module reference after assembling needs to be RELAX NG and RELAX NG *only*. </sch:report>
               </sch:rule>
             </constraint>
           </constraintSpec>
@@ -127,21 +132,59 @@
               <valList type="closed">
                 <valItem ident=".">
                   <gloss>here, this file, local</gloss>
-                  <desc>In an ATOP PLODD each <gi>moduleRef</gi> should have a <att>url</att> with
+                  <desc>In an ATOP assembled ODD each <gi>moduleRef</gi> should have a <att>url</att> with
                     the value <val>.</val> both so that it is clear and explicit that the reference
                     has been resolved, only the content is to be copied over to the RELAX NG; and so
                     that the <gi>moduleRef</gi> is valid against vanilla tei_all or tei_odds.</desc>
                 </valItem>
               </valList>
             </attDef>
+            <attDef ident="source" mode="delete">
+              <desc>The attribute <att>source</att> is not allowed.</desc>
+            </attDef>
           </attList>
         </elementSpec>
-
-
-        <!-- *********************************** -->
-        <!-- Attributes that have been processed -->
-        <!-- *********************************** -->
-        <classSpec ident="att.global.source" mode="delete" type="atts"/>
+        
+        <elementSpec ident="classRef">
+          <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
+            thus the <att>source</att> is not allowed.</desc>
+          <attList>
+            <attDef ident="source" mode="delete">
+              <desc>The attribute <att>source</att> is not allowed.</desc>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="dataRef">
+          <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
+            thus the <att>source</att> is not allowed.</desc>
+          <attList>
+            <attDef ident="source" mode="delete">
+              <desc>The attribute <att>source</att> is not allowed</desc>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="elementRef">
+          <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
+            thus the <att>source</att> is not allowed.</desc>
+          <attList>
+            <attDef ident="source" mode="delete">
+              <desc>The attribute <att>source</att> is not allowed.</desc>
+            </attDef>
+          </attList>
+        </elementSpec>
+        
+        <elementSpec ident="macroRef">
+          <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
+            thus the <att>source</att> is not allowed.</desc>
+          <attList>
+            <attDef ident="source" mode="delete">
+              <desc>The attribute <att>source</att> is not allowed.</desc>
+            </attDef>
+          </attList>
+        </elementSpec>       
+        
       </schemaSpec>
     </back>
   </text>
