@@ -137,9 +137,22 @@
   <xsl:template match="specGrp"/>
   
   <xd:doc>
-    <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
+    <xd:desc>
+      <xd:p>When we read in a <gi>*Ref</gi> that points to a TEI ODD
     specification in an external source (i.e., has a @key), replace it
-    with the corresponding <gi>*Spec</gi>s from that source.</xd:desc>
+    with the corresponding <gi>*Spec</gi>s from that source.</xd:p>
+    <xd:p>Note that when we import a specification from an external
+    file which is not the base ODD, we set @mode to 
+    "replace". This is because we cannot know (without
+    processing the base ODD first) whether the incoming *Spec
+    is a fresh addition or a replacement for an existing *Spec.
+    At the derivation stage, we will treat "replace" as "add" 
+    if there is no such *Spec in the base ODD. This is not a violation
+    of the tagdocs documentation #TDbuild, which says that @mode="replace"
+    would be an error where nothing exists to be replaced, because we
+    producing only an interim stage in a processing chain.
+    </xd:p>
+    </xd:desc>
   </xd:doc>
   <!-- moduleRef/@url and dataRef/@ref are handled above; we do not
        need to process dataRef/@name here, as it does not point to
@@ -150,8 +163,8 @@
     <xsl:variable name="vKey" select="normalize-space(@key)" as="xs:string"/>
     <xsl:variable name="vSource" select="normalize-space(@source)" as="xs:string"/>
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
-    <xsl:variable name="vSourceDoc" select="document( atop:resolve-uri( $vSource cast as xs:anyURI, () ) )" as="document-node()"/>
-    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:resolve-uri( $vSource cast as xs:anyURI, () )"/>
+    <xsl:variable name="vSourceDoc" select="document( atop:resolve-uri( $vSource cast as xs:anyURI, / ) )" as="document-node()"/>
+    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:resolve-uri( $vSource cast as xs:anyURI, / )"/>
     <xsl:variable name="vSpecToGrab" as="element()*">
       <xsl:evaluate context-item="$vSourceDoc" xpath="'//'||$vSpecName||'[ @ident eq &quot;'||$vKey||'&quot; ]'"/>
     </xsl:variable>
