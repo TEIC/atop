@@ -80,7 +80,7 @@
     </pattern>
     
     <pattern id="things-must-have-as-attribute">
-        <rule context="xsl:template | xsl:variable | xsl:with-param | xsl:param | xsl:function">
+        <rule context="xsl:template[child::*] | xsl:variable | xsl:with-param | xsl:param | xsl:function">
             <let name="ln" value="local-name(.)"/>
             <let name="name" value="@name"/>
             <assert test="@as">
