@@ -57,6 +57,34 @@
     <property name="antPath" value="ant" />
   </target>
   
+  <target name="checkNetworkConnection">
+    <description>
+      TARGET checkNetworkConnection
+      We sometimes need to know if we have an internet connection
+      or not, in order to run some tests with either remote or local
+      resources. This tries to get a file from the TEI site, and 
+      sets a property based on whether it succeeds or not.
+    </description>
+    <delete file="${basedir}/temp/p5subset.xml"/>
+    <mkdir dir="${basedir}/temp"/>
+    <get src="https://www.tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml" 
+      dest="${basedir}/temp/p5subset.xml"
+      retries="5"
+      maxtime="30"
+      ignoreerrors="true"/>
+    <available property="fileExists" file="${basedir}/temp/p5subset.xml"/>
+    <if>
+      <equals arg1="${fileExists}" arg2="true"/>
+      <then>
+        <property name="workingNetworkConnection" value="true"/>
+      </then>
+      <else>
+        <property name="workingNetworkConnection" value="false"/>
+      </else>
+    </if>
+    <echo message="Do we have a working network connection? ${workingNetworkConnection}"/>
+  </target>
+  
   <!--##### TESTING-RELATED PROPERTIES #####-->
   
   <!--Current PLODD for testing transpile step.-->

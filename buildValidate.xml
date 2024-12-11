@@ -42,6 +42,7 @@
       <arg line="-s:${schSchemaFile}"/>
       <arg line="-o:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
       <arg line="-xsl:'${schxsltCompiler}'"/>
+      <arg value="-xi"/>
     </java>
   </target>
   
@@ -66,12 +67,14 @@
       <arg value="-xsl:${schSchemaDir}/${schSchemaName}_sch.xslt"/>
       <arg value="-s:${xmlFile}"/>
       <arg value="-o:${xmlFileDir}/${xmlFileName}.svrl"/>
+      <arg value="-xi"/>
     </java>
     <!-- Process with SVRL parser. -->
     <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
       <arg value="-xsl:${basedir}/XSLT/svrl2msgs.xslt"/>
       <arg value="-s:${xmlFileDir}/${xmlFileName}.svrl"/>
       <arg value="-o:${xmlFileDir}/${xmlFileName}_svrl.txt"/>
+      <arg value="-xi"/>
     </java>
     <!-- Read the output to see if there's anything there. Make it quiet so
          there's no error message when the file is empty. -->

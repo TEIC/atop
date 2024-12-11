@@ -67,6 +67,7 @@
       <arg value="-xsl:${basedir}/XSLT/pre-transpile.xslt"/>
       <arg value="-s:${ploddDir}/${ploddName}.plodd"/>
       <arg value="-o:${ploddDir}/${ploddName}_preprocessed.plodd"/>
+      <arg value="-xi"/>
     </java>
   </target>
   
@@ -82,6 +83,7 @@
       <arg value="-xsl:${basedir}/XSLT/transpile.xslt"/>
       <arg value="-s:${ploddDir}/${ploddName}_preprocessed.plodd"/>
       <arg value="-o:${ploddDir}/${ploddName}.rng"/>
+      <arg value="-xi"/>
     </java>
   </target>
   
@@ -97,6 +99,7 @@
       <arg value="-xsl:${basedir}/XSLT/extract_schematron.xslt"/>
       <arg value="-s:${ploddDir}/${ploddName}.rng"/>
       <arg value="-o:${ploddDir}/${ploddName}.sch"/>
+      <arg value="-xi"/>
     </java>
   </target>
   

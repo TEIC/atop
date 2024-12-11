@@ -12,6 +12,8 @@ ok /Invalid or malformed tei:/
 ok /Map including an error message./
 ok /should cause an error/
 ok /Commit message:/
+#Don't fail when test of network connection fails.
+ok /Error opening connection java.io.FileNotFoundException: https://www.tei-c.org/Vault/P5/current/xml/tei/odd/p5subset.xml/
 
 error /[Ee]rror/
 warning /[Ww]arning/

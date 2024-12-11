@@ -29,6 +29,7 @@
       <arg value="-o:${basedir}/Tests/xspec_runner.xml"/>
       <arg value="files=${xspec.files}"/>
       <arg value="sequencesSeparator=${sequenceSeparator}"/>
+      <arg value="-xi"/>
       <arg value="--suppressXsltNamespaceCheck:on"/>
     </java>
     <!--<subant antfile="xspec_runner.xml" buildpath="Tests" target="xspec_runner"/>-->
@@ -100,9 +101,14 @@
     <echo message="Pruning ${inFile}..."/>
     <basename file="${inFile}" property="plainFileName" suffix=".derodd"/>
     <property name="outFile" value="${basedir}/tmp/PLODDs/${plainFileName}.odd"/>
-    <xslt style="${basedir}/XSLT/prune_compiled_to_PLODD.xslt" in="${inFile}" out="${outFile}">
-      <classpath location="${saxon}"/>
-    </xslt>
+    <java fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" failonerror="true">
+      <jvmarg value="-Xmx1024m"/>
+      <arg value="-s:${inFile}"/>
+      <arg value="-xsl:${basedir}/XSLT/prune_compiled_to_PLODD.xslt"/>
+      <arg value="-o:${outFile}"/>
+      <arg value="-xi"/>
+      <arg value="--suppressXsltNamespaceCheck:on"/>
+    </java>
   </target>
   
   <target name="validateResults">
