@@ -250,7 +250,7 @@
     used to check for circularity issues.</xd:param>
     <xd:return>A sequence of zero or more elementSpecs elements.</xd:return>
   </xd:doc>
-  <xsl:function name="atop:get-class-members" as="element(elementSpec)*">
+  <xsl:template name="atop:get-class-members" as="element(elementSpec)*">
     <xsl:param name="pClassSpec" as="element(classSpec)"/>
     <xsl:param name="pSchemaSpec" as="element(schemaSpec)"/>
     <xsl:param name="pClassSpecSeen" as="element(classSpec)*"/>
@@ -264,14 +264,18 @@
               <xsl:value-of select="$pClassSpecSeen/@ident"/>
             </xsl:message>
           </xsl:if>
-          <xsl:sequence select="atop:get-class-members(., $pSchemaSpec, (., $pClassSpecSeen))"/>
+	  <xsl:call-template name="atop:get-class-members">
+	    <xsl:with-param name="pClassSpec" select="."/>
+	    <xsl:with-param name="pSchemaSpec" select="$pSchemaSpec"/>
+	    <xsl:with-param name="pClassSpecSeen" select="( ., $pClassSpecSeen )"/>
+	  </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>
           <xsl:sequence select="."/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
-  </xsl:function>
+  </xsl:template>
 
   <xd:doc>
     <xd:desc>
