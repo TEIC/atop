@@ -48,7 +48,7 @@
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match '*' and mode 'atop:replacement'">
-        <x:context mode="atop:replacement"/>
+        <x:context mode="atop:mReplacement"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
     -->

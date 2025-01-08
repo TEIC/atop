@@ -172,7 +172,7 @@
       ||count($vSpecToGrab)
       ||' to slurp in, name(s): '
       ||$vSpecToGrab!name() => string-join(', ')"/>
-    <xsl:apply-templates select="$vSpecToGrab" mode="atop:replacement"/>
+    <xsl:apply-templates select="$vSpecToGrab" mode="atop:mReplacement"/>
   </xsl:template>
 
   <xd:doc>
@@ -180,7 +180,7 @@
     At the moment, processing is just copying it over, except that the @mode
     of the outermost element copied from the source is set to "replace".</xd:desc>
   </xd:doc>
-  <xsl:template match="*" mode="atop:replacement" as="element()">
+  <xsl:template match="*" mode="atop:mReplacement" as="element()">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#default"/>
       <xsl:if test="@mode eq 'add' or not( @mode )">
