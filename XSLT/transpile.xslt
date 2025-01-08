@@ -483,9 +483,9 @@
 
     <xsl:variable name="vAllClassMembers" as="element(elementSpec)*">
       <xsl:call-template name="atop:get-class-members">
-	<xsl:with-param name="pClassSpec" select="$vClassSpec"/>
-	<xsl:with-param name="pSchemaSpec" select="ancestor::schemaSpec"/>
-	<xsl:with-param name="pClassSpecSeen" select="()"/>
+       	<xsl:with-param name="pClassSpec" select="$vClassSpec" as="element(classSpec)"/>
+       	<xsl:with-param name="pSchemaSpec" select="ancestor::schemaSpec" as="element(schemaSpec)"/>
+       	<xsl:with-param name="pClassSpecSeen" select="()" as="element(classSpec)*"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:variable name="vClassMembers" as="element(elementSpec)*">
