@@ -12,9 +12,11 @@
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> May 18, 2022</xd:p>
       <xd:p><xd:b>Author:</xd:b> ATOP team</xd:p>
-      <xd:p>This module contains XSLT functions which are generally useful across multiple
-        transformations in the ATOP repository. A corresponding XSpec file provides testing for
-        these functions.</xd:p>
+      <xd:p>This module contains XSLT templates (which should return
+      nodes) and XSLT functions (which should return items other than
+      nodes) which are generally useful across multiple
+      transformations in the ATOP repository. A corresponding XSpec
+      file provides testing for these functions.</xd:p>
     </xd:desc>
   </xd:doc>
 
@@ -265,9 +267,9 @@
             </xsl:message>
           </xsl:if>
 	  <xsl:call-template name="atop:get-class-members">
-	    <xsl:with-param name="pClassSpec" select="."/>
-	    <xsl:with-param name="pSchemaSpec" select="$pSchemaSpec"/>
-	    <xsl:with-param name="pClassSpecSeen" select="( ., $pClassSpecSeen )"/>
+	    <xsl:with-param name="pClassSpec" select="." as="element(classSpec)"/>
+	    <xsl:with-param name="pSchemaSpec" select="$pSchemaSpec" as="element(schemaSpec)"/>
+	    <xsl:with-param name="pClassSpecSeen" select="( ., $pClassSpecSeen)" as="element(classSpec)+"/>
 	  </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>

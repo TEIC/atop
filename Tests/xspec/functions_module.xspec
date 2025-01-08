@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- XSpec file for testing ${pd}/XSLT/modules/functions_module.xslt. -->
-<!-- Each function should have at least one test. -->
+<!-- Each function or template should have at least one test. -->
 
 <x:description 
   xmlns:x="http://www.jenitennison.com/xslt/xspec" 
