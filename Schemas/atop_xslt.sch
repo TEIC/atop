@@ -10,7 +10,7 @@
   
   <ns prefix="teif" uri="http://www.tei-c.org/ns/functions"/>
   
-  <ns prefix="teif" uri="http://www.w3.org/1999/XSL/TransformAlias"/>
+  <ns prefix="XSL" uri="http://www.w3.org/1999/XSL/TransformAlias"/>
   
   <!-- Global variables. -->
   <let name="docUri" value="document-uri(/)"/>
