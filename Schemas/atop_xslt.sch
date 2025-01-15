@@ -10,6 +10,8 @@
   
   <ns prefix="teif" uri="http://www.tei-c.org/ns/functions"/>
   
+  <ns prefix="teif" uri="http://www.w3.org/1999/XSL/TransformAlias"/>
+  
   <!-- Global variables. -->
   <let name="docUri" value="document-uri(/)"/>
   
@@ -100,7 +102,7 @@
   
   <pattern id="no-literal-text">
     <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:doc or ancestor::xsl:message)]">
-      <assert test="parent::xsl:text or parent::xsl:variable or parent::xsl:param or parent::xsl:comment">
+      <assert test="parent::xsl:text or parent::XSL:text or parent::xsl:variable or parent::xsl:param or parent::xsl:comment">
         ERROR: Literal text should always be in an xsl:text
         element or in the @select attribute of xsl:sequence.
         Exceptions are variables and parameters, where literal
