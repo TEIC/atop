@@ -13,6 +13,22 @@
     
     <!-- This module tests the templates in the assemble stage of ODD processing. -->
     
+    <!-- Variables for testing templates. -->
+    <x:variable name="testFrag1" as="element(tei:schemaSpec)">
+        <schemaSpec ident="tfOne" xmlns="http://www.tei-c.org/ns/1.0">
+            <specGrp xml:id="sgOne">
+                <elementSpec ident="elOne">
+                    <gloss>First element</gloss>
+                    <desc>The first element in this test.</desc>
+                    <content>
+                        <textNode/>
+                    </content>
+                </elementSpec>
+            </specGrp>
+            <specGrpRef target="#sgOne"/>
+        </schemaSpec>
+    </x:variable>
+    
     <x:scenario label="Scenario for testing template with match 'moduleRef[@url]'">
         <x:context>
             <!-- Example taken from TEI Exemplars; requires network access. -->
@@ -38,6 +54,13 @@
             <tei:dataRef ref="something"/>
         </x:context>
         <x:expect label="Warning message" test="not($x:result)"/>
+    </x:scenario>
+    
+    <x:scenario label="Scenarios for testing handling of specGrpRef">
+        <x:scenario label="specGrpRef pointing to element in the same file.">
+            <x:context select="$testFrag1//tei:specGrpRef"/>
+            <x:expect label="One elementSpec with ident='elOne'" test="$x:result[self::tei:elementSpec[@ident='elOne']] => count()" select="1"/>
+        </x:scenario>
     </x:scenario>
     
     <!--
