@@ -28,7 +28,7 @@
   <xsl:output method="xml" indent="yes"/>
   <xsl:mode name="atop:mPhase1ResolveModuleRefs" on-no-match="shallow-copy"/>
   <xsl:mode name="atop:mPhase2DeriveOdd" on-no-match="shallow-skip"/>
-  <xsl:mode name="mCopy" on-no-match="deep-copy"/>
+  <xsl:mode name="atop:mCopy" on-no-match="deep-copy"/>
   <xsl:include href="modules/functions_module.xslt"/>
   
   <xd:doc>
