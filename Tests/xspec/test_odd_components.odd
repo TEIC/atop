@@ -118,6 +118,18 @@
                   <textNode/>
                </content>
             </elementSpec>
+            <specGrp xml:id="sgExternalOne">
+               <classSpec ident="att.hasNothing" type="atts">
+                  <attList>
+                     <attDef ident="nothing">
+                        <datatype>
+                           <dataRef key="teidata.boolean"/>
+                        </datatype>
+                     </attDef>
+                  </attList>
+               </classSpec>
+            </specGrp>
+            
          </schemaSpec>
       </body>
    </text>

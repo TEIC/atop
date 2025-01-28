@@ -29,6 +29,12 @@
         </schemaSpec>
     </x:variable>
     
+    <x:variable name="testFrag2" as="element(tei:schemaSpec)">
+        <schemaSpec ident="tfTwo" xmlns="http://www.tei-c.org/ns/1.0">
+            <specGrpRef target="test_odd_components.odd#sgExternalOne"/>
+        </schemaSpec>
+    </x:variable>
+    
     <x:scenario label="Scenario for testing template with match 'moduleRef[@url]'">
         <x:context>
             <!-- Example taken from TEI Exemplars; requires network access. -->
@@ -60,6 +66,10 @@
         <x:scenario label="specGrpRef pointing to element in the same file.">
             <x:context select="$testFrag1//tei:specGrpRef"/>
             <x:expect label="One elementSpec with ident='elOne'" test="$x:result[self::tei:elementSpec[@ident='elOne']] => count()" select="1"/>
+        </x:scenario>
+        <x:scenario label="specGrpRef pointing to element in the different file.">
+            <x:context select="$testFrag2//tei:specGrpRef"/>
+            <x:expect label="One classSpec with ident='att.hasNothing'" test="$x:result[self::tei:classSpec[@ident='att.hasNothing']] => count()" select="1"/>
         </x:scenario>
     </x:scenario>
     
