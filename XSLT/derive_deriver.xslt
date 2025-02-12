@@ -8,7 +8,6 @@
 		xmlns:teix="http://www.tei-c.org/ns/Examples"
 		xmlns:atop="http://www.tei-c.org/ns/atop"
 		xpath-default-namespace="http://www.tei-c.org/ns/1.0"
-		exclude-result-prefixes="#all"
 		version="3.0">
 
   <xd:doc scope="stylesheet">
@@ -28,7 +27,7 @@
   <xsl:output method="xml" indent="yes"/>
   <xsl:mode name="atop:mPhase1ResolveModuleRefs" on-no-match="shallow-copy"/>
   <xsl:mode name="atop:mPhase2DeriveOdd" on-no-match="shallow-skip"/>
-  <xsl:mode name="mCopy" on-no-match="deep-copy"/>
+  <xsl:mode name="atop:mCopy" on-no-match="deep-copy"/>
   <xsl:include href="modules/functions_module.xslt"/>
   
   <xd:doc>
@@ -168,11 +167,12 @@
       xmlns:teix="http://www.tei-c.org/ns/Examples"
       xmlns:atop="http://www.tei-c.org/ns/atop"
       xpath-default-namespace="http://www.tei-c.org/ns/1.0"
+      exclude-result-prefixes="#all"
       >
       <xsl:call-template name="atop:t-health-warning"/>
       <XSL:output method="xml" indent="yes"/>
       <XSL:mode on-no-match="shallow-copy"/>
-      <XSL:mode name="mCopy" on-no-match="deep-copy" xmlns:atop="http://www.tei-c.org/ns/atop"/>
+      <XSL:mode name="atop:mCopy" on-no-match="deep-copy" xmlns:atop="http://www.tei-c.org/ns/atop"/>
       <XSL:template match="/">
         <XSL:call-template name="derived-health-warning"/>
         <XSL:apply-templates select="*"/>
@@ -252,9 +252,27 @@
     </xsl:variable>
     <XSL:template match="{string-join($vMatcher)}">
       <XSL:copy>
-        <XSL:apply-templates select="@*|node()" mode="mCopy" xmlns:atop="http://www.tei-c.org/ns/atop"/>
+        <XSL:apply-templates select="@*|node()" mode="atop:mCopy" xmlns:atop="http://www.tei-c.org/ns/atop"/>
       </XSL:copy>
     </XSL:template>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>When we hit a deleted specification in the input document, just nuke it</xd:desc>
+  </xd:doc>
+  <xsl:template mode="atop:mPhase2DeriveOdd" as="element(xsl:template)"
+    match="(classSpec|dataSpec|elementSpec|macroSpec)[@mode eq 'delete']">
+    <xsl:variable name="vMatcher" as="xs:string+">
+      <xsl:sequence select="name(.)"/>
+      <xsl:for-each select="@* except @mode">
+        <xsl:text>[@</xsl:text>
+        <xsl:sequence select="name(.)"/>
+        <xsl:text> eq '</xsl:text>
+        <xsl:sequence select="."/>
+        <xsl:text>']</xsl:text>
+      </xsl:for-each>
+    </xsl:variable>
+    <XSL:template match="{string-join($vMatcher)}"/>
   </xsl:template>
   
   <xd:doc>
