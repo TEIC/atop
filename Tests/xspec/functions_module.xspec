@@ -406,4 +406,19 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Tests for whether something is a base ODD or not.">
+    <x:scenario label="No schemaSpec">
+      <x:call function="atop:is-base-odd">
+        <x:param name="pOdd" as="element(tei:TEI)">
+          <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <text>
+              <body></body>
+            </text>
+          </TEI>
+        </x:param>
+      </x:call>
+      <x:expect label="true" select="true()"/>
+    </x:scenario>
+  </x:scenario>
+  
 </x:description>

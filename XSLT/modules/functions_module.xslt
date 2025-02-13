@@ -566,4 +566,28 @@
     </xsl:if>
   </xsl:function>
   
+  <xd:doc>
+    <xd:desc>This function determines whether an ODD constitutes a base ODD or not.</xd:desc>
+    <xd:param name="pOdd" as="node()">The ODD being tested; this may be either a root element
+    or a document node.</xd:param>
+    <xd:return as="xs:boolean">True or false.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:is-base-odd" as="xs:boolean">
+    <xsl:param name="pOdd" as="node()"/>
+    <xsl:choose>
+      <!-- If no schemaSpec exists, it's base. -->
+      <xsl:when test="not($pOdd/descendant::schemaSpec)">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <!-- If there's no source and there are no *Ref elements which are 
+           direct children of the schemaSpec, then it's base. -->
+      <xsl:when test="not(descendant::schemaSpec/@source) and not(descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')])">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
 </xsl:stylesheet>
