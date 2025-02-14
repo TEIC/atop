@@ -581,7 +581,7 @@
       </xsl:when>
       <!-- If there's no source and there are no *Ref elements which are 
            direct children of the schemaSpec, then it's base. -->
-      <xsl:when test="not(descendant::schemaSpec/@source) and not(descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')])">
+      <xsl:when test="not($pOdd/descendant::schemaSpec/@source) and not($pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')])">
         <xsl:sequence select="true()"/>
       </xsl:when>
       <xsl:otherwise>
