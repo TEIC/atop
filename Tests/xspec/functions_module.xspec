@@ -454,25 +454,24 @@
       </x:call>
       <x:expect label="true" select="false()"/>
     </x:scenario>
-    <x:scenario label="schemaSpec with @source.">
+    <x:scenario label="schemaSpec with only moduleRef with @url.">
       <x:call function="atop:is-base-odd">
         <x:param name="pOdd" as="element(tei:TEI)">
           <TEI xmlns="http://www.tei-c.org/ns/1.0">
             <text>
               <body>
                 <schemaSpec source="tei:current">
-                  <elementSpec ident="thing">
-                    <gloss>A thing</gloss>
-                    <content><textNode/></content>
-                  </elementSpec>
+                  <moduleRef url="https://www.example.com/module.odd"/>
                 </schemaSpec>
               </body>
             </text>
           </TEI>
         </x:param>
       </x:call>
-      <x:expect label="true" select="false()"/>
+      <x:expect label="true" select="true()"/>
     </x:scenario>
+    <!-- MUCH MORE TO DO HERE. -->
+    
   </x:scenario>
   
 </x:description>
