@@ -452,7 +452,7 @@
           </TEI>
         </x:param>
       </x:call>
-      <x:expect label="true" select="false()"/>
+      <x:expect label="false" select="false()"/>
     </x:scenario>
     <x:scenario label="schemaSpec with only moduleRef with @url.">
       <x:call function="atop:is-base-odd">

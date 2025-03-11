@@ -42,7 +42,14 @@
     <xd:desc><xd:ref name="atop:prefixDef"/> is a key to prefixDef elements by their idents.</xd:desc>
   </xd:doc>
   <xsl:key name="atop:prefixDef" match="prefixDef" use="@ident"/>
-
+  
+  <xd:doc>
+    <xd:desc><xd:ref name="atop:mIsBaseOdd"/> is a simple mode used by the 
+    atop:is-base-odd function to expand any specGrpRef elements pointing
+    to external resources.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="atop:mIsBaseOdd" on-no-match="shallow-copy"/>
+  
   <xd:doc>
     <xd:desc><ref name="atop:vUriSchemeRegex"/>: a regular expression for matching the prefixes
     of Private Uri Schemes.</xd:desc>
@@ -579,6 +586,17 @@
       <xsl:when test="not($pOdd/descendant::schemaSpec)">
         <xsl:sequence select="true()"/>
       </xsl:when>
+      
+      <!-- Complicated cases may exist where pecGrpRefs, which  
+           may appear anywhere, may point to external specGrps which 
+           contain moduleRefs, so moduleRefs can be smuggled into the 
+           ODD file. We expand these and then recurse.-->
+      <xsl:when test="$pOdd/descendant::specGrpRef[@target][not(matches(@target, '^\s*#'))]">
+        <xsl:variable name="vResolved" as="node()">
+          <xsl:apply-templates select="$pOdd" mode="atop:mIsBaseOdd"/>
+        </xsl:variable>
+        <xsl:sequence select="atop:is-base-odd($vResolved)"/>
+      </xsl:when>
       <!-- If there are no *Ref elements which are 
            direct children of the schemaSpec, then it's base. 
            Note: we claim that it doesn't matter if there's @source on 
@@ -597,14 +615,20 @@
       <xsl:when test="every $m in $pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')] satisfies $m/@url and not($m/@key)">
         <xsl:sequence select="true()"/>
       </xsl:when>
-      <!-- Other cases will need to be handled here: basically specGrpRefs 
-           may appear anywhere and may point to external specGrps which 
-           contain moduleRefs, so moduleRefs can be smuggled into the 
-           ODD file. -->
       <xsl:otherwise>
         <xsl:sequence select="false()"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+  
+  <xd:doc>
+    <xd:desc>This template exists to dereference specGrpRefs pointing at external resources,
+    which is necessary in order to determine whether the containing document is a  base ODD
+    or not (see atop:is-base-odd).</xd:desc>
+  </xd:doc>
+  <xsl:template match="specGrpRef[@target][not(starts-with(@target, '#'))]" mode="atop:mIsBaseOdd" as="element(specGrp)">
+    <xsl:variable name="vTargetVal" select="normalize-space(@target)" as="xs:string"/>
+    <xsl:sequence select="document( atop:resolve-uri( $vTargetVal cast as xs:anyURI, () ) )/specGrp"/>
+  </xsl:template>
   
 </xsl:stylesheet>
