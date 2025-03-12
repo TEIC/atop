@@ -178,6 +178,10 @@
     <echo message="schSchemaDir  = ${schSchemaDir}"/>
     <echo message="schSchemaXslt = ${schSchemaXslt}"/>
   </target>
-
+  
+  <import file="buildProcessingPipeline.xml"/>
+  <target name="testProcessingOddPipeline">
+    <antcall target="transpile"></antcall>
+  </target>
 
 </project>
