@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:XSL="http://www.w3.org/1999/XSL/TransformAlias"
-		xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
-		xmlns="http://www.tei-c.org/ns/1.0"
-		xmlns:tei="http://www.tei-c.org/ns/1.0"
-		xmlns:teix="http://www.tei-c.org/ns/Examples"
-		xmlns:atop="http://www.tei-c.org/ns/atop"
-		xpath-default-namespace="http://www.tei-c.org/ns/1.0"
-		version="3.0">
+                xmlns:XSL="http://www.w3.org/1999/XSL/TransformAlias"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
+                xmlns="http://www.tei-c.org/ns/1.0"
+                xmlns:tei="http://www.tei-c.org/ns/1.0"
+                xmlns:teix="http://www.tei-c.org/ns/Examples"
+                xmlns:atop="http://www.tei-c.org/ns/atop"
+                xpath-default-namespace="http://www.tei-c.org/ns/1.0"
+                version="3.0">
 
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -69,12 +69,13 @@
 
   <xd:doc>
     <xd:desc>Subroutine for debugging</xd:desc>
-    <xd:param name="pMostRecentPass">and indicator of the mode of pass we just finished</xd:param>
+    <xd:param name="pMostRecentPass">an indicator of the mode of pass we just finished (usually its name)</xd:param>
     <xd:param name="pDebugOutput">the result of that pass (as a document or element node)</xd:param>
   </xd:doc>
   <xsl:template name="atop:t-maybe-write-debug-file" as="item()*">
     <xsl:param name="pMostRecentPass" as="xs:string"/>
     <xsl:param name="pDebugOutput" as="node()"/>
+    <xsl:variable name="vSingleFile" as="xs:boolean" select="count($pDebugOutput[self::*]) eq 1"/>
     <xsl:if test="$atop:pDebug">
       <xsl:variable name="vDebugFilename"
                     select="'/tmp/'
@@ -83,8 +84,33 @@
                           ||replace( $atop:vInputName, '\..*$', '')
                           ||'_post-pass_'
                           ||$pMostRecentPass" as="xs:string"/>
-      <xsl:result-document href="{$vDebugFilename}.xml">
-        <xsl:sequence select="$pDebugOutput"/>
+      <xsl:result-document href="{$vDebugFilename}.xml" exclude-result-prefixes="#all">
+        <xsl:choose>
+          <xsl:when test="$vSingleFile">
+            <xsl:for-each select="$pDebugOutput"> <!-- just to set context node -->
+              <xsl:copy>
+                <xsl:attribute name="atop:xslt" select="$atop:vMyName"/>
+                <xsl:attribute name="atop:input" select="$atop:vInputName"/>
+                <xsl:attribute name="atop:post-pass" select="$pMostRecentPass"/>
+                <xsl:attribute name="atop:when" select="current-dateTime()"/>
+                <xsl:attribute name="atop:singleFile" select="$vSingleFile"/>
+                <xsl:attribute name="atop:numItems" select="1"/>
+                <xsl:apply-templates select="@*" mode="atop:mCopy"/>
+                <xsl:apply-templates select="node()" mode="atop:mCopy"/>
+              </xsl:copy>
+            </xsl:for-each>
+          </xsl:when>
+          <xsl:otherwise>
+            <atop:debug atop:xslt="{$atop:vMyName}"
+                        atop:input="$atop:vInputName"
+                        atop:post-pass="{$pMostRecentPass}"
+                        atop:when="{current-dateTime()}"
+                        atop:singleFile="{$vSingleFile}"
+                        atop:numItems="{count($pDebugOutput)}">
+              <xsl:sequence select="$pDebugOutput"/>
+            </atop:debug>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:result-document>
     </xsl:if>
   </xsl:template>
@@ -223,7 +249,7 @@
         <XSL:text>&#x0A;* by </XSL:text>
         <XSL:value-of select="static-base-uri()"/>
         <xsl:text>&#x0A;</xsl:text>
-        <XSL:text>&#x0A;* itself generated</XSL:text>
+        <XSL:text>&#x0A;* itself generated </XSL:text>
         <XSL:value-of select="$timestamp"/>
         <xsl:text>&#x0A;</xsl:text>
         <XSL:text>&#x0A;* by </XSL:text>
