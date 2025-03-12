@@ -587,7 +587,7 @@
         <xsl:sequence select="true()"/>
       </xsl:when>
       
-      <!-- Complicated cases may exist where pecGrpRefs, which  
+      <!-- Complicated cases may exist where specGrpRefs, which  
            may appear anywhere, may point to external specGrps which 
            contain moduleRefs, so moduleRefs can be smuggled into the 
            ODD file. We expand these and then recurse.-->
