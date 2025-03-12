@@ -627,14 +627,14 @@
   </xd:doc>
   <xsl:function name="atop:chaining">
     <xsl:param name="pOdd" as="node()"/>
-    <xsl:variable name="vSource" select="$pOdd//schemaSpec/@source"/>
+    <xsl:variable name="vSource" as="document-node()?" select="atop:resolve-uri(xs:anyURI($pOdd//schemaSpec/@source), $pOdd) => doc()"/>
     <xsl:choose>
       <xsl:when test="atop:is-base-odd($pOdd) eq true()">
         <xsl:sequence select="base-uri($pOdd)"></xsl:sequence>
       </xsl:when>
-      <xsl:otherwise>
-        <xsl:sequence select="doc(atop:resolve-uri($vSource, $pOdd)) => atop:chaining()"></xsl:sequence>
-      </xsl:otherwise>
+      <xsl:when test="exists($vSource)">
+        <xsl:sequence select="atop:chaining($vSource)"></xsl:sequence>
+      </xsl:when>
     </xsl:choose>
   </xsl:function>
   <xd:doc>
