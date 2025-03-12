@@ -70,11 +70,11 @@
   <xd:doc>
     <xd:desc>Subroutine for debugging</xd:desc>
     <xd:param name="pMostRecentPass">an indicator of the mode of pass we just finished (usually its name)</xd:param>
-    <xd:param name="pDebugOutput">the result of that pass (as a document or element node)</xd:param>
+    <xd:param name="pDebugOutput">the result of that pass (usually as a single document or element node)</xd:param>
   </xd:doc>
   <xsl:template name="atop:t-maybe-write-debug-file" as="item()*">
     <xsl:param name="pMostRecentPass" as="xs:string"/>
-    <xsl:param name="pDebugOutput" as="node()"/>
+    <xsl:param name="pDebugOutput" as="node()+"/>
     <xsl:variable name="vSingleFile" as="xs:boolean" select="count($pDebugOutput[self::*]) eq 1"/>
     <xsl:if test="$atop:pDebug">
       <xsl:variable name="vDebugFilename"
@@ -140,7 +140,7 @@
       <xsl:with-param name="pMostRecentPass" select="'mPhase2DeriveOdd'" as="xs:string"/>
       <xsl:with-param name="pDebugOutput" select="$vPhase2Deriver" as="element(xsl:transform)"/>
     </xsl:call-template>
-
+    
     <!-- phase 4 — apply XSLT -->
     <xsl:variable name="vTransformationMap" as="map(*)">
       <xsl:map>
