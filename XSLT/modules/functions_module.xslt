@@ -607,4 +607,152 @@
     </xsl:choose>
   </xsl:function>
   
+  <xd:doc>
+    <xd:desc>Function to create filenames for the files created during the processing pipeline.</xd:desc>
+    <xd:param name="pOdd" as="node()">Input ODD; this may be either a
+      root element or a document node.</xd:param>
+    <xd:param name="pSuffix" as="xs:string">Suffix for the filename (including the extension).</xd:param>
+    <xd:param name="pPath" as="xs:anyURI?">Optional: temporary directory. The default is '/tmp/'.</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:temp-file-naming" as="xs:anyURI">
+    <xsl:param name="pOdd" as="node()"/>
+    <xsl:param name="pSuffix" as="xs:string"/>
+    <xsl:param name="pPath" as="xs:anyURI?"></xsl:param>
+    <xsl:variable name="vDirectory" as="xs:anyURI" select="if ($pPath) then $pPath else xs:anyURI('/tmp/')"/>
+    <xsl:sequence select="xs:anyURI($vDirectory || tokenize(base-uri($pOdd),'/')[last()] || $pSuffix)"></xsl:sequence>
+  </xsl:function>
+  
+  <xd:doc>
+    <xd:desc>Function to create the pre-transpile pipeline in ant.</xd:desc>
+    <xd:param name="pOdd" as="node()">Input ODD; this may be either a
+      root element or a document node.</xd:param>
+    <xd:param name="pCounter" as="xs:integer">Chained ODD counter.</xd:param>
+    <xd:param name="pTotal" as="xs:integer">Total number of chaining steps.</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:pre-transpile-pipeline" as="node()+">        
+    <xsl:param name="pOdd" as="node()"/>  
+    <xsl:param name="pCounter" as="xs:integer"/>
+    <xsl:param name="pTotal" as="xs:integer"/>
+    <xsl:variable name="vAssembledOutputUri" as="xs:anyURI" 
+      select="atop:temp-file-naming($pOdd, '_assembled.xml', ())"/>
+    <xsl:variable name="vDeriverOutputUri" as="xs:anyURI" select="atop:temp-file-naming($pOdd, '_deriver.xslt', ())"/>        
+    <target name="assemble_{$pCounter}" description="Assemble">
+      <description><xsl:text>Assemble</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{document-uri($pOdd)}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:text>-xsl:${basedir}/XSLT/assemble_odd.xslt</xsl:text></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="('-o:', $vAssembledOutputUri)"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+    <target name="deriver_{$pCounter}" description="Deriver">
+      <description><xsl:text>Derivation: XSLT generation</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{$vAssembledOutputUri}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:text>-xsl:${basedir}/XSLT/derive_deriver.xslt</xsl:text></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-o:' || $vDeriverOutputUri"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+    <target name="derive_{$pCounter}" description="Derivation">
+      <description><xsl:text>Derivation: derived ODD generation</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{$vAssembledOutputUri}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-xsl:' || $vDeriverOutputUri"></xsl:sequence></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_derived.xml', ())"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+  </xsl:function>
+  
+  <xd:doc>
+    <xd:desc>Function to create the post-derivation pipeline in ant.</xd:desc>
+    <xd:param name="pOdd" as="node()">Input ODD; this may be either a
+      root element or a document node.</xd:param>
+    <xd:param name="pCounter" as="xs:integer">Chained ODD counter.</xd:param>
+    <xd:param name="pTotal" as="xs:integer">Total number of chaining steps.</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:post-derivation-pipeline" as="node()+">
+    <xsl:param name="pOdd" as="node()"/>  
+    <xsl:param name="pCounter" as="xs:integer"/>
+    <xsl:param name="pTotal" as="xs:integer"/>
+    <xsl:variable name="vPrunedOutputUri" as="xs:anyURI" select="atop:temp-file-naming($pOdd, '_pruned.xml', ())"/>
+    <xsl:variable name="vPretranspiledOutputUri" as="xs:anyURI" select="atop:temp-file-naming($pOdd, '_pre-transpiled.xml', ())"/>
+    <target name="prune_{$pCounter}" description="Prune and localize">
+      <description><xsl:text>Pruning and localization</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{atop:temp-file-naming($pOdd, '_derived', ())}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:text>-xsl:${basedir}/XSLT/prune_and_localize.xslt</xsl:text></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-o:' || $vPrunedOutputUri"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+    <target name="pre-transpile_{$pCounter}" description="Pre-transpile">
+      <description><xsl:text>Pre-transpiling</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{$vPrunedOutputUri}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:text>-xsl:${basedir}/XSLT/pre-transpile.xslt</xsl:text></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-o:' || $vPretranspiledOutputUri"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+    <target name="transpile_{$pCounter}" description="Transpile">
+      <description><xsl:text>Transpiling</xsl:text></description>
+      <java fork="true" classname="net.sf.saxon.Transform"
+        failonerror="true">
+        <xsl:attribute name="classpath"><xsl:text>${saxon}</xsl:text></xsl:attribute>
+        <jvmarg value="-Xmx1024m"/>                
+        <arg value="-s:{$vPretranspiledOutputUri}"/>
+        <arg>
+          <xsl:attribute name="value"><xsl:text>-xsl:${basedir}/XSLT/transpile.xslt</xsl:text></xsl:attribute>
+        </arg>
+        <arg>
+          <xsl:attribute name="value"><xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_transpiled.rng', ())"/></xsl:attribute>
+        </arg>                
+        <arg value="-xi"/>
+        <arg value="--suppressXsltNamespaceCheck:on"/>
+      </java>
+    </target>
+  </xsl:function>
+  
 </xsl:stylesheet>
