@@ -566,4 +566,45 @@
     </xsl:if>
   </xsl:function>
   
+  <xd:doc>
+    <xd:desc>This function determines whether an ODD constitutes a base ODD or not.</xd:desc>
+    <xd:param name="pOdd" as="node()">The ODD being tested; this may be either a root element
+    or a document node.</xd:param>
+    <xd:return as="xs:boolean">True or false.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:is-base-odd" as="xs:boolean">
+    <xsl:param name="pOdd" as="node()"/>
+    <xsl:choose>
+      <!-- If no schemaSpec exists, it's base (e.g. p5subset). -->
+      <xsl:when test="not($pOdd/descendant::schemaSpec)">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <!-- If there are no *Ref elements which are 
+           direct children of the schemaSpec, then it's base. 
+           Note: we claim that it doesn't matter if there's @source on 
+           schemaSpec, because that is often retained after compiling 
+           an ODD to a derived ODD, AND its absence implies a default
+           value, so we can't use that as a determiner.
+      -->
+      <xsl:when test="not($pOdd/descendant::schemaSpec/child::*[self::moduleRef or self::elementRef or self::classRef or self::specGrpRef])">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <!-- If every *Ref element which is a child of schemaSpec has @url 
+        and not @key, then we assume that what we have are moduleRefs 
+        which assembly will expand via their @url attributes; that 
+        makes this ODD the base, even though it will need to go through 
+        assembly. -->
+      <xsl:when test="every $m in $pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')] satisfies $m/@url and not($m/@key)">
+        <xsl:sequence select="true()"/>
+      </xsl:when>
+      <!-- Other cases will need to be handled here: basically specGrpRefs 
+           may appear anywhere and may point to external specGrps which 
+           contain moduleRefs, so moduleRefs can be smuggled into the 
+           ODD file. -->
+      <xsl:otherwise>
+        <xsl:sequence select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
 </xsl:stylesheet>

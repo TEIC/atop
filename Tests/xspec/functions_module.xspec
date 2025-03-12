@@ -406,4 +406,72 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Tests for whether something is a base ODD or not.">
+    <x:scenario label="No schemaSpec">
+      <x:call function="atop:is-base-odd">
+        <x:param name="pOdd" as="element(tei:TEI)">
+          <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <text>
+              <body></body>
+            </text>
+          </TEI>
+        </x:param>
+      </x:call>
+      <x:expect label="true" select="true()"/>
+    </x:scenario>
+    <x:scenario label="schemaSpec but no source and no *Ref child elements.">
+      <x:call function="atop:is-base-odd">
+        <x:param name="pOdd" as="element(tei:TEI)">
+          <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <text>
+              <body>
+                <schemaSpec>
+                  <elementSpec ident="thing">
+                    <gloss>A thing</gloss>
+                    <content><textNode/></content>
+                  </elementSpec>
+                </schemaSpec>
+              </body>
+            </text>
+          </TEI>
+        </x:param>
+      </x:call>
+      <x:expect label="true" select="true()"/>
+    </x:scenario>
+    <x:scenario label="schemaSpec and child *Ref element.">
+      <x:call function="atop:is-base-odd">
+        <x:param name="pOdd" as="element(tei:TEI)">
+          <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <text>
+              <body>
+                <schemaSpec>
+                  <elementRef key="p"/>
+                </schemaSpec>
+              </body>
+            </text>
+          </TEI>
+        </x:param>
+      </x:call>
+      <x:expect label="true" select="false()"/>
+    </x:scenario>
+    <x:scenario label="schemaSpec with only moduleRef with @url.">
+      <x:call function="atop:is-base-odd">
+        <x:param name="pOdd" as="element(tei:TEI)">
+          <TEI xmlns="http://www.tei-c.org/ns/1.0">
+            <text>
+              <body>
+                <schemaSpec source="tei:current">
+                  <moduleRef url="https://www.example.com/module.odd"/>
+                </schemaSpec>
+              </body>
+            </text>
+          </TEI>
+        </x:param>
+      </x:call>
+      <x:expect label="true" select="true()"/>
+    </x:scenario>
+    <!-- MUCH MORE TO DO HERE. -->
+    
+  </x:scenario>
+  
 </x:description>

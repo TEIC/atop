@@ -10,6 +10,8 @@
   
   <ns prefix="teif" uri="http://www.tei-c.org/ns/functions"/>
   
+  <ns prefix="XSL" uri="http://www.w3.org/1999/XSL/TransformAlias"/>
+  
   <!-- Global variables. -->
   <let name="docUri" value="document-uri(/)"/>
   
@@ -100,7 +102,7 @@
   
   <pattern id="no-literal-text">
     <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:doc or ancestor::xsl:message)]">
-      <assert test="parent::xsl:text or parent::xsl:variable or parent::xsl:param or parent::xsl:comment">
+      <assert test="parent::xsl:text or parent::XSL:text or parent::xsl:variable or parent::xsl:param or parent::xsl:comment">
         ERROR: Literal text should always be in an xsl:text
         element or in the @select attribute of xsl:sequence.
         Exceptions are variables and parameters, where literal
@@ -111,7 +113,7 @@
   </pattern>
   
   <pattern id="root-children-must-have-documentation">
-    <rule context="/*/xsl:*[@name][not(preceding-sibling::*[1][self::xd:doc])]">
+    <rule context="(/*/xsl:* except xsl:mode)[@name][not(preceding-sibling::*[1][self::xd:doc])]">
       <let name="name" value="@name"/>
       <assert test="//xd:doc/descendant::xd:ref[@name eq $name]" id="assert-documentation"> ERROR: A named top-level
         element must have an preceding xd:doc block or must be referenced in an xd:ref
