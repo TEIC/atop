@@ -660,12 +660,13 @@
       node.</xd:param>
     <xd:param name="pCounter" as="xs:integer">Chained ODD counter.</xd:param>
     <xd:param name="pTotal" as="xs:integer">Total number of chaining steps.</xd:param>
+    <xd:param name="pSourceOdd" as="xs:anyURI">URI of the source ODD.</xd:param>
   </xd:doc>
   <xsl:function name="atop:pre-transpile-pipeline" as="node()+">        
     <xsl:param name="pOdd" as="node()"/>  
     <xsl:param name="pCounter" as="xs:integer"/>
     <xsl:param name="pTotal" as="xs:integer"/>
-    <xsl:param name="pSourceOdd" as="node()"/>
+    <xsl:param name="pSourceOdd" as="item()"/>
     <xsl:variable name="vAssembledOutputUri" as="xs:anyURI" 
       select="atop:temp-file-naming($pOdd, '_assembled.xml', ())"/>
     <xsl:variable name="vDeriverOutputUri" as="xs:anyURI"
@@ -693,6 +694,7 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="deriver_{$pCounter}"/>
     </target>
     <target name="deriver_{$pCounter}" description="Deriver">
       <description>
@@ -713,11 +715,12 @@
           <xsl:attribute name="value" select="'-o:' || $vDeriverOutputUri"/>
         </arg>
         <arg>
-          <xsl:attribute name="value" select="'source='||document-uri($pSourceOdd)"></xsl:attribute>
+          <xsl:attribute name="value" select="'source='|| $pSourceOdd"></xsl:attribute>
         </arg>                
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="derive_{$pCounter}"></antcall>
     </target>
     <target name="derive_{$pCounter}" description="Derivation">
       <description>
@@ -742,6 +745,14 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <xsl:choose>
+        <xsl:when test="$pCounter eq $pTotal">
+          <antcall target="prune"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <antcall target="assemble_{$pCounter + 1}"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </target>
   </xsl:function>
   
@@ -760,7 +771,7 @@
       select="atop:temp-file-naming($pOdd, '_pruned.xml', ())"/>
     <xsl:variable name="vPretranspiledOutputUri" as="xs:anyURI"
       select="atop:temp-file-naming($pOdd, '_pre-transpiled.xml', ())"/>
-    <target name="prune_{$pCounter}" description="Prune and localize">
+    <target name="prune" description="Prune and localize">
       <description>
         <xsl:text>Pruning and localization</xsl:text>
       </description>
@@ -790,8 +801,9 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="pre-transpile"/>
     </target>
-    <target name="pre-transpile_{$pCounter}" description="Pre-transpile">
+    <target name="pre-transpile" description="Pre-transpile">
       <description>
         <xsl:text>Pre-transpiling</xsl:text>
       </description>
@@ -814,8 +826,17 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="transpile"/>
     </target>
-    <target name="transpile_{$pCounter}" description="Transpile">
+    <target name="transpile" description="Transpile">
+      <xsl:choose>
+        <xsl:when test="$pCounter eq 1">
+          <antcall target="prune"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <antcall target="assemble_2"/>
+        </xsl:otherwise>
+      </xsl:choose>
       <description>
         <xsl:text>Transpiling</xsl:text>
       </description>

@@ -25,12 +25,12 @@
         <xd:desc>Creation of an ant build file... </xd:desc>
     </xd:doc>
     <xsl:template match="/">
-        <xsl:variable name="vDirectory" as="xs:anyURI" select="replace(base-uri(.), concat('^(.*)', '/','.*'),
+        <xsl:variable name="vDirectory" as="xs:anyURI" select="replace(base-uri(.), '^(.*)/.+',
             '$1') => xs:anyURI()"/>
         <xsl:variable name="vBaseOddUri" select="xs:anyURI($vDirectory || '/base-odd.xml')"/>
         <xsl:variable name="vChainedOdds" select="(reverse(atop:chaining(.)), .)"/>
         <xsl:result-document href="../buildProcessingPipeline.xml">
-            <project name="odd-processing" basedir="." default="transpile_{count($vChainedOdds)}">
+            <project name="odd-processing" basedir="." default="transpile">
                 <description>This is the ant build file that process a given ODD. </description>
                 <import file="buildGlobals.xml"/>
                 <xsl:choose>
@@ -39,22 +39,21 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:for-each select="1 to count($vChainedOdds)">
-                            <xsl:variable name="vSourceOdd" select="if (current() eq 2) then $vBaseOddUri else $vChainedOdds[current() - 1]"/>
+                            <xsl:variable name="vSourceOdd" select="if (current() eq 2) then $vBaseOddUri else document-uri($vChainedOdds[current() - 1])"/>
                                 <xsl:choose>
                                     <xsl:when test="atop:is-base-odd($vChainedOdds[current()]) eq true()">
-                                        <touch file="{$vBaseOddUri}"/>       
-                                        <echo file="{$vBaseOddUri}" append="true">
-                                            <xsl:sequence select="$vChainedOdds[current()]"></xsl:sequence>
-                                        </echo>                                        
+                                        <xsl:result-document href="{$vBaseOddUri}">
+                                            <xsl:sequence select="$vChainedOdds[current()]"/>
+                                        </xsl:result-document>                           
                                     </xsl:when>                                    
                                     <xsl:when test="current() ne count($vChainedOdds)">
                                         <xsl:sequence select="
-                                            atop:pre-transpile-pipeline($vChainedOdds[current()], current(), count($vChainedOdds), doc($vSourceOdd))"
+                                            atop:pre-transpile-pipeline($vChainedOdds[current()], current(), count($vChainedOdds), $vSourceOdd)"
                                         />
                                     </xsl:when>                                     
                                     <xsl:otherwise>
                                         <xsl:sequence select="
-                                            atop:pre-transpile-pipeline($vChainedOdds[current()], current(), count($vChainedOdds), doc($vSourceOdd)),
+                                            atop:pre-transpile-pipeline($vChainedOdds[current()], current(), count($vChainedOdds), $vSourceOdd),
                                             atop:post-derivation-pipeline($vChainedOdds[current()], current(), count($vChainedOdds))"
                                         />
                                     </xsl:otherwise>
