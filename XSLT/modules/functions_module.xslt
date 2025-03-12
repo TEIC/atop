@@ -627,7 +627,7 @@
         if ($pPath) then
           $pPath
         else
-          base-uri($pOdd) => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
+        if (matches(base-uri($pOdd), '^file:')) then substring-after(base-uri($pOdd), 'file:') else base-uri($pOdd) => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
       "/>
     <xsl:sequence select="xs:anyURI($vDirectory || $vOddFileName || $pSuffix)"/>
   </xsl:function>
