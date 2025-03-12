@@ -623,6 +623,21 @@
   </xsl:function>
   
   <xd:doc>
+    <xd:desc>To be added</xd:desc>
+  </xd:doc>
+  <xsl:function name="atop:chaining">
+    <xsl:param name="pOdd" as="node()"/>
+    <xsl:variable name="vSource" select="$pOdd//schemaSpec/@source"/>
+    <xsl:choose>
+      <xsl:when test="atop:is-base-odd($pOdd) eq true()">
+        <xsl:sequence select="base-uri($pOdd)"></xsl:sequence>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="doc(atop:resolve-uri($vSource, $pOdd)) => atop:chaining()"></xsl:sequence>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  <xd:doc>
     <xd:desc>Function to create the pre-transpile pipeline in ant.</xd:desc>
     <xd:param name="pOdd" as="node()">Input ODD; this may be either a
       root element or a document node.</xd:param>
