@@ -8,4 +8,4 @@ Tests/transpile_test_suite/*/*.sch
 **/*.svrl
 **/*.svrl.txt
 **/*_preprocessed.plodd
-
+buildProcessingPipeline.xml
