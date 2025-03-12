@@ -608,18 +608,22 @@
   </xsl:function>
   
   <xd:doc>
-    <xd:desc>Function to create filenames for the files created during the processing pipeline.</xd:desc>
+    <xd:desc>Function to create URIs for the files generated while processing an ODD file.</xd:desc>
     <xd:param name="pOdd" as="node()">Input ODD; this may be either a
       root element or a document node.</xd:param>
     <xd:param name="pSuffix" as="xs:string">Suffix for the filename (including the extension).</xd:param>
-    <xd:param name="pPath" as="xs:anyURI?">Optional: temporary directory. The default is '/tmp/'.</xd:param>
+    <xd:param name="pPath" as="xs:anyURI?">Optional: path to the temporary directory. The default is a subfolder
+      named 'tmp' in the same directory in which the input ODD is.</xd:param>
   </xd:doc>
   <xsl:function name="atop:temp-file-naming" as="xs:anyURI">
     <xsl:param name="pOdd" as="node()"/>
     <xsl:param name="pSuffix" as="xs:string"/>
     <xsl:param name="pPath" as="xs:anyURI?"></xsl:param>
-    <xsl:variable name="vDirectory" as="xs:anyURI" select="if ($pPath) then $pPath else xs:anyURI('/tmp/')"/>
-    <xsl:sequence select="xs:anyURI($vDirectory || tokenize(base-uri($pOdd),'/')[last()] || $pSuffix)"></xsl:sequence>
+    <xsl:variable name="vOddFileName" as="xs:string" select="tokenize(base-uri($pOdd),'/')[last()]"/>
+    <xsl:variable name="vDirectory" as="xs:anyURI" select="if ($pPath) then $pPath 
+      else base-uri($pOdd) => replace($vOddFileName|| '$', '') => concat('tmp/') => xs:anyURI()
+      "/>
+    <xsl:sequence select="xs:anyURI($vDirectory || $vOddFileName || $pSuffix)"></xsl:sequence>
   </xsl:function>
   
   <xd:doc>
