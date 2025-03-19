@@ -28,7 +28,11 @@
     
     <let name="reFunctionName" value="concat('^', $atopNamespacePrefix, ':[a-z][a-z\-]+[a-z]$')"/>
     
-    <!-- Constraints -->
+    <let name="reModeName" value="concat(
+    '^(', $atopNamespacePrefix, ':m[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?)|(#(all|default|current))$'
+    )"/>
+  
+  <!-- Constraints -->
     <pattern id="names">
         <title>Coding style rules for names</title>
         <rule abstract="true" id="param-name-re">
@@ -83,10 +87,15 @@
                 ERROR: The name of a <value-of select="name()"/> must match the regular expression <value-of select="$reFunctionName"/>.
             </assert>
         </rule>
-    </pattern>
+    <rule context="xsl:mode/@name | xsl:*/@mode">
+      <assert test="matches( . , $reModeName )" role="error" id="assert-mode-name-re">
+        ERROR: The name of a mode must match the regular expression <value-of select="$reModeName"/>.
+      </assert>
+    </rule>
+  </pattern>
     
     <pattern id="things-must-have-as-attribute">
-        <rule context="xsl:template | xsl:variable | xsl:with-param | xsl:param | xsl:function">
+        <rule context="xsl:template[child::*] | xsl:variable | xsl:with-param | xsl:param | xsl:function">
             <let name="ln" value="local-name(.)"/>
             <let name="name" value="@name"/>
             <assert test="@as">
