@@ -111,30 +111,48 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:apply-templates select="$vTargetSpecGrp/*"/>
+    <xsl:apply-templates select="$vTargetSpecGrp/( classRef
+                                                 | classSpec
+                                                 | constraintSpec
+                                                 | dataRef
+                                                 | dataSpec
+                                                 | elementRef
+                                                 | elementSpec
+                                                 | listRef
+                                                 | macroRef
+                                                 | macroSpec
+                                                 | moduleRef
+                                                 | moduleSpec
+                                                 | outputRendition
+                                                 | specGrp
+                                                 | specGrpRef
+                                                 )"/>
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>A <gi>specGrp</gi> that is pointed to by a
-    <gi>specGrpRef</gi> gets ignored (as it is processed
-    when &amp; where the <gi>specGrpRef</gi> occurs).</xd:desc>
+    <xd:desc><gi>specGrp</gi> elements are only processed when we hit
+    the corresponding <gi>specGrpRef</gi>, if any. So if we hit one in
+    normal processing, ignore it.</xd:desc>
   </xd:doc>
-  <xsl:template match="specGrp[ //specGrpRef[ @target => normalize-space() => substring(2) eq current()/@xml:id ] ]"/>
-
-  <xd:doc>
-    <xd:desc>QUESTION: What happens to a <gi>specGrp</gi> that is
-    <emph>not</emph> referred to by a <gi>specGrpRef</gi>?</xd:desc>
-  </xd:doc>
-  <xsl:template match="specGrp">
-    <!-- Only matches those that are NOT pointed at by a local <specGrpRef>,
-	 as previous template catches those at a higher priority. -->
-    <xsl:message>DEBUG: WTF? :GUBED</xsl:message>
-  </xsl:template>
+  <xsl:template match="specGrp"/>
   
   <xd:doc>
-    <xd:desc>When we read in a <gi>*Ref</gi> that points to a TEI ODD
+    <xd:desc>
+      <xd:p>When we read in a <gi>*Ref</gi> that points to a TEI ODD
     specification in an external source (i.e., has a @key), replace it
-    with the corresponding <gi>*Spec</gi>s from that source.</xd:desc>
+    with the corresponding <gi>*Spec</gi>s from that source.</xd:p>
+    <xd:p>Note that when we import a specification from an external
+    file which is not the base ODD, we set @mode to 
+    "replace". This is because we cannot know (without
+    processing the base ODD first) whether the incoming *Spec
+    is a fresh addition or a replacement for an existing *Spec.
+    At the derivation stage, we will treat "replace" as "add" 
+    if there is no such *Spec in the base ODD. This is not a violation
+    of the tagdocs documentation #TDbuild, which says that @mode="replace"
+    would be an error where nothing exists to be replaced, because we
+    producing only an interim stage in a processing chain.
+    </xd:p>
+    </xd:desc>
   </xd:doc>
   <!-- moduleRef/@url and dataRef/@ref are handled above; we do not
        need to process dataRef/@name here, as it does not point to
@@ -145,8 +163,8 @@
     <xsl:variable name="vKey" select="normalize-space(@key)" as="xs:string"/>
     <xsl:variable name="vSource" select="normalize-space(@source)" as="xs:string"/>
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
-    <xsl:variable name="vSourceDoc" select="document( atop:resolve-uri( $vSource cast as xs:anyURI, () ) )" as="document-node()"/>
-    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:resolve-uri( $vSource cast as xs:anyURI, () )"/>
+    <xsl:variable name="vSourceDoc" select="document( atop:resolve-uri( $vSource cast as xs:anyURI, / ) )" as="document-node()"/>
+    <xsl:message select="'debug: I seek '||$vSpecName||'[ @ident eq '||$vKey||' ] in '||atop:resolve-uri( $vSource cast as xs:anyURI, / )"/>
     <xsl:variable name="vSpecToGrab" as="element()*">
       <xsl:evaluate context-item="$vSourceDoc" xpath="'//'||$vSpecName||'[ @ident eq &quot;'||$vKey||'&quot; ]'"/>
     </xsl:variable>
@@ -154,15 +172,15 @@
       ||count($vSpecToGrab)
       ||' to slurp in, name(s): '
       ||$vSpecToGrab!name() => string-join(', ')"/>
-    <xsl:apply-templates select="$vSpecToGrab" mode="atop:replacement"/>
+    <xsl:apply-templates select="$vSpecToGrab" mode="atop:mReplacement"/>
   </xsl:template>
 
   <xd:doc>
     <xd:desc>process the <gi>*Spec</gi> from source (as opposed to the input).
-    At the moment, proccessing is just copying it over, except that the @mode
+    At the moment, processing is just copying it over, except that the @mode
     of the outermost element copied from the source is set to "replace".</xd:desc>
   </xd:doc>
-  <xsl:template match="*" mode="atop:replacement" as="element()">
+  <xsl:template match="*" mode="atop:mReplacement" as="element()">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#default"/>
       <xsl:if test="@mode eq 'add' or not( @mode )">

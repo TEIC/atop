@@ -13,7 +13,7 @@
     
     <!-- This module tests the templates in the assemble stage of ODD processing. -->
     
-    <x:scenario label="Scenario for testing template with match 'moduleRef[@url]">
+    <x:scenario label="Scenario for testing template with match 'moduleRef[@url]'">
         <x:context>
             <!-- Example taken from TEI Exemplars; requires network access. -->
             <tei:moduleRef url="https://www.tei-c.org/release/xml/tei/Exemplars/its.rng">
@@ -48,7 +48,7 @@
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match '*' and mode 'atop:replacement'">
-        <x:context mode="atop:replacement"/>
+        <x:context mode="atop:mReplacement"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
     -->

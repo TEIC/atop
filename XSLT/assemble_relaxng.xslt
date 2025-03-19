@@ -1,11 +1,12 @@
 <xsl:transform version="3.0" expand-text="yes"
-               default-mode="atop:rngCombine"
+               default-mode="atop:mRngCombine"
                xmlns:atop="http://www.tei-c.org/ns/atop"
                xmlns:rng="http://relaxng.org/ns/structure/1.0"
                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:mode name="atop:rngCombine" on-no-match="shallow-copy"/>
+  <!-- Identity transform mode for combining RNG components. -->
+  <xsl:mode name="atop:mRngCombine" on-no-match="shallow-copy"/>
 
   <xsl:template match="rng:grammar" as="element()">
     <xsl:param name="pIsInclusion" as="xs:boolean" select="false()"/>
@@ -19,7 +20,7 @@
        schema. It has the same effect as replacing the externalRef
        pattern with the external schema, which is treated as a
        pattern. -->
-  <xsl:template match="rng:externalRef">
+  <xsl:template match="rng:externalRef" as="item()*">
     <xsl:comment>BEGIN {resolve-uri(@href, base-uri(@href))}</xsl:comment>
     <xsl:apply-templates select="doc(resolve-uri(@href, base-uri(@href)))"/>
     <xsl:comment>END {resolve-uri(@href, base-uri(@href))}</xsl:comment>
@@ -31,7 +32,7 @@
        overridden by the definitions embedded in the include
        pattern. Note that a schema must contain an explicit grammar
        definition in order to be included. -->
-  <xsl:template match="rng:include">
+  <xsl:template match="rng:include" as="item()*">
     <xsl:variable name="vInclusion" as="document-node(element())">
       <xsl:apply-templates select="doc(resolve-uri(@href, base-uri(@href)))">
         <xsl:with-param name="pIsInclusion" as="xs:boolean" select="true()"/>

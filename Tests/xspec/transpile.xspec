@@ -13,7 +13,7 @@
     
     <x:scenario
         label="Scenario for testing template with match 'constraintSpec' and mode 'schematron'">
-        <x:context mode="schematron">
+        <x:context mode="atop:mSchematron">
             <tei:constraintSpec ident="test">
                 <tei:constraint>
                     <tei:desc>This is a test description.</tei:desc>
@@ -165,7 +165,7 @@
 
     <x:scenario
         label="Scenario for testing template with match 'anyElement' and mode 'atop:anyElement'">
-        <x:context mode="atop:anyElement">
+        <x:context mode="atop:mAnyElement">
             <x:param name="tpDefaultExceptions" select="'no_value'" tunnel="yes"/>
         </x:context>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
@@ -230,24 +230,24 @@
 
     <x:scenario
         label="Scenario for testing template with match 'constraintSpec' and mode 'schematron'">
-        <x:context mode="schematron"/>
+        <x:context mode="atop:mSchematron"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
     <x:scenario
         label="Scenario for testing template with match 'constraintSpec/desc' and mode 'schematron'">
-        <x:context mode="schematron"/>
+        <x:context mode="atop:mSchematron"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
     <x:scenario label="Scenario for testing template with match 'constraint' and mode 'schematron'">
-        <x:context mode="schematron"/>
+        <x:context mode="atop:mSchematron"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>
 
     <x:scenario
         label="Scenario for testing template with match 'sch:rule[not(@context)]' and mode 'schematron'">
-        <x:context mode="schematron"/>
+        <x:context mode="atop:mSchematron"/>
         <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
     </x:scenario>-->
 </x:description>

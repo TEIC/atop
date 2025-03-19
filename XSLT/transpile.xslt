@@ -26,7 +26,7 @@
     <xd:desc>A special mode to enable us to process &lt;constraintSpecs> in the 
     specific location we want to.</xd:desc>
   </xd:doc>
-  <xsl:mode name="schematron" on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mSchematron" on-no-match="shallow-copy"/>
   
   <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
               exclude-result-prefixes="#all"/>
@@ -77,7 +77,7 @@
 	  Generate <define> patterns for <anyElement> descendants
 	  separately, as they are more complex.
       -->
-      <xsl:apply-templates mode="atop:anyElement">
+      <xsl:apply-templates mode="atop:mAnyElement">
         <xsl:with-param name="tpDefaultExceptions" as="xs:string*" select="tokenize((@defaultExceptions, 'http://www.tei-c.org/ns/1.0 teix:egXML')[1])" tunnel="yes"/>
       </xsl:apply-templates>
       <!-- Generate the rest of the schema based on the children of this <schemaSpec> -->
@@ -95,7 +95,7 @@
           </xsl:for-each>
           
           <!-- Is this the right level at which to proceed? -->
-          <xsl:apply-templates select="descendant::constraintSpec[@scheme eq 'schematron']" mode="schematron"/>          
+          <xsl:apply-templates select="descendant::constraintSpec[@scheme eq 'schematron']" mode="atop:mSchematron"/>          
         </rng:div>
       </xsl:if>
       
@@ -481,7 +481,13 @@
       </xsl:message>
     </xsl:if>
 
-    <xsl:variable name="vAllClassMembers" as="element(elementSpec)*" select="atop:get-class-members($vClassSpec, ancestor::schemaSpec, ())"/>
+    <xsl:variable name="vAllClassMembers" as="element(elementSpec)*">
+      <xsl:call-template name="atop:get-class-members">
+       	<xsl:with-param name="pClassSpec" select="$vClassSpec" as="element(classSpec)"/>
+       	<xsl:with-param name="pSchemaSpec" select="ancestor::schemaSpec" as="element(schemaSpec)"/>
+       	<xsl:with-param name="pClassSpecSeen" select="()" as="element(classSpec)*"/>
+      </xsl:call-template>
+    </xsl:variable>
     <xsl:variable name="vClassMembers" as="element(elementSpec)*">
       <xsl:choose>
         <xsl:when test="@except">
@@ -537,7 +543,7 @@
       <xd:p>The tei:anyElement content model item is special as it creates a recursive RelaxNG pattern.</xd:p>
     </xd:desc>
   </xd:doc>
-  <xsl:mode name="atop:anyElement" on-no-match="shallow-skip"/>
+  <xsl:mode name="atop:mAnyElement" on-no-match="shallow-skip"/>
 
   <xd:doc>
     <xd:desc>anyElement is matched in two modes: once in the atop:anyElement mode to generate the 
@@ -548,7 +554,7 @@
     element names to be excluded by default from anyName in the schema; this is taken from
     schemaSpec/@defaultExceptions.</xd:param>
   </xd:doc>
-  <xsl:template match="anyElement" mode="atop:anyElement" as="element(rng:define)">
+  <xsl:template match="anyElement" mode="atop:mAnyElement" as="element(rng:define)">
     <xsl:param name="tpDefaultExceptions" as="xs:string*" tunnel="yes"/>
 
     <xsl:variable name="vPatternName" as="xs:string" select="generate-id()"/>
@@ -721,7 +727,7 @@
   </xd:doc>
   <xsl:template match="moduleRef[@url]/content" as="element(content)">
     <xsl:variable name="vInclusion" as="node()">
-      <xsl:apply-templates mode="atop:rngCombine" select="doc(../@url)"/>
+      <xsl:apply-templates mode="atop:mRngCombine" select="doc(../@url)"/>
     </xsl:variable>
     <xsl:copy>
       <xsl:sequence select="@*"/>
@@ -744,14 +750,14 @@
     a distinct mode, but then revert to the default mode. Each constraintSpec
     gets an rng:div of its own, to group documentation with it.</xd:desc>
   </xd:doc>
-  <xsl:template match="constraintSpec" as="item()*" mode="schematron">
+  <xsl:template match="constraintSpec" as="item()*" mode="atop:mSchematron">
     <rng:div>
       <xsl:if test="not(child::desc)">
         <a:documentation>
           <xsl:sequence select="@ident"/>
         </a:documentation>
       </xsl:if>
-      <xsl:apply-templates mode="schematron"/>
+      <xsl:apply-templates mode="atop:mSchematron"/>
     </rng:div>
   </xsl:template>
   
@@ -759,7 +765,7 @@
     <xd:desc>If a constraintSpec has a desc, we should output it as an 
     annotation in the RNG.</xd:desc>
   </xd:doc>
-  <xsl:template match="constraintSpec/desc" as="element(a:documentation)" mode="schematron">
+  <xsl:template match="constraintSpec/desc" as="element(a:documentation)" mode="atop:mSchematron">
     <a:documentation>
       <xsl:sequence select="parent::constraintSpec/@ident || ': '"/>
       <xsl:sequence select="xs:string(.)"/>
@@ -772,7 +778,7 @@
       then finally we create sch:pattern and sch:rule elements to contain 
       any lower-level Schematron elements.</xd:desc>
   </xd:doc>
-  <xsl:template match="constraint" as="element()*" mode="schematron">
+  <xsl:template match="constraint" as="element()*" mode="atop:mSchematron">
     <!-- First we output any complete Schematron components. -->
     <xsl:for-each select="child::*[self::sch:pattern or self::sch:ns]">
       <xsl:apply-templates mode="#current"/>
@@ -796,11 +802,11 @@
   <xd:doc>
     <xd:desc>An explicit rule which lacks a context must get one.</xd:desc>
   </xd:doc>
-  <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="schematron">
+  <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="atop:mSchematron">
     <xsl:copy>
       <xsl:copy-of select="@*"/>
       <xsl:attribute name="context" select="atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))"/>
-      <xsl:apply-templates mode="schematron"/>
+      <xsl:apply-templates mode="atop:mSchematron"/>
     </xsl:copy>
   </xsl:template>
 
