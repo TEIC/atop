@@ -14,6 +14,8 @@
             <xd:p><xd:b>Author:</xd:b> ATOP team</xd:p>
             <xd:p>Generation of the build file that would process a given ODD (handling
                 chaining).</xd:p>
+            <xd:param>STDIN = a customization ODD</xd:param>
+            <xd:param>STDOUT = a build file named buildProcessingPipeline.xml to be run so as to process the customization ODD</xd:param>
         </xd:desc>
     </xd:doc>
 
