@@ -627,7 +627,7 @@
         if ($pPath) then
           $pPath
         else
-        if (matches(base-uri($pOdd), '^file:')) then substring-after(base-uri($pOdd), 'file:') else base-uri($pOdd) => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
+        if (matches(base-uri($pOdd), '^file:')) then substring-after(base-uri($pOdd), 'file:') cast as xs:anyURI else base-uri($pOdd) => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
       "/>
     <xsl:sequence select="xs:anyURI($vDirectory || $vOddFileName || $pSuffix)"/>
   </xsl:function>
@@ -642,7 +642,7 @@
     <xsl:variable name="vSource" as="xs:string?" select="$pOdd//schemaSpec/@source"/>
     <xsl:choose>
       <xsl:when test="atop:is-base-odd($pOdd) eq true()">
-        <xsl:sequence select="doc($pOdd)"/>
+        <xsl:sequence select="$pOdd"/>
       </xsl:when>
       <xsl:when test="exists($vSource)">
         <xsl:sequence

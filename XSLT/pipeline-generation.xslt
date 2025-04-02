@@ -26,14 +26,14 @@
     <xd:doc>
         <xd:desc>Creation of an ant build file... </xd:desc>
     </xd:doc>
-    <xsl:template match="/">
+    <xsl:template match="/" as="item()*">
         <xsl:variable name="vDirectory" as="xs:anyURI" select="replace(base-uri(.), '^(.*)/.+',
             '$1') => xs:anyURI()"/>
-        <xsl:variable name="vBaseOddUri" select="xs:anyURI($vDirectory || '/base-odd.xml')"/>
-        <xsl:variable name="vChainedOdds" select="(reverse(atop:chaining(.)), .)"/>
+        <xsl:variable name="vBaseOddUri" as="xs:anyURI"  select="xs:anyURI($vDirectory || '/tmp/base-odd.xml')"/>
+        <xsl:variable name="vChainedOdds" as="document-node()*" select="(reverse(atop:chaining(.)), .)"/>
         <xsl:result-document href="../buildProcessingPipeline.xml">
             <project name="odd-processing" basedir="." default="transpile">
-                <description>This is the ant build file that process a given ODD. </description>
+                <description><xsl:text>This is the ant build file that process a given ODD.</xsl:text></description>
                 <import file="buildGlobals.xml"/>
                 <xsl:choose>
                     <xsl:when test="atop:is-base-odd(.) eq true()">
@@ -41,7 +41,7 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:for-each select="1 to count($vChainedOdds)">
-                            <xsl:variable name="vSourceOdd" select="if (current() eq 2) then $vBaseOddUri else document-uri($vChainedOdds[current() - 1])"/>
+                            <xsl:variable name="vSourceOdd" as="xs:anyURI?" select="if (current() eq 2) then $vBaseOddUri else document-uri($vChainedOdds[current() - 1])"/>
                                 <xsl:choose>
                                     <xsl:when test="atop:is-base-odd($vChainedOdds[current()]) eq true()">
                                         <xsl:result-document href="{$vBaseOddUri}">
