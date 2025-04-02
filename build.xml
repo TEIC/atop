@@ -179,9 +179,22 @@
     <echo message="schSchemaXslt = ${schSchemaXslt}"/>
   </target>
   
-  <import file="buildProcessingPipeline.xml"/>
-  <target name="testProcessingOddPipeline">
-    <antcall target="transpile"></antcall>
+  <target name="OddPipelineGeneration">
+    <description>
+      TARGET OddPipelineGeneration
+      This creates a build file from a customization ODD (passed as a parameter) for it to be processed.
+    </description>
+    <echo message="Generating buildProcessingPipeline.xml from ${oddFile}"/>
+    <java failonerror="true" fork="true" classname="net.sf.saxon.Transform" classpath="${saxon}" dir="${basedir}">
+      <arg value="-xsl:${basedir}/XSLT/pipeline-generation.xslt"/>
+      <arg value="-s:${oddFile}"/>
+      <arg value="-xi"/>
+    </java>
   </target>
+  
+ <!-- <import file="buildProcessingPipeline.xml"/>
+  <target name="processingOddPipeline" depends="OddPipelineGeneration">
+    <antcall target="transpile"></antcall>
+  </target> -->
 
 </project>

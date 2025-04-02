@@ -31,7 +31,7 @@
             '$1') => xs:anyURI()"/>
         <xsl:variable name="vBaseOddUri" as="xs:anyURI"  select="xs:anyURI($vDirectory || '/tmp/base-odd.xml')"/>
         <xsl:variable name="vChainedOdds" as="document-node()*" select="(reverse(atop:chaining(.)), .)"/>
-        <xsl:result-document href="../buildProcessingPipeline.xml">
+        <xsl:result-document href="buildProcessingPipeline.xml">
             <project name="odd-processing" basedir="." default="transpile">
                 <description><xsl:text>This is the ant build file that process a given ODD.</xsl:text></description>
                 <import file="buildGlobals.xml"/>
