@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Base ODD for testing ODD chain pipeline setup</title>
+        <author>ATOP Task Force</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Published by TEI-C on their ATOP repository site.</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <p>This is a single base ODD which has no dependencies, and should therefore be 
+      found to be a base ODD by the pipelining system, resulting in a single-stage build.</p>
+      <schemaSpec ident="singleBaseOdd" prefix="sbo_" ns="http://www.tei-c.org/ns/atop" start="atop">
+        
+        <dataSpec ident="atopdata.word">
+          <desc versionDate="2025-03-17" xml:lang="en">defines the range of attribute values expressed as a single word or token.</desc>
+          <content>
+            <dataRef name="token" restriction="[^\p{C}\p{Z}]+"/>
+          </content>
+        </dataSpec>
+
+        <elementSpec ident="atop" ns="http://www.tei-c.org/ns/atop">
+          <gloss xml:lang="en">The root element</gloss>
+          <classes>
+            <memberOf key="att.hasId"/>
+          </classes>
+          <content>
+            <textNode/>
+          </content>
+        </elementSpec>
+        
+        <classSpec ident="att.hasId" type="atts">
+          <desc xml:lang="en">Groups elements which may have an id attribute.</desc>
+          <attList>
+            <attDef ident="id" usage="opt">
+              <gloss xml:lang="en">Specifies the unique identifier.</gloss>
+              <datatype maxOccurs="1">
+                <dataRef name="NCName"/>
+              </datatype>
+            </attDef>
+          </attList>
+        </classSpec>
+	
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>

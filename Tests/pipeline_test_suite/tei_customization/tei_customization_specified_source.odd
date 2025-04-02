@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+  xmlns:sch="http://purl.oclc.org/dsdl/schematron">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>TEI Customization ODD for testing ODD chain pipeline setup</title>
+        <author>ATOP Task Force</author>
+      </titleStmt>
+      <publicationStmt>
+        <p>Published by TEI-C on their ATOP repository site.</p>
+      </publicationStmt>
+      <sourceDesc>
+        <p>Born digital.</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <p>This is a simple TEI customization, providing a specific schemaSpec/@source
+        to point to its ancestor p5subset.xml, resulting in a two-stage build.</p>
+      <schemaSpec ident="tei_customization" prefix="tei_" source="tei:4.8.0"
+        ns="http://www.tei-c.org/ns/1.0" start="TEI">
+        
+        <moduleRef key="tei"/>
+        <moduleRef key="textstructure"/>
+        <moduleRef key="header"/>
+        <moduleRef key="core"/>
+        
+        <elementSpec ident="hi" module="core" mode="delete"/>
+	
+      </schemaSpec>
+    </body>
+  </text>
+</TEI>
