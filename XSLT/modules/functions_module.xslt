@@ -611,23 +611,25 @@
   
   <xd:doc>
     <xd:desc>Function to create URIs for the files generated while processing an ODD file.</xd:desc>
-    <xd:param name="pOdd" as="node()">Input ODD; this may be either a root element or a document
-      node.</xd:param>
+    <xd:param name="pOdd" as="item()">Input ODD; this may be either a root element or a document
+      node, or a URI.</xd:param>
     <xd:param name="pSuffix" as="xs:string">Suffix for the filename (including the
       extension).</xd:param>
     <xd:param name="pPath" as="xs:anyURI?">Optional: path to the temporary directory. The default is
       a subfolder named 'tmp' in the same directory in which the input ODD is.</xd:param>
   </xd:doc>
   <xsl:function name="atop:temp-file-naming" as="xs:anyURI">
-    <xsl:param name="pOdd" as="node()"/>
+    <xsl:param name="pOdd" as="item()"/>
     <xsl:param name="pSuffix" as="xs:string"/>
     <xsl:param name="pPath" as="xs:anyURI?"/>
-    <xsl:variable name="vOddFileName" as="xs:string" select="tokenize(base-uri($pOdd), '/')[last()]"/>
+    <xsl:variable name="vOddUri" as="xs:string" select="if ($pOdd instance of node()) then base-uri($pOdd) cast as xs:string else $pOdd cast as xs:string"/>
+    <xsl:variable name="vOddUri" as="xs:anyURI" select="if (matches($vOddUri, '^file:')) then substring-after($vOddUri, 'file:') cast as xs:anyURI else $vOddUri cast as xs:anyURI "/>
+    <xsl:variable name="vOddFileName" as="xs:string" select="tokenize($vOddUri, '/')[last()]"/>
     <xsl:variable name="vDirectory" as="xs:anyURI" select="
         if ($pPath) then
           $pPath
         else
-        if (matches(base-uri($pOdd), '^file:')) then substring-after(base-uri($pOdd), 'file:') cast as xs:anyURI else base-uri($pOdd) => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
+          $vOddUri => replace($vOddFileName || '$', '') => concat('tmp/') => xs:anyURI()
       "/>
     <xsl:sequence select="xs:anyURI($vDirectory || $vOddFileName || $pSuffix)"/>
   </xsl:function>
@@ -637,7 +639,7 @@
     <xd:param name="pOdd" as="node()">Input ODD; this may be either a root element or a document
       node.</xd:param>
   </xd:doc>
-  <xsl:function name="atop:chaining" as="document-node()*">
+  <xsl:function name="atop:chaining" as="document-node()+">
     <xsl:param name="pOdd" as="node()"/>
     <xsl:variable name="vSource" as="xs:string?" select="$pOdd//schemaSpec/@source"/>
     <xsl:choose>
@@ -646,31 +648,37 @@
       </xsl:when>
       <xsl:when test="exists($vSource)">
         <xsl:sequence
-          select="xs:anyURI($vSource) => atop:resolve-uri($pOdd) => doc() => atop:chaining()"/>
+          select="($pOdd, xs:anyURI($vSource) => atop:resolve-uri($pOdd) => doc() => atop:chaining())"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:sequence
-          select="document($atop:vCurrP5subset_uri)"/>
+        <xsl:sequence select="($pOdd, document($atop:vCurrP5subset_uri))"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
   <xd:doc>
     <xd:desc>Function to create the pre-transpile pipeline in ant.</xd:desc>
-    <xd:param name="pOdd" as="node()">Input ODD; this may be either a root element or a document
-      node.</xd:param>
+    <xd:param name="pOdd" as="item()">Input ODD; this may be either a root element or a
+      document node, or a URI.</xd:param>
     <xd:param name="pCounter" as="xs:integer">Chained ODD counter.</xd:param>
     <xd:param name="pTotal" as="xs:integer">Total number of chaining steps.</xd:param>
-    <xd:param name="pSourceOdd" as="xs:anyURI">URI of the source ODD.</xd:param>
+    <xd:param name="pSourceOdd" as="item()">Source ODD; this may be either a root element or a
+      document node, or a URI.</xd:param>
   </xd:doc>
   <xsl:function name="atop:pre-transpile-pipeline" as="node()+">        
-    <xsl:param name="pOdd" as="node()"/>  
+    <xsl:param name="pOdd" as="item()"/>
     <xsl:param name="pCounter" as="xs:integer"/>
     <xsl:param name="pTotal" as="xs:integer"/>
     <xsl:param name="pSourceOdd" as="item()"/>
+    <!-- If either the ODD to be processed or the source ODD are files created during the pipeline process (e.g., P5subset) then this file cannot be 
+      read as node (XTRE1500  Cannot read a document that was written during the same transformation), thus
+    the reason why these params can be both a URI or a node. Now we make sure that we are working with a URIs to avoid this error-->
+    <xsl:variable name="vOdd" as="xs:anyURI" select="if ($pOdd instance of xs:anyURI) then $pOdd else base-uri($pOdd)"/>
+    <xsl:variable name="vSourceOdd" as="xs:anyURI" select="if ($pSourceOdd instance of xs:anyURI) then $pSourceOdd else base-uri($pSourceOdd)"/>
     <xsl:variable name="vAssembledOutputUri" as="xs:anyURI" 
-      select="atop:temp-file-naming($pOdd, '_assembled.xml', ())"/>
+      select="atop:temp-file-naming($vOdd, '_assembled.xml', ())"/>
+    <xsl:variable name="vAssembledSourceOutputUri" as="xs:anyURI" select="atop:temp-file-naming($vSourceOdd, '_assembled.xml', ())"/>
     <xsl:variable name="vDeriverOutputUri" as="xs:anyURI"
-      select="atop:temp-file-naming($pOdd, '_deriver.xslt', ())"/>
+      select="atop:temp-file-naming($vOdd, '_deriver.xslt', ())"/>
     <target name="assemble_{$pCounter}" description="Assemble">
       <description>
         <xsl:text>Assemble</xsl:text>
@@ -680,7 +688,7 @@
           <xsl:text>${saxon}</xsl:text>
         </xsl:attribute>
         <jvmarg value="-Xmx1024m"/>                
-        <arg value="-s:{document-uri($pOdd)}"/>
+        <arg value="-s:{$vOdd}"/>
         <arg>
           <xsl:attribute name="value">
             <xsl:text>-xsl:${basedir}/XSLT/assemble_odd.xslt</xsl:text>
@@ -715,12 +723,12 @@
           <xsl:attribute name="value" select="'-o:' || $vDeriverOutputUri"/>
         </arg>
         <arg>
-          <xsl:attribute name="value" select="'source='|| $pSourceOdd"></xsl:attribute>
+          <xsl:attribute name="value" select="'source=' || $vAssembledSourceOutputUri"/>
         </arg>                
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
-      <antcall target="derive_{$pCounter}"></antcall>
+      <antcall target="derive_{$pCounter}"/>
     </target>
     <target name="derive_{$pCounter}" description="Derivation">
       <description>
@@ -731,7 +739,7 @@
           <xsl:text>${saxon}</xsl:text>
         </xsl:attribute>
         <jvmarg value="-Xmx1024m"/>                
-        <arg value="-s:{$vAssembledOutputUri}"/>
+        <arg value="-s:{$vAssembledSourceOutputUri}"/>
         <arg>
           <xsl:attribute name="value">
             <xsl:sequence select="'-xsl:' || $vDeriverOutputUri"/>
@@ -780,14 +788,7 @@
           <xsl:text>${saxon}</xsl:text>
         </xsl:attribute>
         <jvmarg value="-Xmx1024m"/>                
-        <xsl:choose>
-          <xsl:when test="atop:is-base-odd($pOdd) eq true()">
-            <arg value="-s:{document-uri($pOdd)}"/>
-          </xsl:when>
-          <xsl:otherwise>
             <arg value="-s:{atop:temp-file-naming($pOdd, '_derived.xml', ())}"/>
-          </xsl:otherwise>
-        </xsl:choose>        
         <arg>
           <xsl:attribute name="value">
             <xsl:text>-xsl:${basedir}/XSLT/prune_and_localize.xslt</xsl:text>
@@ -829,14 +830,7 @@
       <antcall target="transpile"/>
     </target>
     <target name="transpile" description="Transpile">
-      <xsl:choose>
-        <xsl:when test="$pCounter eq 1">
-          <antcall target="prune"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <antcall target="assemble_2"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <antcall target="assemble_1"/>
       <description>
         <xsl:text>Transpiling</xsl:text>
       </description>
