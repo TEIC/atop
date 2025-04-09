@@ -20,7 +20,7 @@
       <p>This is a customization of an existing TEI customization, using schemaSpec/@source
         to point to its ancestor customization, which itself is a customization of p5subset.xml, 
         resulting in a three-stage build.</p>
-      <schemaSpec ident="tei_cust_of_cust" prefix="tei_" source="./../tei_customization_default_source.odd"
+      <schemaSpec ident="tei_cust_of_cust" prefix="tei_" source="../tei_customization/tei_customization_default_source.odd"
         ns="http://www.tei-c.org/ns/1.0" start="TEI">
 
         <classSpec ident="att.typed" type="atts" mode="change">
