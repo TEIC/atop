@@ -596,7 +596,7 @@
            contain moduleRefs, so moduleRefs can be smuggled into the 
            ODD file. -->
       <xsl:otherwise>
-        <xsl:sequence select="false()"/>
+        <xsl:sequence select="true()"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
