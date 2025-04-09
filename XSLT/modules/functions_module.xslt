@@ -581,23 +581,15 @@
       <xsl:when test="not($pOdd/descendant::schemaSpec)">
         <xsl:sequence select="true()"/>
       </xsl:when>
-      <!-- If there are no *Ref elements which are 
-           direct children of the schemaSpec, then it's base. 
-           Note: we claim that it doesn't matter if there's @source on 
-           schemaSpec, because that is often retained after compiling 
-           an ODD to a derived ODD, AND its absence implies a default
-           value, so we can't use that as a determiner.
-      -->
-      <xsl:when test="not($pOdd/descendant::schemaSpec/child::*[self::moduleRef or self::elementRef or self::classRef or self::specGrpRef])">
-        <xsl:sequence select="true()"/>
+      <!-- If any *Ref element which is a child of schemaSpec has @key, 
+        then we can assume that this is a customization. -->
+      <xsl:when test="some $r in $pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')] satisfies $r/@key">
+        <xsl:sequence select="false()"/>
       </xsl:when>
-      <!-- If every *Ref element which is a child of schemaSpec has @url 
-        and not @key, then we assume that what we have are moduleRefs 
-        which assembly will expand via their @url attributes; that 
-        makes this ODD the base, even though it will need to go through 
-        assembly. -->
-      <xsl:when test="every $m in $pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Ref')] satisfies $m/@url and not($m/@key)">
-        <xsl:sequence select="true()"/>
+      <!-- Any *Spec element with a mode attribute not equal to "add"
+           means it must be a customization. -->
+      <xsl:when test="some $s in $pOdd/descendant::schemaSpec/child::*[ends-with(local-name(), 'Spec')] satisfies $s/@mode = ('delete', 'change', 'replace')">
+        <xsl:sequence select="false()"/>
       </xsl:when>
       <!-- Other cases will need to be handled here: basically specGrpRefs 
            may appear anywhere and may point to external specGrps which 
