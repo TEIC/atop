@@ -694,6 +694,22 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="validateWithRng">
+        <param name="xmlFile" value="{$vAssembledOutputUri}"></param>
+        <param name="rngFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/post-assembleSchemaSpecification.rng</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
+      <antcall target="validateWithSchematron">
+        <param name="xmlFile" value="{$vAssembledOutputUri}"></param>
+        <param name="schSchemaFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/post-assembleSchemaSpecification.sch</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
       <antcall target="deriver_{$pCounter}"/>
     </target>
     <target name="deriver_{$pCounter}" description="Deriver">
@@ -771,6 +787,7 @@
       select="atop:temp-file-naming($pOdd, '_pruned.xml', ())"/>
     <xsl:variable name="vPretranspiledOutputUri" as="xs:anyURI"
       select="atop:temp-file-naming($pOdd, '_pre-transpiled.xml', ())"/>
+    <xsl:variable name="vSchemaResult" as="xs:anyURI" select="atop:temp-file-naming($pOdd, '_transpiled.rng', ())"/>
     <target name="prune" description="Prune and localize">
       <description>
         <xsl:text>Pruning and localization</xsl:text>
@@ -794,6 +811,22 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="validateWithRng">
+        <param name="xmlFile" value="{$vPrunedOutputUri}"></param>
+        <param name="rngFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/ploddSchemaSpecification.rng</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
+      <antcall target="validateWithSchematron">
+        <param name="xmlFile" value="{$vPrunedOutputUri}"></param>
+        <param name="schSchemaFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/ploddSchemaSpecification.sch</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
       <antcall target="pre-transpile"/>
     </target>
     <target name="pre-transpile" description="Pre-transpile">
@@ -819,6 +852,14 @@
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="validateWithSchematron">
+        <param name="xmlFile" value="{$vPretranspiledOutputUri}"></param>
+        <param name="schSchemaFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/pre-transpile.sch</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
       <antcall target="transpile"/>
     </target>
     <target name="transpile" description="Transpile">
@@ -839,12 +880,28 @@
         </arg>
         <arg>
           <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_transpiled.rng', ())"/>
+            <xsl:sequence select="'-o:' || $vSchemaResult"/>
           </xsl:attribute>
         </arg>                
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
+      <antcall target="validateWithRng">
+        <param name="xmlFile" value="{$vSchemaResult}"></param>
+        <param name="rngFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/relaxng.rng</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
+      <antcall target="validateWithSchematron">
+        <param name="xmlFile" value="{$vSchemaResult}"></param>
+        <param name="schSchemaFile">
+          <xsl:attribute name="value">
+            <xsl:text>${basedir}/Schemas/schematron.sch</xsl:text>
+          </xsl:attribute>
+        </param>
+      </antcall>
     </target>
   </xsl:function>
   

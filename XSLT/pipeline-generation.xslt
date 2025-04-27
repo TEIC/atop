@@ -35,6 +35,8 @@
             <project name="odd-processing" basedir="." default="transpile">
                 <description><xsl:text>This is the ant build file that process a given ODD.</xsl:text></description>
                 <import file="buildGlobals.xml"/>
+<!--               TO DO: add here the retrieval of odds.odd from Vault and the generation of the schema (if needed) so
+                we can validate the input ODD-->
                 <xsl:choose>
                     <xsl:when test="atop:is-base-odd(.) eq true()">
                         <xsl:sequence select="atop:pre-transpile-pipeline(., 1, 1, .)"/>
