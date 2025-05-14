@@ -8,7 +8,7 @@
   <!--##### GENERAL BUILD PROPERTIES #####-->
   
   <!--We are currently using Saxon 11.-->
-  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-11.jar"/>
+  <property name="saxon" value="${basedir}/Lib/saxon/saxon-he-12.jar"/>
   
   <!--Jing in the Lib directory.-->
   <property name="jing" value="${basedir}/Lib/jing.jar"/>
