@@ -406,4 +406,33 @@
     </x:scenario>
   </x:scenario>
   
+  <x:scenario label="Test for the function atop:retrieve-target-elements">
+    <x:variable name="someTeiForRTE" as="element(tei:p)">
+      <tei:p>
+        <tei:name xml:id="fred">Fred</tei:name>
+        <tei:ptr xml:id="ptr1" target="#fred"/>
+        <tei:ptr xml:id="ptr2" target="https://www.tei-c.org/release/xml/tei/Exemplars/its.rng"/>
+      </tei:p>
+    </x:variable>
+    <x:scenario label="Simple local file with target pointer">
+      <x:call function="atop:retrieve-target-elements">
+        <x:param name="pPointerAtt" as="attribute()" select="$someTeiForRTE//tei:ptr[@xml:id='ptr1']/@target"/>
+      </x:call>
+      <x:expect label="The tei:name element" 
+        test="local-name($x:result)" select="'name'"/>
+    </x:scenario>
+    
+    <x:scenario label="Remote file with no target pointer">
+      <x:call function="atop:retrieve-target-elements">
+        <x:param name="pPointerAtt" as="attribute()" select="$someTeiForRTE//tei:ptr[@xml:id='ptr2']/@target"/>
+      </x:call>
+      <x:expect label="An RNG grammar element" test="local-name($x:result)" select="'grammar'"/>
+    </x:scenario>
+  </x:scenario>
+  
+  
+  
+  
+  
+  
 </x:description>
