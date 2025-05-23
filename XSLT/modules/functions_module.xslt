@@ -590,7 +590,8 @@
               <xsl:when test="starts-with(., '#')">
                 <xsl:message expand-text="yes">Pointer is {.}.</xsl:message>
                 <xsl:message expand-text="yes">Parameter attribute is {xs:string($pPointerAtt)}</xsl:message>
-                <xsl:sequence select="$pPointerAtt/ancestor::*[last()]/descendant::*[@xml:id eq substring-after(., '#')]"/>
+                <xsl:variable name="vTargId" as="xs:string" select="substring-after(., '#')"/>
+                <xsl:sequence select="$pPointerAtt/ancestor::*[last()]/descendant::*[@xml:id eq $vTargId]"/>
               </xsl:when>
               <xsl:when test="contains(., '#')">
                 <xsl:variable name="vResolvedPtr" as="xs:anyURI" select="atop:resolve-uri(xs:anyURI(.), $pPointerAtt)"/>
