@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2"
-  xmlns:sqf="http://www.schematron-quickfix.com/validator/process">
+        xmlns:sqf="http://www.schematron-quickfix.com/validator/process">
   <!-- The purpose of this Schematron is to enforce requirements for specific
        coding and documentation practices in the project's XSLT files. -->
   <title>ISO Schematron rules for TEI ATOP XSLT</title>
@@ -20,13 +20,19 @@
   
   <let name="reVarName" value="'^v[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
   
+  <!-- 
+       Note XPath variables such as simple "for" binding variables do not have to follow
+       this pattern because they are only instantiated momentarily. So $p is fine in 
+       e.g. 'for $p in $vParagraphs return $p/@n'.
+  -->
+  
   <let name="reParamName" value="'^t?p[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?$'"/>
   
   <let name="reFunctionName" value="concat('^', $atopNamespacePrefix, ':[a-z][a-z\-]+[a-z]$')"/>
   
   <let name="reModeName" value="concat(
-    '^(', $atopNamespacePrefix, ':m[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?)|(#(all|default|current))$'
-    )"/>
+                                '^(', $atopNamespacePrefix, ':m[A-Z][a-zA-Z0-9]+(_[a-zA-Z0-9_]+)?)|(#(all|default|current))$'
+                                )"/>
   
   <!-- Constraints -->
   <pattern id="names">
@@ -99,7 +105,7 @@
       </assert>
     </rule>
   </pattern>
-  
+
   <pattern id="no-literal-text">
     <rule context="text()[not(normalize-space(.) = '')][not(ancestor::xd:doc or ancestor::xsl:message)]">
       <assert test="parent::xsl:text or parent::XSL:text or parent::xsl:variable or parent::xsl:param or parent::xsl:comment">
@@ -116,8 +122,8 @@
     <rule context="(/*/xsl:* except xsl:mode)[@name][not(preceding-sibling::*[1][self::xd:doc])]">
       <let name="name" value="@name"/>
       <assert test="//xd:doc/descendant::xd:ref[@name eq $name]" id="assert-documentation"> ERROR: A named top-level
-        element must have an preceding xd:doc block or must be referenced in an xd:ref
-        element in another documentation block. </assert>
+      element must have an preceding xd:doc block or must be referenced in an xd:ref
+      element in another documentation block. </assert>
     </rule>
   </pattern>
   
