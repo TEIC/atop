@@ -12,7 +12,7 @@
   <xd:doc>
     <xd:desc>Version number of this program</xd:desc>
   </xd:doc>
-  <xsl:variable name="atop:vVersion" select="'0.0.4'" as="xs:string"/>
+  <xsl:variable name="atop:vVersion" select="'0.0.5'" as="xs:string"/>
   
   <xd:doc scope="stylesheet">
     <xd:desc>
@@ -20,8 +20,9 @@
       <xd:p><xd:b>Author:</xd:b> ATOP task force</xd:p>
       <xd:p>Routine to read in an ODD (whether a customization ODD or
       a base ODD, although will likely not have much work to do on the
-      latter) and writes out the same with external references
-      resolved.</xd:p>
+      latter) and writes out the same with a) external references
+      resolved, and b) decorating every att.combinable element with
+      a @mode attr.</xd:p>
     </xd:desc>
   </xd:doc>
   
@@ -33,9 +34,28 @@
   <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"/>
   
   <xd:doc>
-    <xd:desc>Default processing is to copy myself and continue processing …</xd:desc>
+    <xd:desc>
+      <xd:p>Default processing is to copy myself and continue processing …</xd:p>
+      <xd:p>Note that it is probably not necessary to use an explicit node name
+      for each pass: we <xd:i>could</xd:i> get away with using the default mode
+      for one pass, as there is no overlap. But it is just clearer to be explicit.</xd:p>
+    </xd:desc>
   </xd:doc>
-  <xsl:mode on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mPassOne" on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mPassTwo" on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mReplacement" on-no-match="shallow-copy"/>
+  
+  <xd:doc>
+    <xd:desc>Establish micro-pipeline</xd:desc>
+  </xd:doc>
+  <xsl:template match="/" as="document-node()" mode="#default">
+    <xsl:document>
+      <xsl:variable name="vPassOneResult" as="element()">
+        <xsl:apply-templates select="*" mode="atop:mPassOne"/>
+      </xsl:variable>
+      <xsl:apply-templates select="$vPassOneResult" mode="atop:mPassTwo"/>
+    </xsl:document>
+  </xsl:template>
   
   <xd:doc>
     <xd:desc>Expand module references that point to external
@@ -44,14 +64,14 @@
       signify that the content is here and now, and no longer
       external.</xd:desc>
   </xd:doc>
-  <xsl:template match="moduleRef[@url[not(. eq '.')]]" as="element(moduleRef)">
+  <xsl:template match="moduleRef[@url[not(. eq '.')]]" as="element(moduleRef)" mode="atop:mPassOne">
     <xsl:copy>
-      <xsl:apply-templates select="@*"/>
+      <xsl:apply-templates select="@*" mode="#current"/>
       <!-- Use a value of ‘.’ (U+002E) on @url to signify that the content is here and now, not external. -->
       <xsl:attribute name="url" select="'.'"/>
       <content>
-        <xsl:apply-templates select="content/@*"/>
-        <xsl:apply-templates select="content/*"/>
+        <xsl:apply-templates select="content/@*" mode="#current"/>
+        <xsl:apply-templates select="content/*" mode="#current"/>
         <xsl:if test="doc-available( @url )">
           <xsl:comment select="'========= from '||normalize-space(@url)||' ========='"/>
           <xsl:copy-of select="doc(@url)"/>
@@ -65,7 +85,7 @@
     attribute, we have no idea how to process it, so just warn the
     user that we are not going to.</xd:desc>
   </xd:doc>
-  <xsl:template match="dataRef[ @ref ]" as="item()*">
+  <xsl:template match="dataRef[ @ref ]" as="item()*" mode="atop:mPassOne">
     <xsl:message terminate="no" expand-text="true">WARNING: The ATOP
     processor does not know how to handle a reference to the {@ref}
     external datatype library, so this dataRef element is being
@@ -78,7 +98,7 @@
     output of processing the <emph>contents</emph> of the <gi>specGrp</gi>
     to which it refers.</xd:desc>
   </xd:doc>
-  <xsl:template match="specGrpRef" as="element()*">
+  <xsl:template match="specGrpRef" as="element()*" mode="atop:mPassOne">
     <!-- Get the target (it should point to a <specGrp>) -->
     <xsl:variable name="vTargetVal" select="normalize-space(@target)" as="xs:string"/>
     <!-- Get the <sepcGrp> to which it points -->
@@ -126,7 +146,7 @@
                                                  | outputRendition
                                                  | specGrp
                                                  | specGrpRef
-                                                 )"/>
+                                                 )" mode="#current"/>
   </xsl:template>
 
   <xd:doc>
@@ -134,7 +154,7 @@
     the corresponding <gi>specGrpRef</gi>, if any. So if we hit one in
     normal processing, ignore it.</xd:desc>
   </xd:doc>
-  <xsl:template match="specGrp"/>
+  <xsl:template match="specGrp" mode="atop:mPassOne"/>
   
   <xd:doc>
     <xd:desc>
@@ -147,11 +167,11 @@
     processing the base ODD first) whether the incoming *Spec
     is a fresh addition or a replacement for an existing *Spec.
     At the derivation stage, we will treat "replace" as "add" 
-    if there is no such *Spec in the base ODD. This is not a violation
-    of the tagdocs documentation #TDbuild, which says that @mode="replace"
-    would be an error where nothing exists to be replaced, because we
-    producing only an interim stage in a processing chain.
-    </xd:p>
+    if there is no such *Spec in the base ODD. We do not consider this
+    a violation of the tagdocs documentation #TDbuild, which says that
+    @mode="replace" would be an error where nothing exists to be
+    replaced, because we are producing only an interim stage in a
+    processing chain.</xd:p>
     </xd:desc>
   </xd:doc>
   <!-- moduleRef/@url and dataRef/@ref are handled above; we do not
@@ -159,7 +179,7 @@
        anything external and will be processed by transpilation. -->
   <xsl:template match="( classRef | dataRef | elementRef | macroRef | moduleRef )
                        [ parent::schemaSpec | parent::specGrp ]
-                       [ @key  and  @source ]" as="node()">
+                       [ @key  and  @source ]" mode="atop:mPassOne" as="node()">
     <xsl:variable name="vKey" select="normalize-space(@key)" as="xs:string"/>
     <xsl:variable name="vSource" select="normalize-space(@source)" as="xs:string"/>
     <xsl:variable name="vSpecName" select="replace( local-name(.), 'Ref$','Spec') => xs:NCName()" as="xs:NCName"/>
@@ -186,8 +206,35 @@
       <xsl:if test="@mode eq 'add' or not( @mode )">
         <xsl:attribute name="mode" select="'replace'"/>
       </xsl:if>
-      <xsl:apply-templates select="node()" mode="#default"/>
+      <xsl:apply-templates select="node()" mode="#current"/>
     </xsl:copy>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>Pass Two: make sure every att.combinable element has a @mode.</xd:desc>
+  </xd:doc>
+  <xsl:template match="attDef
+                     | classSpec
+                     | constraintSpec
+                     | dataSpec
+                     | defaultVal
+                     | elementSpec
+                     | macroSpec
+                     | moduleSpec
+                     | paramSpec
+                     | remarks
+                     | schemaSpec
+                     | valDesc
+                     | valItem
+                     | valList" as="element()" mode="atop:mPassTwo">
+    <xsl:copy>
+      <xsl:apply-templates select="@*" mode="#current"/>
+      <xsl:if test="not( @mode )">
+        <xsl:attribute name="mode" select="'add'"/>
+      </xsl:if>
+      <xsl:apply-templates select="node()" mode="#current"/>
+    </xsl:copy>
+    
+  </xsl:template>
+
 </xsl:stylesheet>
