@@ -192,9 +192,8 @@
     </java>
   </target>
   
- <!-- <import file="buildProcessingPipeline.xml"/>
-  <target name="processingOddPipeline" depends="OddPipelineGeneration">
-    <antcall target="transpile"></antcall>
-  </target> -->
+  <target name="transpile" depends="OddPipelineGeneration">
+    <ant antfile="buildProcessingPipeline.xml"></ant>
+  </target> 
 
 </project>
