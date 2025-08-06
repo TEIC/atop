@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<start xml:id="should_be_invalid" toBeModified="valueOne" xmlns="http://www.tei-c.org/ns/atop">
+    <child>
+        <grandchild>Some text, but parent shouldn't be allowed.</grandchild>
+    </child>
+    <child>
+        <lnk>This needs a @to attribute.</lnk>
+    </child>
+</start>

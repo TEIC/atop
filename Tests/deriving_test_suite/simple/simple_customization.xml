@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>The simplest possible derivation test: customization</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>part of ATOP test suite</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>born digital</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <schemaSpec ident="derivation_simple" source="simple_source.xml">
+            <elementSpec ident="start" mode="change">
+               <attList>
+                  <attDef ident="xml:id" mode="delete"/>
+                  <attDef ident="toBeModified" mode="change">
+                     <valList mode="replace" type="closed">
+                        <valItem ident="firstValue">
+                           <gloss>First value</gloss>
+                        </valItem>
+                        <valItem ident="secondValue">
+                           <gloss>Second value</gloss>
+                        </valItem>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="grandchild" mode="delete"/>
+            <elementSpec ident="child" mode="change">
+               <content>
+                  <alternate minOccurs="0" maxOccurs="unbounded">
+                     <elementRef key="lnk"/>
+                     <textNode/>
+                  </alternate>
+               </content>
+               <attList>
+                  <attDef ident="unwanted" mode="delete"/>
+               </attList>
+            </elementSpec>
+            <elementSpec ident="lnk" mode="add">
+               <gloss>A link to somewhere</gloss>
+               <content>
+                  <textNode/>
+               </content>
+               <attList>
+                  <attDef ident="to" usage="req">
+                     <gloss>The target location</gloss>
+                     <datatype>
+                        <dataRef name="anyURI"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </elementSpec>
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
