@@ -94,6 +94,24 @@
        the atop:vMapReplacements map would be replaced by the value found in that
        map. -->
   
+  <!-- For unique identifiers, we use our atop:unique-ident() function for now. -->
+  <xd:doc>
+    <xd:desc>List of unique idents for items to be deleted.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vDeletions" as="xs:string*" 
+    select="for $i in $atop:vCustOdd/descendant::node()[@mode='delete'] return atop:unique-ident($i)"/>
+  
+  <xd:doc>
+    <xd:desc>A map of unique idents to the things from the customization that will replace them.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vMapReplacements" as="map(xs:string, node())">
+    <xsl:map>
+      <xsl:for-each select="$atop:vCustOdd/descendant::node()[@mode='replace']">
+        <xsl:map-entry key="atop:unique-ident(.)" select="."/>
+      </xsl:for-each>
+    </xsl:map>
+  </xsl:variable>
+  
   <xd:doc>
     <xd:desc>The root template kicks off the transformation.</xd:desc>
   </xd:doc>
