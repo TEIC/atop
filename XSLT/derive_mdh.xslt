@@ -115,8 +115,25 @@
   <xd:doc>
     <xd:desc>The root template kicks off the transformation.</xd:desc>
   </xd:doc>
-  <xsl:template match="/">
+  <xsl:template match="/" as="item()*">
+    
+    <xsl:variable name="vInputSpecs" as="element(schemaSpec)">
+      <xsl:choose>
+        <xsl:when test="$atop:vBaseOdd/descendant::schemaSpec">
+          <xsl:copy-of select="$atop:vBaseOdd/descendant::schemaSpec"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <schemaSpec>
+            <xsl:sequence select="$atop:vBaseOdd/descendant::node()[ends-with(local-name(.), 'Spec')]"/>
+          </schemaSpec>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
     <!-- Phase 1: Deletions. -->
+    <xsl:variable name="vDeletionsDone" as="node()*">
+      <xsl:apply-templates select="$vInputSpecs" mode="atop:mDeletion"/>
+    </xsl:variable>
     
     <!-- Phase 2: Additions. -->
     
@@ -126,5 +143,11 @@
     
     <!-- Phase 5: Output. -->
   </xsl:template>
+  
+  <!-- Template(s) in the atop:mDeletion mode. -->
+  <xd:doc>
+    <xd:desc>A template matching anything that needs to be deleted.</xd:desc>
+  </xd:doc>
+  <xsl:template match="node()[unique-ident(.) = $atop:vDeletions]" mode="atop:mDeletion"/>
   
 </xsl:stylesheet>
