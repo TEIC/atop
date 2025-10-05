@@ -33,12 +33,31 @@
   </xd:doc>
   <xsl:include href="modules/functions_module.xslt"/>
   
+  <xd:doc>
+    <xd:desc>XML in, XML out.</xd:desc>
+  </xd:doc>
   <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"/>
   
   <xd:doc>
-    <xd:desc>Default processing is to copy myself and continue processing …</xd:desc>
+    <xd:desc>Default processing is to copy myself and continue processing; this 
+      applies to every mode.</xd:desc>
   </xd:doc>
-  <xsl:mode on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mDeletion" on-no-match="shallow-copy"/>
+  <xd:doc>
+    <xd:desc>Default processing is to copy myself and continue processing; this 
+      applies to every mode.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="atop:mAddition" on-no-match="shallow-copy"/>
+  <xd:doc>
+    <xd:desc>Default processing is to copy myself and continue processing; this 
+      applies to every mode.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="atop:mReplacement" on-no-match="shallow-copy"/>
+  <xd:doc>
+    <xd:desc>Default processing is to copy myself and continue processing; this 
+      applies to every mode.</xd:desc>
+  </xd:doc>
+  <xsl:mode name="atop:mSanityCheck" on-no-match="shallow-copy"/>
   
   <xd:doc>
     <xd:desc>The path to the fully-derived base ODD against which we will
