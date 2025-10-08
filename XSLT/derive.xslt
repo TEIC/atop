@@ -73,7 +73,7 @@
       <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_01" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass01"/>
       </xsl:result-document>
-      <!-- pass 01: expand ref children of <schemaSpec> -->
+      <!-- pass 02: expand ref children of <schemaSpec> -->
       <xsl:variable name="vPass02" as="node()+">
         <xsl:apply-templates select="$vPass01" mode="atop:mPass02"/>
       </xsl:variable>
