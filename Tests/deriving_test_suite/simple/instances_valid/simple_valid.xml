@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<start xmlns="http://www.tei-c.org/ns/atop"
+    toBeModified="secondValue">
+    <child xml:id="child1">
+        This is some text.
+    </child>
+    <child xml:id="child2">
+        <lnk to="https://www.tei-c.org/">The TEI</lnk>
+        That's all folks!
+    </child> 
+</start>

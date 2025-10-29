@@ -1,5 +1,6 @@
 <xsl:transform version="3.0" expand-text="yes"
-               xpath-default-namespace="http://www.tei-c.org/ns/1.0"
+               exclude-result-prefixes="#all"
+	       xpath-default-namespace="http://www.tei-c.org/ns/1.0"
                xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
                xmlns:atop="http://www.tei-c.org/ns/atop"
                xmlns:rng="http://relaxng.org/ns/structure/1.0"
@@ -28,8 +29,7 @@
   </xd:doc>
   <xsl:mode name="atop:mSchematron" on-no-match="shallow-copy"/>
   
-  <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"
-              exclude-result-prefixes="#all"/>
+  <xsl:output indent="yes" method="xml" encoding="UTF-8" normalization-form="NFC"/>
 
   <xsl:include href="modules/functions_module.xslt"/>
   <xsl:include href="assemble_relaxng.xslt"/>
@@ -210,7 +210,10 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>In case other values of attList/@org appear at some point, we throw an error.</xd:desc>
+    <xd:desc>Currently the only legal values for attList/@org are
+    "group" and "choice". But, in the spirit of defensive programming,
+    just in case other values appear at some point, we throw an
+    error.</xd:desc>
   </xd:doc>
   <xsl:template match="attList" priority="-10" as="empty-sequence()">
     <xsl:message terminate="yes">
@@ -780,9 +783,7 @@
   </xd:doc>
   <xsl:template match="constraint" as="element()*" mode="atop:mSchematron">
     <!-- First we output any complete Schematron components. -->
-    <xsl:for-each select="child::*[self::sch:pattern or self::sch:ns]">
-      <xsl:apply-templates mode="#current"/>
-    </xsl:for-each>
+    <xsl:apply-templates select="child::sch:pattern | child::sch:ns" mode="#current"/>
     <!-- Next, we wrap any rule children in patterns. -->
     <xsl:for-each select="child::sch:rule">
       <sch:pattern>
@@ -790,17 +791,20 @@
       </sch:pattern>
     </xsl:for-each>
     <!-- Finally, we create pattern/rule containers for any lower-level elements. -->
-    <xsl:if test="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]">
+    <xsl:if test="child::sch:* except ( sch:pattern, sch:ns, sch:rule )">
       <sch:pattern>
         <sch:rule context="{atop:get-schematron-context(., atop:get-sch-ns-prefix-map(/))}">
-          <xsl:apply-templates select="child::sch:*[not(self::sch:pattern or self::sch:ns or self::sch:rule)]" mode="#current"/>
+          <xsl:apply-templates select="child::sch:* except ( sch:pattern, sch:ns, sch:rule )" mode="#current"/>
         </sch:rule>
       </sch:pattern>
     </xsl:if>
   </xsl:template>
   
   <xd:doc>
-    <xd:desc>An explicit rule which lacks a context must get one.</xd:desc>
+    <xd:desc>An explicit rule which lacks a context must get one. Note
+    that this template is no longer strictly necessary, as TEI
+    *requires* an explicit &lt;rule> with a @context. But just
+    in case someone is trying to process old ODDs …</xd:desc>
   </xd:doc>
   <xsl:template match="sch:rule[not(@context)]" as="element(sch:rule)" mode="atop:mSchematron">
     <xsl:copy>
