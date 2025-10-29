@@ -34,6 +34,10 @@
   <xsl:mode name="atop:mPass05" on-no-match="shallow-copy"><!-- macro deletion --></xsl:mode>
   <xsl:mode name="atop:mPass06" on-no-match="shallow-copy"><!-- class deletion --></xsl:mode>
   <xsl:mode name="atop:mPass07" on-no-match="shallow-copy"><!-- post-deletion clean-up --></xsl:mode>
+  <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- delete portion of element replacement --></xsl:mode>
+  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!-- delete portion of datatype replacement --></xsl:mode>
+  <xsl:mode name="atop:mPass10" on-no-match="shallow-copy"><!-- delete portion of macro replacement --></xsl:mode>
+  <xsl:mode name="atop:mPass11" on-no-match="shallow-copy"><!-- delete portion of class replacement --></xsl:mode>
 
   <xd:doc>
     <xd:desc>Debug flag: generate output (to /tmp/) for each pass iff true.</xd:desc>
@@ -51,7 +55,7 @@
   <xd:doc>
     <xd:desc>Name of current program for use in building debugging output filenames</xd:desc>
   </xd:doc>
-  <xsl:param name="atop:pDebugName" select="tokenize(static-base-uri(),'/')[last()]" as="xs:string"/>
+  <xsl:param name="atop:pDebugName" select="tokenize( static-base-uri(),'/')[last()]" as="xs:string"/>
   
   <xd:doc>
     <xd:desc>The source, i.e. the base ODD (as an entire document node)</xd:desc>
@@ -59,64 +63,116 @@
   <xsl:variable name="atop:vBaseOdd" as="document-node()">
     <xsl:sequence select="document( $atop:pSource )"/>
   </xsl:variable>
-    
+
+  <!--
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      The elements that are members of att.combinable, and thus have
+      @mode, are:
+      <attDef>, <classSpec>, <constraintSpec>, <dataSpec>,
+      <elementSpec>, <macroSpec>, <moduleSpec>, <paramSpec>,
+      <schemaSpec>, <defaultVal>, <remarks>, <valDesc>, <valItem>, and
+      <valList>
+      also <classes> [change,replace] & <memberOf> [add,delete] have @mode
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  -->
+  
   <xd:doc>
     <xd:desc>Match the input document (a customization ODD), process it with a
     micropipeline, and write out the result of the last stage in the pipeline.</xd:desc>
   </xd:doc>
   <xsl:template match="/" name="xsl:initial-template" as="document-node()">
     <xsl:copy>
+      
       <!-- pass 01: attribute normalization -->
       <xsl:variable name="vPass01" as="node()+">
         <xsl:apply-templates mode="atop:mPass01"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_01" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_01.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass01"/>
       </xsl:result-document>
+      
       <!-- pass 02: expand ref children of <schemaSpec> -->
       <xsl:variable name="vPass02" as="node()+">
         <xsl:apply-templates select="$vPass01" mode="atop:mPass02"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_02" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_02.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass02"/>
       </xsl:result-document>
+      
       <!-- pass 03: element specification deletion -->
       <xsl:variable name="vPass03" as="node()+">
         <xsl:apply-templates select="$vPass02" mode="atop:mPass03"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_03" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_03.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass03"/>
       </xsl:result-document>
+
       <!-- pass 04: data specification deletion -->
       <xsl:variable name="vPass04" as="node()+">
         <xsl:apply-templates select="$vPass03" mode="atop:mPass04"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_04" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_04.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass04"/>
       </xsl:result-document>
+
       <!-- pass 05: macro deletion -->
       <xsl:variable name="vPass05" as="node()+">
         <xsl:apply-templates select="$vPass04" mode="atop:mPass05"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_05" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_05.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass05"/>
       </xsl:result-document>
+
       <!-- pass 06: class deletion -->
       <xsl:variable name="vPass06" as="node()+">
         <xsl:apply-templates select="$vPass05" mode="atop:mPass06"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_06" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_06.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass06"/>
       </xsl:result-document>
+
       <!-- pass 07: post-deletion clean-up -->
       <xsl:variable name="vPass07" as="node()+">
         <xsl:apply-templates select="$vPass06" mode="atop:mPass07"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_07" use-when="$atop:pDebug">
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_07.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass07"/>
       </xsl:result-document>
+
+      <!-- pass 08: delete classes being replaced -->
+      <xsl:variable name="vPass08" as="node()+">
+        <xsl:apply-templates select="$vPass07" mode="atop:mPass08"/>
+      </xsl:variable>
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_08.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass08"/>
+      </xsl:result-document>
+
+      <!-- pass 09: delete datatypes being replaced -->
+      <xsl:variable name="vPass09" as="node()+">
+        <xsl:apply-templates select="$vPass08" mode="atop:mPass09"/>
+      </xsl:variable>
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_09.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass09"/>
+      </xsl:result-document>
+
+      <!-- pass 10: delete macros being replaced -->
+      <xsl:variable name="vPass10" as="node()+">
+        <xsl:apply-templates select="$vPass09" mode="atop:mPass10"/>
+      </xsl:variable>
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_10.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass10"/>
+      </xsl:result-document>
+
+      <!-- pass 11: delete classes being replaced -->
+      <xsl:variable name="vPass11" as="node()+">
+        <xsl:apply-templates select="$vPass10" mode="atop:mPass11"/>
+      </xsl:variable>
+      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_11.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass11"/>
+      </xsl:result-document>
+
       <!-- output -->
-      <xsl:sequence select="$vPass07"/>
+      <xsl:sequence select="$vPass11"/>
     </xsl:copy>
   </xsl:template>
 
@@ -145,16 +201,16 @@
     <xsl:variable name="vIncludes" select="tokenize( @include )" as="xs:string*"/>
     <xsl:variable name="vExcepts" select="tokenize( @except )" as="xs:string*"/>
     <xsl:text>&#x0A;</xsl:text>
-    <xsl:comment expand-text="true"> *** class specifications in {$vModule} from {$atop:pSource} *** </xsl:comment>
+    <xsl:comment expand-text="true"> *** ATOP: *** class specifications from "{$vModule}" in {$atop:pSource} *** </xsl:comment>
     <xsl:sequence select="$atop:vBaseOdd//classSpec[ @module eq $vModule ]"/>
     <xsl:text>&#x0A;</xsl:text>
-    <xsl:comment expand-text="true"> *** data specifications in {$vModule} from {$atop:pSource} *** </xsl:comment>
+    <xsl:comment expand-text="true"> *** ATOP: *** data specifications from "{$vModule}" in {$atop:pSource} *** </xsl:comment>
     <xsl:sequence select="$atop:vBaseOdd//dataSpec[ @module eq $vModule ]"/>
     <xsl:text>&#x0A;</xsl:text>
-    <xsl:comment expand-text="true"> *** element specifications in {$vModule} from {$atop:pSource} *** </xsl:comment>
+    <xsl:comment expand-text="true"> *** ATOP: *** element specifications from "{$vModule}" in {$atop:pSource} *** </xsl:comment>
     <xsl:sequence select="$atop:vBaseOdd//elementSpec[ @module eq $vModule ][ not( @ident = $vExcepts ) ][ not( current()/@include ) or @ident = $vIncludes ]"/>
     <xsl:text>&#x0A;</xsl:text>
-    <xsl:comment expand-text="true"> *** macro specifications in {$vModule} from {$atop:pSource} *** </xsl:comment>
+    <xsl:comment expand-text="true"> *** ATOP: *** macro specifications from "{$vModule}" in {$atop:pSource} *** </xsl:comment>
     <xsl:sequence select="$atop:vBaseOdd//macroSpec[ @module eq $vModule ]"/>
   </xsl:template>
   
@@ -266,7 +322,7 @@
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose expand-text="yes">
       <xsl:when test="@key = $tpDeleteUs">
-        <xsl:comment> reference to {@key} datatype deleted here </xsl:comment>
+        <xsl:comment> *** ATOP: reference to {@key} datatype deleted here </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
         <xsl:next-match/>
@@ -314,7 +370,7 @@
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose expand-text="yes">
       <xsl:when test="@key = $tpDeleteUs">
-        <xsl:comment> reference to {@key} macro deleted here </xsl:comment>
+        <xsl:comment> *** ATOP: reference to {@key} macro deleted here </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
         <xsl:next-match/>
@@ -362,7 +418,7 @@
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose expand-text="yes">
       <xsl:when test="@key = $tpDeleteUs">
-        <xsl:comment> reference to {@key} class deleted here </xsl:comment>
+        <xsl:comment> *** ATOP: reference to {@key} class deleted here </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
         <xsl:next-match/>
@@ -399,4 +455,34 @@
     </xsl:copy>
   </xsl:template>
   
+  <!-- ************ pass08, delete constructs being replaced ************ -->
+  
+  <xd:doc>
+    <xd:desc>Remove base specifications of constructs that customization
+    indicates are being replaced.</xd:desc>
+  </xd:doc>
+  <xsl:template match="schemaSpec" mode="atop:mPass08" as="element(schemaSpec)">
+    <xsl:variable name="vReplaceUs" select=".//tei:*[ @mode eq 'replace']!concat( local-name(.), '_', @ident )" as="xs:string*"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="#current">
+        <xsl:with-param name="tpReplaceUs" select="$vReplaceUs" as="xs:string*" tunnel="yes"/>
+      </xsl:apply-templates>
+    </xsl:copy>
+  </xsl:template>
+
+  <xd:doc>
+    <xd:desc>If an elementSpec/@ident matches one of the things-to-be-replaced,
+    then do not copy it.</xd:desc>
+    <xd:param name="tpReplaceUs">list of NCNames of the idents of elements to be replaced</xd:param>
+  </xd:doc>
+  <xsl:template match="elementSpec" mode="atop:mPass08" as="element()?">
+    <xsl:param name="tpReplaceUs" tunnel="yes" as="xs:string*"/>
+    <xsl:choose>
+      <xsl:when test="concat( local-name(.), '_', @ident ) eq $tpReplaceUs  and  @mode ne 'replace'"/>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>
