@@ -18,9 +18,9 @@
    </teiHeader>
    <text>
       <body>
-         <schemaSpec ident="derivation_simple" source="simple_source.xml">
+         <schemaSpec ident="derivation_simple" source="simple_source.xml" start="start">
             
-            <moduleRef key="simple"/>
+            <moduleRef key="simple" except="falseStart"/>
             
             <elementSpec ident="start" mode="change" module="simple">
                <attList>

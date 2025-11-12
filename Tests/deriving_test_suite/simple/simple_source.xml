@@ -19,11 +19,25 @@
    </teiHeader>
    <text>
       <body>
-         <schemaSpec ident="derivation_simple" prefix="drsmp_" ns="http://www.tei-c.org/ns/atop" start="start">
+         <schemaSpec ident="derivation_simple" prefix="drsmp_" ns="http://www.tei-c.org/ns/atop" start="start falseStart">
             
             <moduleSpec ident="simple">
                <gloss>A single module for this simple source.</gloss>
             </moduleSpec>
+            
+            <moduleSpec ident="extra">
+               <gloss>An extra module for experimentation.</gloss>
+            </moduleSpec>
+            
+            <elementSpec ident="falseStart" module="simple">
+               <gloss>Empty element that can be root.</gloss>
+               <classes>
+                  <memberOf key="att.removable"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+            </elementSpec>
             
             <elementSpec ident="start" module="simple">
                <gloss>The root starting element.</gloss>
@@ -86,6 +100,18 @@
                   </attDef>
                </attList>
             </classSpec>
+            
+            <classSpec ident="att.removable" type="atts" module="extra">
+               <attList>
+                  <attDef ident="removeMe" usage="opt">
+                     <gloss>Removable attribute.</gloss>
+                     <datatype>
+                        <dataRef name="string"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
          </schemaSpec>
       </body>
    </text>
