@@ -177,7 +177,7 @@
     
     <xsl:variable name="vCollectionDone" as="node()*">
       <xsl:apply-templates select="$vInputSpecs" mode="atop:mCollection">
-        <xsl:with-param name="tpModuleRefs" as="element(moduleRef)*" select="$atop:vCustOdd//moduleRef" tunnel="yes"/>
+        <!--<xsl:with-param name="tpModuleRefs" as="element(moduleRef)*" select="$atop:vCustOdd//moduleRef" tunnel="yes"/>-->
       </xsl:apply-templates>
     </xsl:variable>
     
@@ -187,12 +187,21 @@
     </xsl:variable>
     
     <!-- Phase 3: Additions. -->
+    <xsl:variable name="vAdditionsDone" as="node()*">
+      <xsl:apply-templates select="$vDeletionsDone" mode="atop:mAddition"/>
+    </xsl:variable>
     
     <!-- Phase 4: Replacements. -->
+    <xsl:variable name="vReplacementsDone" as="node()*">
+      <xsl:apply-templates select="$vAdditionsDone" mode="atop:mReplacement"/>
+    </xsl:variable>
     
     <!-- Phase 5: Sanity checks. -->
     
     <!-- Phase 6: Output. -->
+    <xsl:result-document href="{$atop:pOutputPath}">
+      <xsl:sequence select="$vReplacementsDone"/>
+    </xsl:result-document>
   </xsl:template>
   
   <!-- Template(s) in the atop:mCollection mode. -->
@@ -212,19 +221,23 @@
     <xd:desc>We match elementSpecs to check whether they should be included
     or not, based on the moduleRefs.</xd:desc>
   </xd:doc>
-  <xsl:template match="elementSpec[not(xs:string(@ident) = $atop:vElementIdentsToInclude)]"/> 
+  <xsl:template match="elementSpec[not(xs:string(@ident) = $atop:vElementIdentsToInclude)]" as="item()" mode="atop:mCollection">
+    <xsl:comment>elementSpec with @ident={@ident} omitted.</xsl:comment>
+  </xsl:template> 
   
   <xd:doc>
     <xd:desc>Any classSpec that has a module attribute matching the 
     ident of one of the included moduleRefs gets included; otherwise
     they're deleted.</xd:desc>
   </xd:doc>
-  <xsl:template match="classSpec[not(xs:string(@module) = $atop:vModuleIdentsToInclude)]" as="element(classSpec)?"/>
+  <xsl:template match="classSpec[not(xs:string(@module) = $atop:vModuleIdentsToInclude)]" as="item()" mode="atop:mCollection">
+    <xsl:comment>classSpec with @ident={@ident} omitted.</xsl:comment>
+  </xsl:template>
     
   <!-- Template(s) in the atop:mDeletion mode. -->
   <xd:doc>
     <xd:desc>A template matching anything that needs to be deleted.</xd:desc>
   </xd:doc>
-  <xsl:template match="node()[atop:unique-ident(.) = $atop:vDeletions]" mode="atop:mDeletion"/>
+  <!--<xsl:template match="node()[atop:unique-ident(.) = $atop:vDeletions]" mode="atop:mDeletion"/>-->
   
 </xsl:stylesheet>
