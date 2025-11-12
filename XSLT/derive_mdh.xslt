@@ -7,6 +7,7 @@
   xmlns:atop="http://www.tei-c.org/ns/atop"
   xpath-default-namespace="http://www.tei-c.org/ns/1.0"
   exclude-result-prefixes="#all"
+  expand-text="yes"
   version="3.0">
   
   <xd:doc>
@@ -37,6 +38,15 @@
     <xd:desc>XML in, XML out.</xd:desc>
   </xd:doc>
   <xsl:output method="xml" indent="yes" encoding="UTF-8" normalization-form="NFC"/>
+  
+  <xd:doc>
+    <xd:desc>Default processing is to copy myself and continue processing; this 
+      applies to every mode. The mCollection mode is where we interrogate the 
+      moduleRefs in the customization and pull in all the starting points from
+      the base ODD.
+    </xd:desc>
+  </xd:doc>
+  <xsl:mode name="atop:mCollection" on-no-match="shallow-copy"/>
   
   <xd:doc>
     <xd:desc>Default processing is to copy myself and continue processing; this 
@@ -94,6 +104,39 @@
        the atop:vMapReplacements map would be replaced by the value found in that
        map. -->
   
+  <xd:doc>
+    <xd:desc>A map of all spec elements from their idents to their module.
+    So if a module is not included for a specific ident, then the item
+    itself can be discarded.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vMapSpecIdentsToModuleIdents" as="map(xs:string, xs:string)">
+    <xsl:map>
+      <xsl:for-each select="$atop:vBaseOdd//*[@module and @ident]">
+        <xsl:map-entry key="xs:string(@ident)" select="xs:string(@module)"/>
+      </xsl:for-each>
+    </xsl:map>
+  </xsl:variable>
+  
+  <xd:doc>
+    <xd:desc>A list of all elementSpecs which should be included, based on
+      moduleRef/@include and moduleRef/@exclude.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vElementIdentsToInclude" as="xs:string*">
+    <xsl:for-each select="$atop:vCustOdd//moduleRef">
+      <xsl:variable name="vModuleRef" as="element(moduleRef)" select="."/>
+      <xsl:variable name="vElementIdents" as="xs:string*" select="$atop:vBaseOdd//elementSpec[@module = $vModuleRef/@key]/xs:string(@ident)"/>
+      <xsl:variable name="vIncludes" as="xs:string*" select="if ($vModuleRef/@include) then tokenize(normalize-space($vModuleRef/@include), '\s+') else ()"/>
+      <xsl:variable name="vExcepts" as="xs:string*" select="if ($vModuleRef/@except) then tokenize(normalize-space($vModuleRef/@except), '\s+') else ()"/>
+      <xsl:sequence select="$vElementIdents[(not($vIncludes) and not($vExcepts)) or (. = $vIncludes) or (not($vIncludes) and not(. = $vExcepts))]"/>
+    </xsl:for-each>
+  </xsl:variable>
+  
+  <xd:doc>
+    <xd:desc>A sequence of all the moduleRef/@key attributes so we can
+    easily check when a *Spec element needs to be included.</xd:desc>
+  </xd:doc>
+  <xsl:variable name="atop:vModuleIdentsToInclude" as="xs:string*" select="$atop:vCustOdd//moduleRef/xs:string(@key)"/>
+  
   <!-- For unique identifiers, we use our atop:unique-ident() function for now. -->
   <xd:doc>
     <xd:desc>List of unique idents for items to be deleted.</xd:desc>
@@ -130,24 +173,58 @@
       </xsl:choose>
     </xsl:variable>
     
-    <!-- Phase 1: Deletions. -->
-    <xsl:variable name="vDeletionsDone" as="node()*">
-      <xsl:apply-templates select="$vInputSpecs" mode="atop:mDeletion"/>
+    <!-- Phase 1: pull in what is required based on moduleRefs. -->
+    
+    <xsl:variable name="vCollectionDone" as="node()*">
+      <xsl:apply-templates select="$vInputSpecs" mode="atop:mCollection">
+        <xsl:with-param name="tpModuleRefs" as="element(moduleRef)*" select="$atop:vCustOdd//moduleRef" tunnel="yes"/>
+      </xsl:apply-templates>
     </xsl:variable>
     
-    <!-- Phase 2: Additions. -->
+    <!-- Phase 2: Deletions. -->
+    <xsl:variable name="vDeletionsDone" as="node()*">
+      <xsl:apply-templates select="$vCollectionDone" mode="atop:mDeletion"/>
+    </xsl:variable>
     
-    <!-- Phase 3: Replacements. -->
+    <!-- Phase 3: Additions. -->
     
-    <!-- Phase 4: Sanity checks. -->
+    <!-- Phase 4: Replacements. -->
     
-    <!-- Phase 5: Output. -->
+    <!-- Phase 5: Sanity checks. -->
+    
+    <!-- Phase 6: Output. -->
   </xsl:template>
   
+  <!-- Template(s) in the atop:mCollection mode. -->
+  <xd:doc>
+    <xd:desc>We match moduleSpecs to check whether they should be included
+      or not, based on the moduleRefs.</xd:desc>
+    <xd:param name="tpModuleRefs" as="element(moduleRef)*" tunnel="yes">The moduleRef elements from the customization ODD.</xd:param>
+  </xd:doc>
+  <xsl:template match="moduleSpec" as="element(moduleSpec)?" mode="atop:mCollection">
+    <xsl:param name="tpModuleRefs" as="element(moduleRef)*" tunnel="yes"/>
+    <xsl:if test="@ident = ($tpModuleRefs/@key)">
+      <xsl:copy-of select="."/>
+    </xsl:if>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>We match elementSpecs to check whether they should be included
+    or not, based on the moduleRefs.</xd:desc>
+  </xd:doc>
+  <xsl:template match="elementSpec[not(xs:string(@ident) = $atop:vElementIdentsToInclude)]"/> 
+  
+  <xd:doc>
+    <xd:desc>Any classSpec that has a module attribute matching the 
+    ident of one of the included moduleRefs gets included; otherwise
+    they're deleted.</xd:desc>
+  </xd:doc>
+  <xsl:template match="classSpec[not(xs:string(@module) = $atop:vModuleIdentsToInclude)]" as="element(classSpec)?"/>
+    
   <!-- Template(s) in the atop:mDeletion mode. -->
   <xd:doc>
     <xd:desc>A template matching anything that needs to be deleted.</xd:desc>
   </xd:doc>
-  <xsl:template match="node()[unique-ident(.) = $atop:vDeletions]" mode="atop:mDeletion"/>
+  <xsl:template match="node()[atop:unique-ident(.) = $atop:vDeletions]" mode="atop:mDeletion"/>
   
 </xsl:stylesheet>
