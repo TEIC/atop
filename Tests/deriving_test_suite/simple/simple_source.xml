@@ -20,8 +20,13 @@
    <text>
       <body>
          <schemaSpec ident="derivation_simple" prefix="drsmp_" ns="http://www.tei-c.org/ns/atop" start="start">
-            <gloss>The root starting element.</gloss>
-            <elementSpec ident="start">
+            
+            <moduleSpec ident="simple">
+               <gloss>A single module for this simple source.</gloss>
+            </moduleSpec>
+            
+            <elementSpec ident="start" module="simple">
+               <gloss>The root starting element.</gloss>
                <classes>
                   <memberOf key="att.identifiable"/>
                </classes>
@@ -43,7 +48,7 @@
                </attList>
             </elementSpec>
             
-            <elementSpec ident="child">
+            <elementSpec ident="child" module="simple">
                <gloss>A child element.</gloss>
                <classes>
                   <memberOf key="att.identifiable"/>
@@ -61,7 +66,7 @@
                </attList>
             </elementSpec>
             
-            <elementSpec ident="grandchild">
+            <elementSpec ident="grandchild" module="simple">
                <gloss>Child of a child.</gloss>
                <classes>
                   <memberOf key="att.identifiable"/>
@@ -71,7 +76,7 @@
                </content>
             </elementSpec>
             
-            <classSpec ident="att.identifiable" type="atts">
+            <classSpec ident="att.identifiable" type="atts" module="simple">
                <attList>
                   <attDef ident="xml:id" usage="opt">
                      <gloss xml:lang="en">Specifies the unique identifier.</gloss>
