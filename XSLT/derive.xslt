@@ -34,10 +34,98 @@
   <xsl:mode name="atop:mPass05" on-no-match="shallow-copy"><!-- macro deletion --></xsl:mode>
   <xsl:mode name="atop:mPass06" on-no-match="shallow-copy"><!-- class deletion --></xsl:mode>
   <xsl:mode name="atop:mPass07" on-no-match="shallow-copy"><!-- post-deletion clean-up --></xsl:mode>
-  <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- delete portion of element replacement --></xsl:mode>
-  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!-- delete portion of datatype replacement --></xsl:mode>
-  <xsl:mode name="atop:mPass10" on-no-match="shallow-copy"><!-- delete portion of macro replacement --></xsl:mode>
-  <xsl:mode name="atop:mPass11" on-no-match="shallow-copy"><!-- delete portion of class replacement --></xsl:mode>
+  <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- delete portion of replacement --></xsl:mode>
+  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass10" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass11" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass12" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass13" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass14" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass15" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass16" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass17" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass18" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass19" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass20" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass21" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass22" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass23" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass24" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass25" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass26" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass27" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass28" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass29" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass30" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass31" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass32" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass33" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass34" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass35" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass36" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass37" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass38" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass39" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass40" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass41" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass42" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass43" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass44" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass45" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass46" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass47" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass48" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass49" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass50" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass51" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass52" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass53" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass54" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass55" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass56" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass57" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass58" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass59" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass60" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass61" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass62" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass63" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass64" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass65" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass66" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass67" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass68" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass69" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass70" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass71" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass72" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass73" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass74" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass75" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass76" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass77" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass78" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass79" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass80" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass81" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass82" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass83" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass84" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass85" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass86" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass87" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass88" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass89" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass90" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass91" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass92" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass93" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass94" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass95" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass96" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass97" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass98" on-no-match="shallow-copy"></xsl:mode>
+  <xsl:mode name="atop:mPass99" on-no-match="shallow-copy"></xsl:mode>
 
   <xd:doc>
     <xd:desc>Debug flag: generate output (to /tmp/) for each pass iff true.</xd:desc>
@@ -66,13 +154,15 @@
 
   <!--
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      The elements that are members of att.identifiable, and thus have
+      @ident, are: <attDef>, <classSpec>, <constraintSpec>,
+      <dataSpec>, <elementSpec>, <macroSpec>, <moduleSpec>,
+      <paramSpec>, <schemaSpec>, and also <remarks> & <valItem>.
+
       The elements that are members of att.combinable, and thus have
-      @mode, are:
-      <attDef>, <classSpec>, <constraintSpec>, <dataSpec>,
-      <elementSpec>, <macroSpec>, <moduleSpec>, <paramSpec>,
-      <schemaSpec>, <defaultVal>, <remarks>, <valDesc>, <valItem>, and
-      <valList>
-      also <classes> [change,replace] & <memberOf> [add,delete] have @mode
+      @mode, are all the elements mentioned above plus: <defaultVal>,
+      <valDesc>, and <valList>; also <classes> [change,replace] &
+      <memberOf> [add,delete] have @mode.
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   -->
   
@@ -167,12 +257,716 @@
       <xsl:variable name="vPass11" as="node()+">
         <xsl:apply-templates select="$vPass10" mode="atop:mPass11"/>
       </xsl:variable>
-      <xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_11.xml" use-when="$atop:pDebug">
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_11.xml" use-when="$atop:pDebug">
         <xsl:sequence select="$vPass11"/>
-      </xsl:result-document>
+      </xsl:result-document -->
+
+      <!-- pass 12: NOP -->
+      <xsl:variable name="vPass12" as="node()+">
+        <xsl:apply-templates select="$vPass11" mode="atop:mPass12"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_12.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass12"/>
+      </xsl:result-document -->
+
+      <!-- pass 13: NOP -->
+      <xsl:variable name="vPass13" as="node()+">
+        <xsl:apply-templates select="$vPass12" mode="atop:mPass13"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_13.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass13"/>
+      </xsl:result-document -->
+
+      <!-- pass 14: NOP -->
+      <xsl:variable name="vPass14" as="node()+">
+        <xsl:apply-templates select="$vPass13" mode="atop:mPass14"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_14.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass14"/>
+      </xsl:result-document -->
+
+      <!-- pass 15: NOP -->
+      <xsl:variable name="vPass15" as="node()+">
+        <xsl:apply-templates select="$vPass14" mode="atop:mPass15"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_15.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass15"/>
+      </xsl:result-document -->
+
+      <!-- pass 16: NOP -->
+      <xsl:variable name="vPass16" as="node()+">
+        <xsl:apply-templates select="$vPass15" mode="atop:mPass16"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_16.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass16"/>
+      </xsl:result-document -->
+
+      <!-- pass 17: NOP -->
+      <xsl:variable name="vPass17" as="node()+">
+        <xsl:apply-templates select="$vPass16" mode="atop:mPass17"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_17.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass17"/>
+      </xsl:result-document -->
+
+      <!-- pass 18: NOP -->
+      <xsl:variable name="vPass18" as="node()+">
+        <xsl:apply-templates select="$vPass17" mode="atop:mPass18"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_18.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass18"/>
+      </xsl:result-document -->
+
+      <!-- pass 19: NOP -->
+      <xsl:variable name="vPass19" as="node()+">
+        <xsl:apply-templates select="$vPass18" mode="atop:mPass19"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_19.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass19"/>
+      </xsl:result-document -->
+
+      <!-- pass 20: NOP -->
+      <xsl:variable name="vPass20" as="node()+">
+        <xsl:apply-templates select="$vPass19" mode="atop:mPass20"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_20.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass20"/>
+      </xsl:result-document -->
+
+      <!-- pass 21: NOP -->
+      <xsl:variable name="vPass21" as="node()+">
+        <xsl:apply-templates select="$vPass20" mode="atop:mPass21"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_21.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass21"/>
+      </xsl:result-document -->
+
+      <!-- pass 22: NOP -->
+      <xsl:variable name="vPass22" as="node()+">
+        <xsl:apply-templates select="$vPass21" mode="atop:mPass22"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_22.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass22"/>
+      </xsl:result-document -->
+
+      <!-- pass 23: NOP -->
+      <xsl:variable name="vPass23" as="node()+">
+        <xsl:apply-templates select="$vPass22" mode="atop:mPass23"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_23.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass23"/>
+      </xsl:result-document -->
+
+      <!-- pass 24: NOP -->
+      <xsl:variable name="vPass24" as="node()+">
+        <xsl:apply-templates select="$vPass23" mode="atop:mPass24"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_24.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass24"/>
+      </xsl:result-document -->
+
+      <!-- pass 25: NOP -->
+      <xsl:variable name="vPass25" as="node()+">
+        <xsl:apply-templates select="$vPass24" mode="atop:mPass25"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_25.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass25"/>
+      </xsl:result-document -->
+
+      <!-- pass 26: NOP -->
+      <xsl:variable name="vPass26" as="node()+">
+        <xsl:apply-templates select="$vPass25" mode="atop:mPass26"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_26.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass26"/>
+      </xsl:result-document -->
+
+      <!-- pass 27: NOP -->
+      <xsl:variable name="vPass27" as="node()+">
+        <xsl:apply-templates select="$vPass26" mode="atop:mPass27"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_27.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass27"/>
+      </xsl:result-document -->
+
+      <!-- pass 28: NOP -->
+      <xsl:variable name="vPass28" as="node()+">
+        <xsl:apply-templates select="$vPass27" mode="atop:mPass28"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_28.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass28"/>
+      </xsl:result-document -->
+
+      <!-- pass 29: NOP -->
+      <xsl:variable name="vPass29" as="node()+">
+        <xsl:apply-templates select="$vPass28" mode="atop:mPass29"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_29.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass29"/>
+      </xsl:result-document -->
+
+      <!-- pass 30: NOP -->
+      <xsl:variable name="vPass30" as="node()+">
+        <xsl:apply-templates select="$vPass29" mode="atop:mPass30"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_30.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass30"/>
+      </xsl:result-document -->
+
+      <!-- pass 31: NOP -->
+      <xsl:variable name="vPass31" as="node()+">
+        <xsl:apply-templates select="$vPass30" mode="atop:mPass31"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_31.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass31"/>
+      </xsl:result-document -->
+
+      <!-- pass 32: NOP -->
+      <xsl:variable name="vPass32" as="node()+">
+        <xsl:apply-templates select="$vPass31" mode="atop:mPass32"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_32.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass32"/>
+      </xsl:result-document -->
+
+      <!-- pass 33: NOP -->
+      <xsl:variable name="vPass33" as="node()+">
+        <xsl:apply-templates select="$vPass32" mode="atop:mPass33"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_33.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass33"/>
+      </xsl:result-document -->
+
+      <!-- pass 34: NOP -->
+      <xsl:variable name="vPass34" as="node()+">
+        <xsl:apply-templates select="$vPass33" mode="atop:mPass34"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_34.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass34"/>
+      </xsl:result-document -->
+
+      <!-- pass 35: NOP -->
+      <xsl:variable name="vPass35" as="node()+">
+        <xsl:apply-templates select="$vPass34" mode="atop:mPass35"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_35.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass35"/>
+      </xsl:result-document -->
+
+      <!-- pass 36: NOP -->
+      <xsl:variable name="vPass36" as="node()+">
+        <xsl:apply-templates select="$vPass35" mode="atop:mPass36"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_36.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass36"/>
+      </xsl:result-document -->
+
+      <!-- pass 37: NOP -->
+      <xsl:variable name="vPass37" as="node()+">
+        <xsl:apply-templates select="$vPass36" mode="atop:mPass37"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_37.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass37"/>
+      </xsl:result-document -->
+
+      <!-- pass 38: NOP -->
+      <xsl:variable name="vPass38" as="node()+">
+        <xsl:apply-templates select="$vPass37" mode="atop:mPass38"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_38.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass38"/>
+      </xsl:result-document -->
+
+      <!-- pass 39: NOP -->
+      <xsl:variable name="vPass39" as="node()+">
+        <xsl:apply-templates select="$vPass38" mode="atop:mPass39"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_39.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass39"/>
+      </xsl:result-document -->
+
+      <!-- pass 40: NOP -->
+      <xsl:variable name="vPass40" as="node()+">
+        <xsl:apply-templates select="$vPass39" mode="atop:mPass40"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_40.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass40"/>
+      </xsl:result-document -->
+
+      <!-- pass 41: NOP -->
+      <xsl:variable name="vPass41" as="node()+">
+        <xsl:apply-templates select="$vPass40" mode="atop:mPass41"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_41.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass41"/>
+      </xsl:result-document -->
+
+      <!-- pass 42: NOP -->
+      <xsl:variable name="vPass42" as="node()+">
+        <xsl:apply-templates select="$vPass41" mode="atop:mPass42"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_42.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass42"/>
+      </xsl:result-document -->
+
+      <!-- pass 43: NOP -->
+      <xsl:variable name="vPass43" as="node()+">
+        <xsl:apply-templates select="$vPass42" mode="atop:mPass43"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_43.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass43"/>
+      </xsl:result-document -->
+
+      <!-- pass 44: NOP -->
+      <xsl:variable name="vPass44" as="node()+">
+        <xsl:apply-templates select="$vPass43" mode="atop:mPass44"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_44.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass44"/>
+      </xsl:result-document -->
+
+      <!-- pass 45: NOP -->
+      <xsl:variable name="vPass45" as="node()+">
+        <xsl:apply-templates select="$vPass44" mode="atop:mPass45"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_45.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass45"/>
+      </xsl:result-document -->
+
+      <!-- pass 46: NOP -->
+      <xsl:variable name="vPass46" as="node()+">
+        <xsl:apply-templates select="$vPass45" mode="atop:mPass46"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_46.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass46"/>
+      </xsl:result-document -->
+
+      <!-- pass 47: NOP -->
+      <xsl:variable name="vPass47" as="node()+">
+        <xsl:apply-templates select="$vPass46" mode="atop:mPass47"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_47.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass47"/>
+      </xsl:result-document -->
+
+      <!-- pass 48: NOP -->
+      <xsl:variable name="vPass48" as="node()+">
+        <xsl:apply-templates select="$vPass47" mode="atop:mPass48"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_48.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass48"/>
+      </xsl:result-document -->
+
+      <!-- pass 49: NOP -->
+      <xsl:variable name="vPass49" as="node()+">
+        <xsl:apply-templates select="$vPass48" mode="atop:mPass49"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_49.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass49"/>
+      </xsl:result-document -->
+
+      <!-- pass 50: NOP -->
+      <xsl:variable name="vPass50" as="node()+">
+        <xsl:apply-templates select="$vPass49" mode="atop:mPass50"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_50.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass50"/>
+      </xsl:result-document -->
+
+      <!-- pass 51: NOP -->
+      <xsl:variable name="vPass51" as="node()+">
+        <xsl:apply-templates select="$vPass50" mode="atop:mPass51"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_51.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass51"/>
+      </xsl:result-document -->
+
+      <!-- pass 52: NOP -->
+      <xsl:variable name="vPass52" as="node()+">
+        <xsl:apply-templates select="$vPass51" mode="atop:mPass52"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_52.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass52"/>
+      </xsl:result-document -->
+
+      <!-- pass 53: NOP -->
+      <xsl:variable name="vPass53" as="node()+">
+        <xsl:apply-templates select="$vPass52" mode="atop:mPass53"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_53.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass53"/>
+      </xsl:result-document -->
+
+      <!-- pass 54: NOP -->
+      <xsl:variable name="vPass54" as="node()+">
+        <xsl:apply-templates select="$vPass53" mode="atop:mPass54"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_54.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass54"/>
+      </xsl:result-document -->
+
+      <!-- pass 55: NOP -->
+      <xsl:variable name="vPass55" as="node()+">
+        <xsl:apply-templates select="$vPass54" mode="atop:mPass55"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_55.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass55"/>
+      </xsl:result-document -->
+
+      <!-- pass 56: NOP -->
+      <xsl:variable name="vPass56" as="node()+">
+        <xsl:apply-templates select="$vPass55" mode="atop:mPass56"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_56.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass56"/>
+      </xsl:result-document -->
+
+      <!-- pass 57: NOP -->
+      <xsl:variable name="vPass57" as="node()+">
+        <xsl:apply-templates select="$vPass56" mode="atop:mPass57"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_57.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass57"/>
+      </xsl:result-document -->
+
+      <!-- pass 58: NOP -->
+      <xsl:variable name="vPass58" as="node()+">
+        <xsl:apply-templates select="$vPass57" mode="atop:mPass58"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_58.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass58"/>
+      </xsl:result-document -->
+
+      <!-- pass 59: NOP -->
+      <xsl:variable name="vPass59" as="node()+">
+        <xsl:apply-templates select="$vPass58" mode="atop:mPass59"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_59.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass59"/>
+      </xsl:result-document -->
+
+      <!-- pass 60: NOP -->
+      <xsl:variable name="vPass60" as="node()+">
+        <xsl:apply-templates select="$vPass59" mode="atop:mPass60"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_60.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass60"/>
+      </xsl:result-document -->
+
+      <!-- pass 61: NOP -->
+      <xsl:variable name="vPass61" as="node()+">
+        <xsl:apply-templates select="$vPass60" mode="atop:mPass61"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_61.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass61"/>
+      </xsl:result-document -->
+
+      <!-- pass 62: NOP -->
+      <xsl:variable name="vPass62" as="node()+">
+        <xsl:apply-templates select="$vPass61" mode="atop:mPass62"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_62.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass62"/>
+      </xsl:result-document -->
+
+      <!-- pass 63: NOP -->
+      <xsl:variable name="vPass63" as="node()+">
+        <xsl:apply-templates select="$vPass62" mode="atop:mPass63"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_63.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass63"/>
+      </xsl:result-document -->
+
+      <!-- pass 64: NOP -->
+      <xsl:variable name="vPass64" as="node()+">
+        <xsl:apply-templates select="$vPass63" mode="atop:mPass64"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_64.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass64"/>
+      </xsl:result-document -->
+
+      <!-- pass 65: NOP -->
+      <xsl:variable name="vPass65" as="node()+">
+        <xsl:apply-templates select="$vPass64" mode="atop:mPass65"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_65.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass65"/>
+      </xsl:result-document -->
+
+      <!-- pass 66: NOP -->
+      <xsl:variable name="vPass66" as="node()+">
+        <xsl:apply-templates select="$vPass65" mode="atop:mPass66"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_66.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass66"/>
+      </xsl:result-document -->
+
+      <!-- pass 67: NOP -->
+      <xsl:variable name="vPass67" as="node()+">
+        <xsl:apply-templates select="$vPass66" mode="atop:mPass67"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_67.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass67"/>
+      </xsl:result-document -->
+
+      <!-- pass 68: NOP -->
+      <xsl:variable name="vPass68" as="node()+">
+        <xsl:apply-templates select="$vPass67" mode="atop:mPass68"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_68.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass68"/>
+      </xsl:result-document -->
+
+      <!-- pass 69: NOP -->
+      <xsl:variable name="vPass69" as="node()+">
+        <xsl:apply-templates select="$vPass68" mode="atop:mPass69"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_69.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass69"/>
+      </xsl:result-document -->
+
+      <!-- pass 70: NOP -->
+      <xsl:variable name="vPass70" as="node()+">
+        <xsl:apply-templates select="$vPass69" mode="atop:mPass70"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_70.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass70"/>
+      </xsl:result-document -->
+
+      <!-- pass 71: NOP -->
+      <xsl:variable name="vPass71" as="node()+">
+        <xsl:apply-templates select="$vPass70" mode="atop:mPass71"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_71.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass71"/>
+      </xsl:result-document -->
+
+      <!-- pass 72: NOP -->
+      <xsl:variable name="vPass72" as="node()+">
+        <xsl:apply-templates select="$vPass71" mode="atop:mPass72"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_72.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass72"/>
+      </xsl:result-document -->
+
+      <!-- pass 73: NOP -->
+      <xsl:variable name="vPass73" as="node()+">
+        <xsl:apply-templates select="$vPass72" mode="atop:mPass73"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_73.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass73"/>
+      </xsl:result-document -->
+
+      <!-- pass 74: NOP -->
+      <xsl:variable name="vPass74" as="node()+">
+        <xsl:apply-templates select="$vPass73" mode="atop:mPass74"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_74.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass74"/>
+      </xsl:result-document -->
+
+      <!-- pass 75: NOP -->
+      <xsl:variable name="vPass75" as="node()+">
+        <xsl:apply-templates select="$vPass74" mode="atop:mPass75"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_75.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass75"/>
+      </xsl:result-document -->
+
+      <!-- pass 76: NOP -->
+      <xsl:variable name="vPass76" as="node()+">
+        <xsl:apply-templates select="$vPass75" mode="atop:mPass76"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_76.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass76"/>
+      </xsl:result-document -->
+
+      <!-- pass 77: NOP -->
+      <xsl:variable name="vPass77" as="node()+">
+        <xsl:apply-templates select="$vPass76" mode="atop:mPass77"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_77.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass77"/>
+      </xsl:result-document -->
+
+      <!-- pass 78: NOP -->
+      <xsl:variable name="vPass78" as="node()+">
+        <xsl:apply-templates select="$vPass77" mode="atop:mPass78"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_78.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass78"/>
+      </xsl:result-document -->
+
+      <!-- pass 79: NOP -->
+      <xsl:variable name="vPass79" as="node()+">
+        <xsl:apply-templates select="$vPass78" mode="atop:mPass79"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_79.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass79"/>
+      </xsl:result-document -->
+
+      <!-- pass 80: NOP -->
+      <xsl:variable name="vPass80" as="node()+">
+        <xsl:apply-templates select="$vPass79" mode="atop:mPass80"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_80.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass80"/>
+      </xsl:result-document -->
+
+      <!-- pass 81: NOP -->
+      <xsl:variable name="vPass81" as="node()+">
+        <xsl:apply-templates select="$vPass80" mode="atop:mPass81"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_81.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass81"/>
+      </xsl:result-document -->
+
+      <!-- pass 82: NOP -->
+      <xsl:variable name="vPass82" as="node()+">
+        <xsl:apply-templates select="$vPass81" mode="atop:mPass82"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_82.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass82"/>
+      </xsl:result-document -->
+
+      <!-- pass 83: NOP -->
+      <xsl:variable name="vPass83" as="node()+">
+        <xsl:apply-templates select="$vPass82" mode="atop:mPass83"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_83.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass83"/>
+      </xsl:result-document -->
+
+      <!-- pass 84: NOP -->
+      <xsl:variable name="vPass84" as="node()+">
+        <xsl:apply-templates select="$vPass83" mode="atop:mPass84"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_84.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass84"/>
+      </xsl:result-document -->
+
+      <!-- pass 85: NOP -->
+      <xsl:variable name="vPass85" as="node()+">
+        <xsl:apply-templates select="$vPass84" mode="atop:mPass85"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_85.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass85"/>
+      </xsl:result-document -->
+
+      <!-- pass 86: NOP -->
+      <xsl:variable name="vPass86" as="node()+">
+        <xsl:apply-templates select="$vPass85" mode="atop:mPass86"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_86.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass86"/>
+      </xsl:result-document -->
+
+      <!-- pass 87: NOP -->
+      <xsl:variable name="vPass87" as="node()+">
+        <xsl:apply-templates select="$vPass86" mode="atop:mPass87"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_87.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass87"/>
+      </xsl:result-document -->
+
+      <!-- pass 88: NOP -->
+      <xsl:variable name="vPass88" as="node()+">
+        <xsl:apply-templates select="$vPass87" mode="atop:mPass88"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_88.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass88"/>
+      </xsl:result-document -->
+
+      <!-- pass 89: NOP -->
+      <xsl:variable name="vPass89" as="node()+">
+        <xsl:apply-templates select="$vPass88" mode="atop:mPass89"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_89.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass89"/>
+      </xsl:result-document -->
+
+      <!-- pass 90: NOP -->
+      <xsl:variable name="vPass90" as="node()+">
+        <xsl:apply-templates select="$vPass89" mode="atop:mPass90"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_90.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass90"/>
+      </xsl:result-document -->
+
+      <!-- pass 91: NOP -->
+      <xsl:variable name="vPass91" as="node()+">
+        <xsl:apply-templates select="$vPass90" mode="atop:mPass91"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_91.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass91"/>
+      </xsl:result-document -->
+
+      <!-- pass 92: NOP -->
+      <xsl:variable name="vPass92" as="node()+">
+        <xsl:apply-templates select="$vPass91" mode="atop:mPass92"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_92.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass92"/>
+      </xsl:result-document -->
+
+      <!-- pass 93: NOP -->
+      <xsl:variable name="vPass93" as="node()+">
+        <xsl:apply-templates select="$vPass92" mode="atop:mPass93"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_93.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass93"/>
+      </xsl:result-document -->
+
+      <!-- pass 94: NOP -->
+      <xsl:variable name="vPass94" as="node()+">
+        <xsl:apply-templates select="$vPass93" mode="atop:mPass94"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_94.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass94"/>
+      </xsl:result-document -->
+
+      <!-- pass 95: NOP -->
+      <xsl:variable name="vPass95" as="node()+">
+        <xsl:apply-templates select="$vPass94" mode="atop:mPass95"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_95.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass95"/>
+      </xsl:result-document -->
+
+      <!-- pass 96: NOP -->
+      <xsl:variable name="vPass96" as="node()+">
+        <xsl:apply-templates select="$vPass95" mode="atop:mPass96"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_96.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass96"/>
+      </xsl:result-document -->
+
+      <!-- pass 97: NOP -->
+      <xsl:variable name="vPass97" as="node()+">
+        <xsl:apply-templates select="$vPass96" mode="atop:mPass97"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_97.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass97"/>
+      </xsl:result-document -->
+
+      <!-- pass 98: NOP -->
+      <xsl:variable name="vPass98" as="node()+">
+        <xsl:apply-templates select="$vPass97" mode="atop:mPass98"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_98.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass98"/>
+      </xsl:result-document -->
+
+      <!-- pass 99: NOP -->
+      <xsl:variable name="vPass99" as="node()+">
+        <xsl:apply-templates select="$vPass98" mode="atop:mPass99"/>
+      </xsl:variable>
+      <!-- xsl:result-document href="/tmp/{$atop:pDebugName}_post-pass_99.xml" use-when="$atop:pDebug">
+        <xsl:sequence select="$vPass99"/>
+      </xsl:result-document -->
 
       <!-- output -->
-      <xsl:sequence select="$vPass11"/>
+      <xsl:sequence select="$vPass99"/>
     </xsl:copy>
   </xsl:template>
 
@@ -433,7 +1227,7 @@
       or &lt;sequence> empty (which is to say, without any oddDecl or RELAX NG
       descendants) just kill it.</xd:desc>
   </xd:doc>
-  <xsl:template match="(alternate|interleave|sequence)[ atop:has-no-content-content(.) ]" mode="atop:mPass07"/>
+  <xsl:template match="(alternate|interleave|sequence)[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="empty-sequence()"/>
   
   <xd:doc>
     <xd:desc>If our deletions have left a &lt;content> empty (same definition as
@@ -441,6 +1235,7 @@
   </xd:doc>
   <xsl:template match="content[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="element(content)">
     <xsl:copy>
+      <xsl:apply-templates select="@*" mode="#current"/>
       <empty/>
     </xsl:copy>
   </xsl:template>
@@ -451,18 +1246,19 @@
   </xd:doc>
   <xsl:template match="datatype[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="element(datatype)">
     <xsl:copy>
+      <xsl:apply-templates select="@*" mode="#current"/>
       <dataRef name="string"/> <!-- cannot use a TEI datatype as it may have been deleted -->
     </xsl:copy>
   </xsl:template>
   
-  <!-- ************ pass08, delete constructs being replaced ************ -->
-  
+  <!-- ******** pass08, delete portion of replacement -->
+
   <xd:doc>
-    <xd:desc>Remove base specifications of constructs that customization
-    indicates are being replaced.</xd:desc>
+    <xd:desc>Remove base specifications that customization indicates
+    are being replaced.</xd:desc>
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass08" as="element(schemaSpec)">
-    <xsl:variable name="vReplaceUs" select=".//tei:*[ @mode eq 'replace']!concat( local-name(.), '_', @ident )" as="xs:string*"/>
+    <xsl:variable name="vReplaceUs" select=".//*[ @mode eq 'replace']!atop:what-I-specify(.)" as="xs:string*"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpReplaceUs" select="$vReplaceUs" as="xs:string*" tunnel="yes"/>
@@ -471,18 +1267,18 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>If an elementSpec/@ident matches one of the things-to-be-replaced,
-    then do not copy it.</xd:desc>
-    <xd:param name="tpReplaceUs">list of NCNames of the idents of elements to be replaced</xd:param>
+    <xd:desc>If what a specification element specifies matches one of
+    the things-to-be-replaced, then do not copy it.</xd:desc>
+    <xd:param name="tpReplaceUs">list of atop:what-I-specify values of the elements to be replaced</xd:param>
   </xd:doc>
-  <xsl:template match="elementSpec" mode="atop:mPass08" as="element()?">
+  <xsl:template match="attDef | classSpec | dataSpec | elementSpec | macroSpec" mode="atop:mPass08" as="element()?">
     <xsl:param name="tpReplaceUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
-      <xsl:when test="concat( local-name(.), '_', @ident ) eq $tpReplaceUs  and  @mode ne 'replace'"/>
+      <xsl:when test="atop:what-I-specify(.) = $tpReplaceUs  and  not( @mode eq 'replace')"/>
       <xsl:otherwise>
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-
+  
 </xsl:stylesheet>
