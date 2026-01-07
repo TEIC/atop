@@ -181,19 +181,19 @@
       </xsl:apply-templates>
     </xsl:variable>
     
-    <!-- Phase 2: Deletions. -->
-    <xsl:variable name="vDeletionsDone" as="node()*">
-      <xsl:apply-templates select="$vCollectionDone" mode="atop:mDeletion"/>
+    <!-- Phase 2: Additions. -->
+    <xsl:variable name="vAdditionsDone" as="node()*">
+      <xsl:apply-templates select="$vCollectionDone" mode="atop:mAddition"/>
     </xsl:variable>
     
-    <!-- Phase 3: Additions. -->
-    <xsl:variable name="vAdditionsDone" as="node()*">
-      <xsl:apply-templates select="$vDeletionsDone" mode="atop:mAddition"/>
+    <!-- Phase 3: Deletions. -->
+    <xsl:variable name="vDeletionsDone" as="node()*">
+      <xsl:apply-templates select="$vAdditionsDone" mode="atop:mDeletion"/>
     </xsl:variable>
     
     <!-- Phase 4: Replacements. -->
     <xsl:variable name="vReplacementsDone" as="node()*">
-      <xsl:apply-templates select="$vAdditionsDone" mode="atop:mReplacement"/>
+      <xsl:apply-templates select="$vDeletionsDone" mode="atop:mReplacement"/>
     </xsl:variable>
     
     <!-- Phase 5: Sanity checks. -->
