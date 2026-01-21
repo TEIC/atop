@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../../Schemas/post-assembleSchemaSpecification.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="../../../Schemas/post-assembleSchemaSpecification.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="../../../Schemas/derived.sch" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Title</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>part of ATOP test suite</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>born digital</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <schemaSpec ident="derivation_simple" prefix="drsmp_" ns="http://www.tei-c.org/ns/atop" start="start falseStart">
+            
+            <moduleSpec ident="simple">
+               <gloss>A single module for this simple source.</gloss>
+            </moduleSpec>
+            
+            <moduleSpec ident="extra">
+               <gloss>An extra module for experimentation.</gloss>
+            </moduleSpec>
+            
+            <elementSpec ident="falseStart" module="simple">
+               <gloss>Empty element that can be root.</gloss>
+               <classes>
+                  <memberOf key="att.removable"/>
+               </classes>
+               <content>
+                  <empty/>
+               </content>
+            </elementSpec>
+            
+            <elementSpec ident="start" module="simple">
+               <gloss>The root starting element.</gloss>
+               <classes>
+                  <memberOf key="att.identifiable"/>
+               </classes>
+               <content>
+                  <elementRef key="child" minOccurs="1" maxOccurs="unbounded"/>
+               </content>
+               <attList>
+                  <attDef ident="toBeModified">
+                     <gloss>Attribute we want to modify.</gloss>
+                     <valList type="closed">
+                        <valItem ident="valueOne">
+                           <gloss>First value</gloss>
+                        </valItem>
+                        <valItem ident="valueTwo">
+                           <gloss>Second value</gloss>
+                        </valItem>
+                     </valList>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <elementSpec ident="child" module="simple">
+               <gloss>A child element.</gloss>
+               <classes>
+                  <memberOf key="att.identifiable"/>
+               </classes>
+               <content>
+                  <elementRef key="grandchild" minOccurs="1" maxOccurs="unbounded"/> 
+               </content>
+               <attList>
+                  <attDef ident="unwanted">
+                     <gloss>An attribute we don't want.</gloss>
+                     <datatype>
+                        <dataRef name="NCName"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <elementSpec ident="grandchild" module="simple">
+               <gloss>Child of a child.</gloss>
+               <classes>
+                  <memberOf key="att.identifiable"/>
+               </classes>
+               <content>
+                  <textNode/>
+               </content>
+            </elementSpec>
+            
+            <classSpec ident="att.identifiable" type="atts" module="simple">
+               <attList>
+                  <attDef ident="xml:id" usage="opt">
+                     <gloss xml:lang="en">Specifies the unique identifier.</gloss>
+                     <datatype maxOccurs="1">
+                        <dataRef name="NCName"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+            <classSpec ident="att.removable" type="atts" module="extra">
+               <attList>
+                  <attDef ident="removeMe" usage="opt">
+                     <gloss>Removable attribute.</gloss>
+                     <datatype>
+                        <dataRef name="string"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
