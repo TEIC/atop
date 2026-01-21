@@ -80,7 +80,7 @@
         <moduleRef key="iso-fs"/>
         <moduleRef key="nets"/>
         <moduleRef key="certainty"/> 
-        <moduleRef except="specGrp specGrpRef moduleRef" key="tagdocs"/>
+        <moduleRef key="tagdocs"/>
 
         <!-- ******************************************** -->
         <!-- General high-level constraint specifications -->
