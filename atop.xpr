@@ -2154,6 +2154,26 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
+                                    <String>Schemas/post-assembleSchemaSpecification.odd</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>4/tei/teip5odd.framework/TEI ODD/TEI ODD to RelaxNG XML</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>ANT</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioStorageLocations">
+                                    <list>
+                                        <Byte>2</Byte>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
                                     <String>temptest/odd1.xml</String>
                                 </field>
                                 <field name="scenarioIds">
@@ -2344,6 +2364,9 @@ ancestor-or-self::*:return[namespace-uri() = "http://www.oxygenxml.com/ns/doc/xs
                                             </field>
                                         </xprocParameterPort>
                                     </xprocParameterPort-array>
+                                </field>
+                                <field name="configFile">
+                                    <null/>
                                 </field>
                                 <field name="advancedOptionsMap">
                                     <null/>
