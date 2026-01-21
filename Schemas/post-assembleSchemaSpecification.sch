@@ -3,14 +3,14 @@
         xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
         queryBinding="xslt3">
    <title>Schematron extracted from post-assembleSchemaSpecification.rng</title>
-   <pattern id="d9e128714-constraint">
+   <pattern id="d9e129511-constraint">
       <rule context="tei:content">
          <report test="descendant::*[not(namespace-uri(.) =               ('http://relaxng.org/ns/compatibility/annotations/1.0', 'http://relaxng.org/ns/structure/1.0', 'http://www.tei-c.org/ns/1.0'))]">content descendants must be in the
               namespaces
               'http://relaxng.org/ns/compatibility/annotations/1.0', 'http://relaxng.org/ns/structure/1.0', 'http://www.tei-c.org/ns/1.0'</report>
       </rule>
    </pattern>
-   <pattern id="d9e130311-constraint">
+   <pattern id="d9e131108-constraint">
       <rule context="tei:datatype">
          <report test="descendant::*[not(namespace-uri(.) =               ('http://relaxng.org/ns/structure/1.0', 'http://www.tei-c.org/ns/1.0'))]">datatype descendants must be in the
               namespaces
@@ -432,7 +432,44 @@ should correspond to an existing module, via a moduleSpec or
          <report test="@source" role="error">An element reference within a content model must refer to a locally defined element specification (and thus this &lt;elementRef&gt; should not have @source).</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-elementSpec-child-constraint-based-on-mode-constraint-rule-67">
+   <pattern id="post-assembleSchemaSpecification-moduleRef-only_rng_in_moduleRef_content-constraint-rule-67">
+      <rule context="tei:moduleRef/tei:content">
+         <report test="*[ not( self::rng:* or self::a:* ) ]"> The content of an ATOP
+                  module reference after assembling needs to be RELAX NG and RELAX NG *only*. </report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-moduleRef-modref-constraint-rule-68">
+      <rule context="tei:moduleRef">
+         <report test="* and @key">
+          Child elements of <name/> are only allowed when an external module is being loaded
+        </report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-moduleRef-not-same-prefix-constraint-rule-69">
+      <rule context="tei:moduleRef">
+         <report test="//*[ not( generate-id(.) eq generate-id( current() ) ) ]/@prefix = @prefix">The prefix attribute
+            of <name/> should not match that of any other
+            element (it would defeat the purpose)</report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-moduleRef-not-except-and-include-constraint-rule-70">
+      <rule context="tei:moduleRef">
+         <report test="@except and @include">It is an error to supply both the @include and @except attributes</report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-moduleRef-prefix-not-same-prefix-constraint-rule-71">
+      <rule context="tei:moduleRef">
+         <report test="//*[ not( generate-id(.) eq generate-id( current() ) ) ]/@prefix = @prefix">The prefix attribute
+            of <name/> should not match that of any other
+            element (it would defeat the purpose)</report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-moduleRef-prefix-not-except-and-include-constraint-rule-72">
+      <rule context="tei:moduleRef">
+         <report test="@except and @include">It is an error to supply both the @include and @except attributes</report>
+      </rule>
+   </pattern>
+   <pattern id="post-assembleSchemaSpecification-elementSpec-child-constraint-based-on-mode-constraint-rule-73">
       <rule context="tei:elementSpec[ @mode eq 'delete' ]">
          <report test="child::*">This elementSpec element has a mode= of "delete" even though it has child elements. Change the mode= to "add", "change", or "replace", or remove the child elements.</report>
       </rule>
@@ -440,24 +477,24 @@ should correspond to an existing module, via a moduleSpec or
          <assert test="child::* | (@* except (@mode, @ident))">This elementSpec element has a mode= of "<value-of select="@mode"/>", but does not have any child elements or schema-changing attributes. Specify child elements, use validUntil=, predeclare=, ns=, or prefix=, or change the mode= to "delete".</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-dataSpec-no_elements_in_data_content-constraint-rule-69">
+   <pattern id="post-assembleSchemaSpecification-dataSpec-no_elements_in_data_content-constraint-rule-75">
       <rule role="warn" context="tei:dataSpec/tei:content">
          <report test=".//tei:anyElement | .//tei:classRef | .//tei:elementRef">
           A datatype specification should not refer to an element or a class.
         </report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-listRef-TagDocsNestinglistRef-constraint-rule-70">
+   <pattern id="post-assembleSchemaSpecification-listRef-TagDocsNestinglistRef-constraint-rule-76">
       <rule context="( tei:classSpec | tei:dataSpec | tei:elementSpec | tei:macroSpec | tei:moduleSpec | tei:schemaSpec | tei:specGrp )/tei:listRef">
          <report test="tei:listRef">In the context of tagset documentation, the listRef element must not self-nest.</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-listRef-TagDocslistRefChildren-constraint-rule-71">
+   <pattern id="post-assembleSchemaSpecification-listRef-TagDocslistRefChildren-constraint-rule-77">
       <rule context="( tei:classSpec | tei:dataSpec | tei:elementSpec | tei:macroSpec | tei:moduleSpec | tei:schemaSpec | tei:specGrp )/tei:listRef/tei:ptr | ( tei:classSpec | tei:dataSpec | tei:elementSpec | tei:macroSpec | tei:moduleSpec | tei:schemaSpec | tei:specGrp )/tei:listRef/tei:ref">
          <assert test="@target and not( matches( @target,'\s') )">In the context of tagset documentation, each ptr or ref element inside a listRef must have a target attribute with only 1 pointer as its value.</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-model-no_dup_default_models-constraint-rule-72">
+   <pattern id="post-assembleSchemaSpecification-model-no_dup_default_models-constraint-rule-78">
       <rule context="tei:model[ not( parent::tei:modelSequence ) ][ not( @predicate ) ]">
          <let name="output" value="normalize-space( @output )"/>
          <report test="following-sibling::tei:model [ not( @predicate )] [ normalize-space( @output ) eq $output ]">
@@ -466,7 +503,7 @@ should correspond to an existing module, via a moduleSpec or
           ("<value-of select="( $output, parent::modelGrp/@output, 'all')[1]"/>")</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-model-no_dup_models-constraint-rule-73">
+   <pattern id="post-assembleSchemaSpecification-model-no_dup_models-constraint-rule-79">
       <rule context="tei:model[ not( parent::tei:modelSequence ) ][ @predicate ]">
          <let name="predicate" value="normalize-space( @predicate )"/>
          <let name="output" value="normalize-space( @output )"/>
@@ -477,24 +514,24 @@ should correspond to an existing module, via a moduleSpec or
           ("<value-of select="( $output, parent::modelGrp/@output, 'all')[1]"/>")</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-modelSequence-no_outputs_nor_predicates_4_my_kids-constraint-rule-74">
+   <pattern id="post-assembleSchemaSpecification-modelSequence-no_outputs_nor_predicates_4_my_kids-constraint-rule-80">
       <rule context="tei:modelSequence">
          <report test="tei:model[@output]" role="warning">The 'model' children
         of a 'modelSequence' element inherit the @output attribute of the
         parent 'modelSequence', and thus should not have their own</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-sequence-sequencechilden-constraint-rule-75">
+   <pattern id="post-assembleSchemaSpecification-sequence-sequencechilden-constraint-rule-81">
       <rule context="tei:sequence">
          <assert test="count(*) gt 1">The sequence element must have at least two child elements</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-alternate-alternatechilden-constraint-rule-76">
+   <pattern id="post-assembleSchemaSpecification-alternate-alternatechilden-constraint-rule-82">
       <rule context="tei:alternate">
          <assert test="count(*) gt 1">The alternate element must have at least two child elements</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintDecl-one-constraintDecl-per-scheme-constraint-rule-77">
+   <pattern id="post-assembleSchemaSpecification-constraintDecl-one-constraintDecl-per-scheme-constraint-rule-83">
       <rule context="/*[ count( //tei:constraintDecl ) gt 1 ]">
          <let name="schemes"
               value="//tei:constraintDecl[ not(ancestor::*[local-name(.) eq 'egXML'] ) ]/@scheme"/>
@@ -504,7 +541,7 @@ should correspond to an existing module, via a moduleSpec or
         </assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-empty-based-on-mode-constraint-rule-79">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-empty-based-on-mode-constraint-rule-85">
       <rule context="tei:constraintSpec[ @mode eq 'delete']">
          <report test="child::*">This constraintSpec element has a mode= of "delete" even though it has child elements. Change the mode= to "add", "change", or "replace", or remove the child elements.</report>
       </rule>
@@ -515,7 +552,7 @@ should correspond to an existing module, via a moduleSpec or
          <assert test="child::tei:constraint">This constraintSpec element has a mode= of "<value-of select="@mode"/>", but does not have a child 'constraint' element. Use a child 'constraint' element or change the mode= to "delete" or "change".</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-sch_no_more-constraint-rule-82">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-sch_no_more-constraint-rule-88">
       <rule context="tei:constraintSpec">
          <report test="tei:constraint/sch1x:* and @scheme = ('isoschematron','schematron')">Rules
         in the Schematron 1.* language must be inside a constraintSpec
@@ -523,14 +560,14 @@ should correspond to an existing module, via a moduleSpec or
         scheme attribute</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-isosch-constraint-rule-83">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-isosch-constraint-rule-89">
       <rule context="tei:constraintSpec[ @mode = ('add','replace') or not( @mode ) ]">
          <report test="tei:constraint/sch:* and not( @scheme eq 'schematron')">Rules
           in the ISO Schematron language must be inside a constraintSpec
           with the value 'schematron' on the scheme attribute</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-context-required-constraint-rule-84">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-context-required-constraint-rule-90">
       <rule context="(tei:constraintSpec|tei:constraintDecl)[ @scheme eq 'schematron'][ .//sch:assert | .//sch:report ]">
          <let name="assertsHaveContext"
               value="for $a in .//sch:assert return exists( $a/ancestor::sch:rule/@context )"/>
@@ -541,7 +578,7 @@ should correspond to an existing module, via a moduleSpec or
           <value-of select="local-name(.)"/> are not.</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-unique-constraintSpec-ident-constraint-rule-85">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-unique-constraintSpec-ident-constraint-rule-91">
       <rule context="tei:constraintSpec[ @mode eq 'add' or not( @mode ) ]">
          <let name="myIdent" value="normalize-space(@ident)"/>
          <report test="preceding::tei:constraintSpec[ normalize-space(@ident) eq $myIdent ]">
@@ -549,13 +586,13 @@ should correspond to an existing module, via a moduleSpec or
         </report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-constraintSpec-scheme-usage_based_on_mode-constraint-rule-88">
+   <pattern id="post-assembleSchemaSpecification-constraintSpec-scheme-usage_based_on_mode-constraint-rule-94">
       <rule context="tei:constraintSpec[ @mode = ('add','replace')  or  not( @mode ) ]">
          <assert test="@scheme">The @scheme attribute of &lt;constraintSpec&gt; is required when the @mode is <value-of select="if (@mode) then concat('&#34;',@mode,'&#34;') else 'not specified'"/> (here on "<value-of select="@ident"/>")</assert>
       </rule>
    </pattern>
    <ns prefix="teix" uri="http://www.tei-c.org/ns/Examples"/>
-   <pattern id="post-assembleSchemaSpecification-attDef-attDefContents-constraint-rule-89">
+   <pattern id="post-assembleSchemaSpecification-attDef-attDefContents-constraint-rule-95">
       <rule context="tei:attDef">
          <assert test="ancestor::teix:egXML[ @valid eq 'feasible']                        or @mode eq 'change'                        or @mode eq 'delete'                        or tei:datatype                        or tei:valList[ @type eq 'closed']">
           Attribute: the definition of the @<value-of select="@ident"/> attribute in the
@@ -566,12 +603,12 @@ should correspond to an existing module, via a moduleSpec or
         </assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-attDef-noDefault4Required-constraint-rule-90">
+   <pattern id="post-assembleSchemaSpecification-attDef-noDefault4Required-constraint-rule-96">
       <rule context="tei:attDef[@usage eq 'req']">
          <report test="tei:defaultVal">Since the @<value-of select="@ident"/> attribute is required, it will always be specified. Thus the default value (of "<value-of select="normalize-space(tei:defaultVal)"/>") will never be used. Either change the definition of the attribute so it is not required ("rec" or "opt"), or remove the defaultVal element.</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-twoOrMore-constraint-rule-91">
+   <pattern id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-twoOrMore-constraint-rule-97">
       <rule context="tei:attDef[     tei:defaultVal                                      and tei:valList[ @type eq 'closed']                                      and tei:datatype[ @maxOccurs &gt; 1  or  @minOccurs &gt; 1  or  @maxOccurs eq 'unbounded']                                    ]">
          <assert test="tokenize(normalize-space(tei:defaultVal),' ') = tei:valList/tei:valItem/@ident">In the <value-of select="local-name(ancestor::*[@ident][1])"/> defining
         <value-of select="ancestor::*[@ident][1]/@ident"/> the default value of the
@@ -579,7 +616,7 @@ should correspond to an existing module, via a moduleSpec or
         values</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-one-constraint-rule-92">
+   <pattern id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-one-constraint-rule-98">
       <rule context="tei:attDef[     tei:defaultVal                                      and tei:valList[ @type eq 'closed']                                      and tei:datatype[                                             not(@maxOccurs)                                         or  ( if ( @maxOccurs castable as xs:integer ) then ( @maxOccurs cast as xs:integer eq 1 ) else false() )                                                      ]                                    ]">
          <assert test="string(tei:defaultVal) = tei:valList/tei:valItem/@ident">In the <value-of select="local-name(ancestor::*[@ident][1])"/> defining
         <value-of select="ancestor::*[@ident][1]/@ident"/> the default value of the
@@ -587,14 +624,14 @@ should correspond to an existing module, via a moduleSpec or
         values</assert>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-dataRef-restrictDataFacet-constraint-rule-93">
+   <pattern id="post-assembleSchemaSpecification-dataRef-restrictDataFacet-constraint-rule-99">
       <rule context="tei:dataRef[tei:dataFacet]">
          <assert test="@name" role="nonfatal">Data facets can only be specified for references to datatypes specified by
           XML Schema Part 2: Datatypes Second Edition — that is, for there to be a 'dataFacet' child there must be a @name attribute.</assert>
          <report test="@restriction" role="nonfatal">Data facets and restrictions cannot both be expressed on the same data reference — that is, the @restriction attribute cannot be used when a 'dataFacet' element is present.</report>
       </rule>
    </pattern>
-   <pattern id="post-assembleSchemaSpecification-dataRef-restrictAttResctrictionName-constraint-rule-94">
+   <pattern id="post-assembleSchemaSpecification-dataRef-restrictAttResctrictionName-constraint-rule-100">
       <rule context="tei:dataRef[@restriction]">
          <assert test="@name" role="nonfatal">Restrictions can only be specified for references to datatypes specified by
           XML Schema Part 2: Datatypes Second Edition — that is, for there to be a @restriction attribute there must be a @name attribute, too.</assert>
@@ -608,7 +645,7 @@ should correspond to an existing module, via a moduleSpec or
    <ns prefix="sch1x" uri="http://www.ascc.net/xml/schematron"/>
    <ns prefix="a" uri="http://relaxng.org/ns/compatibility/annotations/1.0"/>
    <ns prefix="xi" uri="http://www.w3.org/2001/XInclude"/>
-   <pattern id="post-assembleSchemaSpecification-no_XInclude-constraint-rule-95">
+   <pattern id="post-assembleSchemaSpecification-no_XInclude-constraint-rule-101">
       <rule context="/">
          <report role="fatal" test="//xi:*">There should be no XInclude elements in a
                 assembled ODD</report>

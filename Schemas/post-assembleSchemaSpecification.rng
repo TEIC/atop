@@ -5,7 +5,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://www.tei-c.org/ns/1.0"><!--
-Schema generated from ODD source 2026-01-21T17:08:44Z. . 
+Schema generated from ODD source 2026-01-21T17:26:10Z. . 
 TEI Edition: P5 Version 4.10.2. Last updated on 4th September 2025, revision bcfa98f42 
 TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/ 
  (derived schema specification) the ATOP derived schema document type 
@@ -138,7 +138,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/
             </choice>
          </zeroOrMore>
       </element>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e128714-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e129511-constraint">
          <rule context="tei:content">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://relaxng.org/ns/compatibility/annotations/1.0', 'http://relaxng.org/ns/structure/1.0', 'http://www.tei-c.org/ns/1.0'))]">content descendants must be in the
               namespaces
@@ -208,7 +208,7 @@ TEI Edition Location: https://www.tei-c.org/Vault/P5/4.10.2/
             </choice>
          </zeroOrMore>
       </element>
-      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e130311-constraint">
+      <pattern xmlns="http://purl.oclc.org/dsdl/schematron" id="d9e131108-constraint">
          <rule context="tei:datatype">
             <report test="descendant::*[not(namespace-uri(.) =               ('http://relaxng.org/ns/structure/1.0', 'http://www.tei-c.org/ns/1.0'))]">datatype descendants must be in the
               namespaces
@@ -3667,6 +3667,8 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
    <define name="assemble_model.oddDecl">
       <choice>
          <ref name="assemble_moduleSpec"/>
+         <ref name="assemble_specGrp"/>
+         <ref name="assemble_specGrpRef"/>
          <ref name="assemble_elementSpec"/>
          <ref name="assemble_classSpec"/>
          <ref name="assemble_dataSpec"/>
@@ -3678,6 +3680,8 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
    <define name="assemble_model.oddDecl_alternation">
       <choice>
          <ref name="assemble_moduleSpec"/>
+         <ref name="assemble_specGrp"/>
+         <ref name="assemble_specGrpRef"/>
          <ref name="assemble_elementSpec"/>
          <ref name="assemble_classSpec"/>
          <ref name="assemble_dataSpec"/>
@@ -3688,6 +3692,8 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
    </define>
    <define name="assemble_model.oddDecl_sequence">
       <ref name="assemble_moduleSpec"/>
+      <ref name="assemble_specGrp"/>
+      <ref name="assemble_specGrpRef"/>
       <ref name="assemble_elementSpec"/>
       <ref name="assemble_classSpec"/>
       <ref name="assemble_dataSpec"/>
@@ -3698,6 +3704,12 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
    <define name="assemble_model.oddDecl_sequenceOptional">
       <optional>
          <ref name="assemble_moduleSpec"/>
+      </optional>
+      <optional>
+         <ref name="assemble_specGrp"/>
+      </optional>
+      <optional>
+         <ref name="assemble_specGrpRef"/>
       </optional>
       <optional>
          <ref name="assemble_elementSpec"/>
@@ -3723,6 +3735,12 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
          <ref name="assemble_moduleSpec"/>
       </zeroOrMore>
       <zeroOrMore>
+         <ref name="assemble_specGrp"/>
+      </zeroOrMore>
+      <zeroOrMore>
+         <ref name="assemble_specGrpRef"/>
+      </zeroOrMore>
+      <zeroOrMore>
          <ref name="assemble_elementSpec"/>
       </zeroOrMore>
       <zeroOrMore>
@@ -3744,6 +3762,12 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
    <define name="assemble_model.oddDecl_sequenceRepeatable">
       <oneOrMore>
          <ref name="assemble_moduleSpec"/>
+      </oneOrMore>
+      <oneOrMore>
+         <ref name="assemble_specGrp"/>
+      </oneOrMore>
+      <oneOrMore>
+         <ref name="assemble_specGrpRef"/>
       </oneOrMore>
       <oneOrMore>
          <ref name="assemble_elementSpec"/>
@@ -3769,6 +3793,7 @@ Sample values include: 1] rubbing; 2] mildew; 3] smoke</a:documentation>
          <ref name="assemble_classRef"/>
          <ref name="assemble_elementRef"/>
          <ref name="assemble_macroRef"/>
+         <ref name="assemble_moduleRef"/>
          <ref name="assemble_dataRef"/>
       </choice>
    </define>
@@ -21356,6 +21381,149 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          <empty/>
       </element>
    </define>
+   <define name="assemble_moduleRef">
+      <element name="moduleRef">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(module reference) At this point of the processing, module references that point to external schemas has been expanded. [23.2. Modules and Schemas]</a:documentation>
+         <ref name="assemble_content"/>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-only_rng_in_moduleRef_content-constraint-rule-67">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef/tei:content">
+               <sch:report test="*[ not( self::rng:* or self::a:* ) ]"> The content of an ATOP
+                  module reference after assembling needs to be RELAX NG and RELAX NG *only*. </sch:report>
+            </sch:rule>
+         </pattern>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-modref-constraint-rule-68">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef">
+               <sch:report test="* and @key">
+          Child elements of <sch:name/> are only allowed when an external module is being loaded
+        </sch:report>
+            </sch:rule>
+         </pattern>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-not-same-prefix-constraint-rule-69">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef">
+               <sch:report test="//*[ not( generate-id(.) eq generate-id( current() ) ) ]/@prefix = @prefix">The prefix attribute
+            of <sch:name/> should not match that of any other
+            element (it would defeat the purpose)</sch:report>
+            </sch:rule>
+         </pattern>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-not-except-and-include-constraint-rule-70">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef">
+               <sch:report test="@except and @include">It is an error to supply both the @include and @except attributes</sch:report>
+            </sch:rule>
+         </pattern>
+         <ref name="assemble_att.global.attribute.xmlid"/>
+         <ref name="assemble_att.global.attribute.n"/>
+         <ref name="assemble_att.global.attribute.xmllang"/>
+         <ref name="assemble_att.global.attribute.xmlbase"/>
+         <ref name="assemble_att.global.attribute.xmlspace"/>
+         <ref name="assemble_att.global.analytic.attribute.ana"/>
+         <ref name="assemble_att.global.change.attribute.change"/>
+         <ref name="assemble_att.global.facs.attribute.facs"/>
+         <ref name="assemble_att.global.linking.attribute.corresp"/>
+         <ref name="assemble_att.global.linking.attribute.synch"/>
+         <ref name="assemble_att.global.linking.attribute.sameAs"/>
+         <ref name="assemble_att.global.linking.attribute.copyOf"/>
+         <ref name="assemble_att.global.linking.attribute.next"/>
+         <ref name="assemble_att.global.linking.attribute.prev"/>
+         <ref name="assemble_att.global.linking.attribute.exclude"/>
+         <ref name="assemble_att.global.linking.attribute.select"/>
+         <ref name="assemble_att.global.rendition.attribute.rend"/>
+         <ref name="assemble_att.global.rendition.attribute.style"/>
+         <ref name="assemble_att.global.rendition.attribute.rendition"/>
+         <ref name="assemble_att.global.responsibility.attribute.cert"/>
+         <ref name="assemble_att.global.responsibility.attribute.resp"/>
+         <attribute name="url">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">No other value than '.' is allowed in @url,</a:documentation>
+            <choice>
+               <value>.</value>
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(here, this file, local) In an ATOP assembled ODD each <code xmlns="http://www.w3.org/1999/xhtml"
+                        xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;moduleRef&gt;</code> should have a <code xmlns="http://www.w3.org/1999/xhtml"
+                        xmlns:rng="http://relaxng.org/ns/structure/1.0">@url</code> with the value . both so that it is clear and explicit that the reference has been resolved, only the content is to be copied over to the RELAX NG; and so that the <code xmlns="http://www.w3.org/1999/xhtml"
+                        xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;moduleRef&gt;</code> is valid against vanilla tei_all or tei_odds.</a:documentation>
+            </choice>
+         </attribute>
+         <choice>
+            <optional>
+               <attribute name="include">
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">supplies a list of the elements which are to be copied from the specified module into the schema being defined.</a:documentation>
+                  <list>
+                     <zeroOrMore>
+                        <data type="NCName"/>
+                     </zeroOrMore>
+                  </list>
+               </attribute>
+            </optional>
+            <optional>
+               <attribute name="except">
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">supplies a list of the elements which are not to be copied from the specified module into the schema being defined.</a:documentation>
+                  <list>
+                     <zeroOrMore>
+                        <data type="NCName"/>
+                     </zeroOrMore>
+                  </list>
+               </attribute>
+            </optional>
+         </choice>
+         <choice>
+            <optional>
+               <attribute name="key">
+                  <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">the name of a TEI module</a:documentation>
+                  <data type="NCName"/>
+               </attribute>
+            </optional>
+         </choice>
+         <optional>
+            <attribute name="prefix">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">specifies a default prefix which will be prepended to all patterns from the imported module.</a:documentation>
+               <optional>
+                  <data type="NCName"/>
+               </optional>
+            </attribute>
+         </optional>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-prefix-not-same-prefix-constraint-rule-71">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef">
+               <sch:report test="//*[ not( generate-id(.) eq generate-id( current() ) ) ]/@prefix = @prefix">The prefix attribute
+            of <sch:name/> should not match that of any other
+            element (it would defeat the purpose)</sch:report>
+            </sch:rule>
+         </pattern>
+         <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0"
+                  id="post-assembleSchemaSpecification-moduleRef-prefix-not-except-and-include-constraint-rule-72">
+            <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
+                      xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+                      xmlns:xi="http://www.w3.org/2001/XInclude"
+                      context="tei:moduleRef">
+               <sch:report test="@except and @include">It is an error to supply both the @include and @except attributes</sch:report>
+            </sch:rule>
+         </pattern>
+         <empty/>
+      </element>
+   </define>
    <define name="assemble_moduleSpec">
       <element name="moduleSpec">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(module specification) documents the structure, content, and purpose of a single module, i.e. a named and externally visible group of declarations. [23.2. Modules and Schemas]</a:documentation>
@@ -21476,6 +21644,36 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          <empty/>
       </element>
    </define>
+   <define name="assemble_specGrp">
+      <element name="specGrp">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(specification group) contains any convenient grouping of specifications for use within the current module. [23.2. Modules and Schemas]</a:documentation>
+         <zeroOrMore>
+            <choice>
+               <ref name="assemble_model.oddDecl"/>
+               <ref name="assemble_model.oddRef"/>
+               <ref name="assemble_model.divPart"/>
+               <ref name="assemble_listRef"/>
+            </choice>
+         </zeroOrMore>
+         <ref name="assemble_att.global.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="assemble_specGrpRef">
+      <element name="specGrpRef">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(reference to a specification group) indicates that the declarations contained by the <code xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:rng="http://relaxng.org/ns/structure/1.0">&lt;specGrp&gt;</code> referenced should be inserted at this point. [23.2. Modules and Schemas]</a:documentation>
+         <empty/>
+         <ref name="assemble_att.global.attributes"/>
+         <attribute name="target">
+            <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">points at the specification group which logically belongs here.</a:documentation>
+            <data type="anyURI">
+               <param name="pattern">\S+</param>
+            </data>
+         </attribute>
+         <empty/>
+      </element>
+   </define>
    <define name="assemble_elementSpec">
       <element name="elementSpec">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(element specification) documents the structure, content, and purpose of a single element type. [23.5. Element Specifications 23. Documentation Elements]</a:documentation>
@@ -21520,7 +21718,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-elementSpec-child-constraint-based-on-mode-constraint-rule-67">
+                  id="post-assembleSchemaSpecification-elementSpec-child-constraint-based-on-mode-constraint-rule-73">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -21698,7 +21896,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-dataSpec-no_elements_in_data_content-constraint-rule-69">
+                  id="post-assembleSchemaSpecification-dataSpec-no_elements_in_data_content-constraint-rule-75">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -21779,7 +21977,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-listRef-TagDocsNestinglistRef-constraint-rule-70">
+                  id="post-assembleSchemaSpecification-listRef-TagDocsNestinglistRef-constraint-rule-76">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -21789,7 +21987,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-listRef-TagDocslistRefChildren-constraint-rule-71">
+                  id="post-assembleSchemaSpecification-listRef-TagDocslistRefChildren-constraint-rule-77">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -21957,7 +22155,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-model-no_dup_default_models-constraint-rule-72">
+                  id="post-assembleSchemaSpecification-model-no_dup_default_models-constraint-rule-78">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -21971,7 +22169,7 @@ Sample values include: 1] TEI (text encoding initiative); 2] DBK (docbook); 3] X
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-model-no_dup_models-constraint-rule-73">
+                  id="post-assembleSchemaSpecification-model-no_dup_models-constraint-rule-79">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22097,7 +22295,7 @@ Sample values include: 1] web; 2] print; 3] plain</a:documentation>
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-modelSequence-no_outputs_nor_predicates_4_my_kids-constraint-rule-74">
+                  id="post-assembleSchemaSpecification-modelSequence-no_outputs_nor_predicates_4_my_kids-constraint-rule-80">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22314,7 +22512,7 @@ Suggested values include: 1] alternate; 2] default; 3] height; 4] id; 5] label; 
          </oneOrMore>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-sequence-sequencechilden-constraint-rule-75">
+                  id="post-assembleSchemaSpecification-sequence-sequencechilden-constraint-rule-81">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22344,7 +22542,7 @@ Suggested values include: 1] alternate; 2] default; 3] height; 4] id; 5] label; 
          </oneOrMore>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-alternate-alternatechilden-constraint-rule-76">
+                  id="post-assembleSchemaSpecification-alternate-alternatechilden-constraint-rule-82">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22374,7 +22572,7 @@ Suggested values include: 1] alternate; 2] default; 3] height; 4] id; 5] label; 
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintDecl-one-constraintDecl-per-scheme-constraint-rule-77">
+                  id="post-assembleSchemaSpecification-constraintDecl-one-constraintDecl-per-scheme-constraint-rule-83">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22468,7 +22666,7 @@ Suggested values include: 1] exslt; 2] stx; 3] xslt; 4] xslt2; 5] xslt3; 6] xpat
          </group>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-empty-based-on-mode-constraint-rule-79">
+                  id="post-assembleSchemaSpecification-constraintSpec-empty-based-on-mode-constraint-rule-85">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22490,7 +22688,7 @@ Suggested values include: 1] exslt; 2] stx; 3] xslt; 4] xslt2; 5] xslt3; 6] xpat
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-sch_no_more-constraint-rule-82">
+                  id="post-assembleSchemaSpecification-constraintSpec-sch_no_more-constraint-rule-88">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22503,7 +22701,7 @@ Suggested values include: 1] exslt; 2] stx; 3] xslt; 4] xslt2; 5] xslt3; 6] xpat
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-isosch-constraint-rule-83">
+                  id="post-assembleSchemaSpecification-constraintSpec-isosch-constraint-rule-89">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22515,7 +22713,7 @@ Suggested values include: 1] exslt; 2] stx; 3] xslt; 4] xslt2; 5] xslt3; 6] xpat
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-context-required-constraint-rule-84">
+                  id="post-assembleSchemaSpecification-constraintSpec-context-required-constraint-rule-90">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22531,7 +22729,7 @@ Suggested values include: 1] exslt; 2] stx; 3] xslt; 4] xslt2; 5] xslt3; 6] xpat
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-unique-constraintSpec-ident-constraint-rule-85">
+                  id="post-assembleSchemaSpecification-constraintSpec-unique-constraintSpec-ident-constraint-rule-91">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22575,7 +22773,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </optional>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-constraintSpec-scheme-usage_based_on_mode-constraint-rule-88">
+                  id="post-assembleSchemaSpecification-constraintSpec-scheme-usage_based_on_mode-constraint-rule-94">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22656,7 +22854,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
                  uri="http://www.tei-c.org/ns/Examples"/>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-attDef-attDefContents-constraint-rule-89">
+                  id="post-assembleSchemaSpecification-attDef-attDefContents-constraint-rule-95">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22672,7 +22870,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-attDef-noDefault4Required-constraint-rule-90">
+                  id="post-assembleSchemaSpecification-attDef-noDefault4Required-constraint-rule-96">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22682,7 +22880,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-twoOrMore-constraint-rule-91">
+                  id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-twoOrMore-constraint-rule-97">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22695,7 +22893,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-one-constraint-rule-92">
+                  id="post-assembleSchemaSpecification-attDef-defaultIsInClosedList-one-constraint-rule-98">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22789,7 +22987,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </zeroOrMore>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-dataRef-restrictDataFacet-constraint-rule-93">
+                  id="post-assembleSchemaSpecification-dataRef-restrictDataFacet-constraint-rule-99">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -22801,7 +22999,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
          </pattern>
          <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
                   xmlns:rng="http://relaxng.org/ns/structure/1.0"
-                  id="post-assembleSchemaSpecification-dataRef-restrictAttResctrictionName-constraint-rule-94">
+                  id="post-assembleSchemaSpecification-dataRef-restrictAttResctrictionName-constraint-rule-100">
             <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                       xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                       xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -23090,7 +23288,7 @@ Suggested values include: 1] schematron (ISO Schematron)</a:documentation>
            prefix="xi"
            uri="http://www.w3.org/2001/XInclude"/>
    <pattern xmlns="http://purl.oclc.org/dsdl/schematron"
-            id="post-assembleSchemaSpecification-no_XInclude-constraint-rule-95">
+            id="post-assembleSchemaSpecification-no_XInclude-constraint-rule-101">
       <sch:rule xmlns="http://www.tei-c.org/ns/1.0"
                 xmlns:sch="http://purl.oclc.org/dsdl/schematron"
                 context="/">
