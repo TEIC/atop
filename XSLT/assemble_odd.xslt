@@ -36,7 +36,7 @@
   <xd:doc>
     <xd:desc>
       <xd:p>Default processing is to copy myself and continue processing …</xd:p>
-      <xd:p>Note that it is probably not necessary to use an explicit node name
+      <xd:p>Note that it is probably not necessary to use an explicit mode name
       for each pass: we <xd:i>could</xd:i> get away with using the default mode
       for one pass, as there is no overlap. But it is just clearer to be explicit.</xd:p>
     </xd:desc>

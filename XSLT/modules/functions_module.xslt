@@ -65,7 +65,7 @@
 
   <xd:doc>
     <xd:desc>
-      <xd:p><xd:ref name="atop:what-I-specify"/>: Given a
+      <xd:p><xd:ref name="atop:common-ident"/>: Given a
       specification element, return an identifier for the construct
       that element defines. This is <xd:i>not</xd:i> just the @ident,
       because severel different kinds of construct might have the same
@@ -81,15 +81,24 @@
     <xd:param name="pSpec">A single &lt;attDef>, &lt;schemaSpec>, &lt;elementSpec>, &lt;classSpec>,
       &lt;macroSpec>, or &lt;dataSpec> element.</xd:param>
   </xd:doc>
-  <xsl:function name="atop:what-I-specify" as="xs:string">
+  <xsl:function name="atop:common-ident" as="xs:string">
     <xsl:param name="pSpec" as="element()"/>
     <xsl:for-each select="$pSpec"> <!-- just to set the context node -->
       <xsl:if test="not( @ident )">
-        <xsl:message terminate="yes" select="'FATAL error: attempt to get identifier of an unidentified element.'" error-code="atop:error-noIdent"/>
+	<xsl:variable name="vSpecName" as="xs:string" select="name( $pSpec )"/>
+	<xsl:variable name="vSpecNum" as="xs:string" select="( count( preceding::*[name(.) eq $vSpecName] ) + 1 ) => format-integer('##1;o')"/>
+        <xsl:message terminate="yes" error-code="atop:error-noIdent"
+		      select="'FATAL error: attempt to get identifier of an unidentified element. (I.e., this '
+			     ||name(.)
+			     ||' element, the '
+			     ||$vSpecNum
+			     ||' such, does not have an @ident)'"/>
       </xsl:if>
       <xsl:variable name="vKind" select="local-name(.) => replace('(Spec|Def)$','')" as="xs:string"/>
-      <xsl:variable name="vMaybeNamespace" select="if (@ns) then concat( @ns, '_') else ''" as="xs:string?"/>
-      <xsl:variable name="vWhatISpecify" select="$vMaybeNamespace||$vKind||'_'||@ident"/>
+      <xsl:variable name="vMaybeNamespace" select="if ( $pSpec/self::elementSpec  or  $pSpec/self::attDef )
+						   then atop:get-nearest-ns(.)
+						   else ''" as="xs:string?"/>
+      <xsl:variable name="vWhatISpecify" select="$vKind||'Q{'||$vMaybeNamespace||'}'||@ident"/>
       <xsl:sequence select="$vWhatISpecify"/>
     </xsl:for-each>
   </xsl:function>

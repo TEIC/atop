@@ -27,15 +27,23 @@
   
   <xsl:output method="xml" indent="yes"/>
   <xsl:include href="modules/functions_module.xslt"/>
+
+  <!-- preperatory work -->
   <xsl:mode name="atop:mPass01" on-no-match="shallow-copy"><!-- normalize whitespace in attrs --></xsl:mode>
-  <xsl:mode name="atop:mPass02" on-no-match="shallow-copy"><!-- schemaSpec/*Ref expansion --></xsl:mode>
+  <xsl:mode name="atop:mPass02" on-no-match="shallow-copy"><!-- expand schemaSpec/*Ref & replace schemaSpec/@source --></xsl:mode>
+
+  <!-- deletion of all but <attDef>s -->
   <xsl:mode name="atop:mPass03" on-no-match="shallow-copy"><!-- element deletion --></xsl:mode>
   <xsl:mode name="atop:mPass04" on-no-match="shallow-copy"><!-- datatype deletion --></xsl:mode>
   <xsl:mode name="atop:mPass05" on-no-match="shallow-copy"><!-- macro deletion --></xsl:mode>
   <xsl:mode name="atop:mPass06" on-no-match="shallow-copy"><!-- class deletion --></xsl:mode>
   <xsl:mode name="atop:mPass07" on-no-match="shallow-copy"><!-- post-deletion clean-up --></xsl:mode>
+
+  <!-- replacement of all but <attDef>s -->
   <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- delete portion of replacement --></xsl:mode>
-  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"></xsl:mode>
+
+  <!-- change (of all but <attDef>s?) -->
+  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!-- class merging --></xsl:mode>
   <xsl:mode name="atop:mPass10" on-no-match="shallow-copy"></xsl:mode>
   <xsl:mode name="atop:mPass11" on-no-match="shallow-copy"></xsl:mode>
   <xsl:mode name="atop:mPass12" on-no-match="shallow-copy"></xsl:mode>
@@ -973,9 +981,10 @@
   <!-- ************ pass01, normalize whitespace in attrs ************ -->
 
   <xd:doc>
-    <xd:desc>Having extraneous leading or trailing whitespace can mess things up, and we do not
-    want to need to issue normalize-space() all over all the time. So just normalize spaces in
-    all attrs ahead of time.</xd:desc>
+    <xd:desc>Having extraneous leading or trailing whitespace can mess
+    things up, and we do not want to need to issue normalize-space()
+    all over all the time. So just normalize spaces in all attrs ahead
+    of time.</xd:desc>
   </xd:doc>
   <xsl:template match="@*" as="attribute()" mode="atop:mPass01">
     <xsl:copy>
@@ -983,8 +992,36 @@
     </xsl:copy>
   </xsl:template>
 
-  <!-- ************ pass02, resolve top-level references ************ -->
+  <xd:doc>
+    <xd:desc>The content of <tt>&lt;defaultVal></tt> is basically an attribute value.</xd:desc>
+  </xd:doc>
+  <xsl:template match="defaultVal" as="element(defaultVal)" mode="atop:mPass01">
+    <xsl:copy>
+      <xsl:sequence select="normalize-space(.)"/>
+    </xsl:copy>
+  </xsl:template>
   
+  <!-- ************ pass02, resolve top-level references ************ -->
+
+  <xd:doc>
+    <xd:desc>
+      <xd:p>Replace the value of @source, as our output is no longer
+      based on @source, but rather is the combination of the input and
+      @source (or the <xd:pre>$atop:pSource</xd:pre>
+      parameter).</xd:p>
+      <xd:p>This perhaps should be done at pass 01 or the last pass,
+      but if we think of the attributes of &lt;schemaSpec> as
+      “top-level”, then it belongs here.</xd:p>
+    </xd:desc>    
+  </xd:doc>
+  <xsl:template match="schemaSpec/@source" mode="atop:mPass02" as="attribute(source)">
+    <xsl:attribute name="{name(.)}" select="'atop:DERIVED'"/>
+  </xsl:template>
+  
+  <!-- Note: no need to process schemaSpec/specGrpRef, as those will
+       already have been resolved by the "assemble" step before this
+       routine is called. -->
+
   <xd:doc>
     <xd:desc>When we hit a &lt;moduleRef> in the customization ODD, replace it
     with the specifications of the base ODD that are in that module (as adjusted
@@ -1045,7 +1082,14 @@
   </xsl:template>
 
   <!-- ************ pass03, element deletions ************ -->
-  
+
+  <xsl:template match="attDef" mode="atop:mPass03" as="element(attDef)" name="just_debug_delete_me_soon">
+    <xsl:message select="'debug3a:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
+
   <xd:doc>
     <xd:desc>Remove elements that customization indicates should be removed. This means:
     * removing both the elementSpec that has mode=delete, and the base elementSpec for same element;
@@ -1053,6 +1097,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass03" as="element(schemaSpec)">
     <xsl:variable name="vDeleteUs" select=".//elementSpec[@mode eq 'delete']/@ident" as="xs:string*"/>
+    <xsl:message select="'debug3s:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpDeleteUs" select="$vDeleteUs" as="xs:string*" tunnel="yes"/>
@@ -1061,14 +1106,30 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>If an elementSpec/@ident or elementRef/@key matches one of the things-to-be-deleted,
+    <xd:desc>If an elementSpec/@ident matches one of the things-to-be-deleted,
     then do not copy it.</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
-  <xsl:template match="elementSpec|elementRef" mode="atop:mPass03" as="element()?">
+  <xsl:template match="elementSpec" mode="atop:mPass03" as="element()?">
+    <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
+    <xsl:message select="'debug3e:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
+    <xsl:choose>
+      <xsl:when test="@ident = $tpDeleteUs"/>
+      <xsl:otherwise>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xd:doc>
+    <xd:desc>If an elementRef/@key matches one of the things-to-be-deleted,
+    then do not copy it.</xd:desc>
+    <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
+  </xd:doc>
+  <xsl:template match="elementRef" mode="atop:mPass03" as="element()?">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
-      <xsl:when test="( @ident, @key ) = $tpDeleteUs"/>
+      <xsl:when test="@key = $tpDeleteUs"/>
       <xsl:otherwise>
         <xsl:next-match/>
       </xsl:otherwise>
@@ -1084,6 +1145,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass04" as="element(schemaSpec)">
     <xsl:variable name="vDeleteUs" select=".//dataSpec[@mode eq 'delete']/@ident" as="xs:string*"/>
+    <xsl:message select="'debug4s:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpDeleteUs" select="$vDeleteUs" as="xs:string*" tunnel="yes"/>
@@ -1098,6 +1160,7 @@
   </xd:doc>
   <xsl:template match="dataSpec" mode="atop:mPass04" as="element()?">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
+    <xsl:message select="'debug4d:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:choose>
       <xsl:when test="@ident = $tpDeleteUs"/>
       <xsl:otherwise>
@@ -1133,6 +1196,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass05" as="element(schemaSpec)">
     <xsl:variable name="vDeleteUs" select=".//macroSpec[@mode eq 'delete']/@ident" as="xs:string*"/>
+    <xsl:message select="'debug5s:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpDeleteUs" select="$vDeleteUs" as="xs:string*" tunnel="yes"/>
@@ -1147,6 +1211,7 @@
   </xd:doc>
   <xsl:template match="macroSpec" mode="atop:mPass05" as="element()?">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
+    <xsl:message select="'debug5m:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:choose>
       <xsl:when test="@ident = $tpDeleteUs"/>
       <xsl:otherwise>
@@ -1181,6 +1246,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass06" as="element(schemaSpec)">
     <xsl:variable name="vDeleteUs" select=".//classSpec[@mode eq 'delete']/@ident" as="xs:string*"/>
+    <xsl:message select="'debug6s:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpDeleteUs" select="$vDeleteUs" as="xs:string*" tunnel="yes"/>
@@ -1195,6 +1261,7 @@
   </xd:doc>
   <xsl:template match="classSpec" mode="atop:mPass06" as="element()?">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
+    <xsl:message select="'debug6c:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
     <xsl:choose>
       <xsl:when test="@ident = $tpDeleteUs"/>
       <xsl:otherwise>
@@ -1247,6 +1314,7 @@
   <xsl:template match="datatype[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="element(datatype)">
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#current"/>
+      <xsl:comment expand-text="yes"> *** ATOP: cannot use the {@key} datatype, as it has been deleted; allowing any value </xsl:comment>
       <dataRef name="string"/> <!-- cannot use a TEI datatype as it may have been deleted -->
     </xsl:copy>
   </xsl:template>
@@ -1258,7 +1326,7 @@
     are being replaced.</xd:desc>
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass08" as="element(schemaSpec)">
-    <xsl:variable name="vReplaceUs" select=".//*[ @mode eq 'replace']!atop:what-I-specify(.)" as="xs:string*"/>
+    <xsl:variable name="vReplaceUs" select="./*[ @mode eq 'replace']!atop:common-ident(.)" as="xs:string*"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpReplaceUs" select="$vReplaceUs" as="xs:string*" tunnel="yes"/>
@@ -1269,13 +1337,28 @@
   <xd:doc>
     <xd:desc>If what a specification element specifies matches one of
     the things-to-be-replaced, then do not copy it.</xd:desc>
-    <xd:param name="tpReplaceUs">list of atop:what-I-specify values of the elements to be replaced</xd:param>
+    <xd:param name="tpReplaceUs">list of atop:common-ident() values of the elements to be replaced</xd:param>
   </xd:doc>
-  <xsl:template match="attDef | classSpec | dataSpec | elementSpec | macroSpec" mode="atop:mPass08" as="element()?">
+  <xsl:template match="classSpec | dataSpec | elementSpec | macroSpec" mode="atop:mPass08" as="node()+">
     <xsl:param name="tpReplaceUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
-      <xsl:when test="atop:what-I-specify(.) = $tpReplaceUs  and  not( @mode eq 'replace')"/>
+      <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  @mode ne 'replace'">
+	<xsl:message select="'debug08choose1'"/>
+        <xsl:text>&#x0A;</xsl:text>
+        <xsl:comment expand-text="yes"> *** ATOP: deleting base version of {@ident} {local-name(.)} here as it has been replaced </xsl:comment>
+      </xsl:when>
+      <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  @mode eq 'replace'">
+	<xsl:message select="'debug08choose2'"/>
+        <xsl:copy>
+          <xsl:apply-templates select="@* except @mode" mode="#current"/>
+          <xsl:attribute name="mode" select="'add'"/>
+          <xsl:text>&#x0A;</xsl:text>
+          <xsl:comment> *** ATOP: base version has been deleted, this (the replacement version) is being added </xsl:comment>
+          <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+      </xsl:when>
       <xsl:otherwise>
+	<xsl:message select="'debug08choose3'"/>
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
