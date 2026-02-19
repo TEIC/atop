@@ -73,7 +73,7 @@
       kind of construct might have the same @ident with different
       namespaces (i.e., @ns attributes).</xd:p>
       <xd:p>However, this routine returns an identifier that is
-      independant of where <xd:ref name="pSpec"/> occurs, and thus
+      independent of where <xd:ref name="pSpec"/> occurs, and thus
       there may be duplicates. (This occurs, e.g., when a specification
       element has a @mode of "replace" — this routine should return the
       same value for both it and that which it replaces.)</xd:p>
