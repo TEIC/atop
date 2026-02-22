@@ -39,8 +39,8 @@
   <xsl:mode name="atop:mPass06" on-no-match="shallow-copy"><!-- class deletion --></xsl:mode>
   <xsl:mode name="atop:mPass07" on-no-match="shallow-copy"><!-- post-deletion clean-up --></xsl:mode>
 
-  <!-- replacement of all but <attDef>s -->
-  <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- delete portion of replacement --></xsl:mode>
+  <!-- replacement of schema-level components -->
+  <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- replacement --></xsl:mode>
 
   <!-- change (of all but <attDef>s?) -->
   <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!-- class merging --></xsl:mode>
@@ -1319,14 +1319,16 @@
     </xsl:copy>
   </xsl:template>
   
-  <!-- ******** pass08, delete portion of replacement -->
+  <!-- ******** pass08, replacement of schema-level components -->
 
   <xd:doc>
-    <xd:desc>Remove base specifications that customization indicates
-    are being replaced.</xd:desc>
+    <xd:desc>Set up to replace base schema-level specifications (i.e.,
+    replacements specified as child of input &lt;schemaSpec>) that
+    customization indicates are being replaced.</xd:desc>
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass08" as="element(schemaSpec)">
-    <xsl:variable name="vReplaceUs" select="./*[ @mode eq 'replace']!atop:common-ident(.)" as="xs:string*"/>
+    <xsl:variable name="vReplaceUs" select="child::*[ @mode eq 'replace']!atop:common-ident(.)" as="xs:string*"/>
+    <xsl:message select="'debug08vReplaceUs = '||string-join( $vReplaceUs, ', ')"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpReplaceUs" select="$vReplaceUs" as="xs:string*" tunnel="yes"/>
@@ -1335,20 +1337,21 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>If what a specification element specifies matches one of
-    the things-to-be-replaced, then do not copy it.</xd:desc>
+    <xd:desc>If what a schema-level specification element specifies
+      matches one of the things-to-be-replaced, then do not copy
+      it.</xd:desc>
     <xd:param name="tpReplaceUs">list of atop:common-ident() values of the elements to be replaced</xd:param>
   </xd:doc>
   <xsl:template match="classSpec | dataSpec | elementSpec | macroSpec" mode="atop:mPass08" as="node()+">
     <xsl:param name="tpReplaceUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
-      <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  @mode ne 'replace'">
-	<xsl:message select="'debug08choose1'"/>
+      <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  ( @mode ne 'replace'  or  not( @mode ) )">
+        <xsl:message select="'debug08choose1 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:text>&#x0A;</xsl:text>
         <xsl:comment expand-text="yes"> *** ATOP: deleting base version of {@ident} {local-name(.)} here as it has been replaced </xsl:comment>
       </xsl:when>
       <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  @mode eq 'replace'">
-	<xsl:message select="'debug08choose2'"/>
+        <xsl:message select="'debug08choose2 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:copy>
           <xsl:apply-templates select="@* except @mode" mode="#current"/>
           <xsl:attribute name="mode" select="'add'"/>
@@ -1358,7 +1361,7 @@
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
-	<xsl:message select="'debug08choose3'"/>
+        <xsl:message select="'debug08choose3 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
