@@ -20,8 +20,8 @@
       the input document and a base ODD (which may itself really be a
       derived ODD from a previous step in ODD chain) provided either as
       the <xd:pre>$atop:pSource</xd:pre> parameter or, failing that,
-      read from the <xd:pre>schemaSpec/@source</xd:pre> — write the
-      ODD derived from applying the 1st to the 2nd as output.</xd:p>
+      read from the <xd:pre>schemaSpec/@source</xd:pre> — write out
+      the ODD derived from applying the 1st to the 2nd.</xd:p>
     </xd:desc>
   </xd:doc>
   
