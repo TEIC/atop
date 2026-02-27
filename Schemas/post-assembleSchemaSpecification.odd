@@ -80,7 +80,7 @@
         <moduleRef key="iso-fs"/>
         <moduleRef key="nets"/>
         <moduleRef key="certainty"/> 
-        <moduleRef except="specGrp specGrpRef moduleRef" key="tagdocs"/>
+        <moduleRef key="tagdocs"/>
 
         <!-- ******************************************** -->
         <!-- General high-level constraint specifications -->
@@ -109,7 +109,7 @@
         <!-- Alterations to other ODD elements -->
         <!-- ********************************* -->
 
-        <elementSpec ident="moduleRef">
+        <elementSpec ident="moduleRef" mode="change">
           <desc>At this point of the processing, module references that point to external schemas
             has been expanded.</desc>
           <content>
@@ -145,7 +145,7 @@
           </attList>
         </elementSpec>
         
-        <elementSpec ident="classRef">
+        <elementSpec ident="classRef" mode="change">
           <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
             thus the <att>source</att> is not allowed.</desc>
           <attList>
@@ -155,7 +155,7 @@
           </attList>
         </elementSpec>
         
-        <elementSpec ident="dataRef">
+        <elementSpec ident="dataRef" mode="change">
           <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
             thus the <att>source</att> is not allowed.</desc>
           <attList>
@@ -165,7 +165,7 @@
           </attList>
         </elementSpec>
         
-        <elementSpec ident="elementRef">
+        <elementSpec ident="elementRef" mode="change">
           <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
             thus the <att>source</att> is not allowed.</desc>
           <attList>
@@ -175,7 +175,7 @@
           </attList>
         </elementSpec>
         
-        <elementSpec ident="macroRef">
+        <elementSpec ident="macroRef" mode="change">
           <desc>At this point of processing, tagdoc pointer elements can only point to the current default source, 
             thus the <att>source</att> is not allowed.</desc>
           <attList>

@@ -18,8 +18,11 @@
    </teiHeader>
    <text>
       <body>
-         <schemaSpec ident="derivation_simple" source="simple_source.xml">
-            <elementSpec ident="start" mode="change">
+         <schemaSpec ident="derivation_simple" source="simple_source.xml" start="start">
+            
+            <moduleRef key="simple" except="falseStart"/>
+            
+            <elementSpec ident="start" mode="change" module="simple">
                <attList>
                   <attDef ident="xml:id" mode="delete"/>
                   <attDef ident="toBeModified" mode="change">
@@ -34,8 +37,8 @@
                   </attDef>
                </attList>
             </elementSpec>
-            <elementSpec ident="grandchild" mode="delete"/>
-            <elementSpec ident="child" mode="change">
+            <elementSpec ident="grandchild" mode="delete" module="simple"/>
+            <elementSpec ident="child" mode="change" module="simple">
                <content>
                   <alternate minOccurs="0" maxOccurs="unbounded">
                      <elementRef key="lnk"/>
@@ -46,7 +49,7 @@
                   <attDef ident="unwanted" mode="delete"/>
                </attList>
             </elementSpec>
-            <elementSpec ident="lnk" mode="add">
+            <elementSpec ident="lnk" mode="add" module="simple">
                <gloss>A link to somewhere</gloss>
                <content>
                   <textNode/>
