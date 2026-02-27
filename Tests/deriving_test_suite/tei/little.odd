@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en" xml:id="ATOP_derivation_test_little_against_TEI">
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+	<title>derivation test <soCalled>little</soCalled></title>
+	<author>ATOP Task Force</author>
+      </titleStmt>
+      <publicationStmt>
+	<ab>Unpublished except as part of the TEI ATOP Tests</ab>
+      </publicationStmt>
+      <sourceDesc>
+	<ab>None; born digital</ab>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+      <p>Not much to say, here</p>
+    </body>
+    <back>
+      <schemaSpec ident="little" prefix="little_" source="tei:4.10.2">
+	<desc>Just a test</desc>
+	<moduleRef key="tei"/>
+	<moduleRef key="core"/>
+	<moduleRef key="textstructure" except="div1 div2 div3 div4 div5 div6 div7"/>
+	<moduleRef key="header"/>
+
+	<classSpec type="atts" mode="delete" module="tei" ident="att.global.source"/>
+
+	<classSpec type="atts" mode="change" module="tei" ident="att.global.rendition">
+	  <attList>
+	    <attDef ident="rendition" mode="delete"/>
+	    <attDef ident="style" mode="replace">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="teidata.enumerated"/>
+	      </datatype>
+	      <valList type="closed">
+		<valItem ident="blues"/>
+		<valItem ident="jazz"/>
+		<valItem ident="rock"/>
+		<valItem ident="roll"/>
+	      </valList>
+	    </attDef>
+	  </attList>
+	</classSpec>
+
+	<elementSpec mode="delete" module="header" ident="rendition"/>
+
+	<elementSpec mode="replace" module="header" ident="editorialDecl">
+	  <desc>which editorial style manual to use</desc>
+	  <classes>
+	    <memberOf key="att.global"/>
+	    <memberOf key="att.declarable"/>
+	    <memberOf key="model.encodingDescPart"/>
+	  </classes>
+	  <content>
+	    <empty/>
+	  </content>
+	  <attList>
+	    <attDef ident="styleGuide" usage="req">
+	      <datatype minOccurs="1" maxOccurs="1">
+		<dataRef key="teidata.enumerated"/>
+	      </datatype>
+	      <valList type="semi">
+		<valItem ident="CMS">
+		  <gloss>The Chicago Manual of Style</gloss>
+		</valItem>
+		<valItem ident="Turabian">
+		  <gloss>A Manual for Writers of Research Papers, Theses, and Dissertations: Chicago Style for Students and Researchers</gloss>
+		</valItem>
+		<valItem ident="MHRA">
+		  <gloss>Modern Humanities Research Aassociation Style Guide</gloss>
+		</valItem>
+		<valItem ident="MLA">
+		  <gloss>Modern Language Association of America Handbook for Writers of Research Papers</gloss>
+		</valItem>
+		<valItem ident="APS">
+		  <gloss>American Political Science Association Style Manual for Political Science</gloss>
+		</valItem>
+	      </valList>
+	    </attDef>
+	  </attList>
+	</elementSpec>
+	
+      </schemaSpec>
+    </back>
+  </text>
+</TEI>
