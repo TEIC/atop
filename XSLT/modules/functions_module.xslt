@@ -777,8 +777,6 @@
     <xsl:variable name="vAssembledOutputUri" as="xs:anyURI" 
       select="atop:temp-file-naming($vOdd, '_assembled.xml', ())"/>
     <xsl:variable name="vAssembledSourceOutputUri" as="xs:anyURI" select="atop:temp-file-naming($vSourceOdd, '_assembled.xml', ())"/>
-    <xsl:variable name="vDeriverOutputUri" as="xs:anyURI"
-      select="atop:temp-file-naming($vOdd, '_deriver.xslt', ())"/>
     <target name="assemble_{$pCounter}" description="Assemble">
       <description>
         <xsl:text>Assemble</xsl:text>
@@ -818,32 +816,6 @@
           </xsl:attribute>
         </param>
       </antcall>
-      <antcall target="deriver_{$pCounter}"/>
-    </target>
-    <target name="deriver_{$pCounter}" description="Deriver">
-      <description>
-        <xsl:text>Derivation: XSLT generation</xsl:text>
-      </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
-        <jvmarg value="-Xmx1024m"/>                
-        <arg value="-s:{$vAssembledOutputUri}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/derive_deriver.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value" select="'-o:' || $vDeriverOutputUri"/>
-        </arg>
-        <arg>
-          <xsl:attribute name="value" select="'source=' || $vAssembledSourceOutputUri"/>
-        </arg>                
-        <arg value="-xi"/>
-        <arg value="--suppressXsltNamespaceCheck:on"/>
-      </java>
       <antcall target="derive_{$pCounter}"/>
     </target>
     <target name="derive_{$pCounter}" description="Derivation">
@@ -855,10 +827,10 @@
           <xsl:text>${saxon}</xsl:text>
         </xsl:attribute>
         <jvmarg value="-Xmx1024m"/>                
-        <arg value="-s:{$vAssembledSourceOutputUri}"/>
+        <arg value="-s:{$vAssembledOutputUri}"/>
         <arg>
           <xsl:attribute name="value">
-            <xsl:sequence select="'-xsl:' || $vDeriverOutputUri"/>
+            <xsl:text>-xsl:${basedir}/XSLT/derive.xslt</xsl:text>
           </xsl:attribute>
         </arg>
         <arg>
