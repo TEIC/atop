@@ -372,13 +372,16 @@
   </xsl:template>
   
   <xd:doc>
-    <xd:desc>Given a node, answer the question “do I have any descendants
-    from model.contentPart or &lt;valList> or from RELAX NG?”</xd:desc>
+    <xd:desc>Given a node, answer the question “do I have any
+    descendants that give rise to content, i.e. are from
+    model.contentPart (other than &lt;alternate>, &lt;interleave>, or
+    &lt;sequence>), or is a &lt;valList> or is from RELAX
+    NG?”</xd:desc>
     <xd:param name="pNode">node for which to ask our question</xd:param>
   </xd:doc>
   <xsl:function name="atop:has-no-content-content" as="xs:boolean">
     <xsl:param name="pNode" as="node()"/>
-    <xsl:sequence select="not( $pNode//( alternate | anyElement | classRef | dataRef | elementRef | empty | macroRef | sequence | textNode | valList | rng:* ) )"/>
+    <xsl:sequence select="not( $pNode//( anyElement | classRef | dataRef | elementRef | empty | macroRef | textNode | valList | rng:* ) )"/>
   </xsl:function>
   
   <xd:doc>

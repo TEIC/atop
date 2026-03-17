@@ -42,8 +42,9 @@
   <!-- replacement of schema-level components -->
   <xsl:mode name="atop:mPass08" on-no-match="shallow-copy"><!-- replacement --></xsl:mode>
 
-  <!-- change (of all but <attDef>s?) -->
-  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!-- class merging --></xsl:mode>
+  <!-- change of schema-level components -->
+  <xsl:mode name="atop:mPass09" on-no-match="shallow-copy"><!--  --></xsl:mode>
+
   <xsl:mode name="atop:mPass10" on-no-match="shallow-copy"></xsl:mode>
   <xsl:mode name="atop:mPass11" on-no-match="shallow-copy"></xsl:mode>
   <xsl:mode name="atop:mPass12" on-no-match="shallow-copy"></xsl:mode>
@@ -1083,13 +1084,6 @@
 
   <!-- ************ pass03, element deletions ************ -->
 
-  <xsl:template match="attDef" mode="atop:mPass03" as="element(attDef)" name="just_debug_delete_me_soon">
-    <xsl:message select="'debug3a:  '|| atop:common-ident(.)||'  has uid  '||atop:unique-ident(.)" use-when="$atop:pDebug"/>
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()" mode="#current"/>
-    </xsl:copy>
-  </xsl:template>
-
   <xd:doc>
     <xd:desc>Remove elements that customization indicates should be removed. This means:
     * removing both the elementSpec that has mode=delete, and the base elementSpec for same element;
@@ -1288,7 +1282,9 @@
   </xsl:template>
   
   <!-- ************ pass07, post-deletion clean-up ************ -->
-  
+
+  <!-- Probably should also handle cases with only 1 child left (as opposed to empty), which may require recursion. -->
+
   <xd:doc>
     <xd:desc>If our deletions have left an &lt;alternate>, &lt;interleave>,
       or &lt;sequence> empty (which is to say, without any oddDecl or RELAX NG
@@ -1362,6 +1358,46 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:message select="'debug08choose3 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
+        <xsl:next-match/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  <!-- ******** pass09, change (i.e., merge) of schema-level components -->
+
+  <xd:doc>
+    <xd:desc>Set up to merge a schema-level specifications that
+    customization indicates are being merged (i.e., "change"
+    specified as child of input &lt;schemaSpec>).</xd:desc>
+  </xd:doc>
+  <xsl:template match="schemaSpec" mode="atop:mPass09" as="element(schemaSpec)">
+    <xsl:variable name="vChangeUs" select="child::*[ @mode eq 'change']!atop:common-ident(.)" as="xs:string*"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()" mode="#current">
+        <xsl:with-param name="tpChangeUs" select="$vChangeUs" as="xs:string*" tunnel="yes"/>
+      </xsl:apply-templates>
+    </xsl:copy>
+  </xsl:template>
+
+  <xd:doc>
+    <xd:desc>If what a schema-level specification element specifies
+      matches one of the things-to-be-changed, then merge it with the
+      base version of the same thing.</xd:desc>
+    <xd:param name="tpChangeUs">list of atop:common-ident() values of the elements to be changed</xd:param>
+  </xd:doc>
+  <xsl:template match="classSpec | dataSpec | elementSpec | macroSpec" mode="atop:mPass08" as="node()+">
+    <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
+    <xsl:choose>
+      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  ( @mode ne 'change'  or  not( @mode ) )">
+        <xsl:text>&#x0A;</xsl:text>
+        <xsl:comment expand-text="yes"> *** ATOP: deleting base version of {@ident} {local-name(.)} here as it has been merged with customization version</xsl:comment>
+      </xsl:when>
+      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'change'">
+        <xsl:copy>
+          <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+        </xsl:copy>
+      </xsl:when>
+      <xsl:otherwise>
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
