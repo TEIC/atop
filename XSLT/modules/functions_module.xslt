@@ -775,8 +775,7 @@
     <xsl:variable name="vOdd" as="xs:anyURI" select="if ($pOdd instance of xs:anyURI) then $pOdd else base-uri($pOdd)"/>
     <xsl:variable name="vSourceOdd" as="xs:anyURI" select="if ($pSourceOdd instance of xs:anyURI) then $pSourceOdd else base-uri($pSourceOdd)"/>
     <xsl:variable name="vAssembledOutputUri" as="xs:anyURI" 
-      select="atop:temp-file-naming($vOdd, '_assembled.xml', ())"/>
-    <xsl:variable name="vAssembledSourceOutputUri" as="xs:anyURI" select="atop:temp-file-naming($vSourceOdd, '_assembled.xml', ())"/>
+      select="atop:temp-file-naming($vOdd, '_assembled_' || $pCounter || '.xml', ())"/>
     <target name="assemble_{$pCounter}" description="Assemble">
       <description>
         <xsl:text>Assemble</xsl:text>
@@ -835,7 +834,7 @@
         </arg>
         <arg>
           <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_derived.xml', ())"/>
+            <xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_derived_' || $pCounter || '.xml', ())"/>
           </xsl:attribute>
         </arg>                
         <arg value="-xi"/>
@@ -877,7 +876,7 @@
           <xsl:text>${saxon}</xsl:text>
         </xsl:attribute>
         <jvmarg value="-Xmx1024m"/>                
-            <arg value="-s:{atop:temp-file-naming($pOdd, '_derived.xml', ())}"/>
+            <arg value="-s:{atop:temp-file-naming($pOdd, '_derived_' || $pTotal ||'.xml', ())}"/>
         <arg>
           <xsl:attribute name="value">
             <xsl:text>-xsl:${basedir}/XSLT/prune_and_localize.xslt</xsl:text>
