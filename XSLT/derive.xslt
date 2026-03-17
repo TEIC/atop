@@ -1283,12 +1283,22 @@
   
   <!-- ************ pass07, post-deletion clean-up ************ -->
 
-  <!-- Probably should also handle cases with only 1 child left (as opposed to empty), which may require recursion. -->
+  <xd:doc>
+    <xd:desc>If our deletions have left a grouping element
+    (&lt;alternate>, &lt;interleave>, or &lt;sequence>) with only 1
+    descendant oddDecl or RELAX NG node, commit suicide (but not
+    filicide).</xd:desc>
+  </xd:doc>
+  <xsl:template mode="atop:mPass07" as="item()+"
+		match="(alternate|interleave|sequence)[ count( .//( anyElement | classRef | dataRef | elementRef | macroRef | textNode | valList | rng:* ) ) eq 1 ]">
+    <xsl:apply-templates select="node()" mode="#current"/>
+  </xsl:template>
 
   <xd:doc>
-    <xd:desc>If our deletions have left an &lt;alternate>, &lt;interleave>,
-      or &lt;sequence> empty (which is to say, without any oddDecl or RELAX NG
-      descendants) just kill it.</xd:desc>
+    <xd:desc>If our deletions have left a grouping element
+    (&lt;alternate>, &lt;interleave>, or &lt;sequence> empty (which is
+    to say, without any oddDecl or RELAX NG descendants) just kill
+    it.</xd:desc>
   </xd:doc>
   <xsl:template match="(alternate|interleave|sequence)[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="empty-sequence()"/>
   
@@ -1314,7 +1324,7 @@
       <dataRef name="string"/> <!-- cannot use a TEI datatype as it may have been deleted -->
     </xsl:copy>
   </xsl:template>
-  
+
   <!-- ******** pass08, replacement of schema-level components -->
 
   <xd:doc>

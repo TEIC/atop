@@ -45,7 +45,12 @@
 	  </attList>
 	</classSpec>
 
-	<elementSpec mode="delete" module="header" ident="rendition"/>
+	<elementSpec mode="delete" module="header" ident="author"/>
+	<elementSpec mode="delete" module="header" ident="editor"/>
+	<elementSpec mode="delete" module="header" ident="meeting"/>
+	<!-- The result of above 3 deletions is that a branch of the
+	     <monogr> content model will have an <alternate> with only
+ 	     1 child, <elementRef key="respStmt"/>. -->
 
 	<elementSpec mode="replace" module="header" ident="editorialDecl">
 	  <desc>which editorial style manual to use</desc>
