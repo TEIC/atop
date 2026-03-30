@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Comprehensive assembled ODD for derivation against p5subset.xml</title>
+            <author>ATOP team</author>
+         </titleStmt>
+         <publicationStmt>
+            <p>part of ATOP test suite</p>
+      </publicationStmt>
+         <sourceDesc>
+            <p>born digital</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <head><!-- name of markup language being defined can be repeated here --></head>
+         <p><!-- prose description of, and explanation of, markup language goes here;
+              you can use any TEI constructs you like, including multiple paragarphs,
+              tables, nested divisions, etc. Furthermore, <specGrp> elements may
+              be used to include snippets of schema definitions, and <specList>
+              can be used to include to insert a list of descriptions of elements
+              and attributes. --></p>
+         <schemaSpec ident="derivation_comprehensive" prefix="drcmp_">
+            <desc>
+               This ODD is intended to test every variety of customization and combination
+               thereof that the derivation processing phase will have to deal with.
+            </desc>
+            <moduleRef key="tei"/>
+            <!-- Test @include here. -->
+            <moduleRef key="core" include="abbr add addrLine address author bibl choice corr date del desc emph 
+                                           expan graphic head item l lb lg list listBibl mentioned milestone
+                                           name note num orig p pb ptr q quote ref sic title"/>
+            <!-- Test @exclude here. -->
+            <moduleRef key="header" exclude="appInfo application authority biblFull cRefPattern calendar 
+                                             calendarDesc  citeData citeStructure conversion correction 
+                                             correspAction correspContext correspDesc creation distributor
+                                             extent funder geoDecl handNote hyphenation idno interpretation 
+                                             keywords langUsage language listChange normalization notesStmt
+                                             principal projectDesc punctuation quotation refState refsDecl 
+                                             revisionDesc samplingDecl scriptNote segmentation seriesStmt
+                                             sponsor stdVals styleDefDecl tagUsage tagsDecl unitDecl unitDef
+                                             xenoData"/>
+            <!-- Include all of these. -->
+            <moduleRef key="textstructure"/>
+            <moduleRef key="linking"/>
+            
+            <!-- Delete some elements from textstructure. -->
+            <elementSpec module="textstructure" ident="div1" mode="delete"/>
+            <elementSpec module="textstructure" ident="div2" mode="delete"/>
+            <elementSpec module="textstructure" ident="div3" mode="delete"/>
+            <elementSpec module="textstructure" ident="div4" mode="delete"/>
+            <elementSpec module="textstructure" ident="div5" mode="delete"/>
+            <elementSpec module="textstructure" ident="div6" mode="delete"/>
+            <elementSpec module="textstructure" ident="div7" mode="delete"/>
+            
+            <!-- Add a new element to an existing module (good idea? bad idea?). -->
+            <!-- This tests:
+                   - adding a new element with its own native attribute.
+                   - making it a member of a class.
+                   - deleting an attribute inherited from a class.
+                   - modifying an attribute inherited from a class.
+            -->
+            <elementSpec ident="specialDiv" module="textstructure" mode="add">
+               <gloss xml:lang="en">My special div</gloss>
+               <desc xml:lang="en">It's very special indeed.</desc>
+               <classes>
+                  <memberOf key="att.typed"/>
+               </classes>
+               <content>
+                  <!-- Only p elements. -->
+                  <elementRef key="p" minOccurs="1" maxOccurs="unbounded"/>
+               </content>
+               <attList>
+                  <!-- It brings one attribute of its own. -->
+                  <attDef ident="howSpecial">
+                     <gloss xml:lang="en">How special is this div?</gloss>
+                     <datatype>
+                        <dataRef key="teidata.certainty"/>
+                     </datatype>
+                  </attDef>
+                  <!-- Modify the type attribute. -->
+                  <attDef ident="type" mode="change">
+                     <gloss xml:lang="en">The type of special division</gloss>
+                     <valList mode="add">
+                        <valItem ident="old">
+                           <gloss xml:lang="en">An old special div</gloss>
+                        </valItem>
+                        <valItem ident="new">
+                           <gloss xml:lang="en">A new special div</gloss>
+                        </valItem>
+                     </valList>
+                  </attDef>
+                  <!-- Remove the subtype attribute. -->
+                  <attDef ident="subtype" mode="delete"/>
+               </attList>
+            </elementSpec> 
+            
+            <!-- Other customization scenarios. -->
+            <!-- 
+             - Change a gloss on one element in one language.
+             - Change a desc on one element in one language.
+             - Add a new gloss in a new language to an existing element.
+             - Add a new desc in a new language to an existing element.
+             - Add an existing element to an existing class.
+             - Add a new native attribute to an existing element.
+             - Remove an existing element from a class.
+             - Add new attribute to existing attribute class.
+             - Delete that attribute from selected members of the class.
+             - Change the datatype of a native attribute on an existing element.
+             - Modify an existing datatype (e.g. add "absolute" as new val for @cert)
+             - Modify an existing macro used in content models.
+             - Add a new macro and replace an existing element's content model with it.
+             
+            
+            
+            
+            -->
+            
+         </schemaSpec>
+      </body>
+   </text>
+</TEI>
