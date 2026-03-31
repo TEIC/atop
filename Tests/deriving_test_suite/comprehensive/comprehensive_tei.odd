@@ -2,7 +2,8 @@
 <?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 <?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml"
 	schematypens="http://purl.oclc.org/dsdl/schematron"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en" 
+   xmlns:test="http://www.tei-c.org/ns/atop/test_suite">
    <teiHeader>
       <fileDesc>
          <titleStmt>
@@ -65,8 +66,9 @@
                    - making it a member of a class.
                    - deleting an attribute inherited from a class.
                    - modifying an attribute inherited from a class.
+                   - Adding an attribute in a new namespace.
             -->
-            <elementSpec ident="specialDiv" module="textstructure" mode="add">
+            <elementSpec ident="specialDiv" mode="add">
                <gloss xml:lang="en">My special div</gloss>
                <desc xml:lang="en">It's very special indeed.</desc>
                <classes>
@@ -98,8 +100,28 @@
                   </attDef>
                   <!-- Remove the subtype attribute. -->
                   <attDef ident="subtype" mode="delete"/>
+                  
+                  <!-- Testing adding an attribute in another namespace, with 
+                       the @ns declared. NOTE that ATOP will only allow this 
+                       formulation as a way to do this; other than the special
+                       case of the xml: prefix, no prefix may be used directly
+                       in the attDef/@ident in ATOP.
+                  -->
+                  <attDef ident="name" mode="add" ns="http://www.tei-c.org/ns/atop/test_suite">
+                     <gloss>Testing a prefix which is undefined.</gloss>
+                     <datatype>
+                        <dateRef key="tei.token"/>
+                     </datatype>
+                  </attDef>
+                  
                </attList>
             </elementSpec> 
+            
+            <elementSpec ident="div" mode="change" module="textstructure">
+               <content>
+                  <elementRef key="specialDiv" minOccurs="1" maxOccurs="unbounded"/>
+               </content>
+            </elementSpec>
             
             <!-- Other customization scenarios. -->
             <!-- 
