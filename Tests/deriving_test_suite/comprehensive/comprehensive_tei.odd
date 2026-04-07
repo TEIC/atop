@@ -113,7 +113,6 @@
                         <dateRef key="tei.token"/>
                      </datatype>
                   </attDef>
-                  
                </attList>
             </elementSpec> 
             
@@ -122,18 +121,56 @@
                   <elementRef key="specialDiv" minOccurs="1" maxOccurs="unbounded"/>
                </content>
             </elementSpec>
+
+            <classSpec ident="att.datable" mode="change">
+               <attList>
+                  <!-- Add a new native attribute to an existing class. -->
+                  <attDef ident="prehistoric" mode="add">
+                     <gloss xml:lang="en">prehistoric and therefore not datable</gloss>
+                     <desc xml:lang="en">cannot be dated according to any regular calendar because it predates any of them.</desc>
+                     <datatype>
+                        <!-- Use an XSD native datatype. -->
+                        <dataRef name="boolean"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </classSpec>
+            
+            <elementSpec ident="del" module="core" mode="change">
+               <!-- Replace a gloss in one language. -->
+               <gloss xml:lang="ja" mode="replace">除去</gloss><!-- Originally "削除" -->
+               <!-- Add a new gloss in a new language. -->
+               <gloss xml:lang="in" mode="add">hapus</gloss>
+               <!-- Replace a desc in one language (just adds "du texte" to the original). -->
+               <desc xml:lang="fr" mode="replace">contient une lettre, un mot ou un passage du texte supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur.</desc><!-- Originally "contient une lettre, un mot ou un passage supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur." -->
+               <!-- Add a new desc in a new language. -->
+               <desc xml:lang="in" mode="add">berisi huruf, kata, atau bagian teks yang dihapus, ditandai sebagai dihapus, atau dinyatakan sebagai berlebihan atau tidak perlu dalam teks salinan oleh penulis, juru tulis, atau pemberi anotasi atau korektor sebelumnya.</desc>
+               
+               <classes>
+                  <!-- Add this element to a class of which it wasn't a member before. -->
+                  <memberOf key="att.datable" mode="add"/>
+                  <!-- Remove it from a model class that it was a member of. -->
+                  <memberOf key="model.linePart" mode="delete"/>
+                  <!-- Remove it from an attribute class that it was a member of. -->
+                  <memberOf key="att.typed" mode="delete"/>
+               </classes>
+               <attList>
+                  <!-- Add a new native attribute to an existing element. -->
+                  <attDef ident="goodCall" mode="add">
+                     <gloss xml:lang="en">Was this deletion a good idea?</gloss>
+                     <desc>Allows the encoder to judge the value or accuracy of a deletion.</desc>
+                     <datatype>
+                        <dataRef key="tei.xTruthValue"/>
+                     </datatype>
+                  </attDef>
+                  <!-- Delete an attribute added to a class from a member of that class.
+                       Here we delete the @prehistoric attribute, added to att.datable above. -->
+                  <attDef ident="prehistoric" mode="delete"/>
+               </attList>
+            </elementSpec>
             
             <!-- Other customization scenarios. -->
             <!-- 
-             - Change a gloss on one element in one language.
-             - Change a desc on one element in one language.
-             - Add a new gloss in a new language to an existing element.
-             - Add a new desc in a new language to an existing element.
-             - Add an existing element to an existing class.
-             - Add a new native attribute to an existing element.
-             - Remove an existing element from a class.
-             - Add new attribute to existing attribute class.
-             - Delete that attribute from selected members of the class.
              - Change the datatype of a native attribute on an existing element.
              - Modify an existing datatype (e.g. add "absolute" as new val for @cert)
              - Modify an existing macro used in content models.
