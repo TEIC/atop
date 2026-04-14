@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
-<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_customization.rng" type="application/xml"
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_odds.rng" type="application/xml"
 	schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en" 
    xmlns:test="http://www.tei-c.org/ns/atop/test_suite">
@@ -37,8 +37,8 @@
             <moduleRef key="core" include="abbr add addrLine address author bibl choice corr date del desc emph 
                                            expan graphic head item l lb lg list listBibl mentioned milestone
                                            name note num orig p pb ptr q quote ref sic title"/>
-            <!-- Test @exclude here. -->
-            <moduleRef key="header" exclude="appInfo application authority biblFull cRefPattern calendar 
+            <!-- Test @except here. -->
+            <moduleRef key="header" except="appInfo application authority biblFull cRefPattern calendar 
                                              calendarDesc  citeData citeStructure conversion correction 
                                              correspAction correspContext correspDesc creation distributor
                                              extent funder geoDecl handNote hyphenation idno interpretation 
@@ -63,7 +63,7 @@
             <!-- Add a new element to an existing module (good idea? bad idea?). -->
             <!-- This tests:
                    - adding a new element with its own native attribute.
-                   - making it a member of a class.
+                   - making it a member of an attribute class.
                    - deleting an attribute inherited from a class.
                    - modifying an attribute inherited from a class.
                    - Adding an attribute in a new namespace.
@@ -110,7 +110,7 @@
                   <attDef ident="name" mode="add" ns="http://www.tei-c.org/ns/atop/test_suite">
                      <gloss>Testing a prefix which is undefined.</gloss>
                      <datatype>
-                        <dateRef key="tei.token"/>
+                        <dataRef key="tei.token"/>
                      </datatype>
                   </attDef>
                </attList>
@@ -122,7 +122,7 @@
                </content>
             </elementSpec>
 
-            <classSpec ident="att.datable" mode="change">
+            <classSpec type="atts" ident="att.datable" mode="change">
                <attList>
                   <!-- Add a new native attribute to an existing class. -->
                   <attDef ident="prehistoric" mode="add">
@@ -138,15 +138,15 @@
             
             <elementSpec ident="del" module="core" mode="change">
                <!-- Replace a gloss in one language. -->
-               <gloss xml:lang="ja" mode="replace">除去</gloss><!-- Originally "削除" -->
+               <gloss xml:lang="ja">除去</gloss><!-- Originally "削除" -->
                <!-- Add a new gloss in a new language. -->
-               <gloss xml:lang="in" mode="add">hapus</gloss>
+               <gloss xml:lang="in">hapus</gloss>
                <!-- Replace a desc in one language (just adds "du texte" to the original). -->
-               <desc xml:lang="fr" mode="replace">contient une lettre, un mot ou un passage du texte supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur.</desc><!-- Originally "contient une lettre, un mot ou un passage supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur." -->
+               <desc xml:lang="fr">contient une lettre, un mot ou un passage du texte supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur.</desc><!-- Originally "contient une lettre, un mot ou un passage supprimé, marqué comme supprimé, sinon indiqué comme superflu ou erroné dans le texte par un auteur, un copiste, un annotateur ou un correcteur." -->
                <!-- Add a new desc in a new language. -->
-               <desc xml:lang="in" mode="add">berisi huruf, kata, atau bagian teks yang dihapus, ditandai sebagai dihapus, atau dinyatakan sebagai berlebihan atau tidak perlu dalam teks salinan oleh penulis, juru tulis, atau pemberi anotasi atau korektor sebelumnya.</desc>
+               <desc xml:lang="in">berisi huruf, kata, atau bagian teks yang dihapus, ditandai sebagai dihapus, atau dinyatakan sebagai berlebihan atau tidak perlu dalam teks salinan oleh penulis, juru tulis, atau pemberi anotasi atau korektor sebelumnya.</desc>
                
-               <classes>
+               <classes mode="change">
                   <!-- Add this element to a class of which it wasn't a member before. -->
                   <memberOf key="att.datable" mode="add"/>
                   <!-- Remove it from a model class that it was a member of. -->
@@ -172,7 +172,7 @@
             <!-- Other customization scenarios. -->
             <!-- 
              - Change the datatype of a native attribute on an existing element.
-             - Modify an existing datatype (e.g. add "absolute" as new val for @cert)
+             - Modify an existing datatype (e.g. add "absolute" as new val for data.certainty)
              - Modify an existing macro used in content models.
              - Add a new macro and replace an existing element's content model with it.
              
