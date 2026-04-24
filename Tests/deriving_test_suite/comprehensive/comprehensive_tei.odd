@@ -35,7 +35,7 @@
             <moduleRef key="tei"/>
             <!-- Test @include here. -->
             <moduleRef key="core" include="abbr add addrLine address author bibl choice corr date del desc emph 
-                                           expan graphic head item l lb lg list listBibl mentioned milestone
+                                           distinct expan graphic head item l lb lg list listBibl mentioned milestone
                                            name note num orig p pb ptr q quote ref sic title"/>
             <!-- Test @except here. -->
             <moduleRef key="header" except="appInfo application authority biblFull cRefPattern calendar 
@@ -169,17 +169,75 @@
                </attList>
             </elementSpec>
             
-            <!-- Other customization scenarios. -->
-            <!-- 
-             - Change the datatype of a native attribute on an existing element.
-             - Modify an existing datatype (e.g. add "absolute" as new val for data.certainty)
-             - Modify an existing macro used in content models.
-             - Add a new macro and replace an existing element's content model with it.
-             
+            <elementSpec ident="distinct" module="core" mode="change">
+               <attList>
+                  <!-- Change the datatype of a native attribute on an existing element. -->
+                  <attDef ident="space" mode="change">
+                     <datatype>
+                        <dataRef key="teidata.token"/>
+                     </datatype>
+                  </attDef>
+               </attList>
+            </elementSpec>
+            
+            <dataSpec ident="teidata.certainty" module="tei" mode="change">
+               <!-- Modify and existing datatype. -->
+               <!-- Add a new value "absolute to the value list. Note that this 
+                    valItem has a gloss, which the existing ones do not.-->
+               <content>
+                  <valList type="closed" mode="change">
+                     <valItem ident="absolute" mode="add">
+                        <gloss xml:lang="en" versionDate="2026-04-24">100% certainty</gloss>
+                     </valItem>
+                  </valList>
+               </content>
+               <!-- Replace the original remarks with a new version. -->
+               <remarks versionDate="2026-04-24" xml:lang="en" mode="replace">
+                  <p>Certainty may be expressed by one of the predefined 
+                     symbolic values <val>absolute</val>, <val>high</val>,
+                     <val>medium</val>, or <val>low</val>. The value
+                     <val>unknown</val> should be used in cases where the encoder
+                     does not wish to assert an opinion about the matter.</p>
+               </remarks>
+            </dataSpec>
             
             
+            <!-- Modify an existing macro used in content models. This can be 
+                 tested by using <sponsor> inside <ab>. -->
+            <macroSpec ident="macro.abContent" module="tei" mode="change">
+               <content>    
+                  <alternate minOccurs="0" maxOccurs="unbounded">
+                     <textNode/>
+                     <classRef key="model.paraPart"/>
+                     <elementRef key="ab"/>
+                     <elementRef key="sponsor"/>
+                  </alternate>
+               </content>
+            </macroSpec>
             
-            -->
+            <!-- Add a new macro and replace an existing element's content model with it. -->
+            <!-- First, the new macro. -->
+            <macroSpec ident="macro.refContent" mode="add">
+               <gloss versionDate="2026-04-24" xml:lang="en">content of a ref element</gloss>
+               <desc versionDate="2026-04-24" xml:lang="en">defines the content of ref elements.</desc>
+               <content>    
+                  <alternate minOccurs="0" maxOccurs="unbounded">
+                     <textNode/>
+                     <elementRef key="name"/>
+                     <elementRef key="emph"/>
+                  </alternate>
+               </content>
+            </macroSpec>
+            
+            <!-- Now redefine the content model of ref to use the new macro. -->
+            <elementSpec ident="ref" module="core" mode="change">
+               <content>
+                  <macroRef key="macro.refContent"/>
+               </content>
+            </elementSpec>
+            
+            <!-- Other customization scenarios??? -->
+            
             
          </schemaSpec>
       </body>
