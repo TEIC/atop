@@ -59,8 +59,8 @@
       </sch:assert>
     </sch:rule>
     <sch:rule context="tei:attRef">
-      <sch:assert test="empty(@source) and key('atop:classSpec', @class, (ancestor::tei:schemaSpec, root())[1])/tei:attList//tei:attDef[@ident = current()/@name]">
-        Every dataRef element in a self-contained schema specification must resolve locally.
+      <sch:assert test="empty(@source) and key('atop:classSpec', @class, (ancestor::tei:schemaSpec, root())[1])/tei:attList//tei:attDef[@ident = current()/@key]">
+        Every attRef element in a self-contained schema specification must resolve locally.
       </sch:assert>
     </sch:rule>
   </sch:pattern>
