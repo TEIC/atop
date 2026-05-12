@@ -1343,7 +1343,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass08" as="element(schemaSpec)">
     <xsl:variable name="vReplaceUs" select="child::*[ @mode eq 'replace']!atop:common-ident(.)" as="xs:string*"/>
-    <xsl:message select="'debug08vReplaceUs = '||string-join( $vReplaceUs, ', ')"/>
+    <xsl:message select="'debug08vReplaceUs = '||string-join( $vReplaceUs, ', ')" use-when="$atop:pDebug"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpReplaceUs" select="$vReplaceUs" as="xs:string*" tunnel="yes"/>
@@ -1361,12 +1361,14 @@
     <xsl:param name="tpReplaceUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
       <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  ( @mode ne 'replace'  or  not( @mode ) )">
-        <xsl:message select="'debug08choose1 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
+        <xsl:message use-when="$atop:pDebug"
+            select="'debug08choose1 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:text>&#x0A;</xsl:text>
         <xsl:comment> *** ATOP: deleting base version of {@ident} {local-name(.)} here as it has been replaced </xsl:comment>
       </xsl:when>
       <xsl:when test="atop:common-ident(.) = $tpReplaceUs  and  @mode eq 'replace'">
-        <xsl:message select="'debug08choose2 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
+        <xsl:message use-when="$atop:pDebug"
+            select="'debug08choose2 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:copy>
           <xsl:apply-templates select="@* except @mode" mode="#current"/>
           <xsl:attribute name="mode" select="'add'"/>
@@ -1376,7 +1378,8 @@
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:message select="'debug08choose3 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
+        <xsl:message use-when="$atop:pDebug"
+            select="'debug08choose3 for a '||name(.)||' of '||@ident||' in '||ancestor-or-self::*[@xml:id][1]/@xml:id||' a:ci()='||atop:common-ident(.)||' and RU='||string-join( $tpReplaceUs, ', ')"/>
         <xsl:next-match/>
       </xsl:otherwise>
     </xsl:choose>
@@ -1399,9 +1402,9 @@
   </xsl:template>
 
   <xd:doc>
-    <xd:desc>If what a schema-level specification element specifies
-      matches one of the things-to-be-changed, then merge it with the
-      base version of the same thing.</xd:desc>
+    <xd:desc>If the class that a class specification defines matches
+    one of the things-to-be-changed, then merge it with the base
+    version of the same thing.</xd:desc>
     <xd:param name="tpChangeUs">list of atop:common-ident() values of the elements to be changed</xd:param>
   </xd:doc>
   <xsl:template match="classSpec" mode="atop:mPass09" as="node()+">
@@ -1425,7 +1428,13 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
+  <xd:doc>
+    <xd:desc>If what a datatype specification defines matches one of
+    the things-to-be-changed, then merge it with the base version of
+    the same thing.</xd:desc>
+    <xd:param name="tpChangeUs">list of atop:common-ident() values of the elements to be changed</xd:param>
+  </xd:doc>
   <xsl:template match="dataSpec" mode="atop:mPass09" as="node()+">
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
@@ -1448,6 +1457,12 @@
     </xsl:choose>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>If the element an element specification defines matches
+    one of the things-to-be-changed, then merge it with the base
+    version of the same thing.</xd:desc>
+    <xd:param name="tpChangeUs">list of atop:common-ident() values of the elements to be changed</xd:param>
+  </xd:doc>
   <xsl:template match="elementSpec" mode="atop:mPass09" as="node()+">
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
@@ -1470,6 +1485,12 @@
     </xsl:choose>
   </xsl:template>
   
+  <xd:doc>
+    <xd:desc>If the macro a macro specification defines matches one of
+    the things-to-be-changed, then merge it with the base version of
+    the same thing.</xd:desc>
+    <xd:param name="tpChangeUs">list of atop:common-ident() values of the elements to be changed</xd:param>
+  </xd:doc>
   <xsl:template match="macroSpec" mode="atop:mPass09" as="node()+">
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
