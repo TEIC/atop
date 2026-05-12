@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0" xml:lang="en" xml:id="ATOP_derivation_test_little_against_TEI">
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+     xmlns:sch="http://purl.oclc.org/dsdl/schematron"
+     xml:lang="en" xml:id="ATOP_derivation_test_little_against_TEI">
   <teiHeader>
     <fileDesc>
       <titleStmt>
@@ -44,6 +46,56 @@
 	    </attDef>
 	  </attList>
 	</classSpec>
+
+        <dataSpec mode="delete" module="tei" ident="teidata.sex"/>
+        <dataSpec mode="replace" module="tei" ident="teidata.temporal.iso">
+          <desc versionDate="2007-04-08" xml:lang="en">defines the range of attribute values expressing a temporal expression such as a date, a
+          time, or a combination of them, that conform to the International Standard <title>Data elements
+          and interchange formats – Information interchange – Representation of dates and times</title>.</desc>
+          <content>
+            <alternate>
+              <dataRef name="date"/>
+              <dataRef name="gYear"/>
+              <dataRef name="gMonth"/>
+              <dataRef name="gDay"/>
+              <dataRef name="gYearMonth"/>
+              <dataRef name="gMonthDay"/>
+              <dataRef name="time"/>
+              <dataRef name="dateTime"/>
+              <dataRef name="token" restriction="[\[\]\{\}~?%0-9.,DHMPRSTWYZ/:+\-]+"/>
+            </alternate>
+          </content>
+          <remarks versionDate="2026-05-11" xml:lang="en">
+            <p>If it is likely that the value used is to be compared with another, then a time zone
+            indicator should always be included, and only the dateTime representation should be used.</p>
+            <p>For all representations for which ISO 8601:2019 describes both a <term>basic</term> and an
+            <term>extended</term> format, these Guidelines recommend use of the extended format.</p>
+          </remarks>
+        </dataSpec>
+        <dataSpec mode="add" ident="data.verdad">
+          <desc>Pretty useless datatype, just to see if it gets added properly</desc>
+          <valList type="closed">
+            <valItem ident="1"/>
+            <valItem ident="true"/>
+            <valItem ident="verdad"/>
+            <valItem ident="pravda"/>
+            <valItem ident="правда"/>
+            <valItem ident="yes"/>
+            <valItem ident="if-you-say-so"/>
+          </valList>
+        </dataSpec>
+        <dataSpec mode="change" module="tei" ident="teidata.language">
+          <constraintSpec scheme="schematron" ident="private-use-langs-defined">
+            <constraint>
+              <sch:rule context="@xml:lang[ matches( ., 'x-') ]">
+                <sch:assert test="//tei:language/@ident = current()">
+                  Are you CRAZY! Languages that have private use subtags need
+                  to be defined by a &lt;language> in the header.
+                </sch:assert>
+              </sch:rule>
+            </constraint>
+          </constraintSpec>
+        </dataSpec>
 
 	<elementSpec mode="delete" module="header" ident="author"/>
 	<elementSpec mode="delete" module="header" ident="editor"/>

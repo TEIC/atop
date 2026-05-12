@@ -1447,8 +1447,41 @@
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
+          <xsl:apply-templates select="$vBaseSpec/@* except @mode" mode="#current"/>
+          <xsl:apply-templates select="@* except @mode" mode="#current"/>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!-- DO THE RIGHT THING HERE!! -->
+          <!-- WARNING the following 4 lines each handle the case of
+               ZERO or ONE of the element type being handled just
+               fine, but will mess up if there are TWO or more. Thus
+               this code needs to be replaced, because TEI allows
+               zeroOrMore of each of these. Sigh. -->
+          <xsl:apply-templates select="( tei:altIdent, $vBaseSpec/tei:altIdent )[1]" mode="#current"/>
+          <xsl:apply-templates select="( tei:equiv,    $vBaseSpec/tei:equiv    )[1]" mode="#current"/>
+          <xsl:apply-templates select="( tei:gloss,    $vBaseSpec/tei:gloss    )[1]" mode="#current"/>
+          <xsl:apply-templates select="( tei:desc,     $vBaseSpec/tei:desc     )[1]" mode="#current"/>
+          <!-- There is 0 or 1 <content> element -->
+          <xsl:apply-templates select="( tei:content,  $vBaseSpec/tei:content  )[1]" mode="#current"/>
+          <xsl:choose>
+            <xsl:when test="tei:valList[ @mode eq 'delete']"/>
+            <xsl:when test="tei:valList[ @mode eq 'add'  or  not( @mode ) ]">
+              <xsl:for-each select="tei:valList"> <!-- to set context node -->
+                <xsl:copy>
+                  <xsl:apply-templates select="$vBaseSpec/tei:valList/*" mode="#current"/>
+                  <xsl:apply-templates select="tei:valList/*" mode="#current"/>
+                </xsl:copy>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:when test="tei:valList[ @mode eq 'replace']">
+              <xsl:apply-templates select="tei:valList" mode="#current"/>
+            </xsl:when>
+            <xsl:when test="tei:valList[ @mode eq 'change']">
+              <xsl:comment> DO THE RIGHT THING for &lt;valList mode=change> HERE!! </xsl:comment>
+            </xsl:when>
+          </xsl:choose>
+          <xsl:comment> DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:comment> DO THE RIGHT THING for &lt;exemplum> (has neither @mode nor @ident) HERE!! </xsl:comment>
+          <xsl:comment> DO THE RIGHT THING for &lt;remarks> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:comment> DO THE RIGHT THING for &lt;listRef> (has neither @mode nor @ident) HERE!! </xsl:comment>
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
