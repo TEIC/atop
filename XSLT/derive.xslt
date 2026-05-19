@@ -1439,10 +1439,6 @@
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
     <xsl:choose>
-      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  ( @mode ne 'change'  or  not( @mode ) )">
-        <xsl:text>&#x0A;</xsl:text>
-        <xsl:comment> *** ATOP: deleting base version of {@ident} {local-name(.)} here as it has been merged with customization version</xsl:comment>
-      </xsl:when>
       <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'change'">
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
