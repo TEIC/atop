@@ -7,7 +7,7 @@
   xpath-default-namespace="http://www.tei-c.org/ns/1.0" xmlns:atop="http://www.tei-c.org/ns/atop"
   xmlns:teix="http://www.tei-c.org/ns/Examples" xmlns:sch="http://purl.oclc.org/dsdl/schematron"
   xmlns:rng="http://relaxng.org/ns/structure/1.0" xmlns:err="http://www.w3.org/2005/xqt-errors"
-  exclude-result-prefixes="#all" version="3.0">
+  exclude-result-prefixes="#all" version="3.0" expand-text="yes">
   <xd:doc scope="stylesheet">
     <xd:desc>
       <xd:p><xd:b>Created on:</xd:b> May 18, 2022</xd:p>
@@ -17,6 +17,8 @@
       nodes) which are generally useful across multiple
       transformations in the ATOP repository. A corresponding XSpec
       file provides testing for these functions.</xd:p>
+      <xd:p>WARNING to maintainers: we set @expand-text to "yes" on
+      the root &lt;xsl:stylesheet> element.</xd:p>
     </xd:desc>
   </xd:doc>
 
@@ -341,7 +343,7 @@
     <xsl:choose>
       <xsl:when test="starts-with($pUri, 'tei:')">
         <xsl:if test="not(matches($pUri, '^tei:(current|[0-9]+\.[0-9]+\.[0-9])$'))">
-          <xsl:message terminate="yes" expand-text="yes"
+          <xsl:message terminate="yes"
 		       error-code="atop:error-invalidOrMalformedURI">Invalid or malformed private URI using the "tei:" scheme: '{$pUri}'</xsl:message>
         </xsl:if>
         <xsl:sequence select="xs:anyURI( 'https://www.tei-c.org/Vault/P5/'
@@ -480,10 +482,10 @@
         <xsl:sequence select="$vElPrefix || $vElName"/>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::classSpec">
-        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a classSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
+        <xsl:message terminate="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a classSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::macroSpec">
-        <xsl:message terminate="yes" expand-text="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
+        <xsl:message terminate="yes" error-code="atop:error-invalidSchematronContext">Schematron rule with content {xs:string($pContext)} is located in a macroSpec, so it is impossible to derive a working context for it. Please supply @context.</xsl:message>
       </xsl:when>
       <xsl:when test="$pContext/ancestor::schemaSpec">
         <xsl:sequence select="'/'"/>
@@ -521,7 +523,7 @@
                 </xsl:when>
                 <!-- We only warn when a prefix is used for two different namespaces; we discard all but the first. -->
                 <xsl:when test="$pNs[@prefix eq current()]/@uri ne namespace-uri-for-prefix(., $vCurrent)">
-                  <xsl:message expand-text="yes">WARNING: Ambiguous in-scope namespace declaration for prefix {.}</xsl:message>
+                  <xsl:message>WARNING: Ambiguous in-scope namespace declaration for prefix {.}</xsl:message>
                 </xsl:when>
               </xsl:choose>
             </xsl:for-each>
@@ -590,8 +592,8 @@
           <xsl:try>
             <xsl:choose>
               <xsl:when test="starts-with(., '#')">
-                <xsl:message expand-text="yes">Pointer is {.}.</xsl:message>
-                <xsl:message expand-text="yes">Parameter attribute is {xs:string($pPointerAtt)}</xsl:message>
+                <xsl:message>Pointer is {.}.</xsl:message>
+                <xsl:message>Parameter attribute is {xs:string($pPointerAtt)}</xsl:message>
                 <xsl:variable name="vTargId" as="xs:string" select="substring-after(., '#')"/>
                 <xsl:sequence select="$pPointerAtt/ancestor::*[last()]/descendant::*[@xml:id eq $vTargId]"/>
               </xsl:when>
@@ -606,7 +608,7 @@
               </xsl:otherwise>
             </xsl:choose>
             <xsl:catch>
-              <xsl:message expand-text="yes">Failed to retrieve resource from {.}.</xsl:message>
+              <xsl:message>Failed to retrieve resource from {.}.</xsl:message>
             </xsl:catch>
           </xsl:try>
         </xsl:for-each>
@@ -721,17 +723,10 @@
       <description>
         <xsl:text>Assemble</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
         <arg value="-s:{$vOdd}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/assemble_odd.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
+        <arg value="-xsl:${{basedir}}/XSLT/assemble_odd.xslt"/>
         <arg>
           <xsl:attribute name="value">
             <xsl:sequence select="('-o:', $vAssembledOutputUri)"/>
@@ -742,19 +737,11 @@
       </java>
       <antcall target="validateWithRng">
         <param name="xmlFile" value="{$vAssembledOutputUri}"></param>
-        <param name="rngFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/post-assembleSchemaSpecification.rng</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="rngFile" value="${{basedir}}/Schemas/post-assembleSchemaSpecification.rng"/>
       </antcall>
       <antcall target="validateWithSchematron">
         <param name="xmlFile" value="{$vAssembledOutputUri}"></param>
-        <param name="schSchemaFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/post-assembleSchemaSpecification.sch</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="schSchemaFile" value="${{basedir}}/Schemas/post-assembleSchemaSpecification.sch"/>
       </antcall>
       <antcall target="deriver_{$pCounter}"/>
     </target>
@@ -762,23 +749,12 @@
       <description>
         <xsl:text>Derivation: XSLT generation</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
         <arg value="-s:{$vAssembledOutputUri}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/derive_deriver.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value" select="'-o:' || $vDeriverOutputUri"/>
-        </arg>
-        <arg>
-          <xsl:attribute name="value" select="'source=' || $vAssembledSourceOutputUri"/>
-        </arg>                
+        <arg value="-xsl:${{basedir}}/XSLT/derive_deriver.xslt"/>
+        <arg value="-o:{$vDeriverOutputUri}"/>
+        <arg value="source={$vAssembledSourceOutputUri}"/>
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
@@ -788,22 +764,11 @@
       <description>
         <xsl:text>Derivation: derived ODD generation</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
         <arg value="-s:{$vAssembledSourceOutputUri}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:sequence select="'-xsl:' || $vDeriverOutputUri"/>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || atop:temp-file-naming($pOdd, '_derived.xml', ())"/>
-          </xsl:attribute>
-        </arg>                
+        <arg value="-xsl:{$vDeriverOutputUri}"/>
+        <arg value="-o:{atop:temp-file-naming($pOdd, '_derived.xml', ())}"/>
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
@@ -825,7 +790,7 @@
     <xd:param name="pCounter" as="xs:integer">Chained ODD counter.</xd:param>
     <xd:param name="pTotal" as="xs:integer">Total number of chaining steps.</xd:param>
   </xd:doc>
-  <xsl:function name="atop:post-derivation-pipeline" as="node()+">
+  <xsl:function name="atop:post-derivation-pipeline" as="node()+" expand-text="no">
     <xsl:param name="pOdd" as="node()"/>  
     <xsl:param name="pCounter" as="xs:integer"/>
     <xsl:param name="pTotal" as="xs:integer"/>
@@ -838,40 +803,21 @@
       <description>
         <xsl:text>Pruning and localization</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
-            <arg value="-s:{atop:temp-file-naming($pOdd, '_derived.xml', ())}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/prune_and_localize.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || $vPrunedOutputUri"/>
-          </xsl:attribute>
-        </arg>                
+        <arg value="-s:{atop:temp-file-naming($pOdd, '_derived.xml', ())}"/>
+        <arg value="-xsl:${{basedir}}/XSLT/prune_and_localize.xslt"/>
+        <arg value="{'-o:' || $vPrunedOutputUri}"/>
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
       <antcall target="validateWithRng">
         <param name="xmlFile" value="{$vPrunedOutputUri}"></param>
-        <param name="rngFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/ploddSchemaSpecification.rng</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="rngFile" value="${{basedir}}/Schemas/ploddSchemaSpecification.rng"/>
       </antcall>
       <antcall target="validateWithSchematron">
         <param name="xmlFile" value="{$vPrunedOutputUri}"></param>
-        <param name="schSchemaFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/ploddSchemaSpecification.sch</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="schSchemaFile" value="${{basedir}}/Schemas/ploddSchemaSpecification.sch"/>
       </antcall>
       <antcall target="pre-transpile"/>
     </target>
@@ -879,32 +825,17 @@
       <description>
         <xsl:text>Pre-transpiling</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
         <arg value="-s:{$vPrunedOutputUri}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/pre-transpile.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || $vPretranspiledOutputUri"/>
-          </xsl:attribute>
-        </arg>                
+        <arg value="-xsl:${{basedir}}/XSLT/pre-transpile.xslt"/>
+        <arg value="-o:{$vPretranspiledOutputUri}"/>
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
       <antcall target="validateWithSchematron">
         <param name="xmlFile" value="{$vPretranspiledOutputUri}"></param>
-        <param name="schSchemaFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/pre-transpile.sch</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="schSchemaFile" value="${{basedir}}/Schemas/pre-transpile.sch"/>
       </antcall>
       <antcall target="transpile"/>
     </target>
@@ -913,40 +844,21 @@
       <description>
         <xsl:text>Transpiling</xsl:text>
       </description>
-      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true">
-        <xsl:attribute name="classpath">
-          <xsl:text>${saxon}</xsl:text>
-        </xsl:attribute>
+      <java fork="true" classname="net.sf.saxon.Transform" failonerror="true" classpath="${{saxon}}">
         <jvmarg value="-Xmx1024m"/>                
         <arg value="-s:{$vPretranspiledOutputUri}"/>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:text>-xsl:${basedir}/XSLT/transpile.xslt</xsl:text>
-          </xsl:attribute>
-        </arg>
-        <arg>
-          <xsl:attribute name="value">
-            <xsl:sequence select="'-o:' || $vSchemaResult"/>
-          </xsl:attribute>
-        </arg>                
+        <arg value="-xsl:${{basedir}}/XSLT/transpile.xslt"/>
+        <arg value="-o:{$vSchemaResult}"/>
         <arg value="-xi"/>
         <arg value="--suppressXsltNamespaceCheck:on"/>
       </java>
       <antcall target="validateWithRng">
         <param name="xmlFile" value="{$vSchemaResult}"></param>
-        <param name="rngFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/relaxng.rng</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="rngFile" value="${{basedir}}/Schemas/relaxng.rng"/>
       </antcall>
       <antcall target="validateWithSchematron">
         <param name="xmlFile" value="{$vSchemaResult}"></param>
-        <param name="schSchemaFile">
-          <xsl:attribute name="value">
-            <xsl:text>${basedir}/Schemas/schematron.sch</xsl:text>
-          </xsl:attribute>
-        </param>
+        <param name="schSchemaFile" value="${{basedir}}/Schemas/schematron.sch"/>
       </antcall>
     </target>
   </xsl:function>

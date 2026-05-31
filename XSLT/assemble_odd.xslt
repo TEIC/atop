@@ -67,9 +67,9 @@
   </xd:doc>
   <xsl:template match="dataRef[ @ref ]" as="item()*">
     <xsl:message terminate="no" expand-text="true">WARNING: The ATOP
-    processor does not know how to handle a reference to the {@ref}
-    external datatype library, so this dataRef element is being
-    summarily ignored.</xsl:message>
+    processor does not know how to handle a reference to
+    the "{@ref}" external datatype library, so this
+    dataRef element is being summarily ignored.</xsl:message>
   </xsl:template>
 
   <xd:doc>
