@@ -736,6 +736,23 @@
       "/>
     <xsl:sequence select="xs:anyURI($vDirectory || $vOddFileName || $pSuffix)"/>
   </xsl:function>
+
+  <xd:doc>
+    <xd:desc>
+      <xd:p>Function to return the natural language of an element
+      node; if it is entirely unspecified (i.e., no @xml:lang on
+      any ancestor), use English.</xd:p>
+      <xd:p>Why does this return an xs:string, not an xs:language you
+      ask? Because the only argument to the fn:lang() function is an
+      xs:string, not an xs:language (don’t know why), and at times we
+      may have to hand the output of this function to that one.</xd:p>
+    </xd:desc>
+    <xd:param name="pElement" as="element()">An element node</xd:param>
+  </xd:doc>
+  <xsl:function name="atop:lang" as="xs:string">
+    <xsl:param name="pElement" as="element()" required="yes"/>
+    <xsl:sequence select="('en', $pElement/ancestor-or-self::*/@xml:lang)[last()] cast as xs:string"/>
+  </xsl:function>
   
   <xd:doc>
     <xd:desc>Function to retrieve a sequence of chained ODDs</xd:desc>

@@ -29,6 +29,9 @@
   <xsl:output method="xml" indent="yes"/>
   <xsl:include href="modules/functions_module.xslt"/>
 
+  <!-- modes that do not process entire document -->
+  <xsl:mode name="atop:mChange" on-no-match="shallow-copy"/>
+  
   <!-- preperatory work -->
   <xsl:mode name="atop:mPass01" on-no-match="shallow-copy"><!-- normalize whitespace in attrs --></xsl:mode>
   <xsl:mode name="atop:mPass02" on-no-match="shallow-copy"><!-- expand schemaSpec/*Ref & replace schemaSpec/@source --></xsl:mode>
@@ -1437,6 +1440,7 @@
   </xd:doc>
   <xsl:template match="dataSpec" mode="atop:mPass09" as="node()+">
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
+    <xsl:variable name="vMe" select="." as="element(dataSpec)"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
     <xsl:choose>
       <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'change'">
@@ -1446,17 +1450,72 @@
           <xsl:apply-templates select="$vBaseSpec/@* except @mode" mode="#current"/>
           <xsl:apply-templates select="@* except @mode" mode="#current"/>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!-- WARNING the following 4 lines each handle the case of
-               ZERO or ONE of the element type being handled just
-               fine, but will mess up if there are TWO or more. Thus
-               this code needs to be replaced, because TEI allows
-               zeroOrMore of each of these. Sigh. -->
-          <xsl:apply-templates select="( tei:altIdent, $vBaseSpec/tei:altIdent )[1]" mode="#current"/>
-          <xsl:apply-templates select="( tei:equiv,    $vBaseSpec/tei:equiv    )[1]" mode="#current"/>
-          <xsl:apply-templates select="( tei:gloss,    $vBaseSpec/tei:gloss    )[1]" mode="#current"/>
-          <xsl:apply-templates select="( tei:desc,     $vBaseSpec/tei:desc     )[1]" mode="#current"/>
-          <!-- There is 0 or 1 <content> element -->
-          <xsl:apply-templates select="( tei:content,  $vBaseSpec/tei:content  )[1]" mode="#current"/>
+          <!--
+              Make a list of all the langues used for the <altIdent>s,
+              <equiv>s, <gloss>es, and <desc>s inside this
+              <dataSpec>.
+          -->
+          <xsl:variable name="vAllDocLangs" as="xs:language+">
+            <xsl:variable name="vAllDocXMLLangs" as="xs:language*">
+              <xsl:for-each select="tei:altIdent | tei:equiv | tei:gloss | tei:desc">
+                <xsl:sequence select="ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
+              </xsl:for-each>
+            </xsl:variable>
+            <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllDocXMLLangs ) )"/>
+          </xsl:variable>
+          <!--
+              For each language, take the local <altIdent>, <equiv>,
+              <gloss>, or <desc> if there is one, otherwise the base
+              version thereof (if there is one).
+          -->
+          <xsl:for-each select="$vAllDocLangs">
+            <xsl:variable name="vThisLang" select=". cast as xs:string" as="xs:string"/>
+            <xsl:apply-templates select="( $vMe/tei:altIdent[ lang( $vThisLang ) ], $vBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
+            <xsl:apply-templates select="( $vMe/tei:equiv[    lang( $vThisLang ) ], $vBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+            <xsl:apply-templates select="( $vMe/tei:gloss[    lang( $vThisLang ) ], $vBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+            <xsl:apply-templates select="( $vMe/tei:desc[     lang( $vThisLang ) ], $vBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
+          </xsl:for-each>
+          <!-- There is 0 or 1 <content> element, but if it has a child <valList> we need to think of it differently … -->
+          <xsl:message select="'debug09a: ident='
+                              ||@ident
+                              ||', content='
+                              ||exists( tei:content )
+                              ||', content/valList='
+                              ||exists( tei:content/tei:valList )
+                              ||', base/content='
+                              ||exists( $vBaseSpec/tei:content )
+                              ||', base/content/valList='
+                              ||exists(
+                              $vBaseSpec/tei:content/tei:valList )"/>
+          <xsl:choose>
+            <xsl:when test="not( tei:content/tei:valList )  and  not( $vBaseSpec/tei:content/tei:valList )">
+              <!-- neither has a <valList> child of <content>, so the customization <content> replaces the base’s -->
+              <xsl:apply-templates select="tei:content[ not( tei:valList ) ]" mode="#current"/>
+            </xsl:when>
+            <xsl:when test="tei:content[ tei:valList ]  and  $vBaseSpec/tei:content[ not( tei:valList ) ]
+                            or
+                            tei:content[ not( tei:valList ) ]  and  $vBaseSpec/tei:content[ tei:valList ]">
+              <!-- one of ’em has a <valList>, but not the other, so combine contents -->
+              <content>
+                <xsl:apply-templates select="tei:content/* | $vBaseSpec/tei:content/*" mode="#current"/>
+              </content>
+            </xsl:when>
+            <xsl:when test="tei:content[ tei:valList ]  and  $vBaseSpec/tei:content[ tei:valList ]">
+              <!-- both of ’em have a <valList> … what to do? -->
+              <content>
+                <xsl:comment> ATOP, temp: this is NOT supposed to be
+                empty, but I am not sure what we are supposed to do
+                when both the customization and the base &lt;content>
+                each have a child &lt;valList>!</xsl:comment>
+                <empty/>
+              </content>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:message terminate="yes" select="'ATOP: internal logic error in processing dataSpec '||@ident||' in mode change'"/>
+            </xsl:otherwise>
+          </xsl:choose>
+
+          <!-- The following handles a <valList> *child*, not one that it inside <content> -->
           <xsl:choose>
             <xsl:when test="tei:valList[ @mode eq 'delete']"/>
             <xsl:when test="tei:valList[ @mode eq 'add'  or  not( @mode ) ]">
@@ -1471,7 +1530,11 @@
               <xsl:apply-templates select="tei:valList" mode="#current"/>
             </xsl:when>
             <xsl:when test="tei:valList[ @mode eq 'change']">
-              <xsl:comment> DO THE RIGHT THING for &lt;valList mode=change> HERE!! </xsl:comment>
+              <!-- Conveniently, there can be at most 1 <valList> descendant of <dataSpec> -->
+              <xsl:message use-when="$atop:pDebug" select="'debug: call valList change template'"/>
+              <xsl:apply-templates select="tei:valList" mode="mChange">
+                <xsl:with-param name="pSourceValList" select="$vBaseSpec/tei:valList" as="element(tei:valList)"/>
+              </xsl:apply-templates>
             </xsl:when>
           </xsl:choose>
           <xsl:comment> DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
@@ -1541,5 +1604,47 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
+
+  <xsl:template mode="mChange" match="tei:valList" as="element(tei:valList)">
+    <xsl:param name="pSourceValList" required="yes" as="element(tei:valList)"/>
+    <xsl:variable name="vCustomizationValList" select="." as="element(tei:valList)"/>
+    <xsl:message use-when="$atop:pDebug" select="'debug: valList-mChange pSourceValList='||normalize-space(string($pSourceValList))||', and vCostomizationValist='||normalize-space(string($vCustomizationValList))||'.'"/>
+    <!-- DO THE RIGHT THING for &lt;valList mode=change> HERE!! -->
+    <xsl:copy>
+      <xsl:apply-templates select="$pSourceValList/@* except @xml:id" mode="#current"/>
+      <xsl:apply-templates select="@* except @xml:id" mode="#current"/>
+      <!-- I figure @xml:id should NOT be processed, above; are there other attrs that should be skipped? -->
+      <!-- Handle <equiv> -->
+      <xsl:for-each select="$pSourceValList/equiv">
+        <xsl:if test="not( ./@name = $vCustomizationValList/equiv!@name )">
+          <xsl:copy-of select="."/>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:apply-templates select="$vCustomizationValList/equiv"/>
+      <!-- Handle <altItent> -->
+      <xsl:for-each select="$pSourceValList/altIdent">
+        <xsl:if test="not( atop:lang(.) = $vCustomizationValList/altIdent!atop:lang(.) )">
+          <xsl:copy-of select="."/>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:apply-templates select="$vCustomizationValList/altIdent"/>
+      <!-- Handle <gloss> -->
+      <xsl:for-each select="$pSourceValList/gloss">
+        <xsl:if test="not( atop:lang(.) = $vCustomizationValList/gloss!atop:lang(.) )">
+          <xsl:copy-of select="."/>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:apply-templates select="$vCustomizationValList/gloss"/>
+      <!-- Handle <desc> -->
+      <xsl:for-each select="$pSourceValList/desc">
+        <xsl:message use-when="$atop:pDebug"
+            select="'debug valList-change: '||atop:lang(.)||' = '||$vCustomizationValList/desc!atop:lang(.)||'?'"/>
+        <xsl:if test="not( atop:lang(.) = $vCustomizationValList/desc!atop:lang(.) )">
+          <xsl:copy-of select="."/>
+        </xsl:if>
+      </xsl:for-each>
+      <xsl:apply-templates select="$vCustomizationValList/desc"/>
+    </xsl:copy>
+  </xsl:template>
+
 </xsl:stylesheet>

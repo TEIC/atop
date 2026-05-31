@@ -84,6 +84,13 @@
             <valItem ident="if-you-say-so"/>
           </valList>
         </dataSpec>
+        <dataSpec mode="change" module="tei" ident="teidata.certainty">
+          <content>
+            <valList mode="change" type="closed">
+              <valItem ident="zip-zero-nada-nothing"/>
+            </valList>
+          </content>
+        </dataSpec>
         <dataSpec mode="change" module="tei" ident="teidata.language">
           <constraintSpec scheme="schematron" ident="private-use-langs-defined">
             <constraint>
