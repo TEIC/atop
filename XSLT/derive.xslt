@@ -1129,8 +1129,8 @@
   <xsl:template match="elementRef" mode="atop:mPass03" as="node()?">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
-      <xsl:when test="@ident = $tpDeleteUs">
-        <xsl:comment expand-text="true"> *** ATOP: reference to element {@ident} deleted here </xsl:comment>
+      <xsl:when test="@key = $tpDeleteUs">
+        <xsl:comment expand-text="true"> *** ATOP: reference to element {@key} deleted here </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
         <xsl:next-match/>
@@ -1532,7 +1532,7 @@
             <xsl:when test="tei:valList[ @mode eq 'change']">
               <!-- Conveniently, there can be at most 1 <valList> descendant of <dataSpec> -->
               <xsl:message use-when="$atop:pDebug" select="'debug: call valList change template'"/>
-              <xsl:apply-templates select="tei:valList" mode="mChange">
+              <xsl:apply-templates select="tei:valList" mode="atop:mChange">
                 <xsl:with-param name="pSourceValList" select="$vBaseSpec/tei:valList" as="element(tei:valList)"/>
               </xsl:apply-templates>
             </xsl:when>
@@ -1605,11 +1605,16 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template mode="mChange" match="tei:valList" as="element(tei:valList)">
+  <xd:doc>
+    <xd:desc>Perform the "change" operation on a value list.</xd:desc>
+    <xd:param name="pSourceValList">The value list from the source ODD that is the one that
+      corresponds to the value list this template matched in the cusotmization ODD</xd:param>
+    <xd:return>a &lt;valList> element, hopefully appropriately merged</xd:return>
+  </xd:doc>
+  <xsl:template mode="atop:mChange" match="tei:valList" as="element(tei:valList)">
     <xsl:param name="pSourceValList" required="yes" as="element(tei:valList)"/>
     <xsl:variable name="vCustomizationValList" select="." as="element(tei:valList)"/>
     <xsl:message use-when="$atop:pDebug" select="'debug: valList-mChange pSourceValList='||normalize-space(string($pSourceValList))||', and vCostomizationValist='||normalize-space(string($vCustomizationValList))||'.'"/>
-    <!-- DO THE RIGHT THING for &lt;valList mode=change> HERE!! -->
     <xsl:copy>
       <xsl:apply-templates select="$pSourceValList/@* except @xml:id" mode="#current"/>
       <xsl:apply-templates select="@* except @xml:id" mode="#current"/>
