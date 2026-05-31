@@ -30,7 +30,8 @@
   <xsl:include href="modules/functions_module.xslt"/>
 
   <!-- modes that do not process entire document -->
-  <xsl:mode name="atop:mChange" on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mChange"     on-no-match="shallow-copy"/>
+  <xsl:mode name="atop:mSuccession" on-no-match="shallow-copy"/>
   
   <!-- preperatory work -->
   <xsl:mode name="atop:mPass01" on-no-match="shallow-copy"><!-- normalize whitespace in attrs --></xsl:mode>
@@ -1302,10 +1303,43 @@
     filicide).</xd:desc>
   </xd:doc>
   <xsl:template mode="atop:mPass07" as="item()+"
-                match="(alternate|interleave|sequence)[ count( .//( anyElement | classRef | dataRef | elementRef | macroRef | textNode | valList | rng:* ) ) eq 1 ]">
-    <xsl:apply-templates select="node()" mode="#current"/>
+                match="(alternate|interleave|sequence)
+                       [ count( .//( anyElement | classRef | dataRef | elementRef | macroRef | textNode | valList | rng:* ) ) eq 1 ]">
+    <xsl:apply-templates select="node()" mode="atop:mSuccession"/>
   </xsl:template>
 
+  <xd:doc>
+    <xd:desc>When we process something that is replacing its parent,
+    remember to consider the parents’ @minOccurs and @maxOccurs</xd:desc>
+  </xd:doc>
+  <xsl:template mode="atop:mSuccession" as="element()"
+                match="alternate | anyElement | classRef | datatype | elementRef | interleave | sequence">
+    <xsl:copy>
+      <!-- Grab all the attributes -->
+      <xsl:apply-templates mode="#current" select="@*"/>
+      <!-- Generate @minOccurs & @maxOccurs (overriding if they were already there) -->
+      <xsl:variable name="vMyMin" select="( @minOccurs, '1')[1] => normalize-space()" as="xs:string"/>
+      <xsl:variable name="vMyMax" select="( @maxOccurs, '1')[1] => normalize-space()" as="xs:string"/>
+      <xsl:variable name="vParentMin" select="( @minOccurs, '1')[1] => normalize-space()" as="xs:string"/>
+      <xsl:variable name="vParentMax" select="( @maxOccurs, '1')[1] => normalize-space()" as="xs:string"/>
+      <!-- For min it is easy — just multiply my min by my parent’s -->
+      <xsl:attribute name="minOccurs" select="xs:integer( $vMyMin ) * xs:integer( $vParentMin )"/>
+      <!-- For max it is a bit more complicated … -->
+      <xsl:attribute name="maxOccurs">
+        <xsl:choose>
+          <!-- … if either my or my parent’s was ∞, the result is ∞ -->
+          <xsl:when test="'unbounded' = ( $vMyMax, $vParentMax )"><xsl:text>unbounded</xsl:text></xsl:when>
+          <!-- … if neither was ∞, then both are positive integers, just mutliply them -->
+          <xsl:otherwise>
+            <xsl:sequence select="xs:integer( $vMyMax ) * xs:integer( $vParentMax )"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <!-- Now grab all child nodes -->
+      <xsl:apply-templates mode="#current" select="node()"/>
+    </xsl:copy>
+  </xsl:template>
+  
   <xd:doc>
     <xd:desc>If our deletions have left a grouping element
     (&lt;alternate>, &lt;interleave>, or &lt;sequence> empty (which is
