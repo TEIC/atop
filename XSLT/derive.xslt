@@ -1310,7 +1310,7 @@
 
   <xd:doc>
     <xd:desc>When we process something that is replacing its parent,
-    remember to consider the parents’ @minOccurs and @maxOccurs</xd:desc>
+    remember to consider the parent’s @minOccurs and @maxOccurs</xd:desc>
   </xd:doc>
   <xsl:template mode="atop:mSuccession" as="element()"
                 match="alternate | anyElement | classRef | datatype | elementRef | interleave | sequence">
@@ -1329,7 +1329,7 @@
         <xsl:choose>
           <!-- … if either my or my parent’s was ∞, the result is ∞ -->
           <xsl:when test="'unbounded' = ( $vMyMax, $vParentMax )"><xsl:text>unbounded</xsl:text></xsl:when>
-          <!-- … if neither was ∞, then both are positive integers, just mutliply them -->
+          <!-- … if neither was ∞, then both are positive integers, just multiply them -->
           <xsl:otherwise>
             <xsl:sequence select="xs:integer( $vMyMax ) * xs:integer( $vParentMax )"/>
           </xsl:otherwise>
