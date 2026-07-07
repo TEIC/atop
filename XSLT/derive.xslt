@@ -23,6 +23,9 @@
       the <xd:pre>$atop:pSource</xd:pre> parameter or, failing that,
       read from the <xd:pre>schemaSpec/@source</xd:pre> — write out
       the ODD derived from applying the 1st to the 2nd.</xd:p>
+      <xd:p>NOTE for use of Saxon on commandline — You need to
+      specifiy the atop: namespace as {http://www.tei-c.org/ns/atop},
+      i.e. using Q{} notation <b>without</b> the <q>Q</q>.</xd:p>
     </xd:desc>
   </xd:doc>
   
@@ -31,7 +34,6 @@
 
   <!-- modes that do not process entire document -->
   <xsl:mode name="atop:mChange"     on-no-match="shallow-copy"/>
-  <xsl:mode name="atop:mSuccession" on-no-match="shallow-copy"/>
   
   <!-- preperatory work -->
   <xsl:mode name="atop:mPass01" on-no-match="shallow-copy"><!-- normalize whitespace in attrs --></xsl:mode>
@@ -151,6 +153,9 @@
     xs:anyURI). In general, it will be provided as a parameter by the
     calling pipeline. But if not, try reading it from the
     schemaSpec/@source.</xd:desc>
+    <xd:p>REMINDER: for use of Saxon on commandline — You need to
+    specifiy the atop: namespace as {http://www.tei-c.org/ns/atop},
+    i.e. using Q{} notation <b>without</b> the <q>Q</q>.</xd:p>
   </xd:doc>
   <xsl:param name="atop:pSource" select="atop:resolve-uri( ( //schemaSpec/@source, 'tei:current' cast as xs:anyURI )[1], / )" as="xs:anyURI"/>
   
@@ -181,10 +186,12 @@
   -->
   
   <xd:doc>
-    <xd:desc>Match the input document (a customization ODD), process it with a
+    <xd:desc>Match the input document (a customization ODD), process it with a LARGE
     micropipeline, and write out the result of the last stage in the pipeline.</xd:desc>
   </xd:doc>
   <xsl:template match="/" name="xsl:initial-template" as="document-node()">
+    <xsl:message select="'debug: atop:pSource='||$atop:pSource"/>
+    <xsl:message terminate="yes" select="'DEBUG: xs:anyURI(/tmp/p5_4.10.2_subset.xml)='||xs:anyURI('/tmp/p5_4.10.2_subset.xml') cast as xs:string"/>
     <xsl:copy>
       
       <!-- pass 01: attribute normalization -->
@@ -1298,53 +1305,9 @@
 
   <xd:doc>
     <xd:desc>If our deletions have left a grouping element
-    (&lt;alternate>, &lt;interleave>, or &lt;sequence>) with only 1
-    descendant oddDecl or RELAX NG node, commit suicide (but not
-    filicide).</xd:desc>
-  </xd:doc>
-  <xsl:template mode="atop:mPass07" as="item()+"
-                match="(alternate|interleave|sequence)
-                       [ count( .//( anyElement | classRef | dataRef | elementRef | macroRef | textNode | valList | rng:* ) ) eq 1 ]">
-    <xsl:apply-templates select="node()" mode="atop:mSuccession"/>
-  </xsl:template>
-
-  <xd:doc>
-    <xd:desc>When we process something that is replacing its parent,
-    remember to consider the parent’s @minOccurs and @maxOccurs</xd:desc>
-  </xd:doc>
-  <xsl:template mode="atop:mSuccession" as="element()"
-                match="alternate | anyElement | classRef | datatype | elementRef | interleave | sequence">
-    <xsl:copy>
-      <!-- Grab all the attributes -->
-      <xsl:apply-templates mode="#current" select="@*"/>
-      <!-- Generate @minOccurs & @maxOccurs (overriding if they were already there) -->
-      <xsl:variable name="vMyMin" select="( @minOccurs, '1')[1] => normalize-space()" as="xs:string"/>
-      <xsl:variable name="vMyMax" select="( @maxOccurs, '1')[1] => normalize-space()" as="xs:string"/>
-      <xsl:variable name="vParentMin" select="( @minOccurs, '1')[1] => normalize-space()" as="xs:string"/>
-      <xsl:variable name="vParentMax" select="( @maxOccurs, '1')[1] => normalize-space()" as="xs:string"/>
-      <!-- For min it is easy — just multiply my min by my parent’s -->
-      <xsl:attribute name="minOccurs" select="xs:integer( $vMyMin ) * xs:integer( $vParentMin )"/>
-      <!-- For max it is a bit more complicated … -->
-      <xsl:attribute name="maxOccurs">
-        <xsl:choose>
-          <!-- … if either my or my parent’s was ∞, the result is ∞ -->
-          <xsl:when test="'unbounded' = ( $vMyMax, $vParentMax )"><xsl:text>unbounded</xsl:text></xsl:when>
-          <!-- … if neither was ∞, then both are positive integers, just multiply them -->
-          <xsl:otherwise>
-            <xsl:sequence select="xs:integer( $vMyMax ) * xs:integer( $vParentMax )"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:attribute>
-      <!-- Now grab all child nodes -->
-      <xsl:apply-templates mode="#current" select="node()"/>
-    </xsl:copy>
-  </xsl:template>
-  
-  <xd:doc>
-    <xd:desc>If our deletions have left a grouping element
     (&lt;alternate>, &lt;interleave>, or &lt;sequence> empty (which is
-    to say, without any oddDecl or RELAX NG descendants) just kill
-    it.</xd:desc>
+    to say, without any oddDecl or RELAX NG descendants other than
+    &lt;empty>) just kill it.</xd:desc>
   </xd:doc>
   <xsl:template match="(alternate|interleave|sequence)[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="empty-sequence()"/>
   
@@ -1431,6 +1394,7 @@
   </xd:doc>
   <xsl:template match="schemaSpec" mode="atop:mPass09" as="element(schemaSpec)">
     <xsl:variable name="vChangeUs" select="child::*[ @mode eq 'change']!atop:common-ident(.)" as="xs:string*"/>
+    <xsl:message select="'debug09a: vChangeUs='||string-join($vChangeUs, ', ')"/>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()" mode="#current">
         <xsl:with-param name="tpChangeUs" select="$vChangeUs" as="xs:string*" tunnel="yes"/>
@@ -1456,8 +1420,8 @@
         <xsl:variable name="vBaseSpec" as="element(classSpec)"
                       select="$atop:vBaseOdd//classSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!-- DO THE RIGHT THING HERE!! -->
+          <xsl:comment> *** ATOP: base version of {@ident} (local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
@@ -1476,14 +1440,19 @@
     <xsl:param name="tpChangeUs" tunnel="yes" as="xs:string*"/>
     <xsl:variable name="vMe" select="." as="element(dataSpec)"/>
     <xsl:variable name="vMyCommonIdent" select="atop:common-ident(.)" as="xs:string"/>
+    <xsl:message select="'debug09c: dataSpec &quot;'||@ident||'&quot;: vMCI='||$vMyCommonIdent||'.'"/>
+    <xsl:message select="'debug09d: tpChangeUs='||string-join( $tpChangeUs, ', ')||'; and mode='||@mode"/>
     <xsl:choose>
+      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'add'">
+        <xsl:comment> *** ATOP: the base version of dataSpec {@ident} deleted here, as the merged (or "change"d version) is being added </xsl:comment>
+      </xsl:when>
       <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'change'">
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
           <xsl:apply-templates select="$vBaseSpec/@* except @mode" mode="#current"/>
           <xsl:apply-templates select="@* except @mode" mode="#current"/>
-          <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:comment> *** ATOP: base version of {@ident} (local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
           <!--
               Make a list of all the langues used for the <altIdent>s,
               <equiv>s, <gloss>es, and <desc>s inside this
@@ -1510,7 +1479,7 @@
             <xsl:apply-templates select="( $vMe/tei:desc[     lang( $vThisLang ) ], $vBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
           </xsl:for-each>
           <!-- There is 0 or 1 <content> element, but if it has a child <valList> we need to think of it differently … -->
-          <xsl:message select="'debug09a: ident='
+          <xsl:message select="'debug09b: ident='
                               ||@ident
                               ||', content='
                               ||exists( tei:content )
@@ -1545,7 +1514,7 @@
               </content>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:message terminate="yes" select="'ATOP: internal logic error in processing dataSpec '||@ident||' in mode change'"/>
+              <xsl:message terminate="yes" select="'ATOP: internal logic error in processing dataSpec '||@ident||' in mode &quot;change&quot;'"/>
             </xsl:otherwise>
           </xsl:choose>
 
@@ -1571,10 +1540,10 @@
               </xsl:apply-templates>
             </xsl:when>
           </xsl:choose>
-          <xsl:comment> DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
-          <xsl:comment> DO THE RIGHT THING for &lt;exemplum> (has neither @mode nor @ident) HERE!! </xsl:comment>
-          <xsl:comment> DO THE RIGHT THING for &lt;remarks> (has @mode &amp; @ident) HERE!! </xsl:comment>
-          <xsl:comment> DO THE RIGHT THING for &lt;listRef> (has neither @mode nor @ident) HERE!! </xsl:comment>
+          <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;exemplum> (has neither @mode nor @ident) HERE!! </xsl:comment>
+          <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;remarks> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;listRef> (has neither @mode nor @ident) HERE!! </xsl:comment>
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
@@ -1602,7 +1571,7 @@
                       select="$atop:vBaseOdd//elementSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!-- DO THE RIGHT THING HERE!! -->
+          <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
@@ -1630,7 +1599,7 @@
                       select="$atop:vBaseOdd//macroSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!-- DO THE RIGHT THING HERE!! -->
+          <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
       <xsl:otherwise>
