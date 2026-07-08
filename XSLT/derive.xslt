@@ -191,7 +191,6 @@
   </xd:doc>
   <xsl:template match="/" name="xsl:initial-template" as="document-node()">
     <xsl:message select="'debug: atop:pSource='||$atop:pSource"/>
-    <xsl:message terminate="yes" select="'DEBUG: xs:anyURI(/tmp/p5_4.10.2_subset.xml)='||xs:anyURI('/tmp/p5_4.10.2_subset.xml') cast as xs:string"/>
     <xsl:copy>
       
       <!-- pass 01: attribute normalization -->
@@ -1420,7 +1419,8 @@
         <xsl:variable name="vBaseSpec" as="element(classSpec)"
                       select="$atop:vBaseOdd//classSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:comment> *** ATOP: base version of {@ident} (local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:comment> *** ATOP: base version of {@ident} {local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
@@ -1443,42 +1443,18 @@
     <xsl:message select="'debug09c: dataSpec &quot;'||@ident||'&quot;: vMCI='||$vMyCommonIdent||'.'"/>
     <xsl:message select="'debug09d: tpChangeUs='||string-join( $tpChangeUs, ', ')||'; and mode='||@mode"/>
     <xsl:choose>
-      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'add'">
+      <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  ( @mode eq 'add'  or  not( @mode ) )">
+        <xsl:text>&#x0A;</xsl:text>
         <xsl:comment> *** ATOP: the base version of dataSpec {@ident} deleted here, as the merged (or "change"d version) is being added </xsl:comment>
       </xsl:when>
       <xsl:when test="atop:common-ident(.) = $tpChangeUs  and  @mode eq 'change'">
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:apply-templates select="$vBaseSpec/@* except @mode" mode="#current"/>
-          <xsl:apply-templates select="@* except @mode" mode="#current"/>
-          <xsl:comment> *** ATOP: base version of {@ident} (local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
-          <!--
-              Make a list of all the langues used for the <altIdent>s,
-              <equiv>s, <gloss>es, and <desc>s inside this
-              <dataSpec>.
-          -->
-          <xsl:variable name="vAllDocLangs" as="xs:language+">
-            <xsl:variable name="vAllDocXMLLangs" as="xs:language*">
-              <xsl:for-each select="tei:altIdent | tei:equiv | tei:gloss | tei:desc">
-                <xsl:sequence select="ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
-              </xsl:for-each>
-            </xsl:variable>
-            <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllDocXMLLangs ) )"/>
-          </xsl:variable>
-          <!--
-              For each language, take the local <altIdent>, <equiv>,
-              <gloss>, or <desc> if there is one, otherwise the base
-              version thereof (if there is one).
-          -->
-          <xsl:for-each select="$vAllDocLangs">
-            <xsl:variable name="vThisLang" select=". cast as xs:string" as="xs:string"/>
-            <xsl:apply-templates select="( $vMe/tei:altIdent[ lang( $vThisLang ) ], $vBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
-            <xsl:apply-templates select="( $vMe/tei:equiv[    lang( $vThisLang ) ], $vBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-            <xsl:apply-templates select="( $vMe/tei:gloss[    lang( $vThisLang ) ], $vBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-            <xsl:apply-templates select="( $vMe/tei:desc[     lang( $vThisLang ) ], $vBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
-          </xsl:for-each>
-          <!-- There is 0 or 1 <content> element, but if it has a child <valList> we need to think of it differently … -->
+          <xsl:call-template name="atop:tChangeInnards">
+            <xsl:with-param name="pMe" select="$vMe" as="element()"/>
+            <xsl:with-param name="pBaseSpec" select="$vBaseSpec" as="element()"/>
+          </xsl:call-template>
           <xsl:message select="'debug09b: ident='
                               ||@ident
                               ||', content='
@@ -1490,34 +1466,13 @@
                               ||', base/content/valList='
                               ||exists(
                               $vBaseSpec/tei:content/tei:valList )"/>
-          <xsl:choose>
-            <xsl:when test="not( tei:content/tei:valList )  and  not( $vBaseSpec/tei:content/tei:valList )">
-              <!-- neither has a <valList> child of <content>, so the customization <content> replaces the base’s -->
-              <xsl:apply-templates select="tei:content[ not( tei:valList ) ]" mode="#current"/>
-            </xsl:when>
-            <xsl:when test="tei:content[ tei:valList ]  and  $vBaseSpec/tei:content[ not( tei:valList ) ]
-                            or
-                            tei:content[ not( tei:valList ) ]  and  $vBaseSpec/tei:content[ tei:valList ]">
-              <!-- one of ’em has a <valList>, but not the other, so combine contents -->
-              <content>
-                <xsl:apply-templates select="tei:content/* | $vBaseSpec/tei:content/*" mode="#current"/>
-              </content>
-            </xsl:when>
-            <xsl:when test="tei:content[ tei:valList ]  and  $vBaseSpec/tei:content[ tei:valList ]">
-              <!-- both of ’em have a <valList> … what to do? -->
-              <content>
-                <xsl:comment> ATOP, temp: this is NOT supposed to be
-                empty, but I am not sure what we are supposed to do
-                when both the customization and the base &lt;content>
-                each have a child &lt;valList>!</xsl:comment>
-                <empty/>
-              </content>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:message terminate="yes" select="'ATOP: internal logic error in processing dataSpec '||@ident||' in mode &quot;change&quot;'"/>
-            </xsl:otherwise>
-          </xsl:choose>
-
+          <!--
+              There is 0 or 1 <content> element; for now, at least,
+              whatever is in the customization simply replaces whatever
+              is in the base ODD. We may change that (based on presence
+              of <valList> and @mode values), but for now …
+          -->
+          <xsl:apply-templates select="tei:content" mode="#current"/>
           <!-- The following handles a <valList> *child*, not one that it inside <content> -->
           <xsl:choose>
             <xsl:when test="tei:valList[ @mode eq 'delete']"/>
@@ -1540,9 +1495,16 @@
               </xsl:apply-templates>
             </xsl:when>
           </xsl:choose>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:apply-templates select="constraintSpec" mode="#current">
+            <xsl:with-param name="pBaseConstraintSpec" select="$vBaseSpec/tei:constraintSpec[current()/@ident eq @ident ]" as="element(tei:constraintSpec)?"/>
+          </xsl:apply-templates>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;exemplum> (has neither @mode nor @ident) HERE!! </xsl:comment>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;remarks> (has @mode &amp; @ident) HERE!! </xsl:comment>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;listRef> (has neither @mode nor @ident) HERE!! </xsl:comment>
         </xsl:copy>
       </xsl:when>
@@ -1571,6 +1533,7 @@
                       select="$atop:vBaseOdd//elementSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
@@ -1599,6 +1562,7 @@
                       select="$atop:vBaseOdd//macroSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
           <xsl:comment> *** ATOP: base version has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+          <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! Do the right thing here </xsl:comment>
         </xsl:copy>
       </xsl:when>
@@ -1608,6 +1572,21 @@
     </xsl:choose>
   </xsl:template>
 
+  <xd:doc>
+    <xd:doc>Perform the "change" operation on a &lt;constraintSpec>.</xd:doc>
+    <xd:param name="pBaseConstraintSpec">The &lt;constraintSpec> from
+    the source base ODD that corresponds to that which we matched.</xd:param>
+  </xd:doc>
+  <xsl:template match="dataSpec[ @mode eq 'change']/constraintSpec" mode="atop:mPass09" as="element(constraintSpec)">
+    <xsl:param name="pBaseConstraintSpec" as="element(constraintSpec)?"/>
+    <xsl:copy>
+      <xsl:call-template name="atop:tChangeInnards">
+        <xsl:with-param name="pMe" select="." as="element()"/>
+        <xsl:with-param name="pBaseSpec" select="$pBaseConstraintSpec" as="element()?"/>
+      </xsl:call-template>
+    </xsl:copy>
+  </xsl:template>
+  
   <xd:doc>
     <xd:desc>Perform the "change" operation on a value list.</xd:desc>
     <xd:param name="pSourceValList">The value list from the source ODD that is the one that
@@ -1655,4 +1634,37 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template name="atop:tChangeInnards">
+    <xsl:param name="pBaseSpec" as="element()?"/>
+    <xsl:param name="pMe" as="element()"/>
+    <xsl:apply-templates select="$pBaseSpec/@* except @mode" mode="#current"/>
+    <xsl:apply-templates select="$pMe/@* except @mode" mode="#current"/>
+    <xsl:text>&#x0A;</xsl:text>
+    <xsl:comment> *** ATOP: base version of {@ident} {local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
+    <!--
+        Make a list of all the langues used for the <altIdent>s,
+        <equiv>s, <gloss>es, and <desc>s inside this <*Spec>.
+    -->
+    <xsl:variable name="vAllDocLangs" as="xs:language+">
+      <xsl:variable name="vAllDocXMLLangs" as="xs:language*">
+        <xsl:for-each select="tei:altIdent | tei:equiv | tei:gloss | tei:desc">
+          <xsl:sequence select="$pMe/ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
+        </xsl:for-each>
+      </xsl:variable>
+      <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllDocXMLLangs ) )"/>
+    </xsl:variable>
+    <!--
+        For each language, take the local <altIdent>, <equiv>,
+        <gloss>, or <desc> if there is one, otherwise the base
+        version thereof (if there is one).
+    -->
+    <xsl:for-each select="$vAllDocLangs">
+      <xsl:variable name="vThisLang" select=". cast as xs:string" as="xs:string"/>
+      <xsl:apply-templates select="( $pMe/tei:altIdent[ lang( $vThisLang ) ], $pBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pMe/tei:equiv[    lang( $vThisLang ) ], $pBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pMe/tei:gloss[    lang( $vThisLang ) ], $pBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pMe/tei:desc[     lang( $vThisLang ) ], $pBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
+    </xsl:for-each>
+  </xsl:template>
+  
 </xsl:stylesheet>
