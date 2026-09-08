@@ -1451,8 +1451,8 @@
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:call-template name="atop:tChangeInnards">
-            <xsl:with-param name="pMe" select="$vMe" as="element()"/>
+          <xsl:call-template name="atop:tApplyCustomization">
+            <xsl:with-param name="pCustomSpec" select="$vMe" as="element()"/>
             <xsl:with-param name="pBaseSpec" select="$vBaseSpec" as="element()"/>
           </xsl:call-template>
           <xsl:message select="'debug09b: ident='
@@ -1580,8 +1580,9 @@
   <xsl:template match="dataSpec[ @mode eq 'change']/constraintSpec" mode="atop:mPass09" as="element(constraintSpec)">
     <xsl:param name="pBaseConstraintSpec" as="element(constraintSpec)?"/>
     <xsl:copy>
-      <xsl:call-template name="atop:tChangeInnards">
-        <xsl:with-param name="pMe" select="." as="element()"/>
+      <!-- Only possible children are: <del>altIdent</del>, gloss, desc, equiv, and constraint -->
+      <xsl:call-template name="atop:tApplyCustomization">
+        <xsl:with-param name="pCustomSpec" select="." as="element()"/>
         <xsl:with-param name="pBaseSpec" select="$pBaseConstraintSpec" as="element()?"/>
       </xsl:call-template>
     </xsl:copy>
@@ -1634,11 +1635,11 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template name="atop:tChangeInnards">
+  <xsl:template name="atop:tApplyCustomization">
     <xsl:param name="pBaseSpec" as="element()?"/>
-    <xsl:param name="pMe" as="element()"/>
+    <xsl:param name="pCustomSpec" as="element()"/>
     <xsl:apply-templates select="$pBaseSpec/@* except @mode" mode="#current"/>
-    <xsl:apply-templates select="$pMe/@* except @mode" mode="#current"/>
+    <xsl:apply-templates select="$pCustomSpec/@* except @mode" mode="#current"/>
     <xsl:text>&#x0A;</xsl:text>
     <xsl:comment> *** ATOP: base version of {@ident} {local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
     <!--
@@ -1648,7 +1649,7 @@
     <xsl:variable name="vAllDocLangs" as="xs:language+">
       <xsl:variable name="vAllDocXMLLangs" as="xs:language*">
         <xsl:for-each select="tei:altIdent | tei:equiv | tei:gloss | tei:desc">
-          <xsl:sequence select="$pMe/ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
+          <xsl:sequence select="$pCustomSpec/ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
         </xsl:for-each>
       </xsl:variable>
       <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllDocXMLLangs ) )"/>
@@ -1660,11 +1661,16 @@
     -->
     <xsl:for-each select="$vAllDocLangs">
       <xsl:variable name="vThisLang" select=". cast as xs:string" as="xs:string"/>
-      <xsl:apply-templates select="( $pMe/tei:altIdent[ lang( $vThisLang ) ], $pBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pMe/tei:equiv[    lang( $vThisLang ) ], $pBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pMe/tei:gloss[    lang( $vThisLang ) ], $pBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pMe/tei:desc[     lang( $vThisLang ) ], $pBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pCustomSpec/tei:altIdent[ lang( $vThisLang ) ], $pBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pCustomSpec/tei:equiv[    lang( $vThisLang ) ], $pBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pCustomSpec/tei:gloss[    lang( $vThisLang ) ], $pBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:apply-templates select="( $pCustomSpec/tei:desc[     lang( $vThisLang ) ], $pBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
     </xsl:for-each>
+    <!-- Following line based in issue #2929 — If Council decides it differently, we may need to change this: -->
+    <xsl:apply-templates select="( $pCustomSpec/tei:content, $pBaseSpec/tei:content )[1]" mode="#current"/>
+    <!-- Note that per issue #???? we need not worry about a <valList> child-->
+    <xsl:apply-templates select="( $pCustomSpec/tei:constraint, $pBaseSpec/tei:constraint )[1]" mode="#current"/>
+    <!-- Q: Should <remarks> be handled here, or in the calling routine, ostensibly after the call to this routine? -->
   </xsl:template>
   
 </xsl:stylesheet>
