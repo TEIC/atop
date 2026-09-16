@@ -145,6 +145,11 @@
 
   <xd:doc>
     <xd:desc>Debug flag: generate output (to /tmp/) for each pass iff true.</xd:desc>
+    <xd:p>Note-to-self: To run without any output to STDOUT and
+    simultaneously piping the STDERR through some maniplulations try
+    something like:
+    <?bash saxon.bash XSLT/derive.xslt /path/to/ingored/input.xml 3>&1 1>/dev/null 2>&3 | perl -pe 's, ?Q{http://www.tei-c.org/ns/1.0}, tei:,;' ?>
+    </xd:p>
   </xd:doc>
   <xsl:param name="atop:pDebug" select="true()" as="xs:boolean" static="yes"/>
   
@@ -192,7 +197,7 @@
   <xsl:template match="/" name="xsl:initial-template" as="document-node()">
     <xsl:message select="'debug: atop:pSource='||$atop:pSource"/>
     <xsl:copy>
-      
+
       <!-- pass 01: attribute normalization -->
       <xsl:variable name="vPass01" as="node()+">
         <xsl:apply-templates mode="atop:mPass01"/>
@@ -1017,6 +1022,25 @@
 
   <xd:doc>
     <xd:desc>
+      <xd:p>Insert standard namespace declarations. This may not be a
+      good idea in the big picture, as it does not take into account
+      that users may have declared their own (different) prefixes for
+      these namespaces at different parts of the input document. But
+      for now we want them just to make debugging easier, so that we
+      do not get hundreds of “extra” namespace declarations on output.</xd:p>
+    </xd:desc>
+  </xd:doc>
+  <xsl:template match="schemaSpec" mode="atop:mPass02" as="element(tei:schemaSpec)">
+    <xsl:copy>
+      <xsl:namespace name="rng" select="'http://relaxng.org/ns/structure/1.0'"/>
+      <xsl:namespace name="sch" select="'http://purl.oclc.org/dsdl/schematron'"/>
+      <xsl:namespace name="xi" select="'http://www.w3.org/2001/XInclude'"/>
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xd:doc>
+    <xd:desc>
       <xd:p>Replace the value of @source, as our output is no longer
       based on @source, but rather is the combination of the input and
       @source (or the <xd:pre>$atop:pSource</xd:pre>
@@ -1067,7 +1091,7 @@
   </xsl:template>
     
   <xd:doc>
-    <xd:desc>When we hit an data reference directly within the schema
+    <xd:desc>When we hit a data reference directly within the schema
       specification of the customization ODD, replace it with the specification
       from the base ODD</xd:desc>
   </xd:doc>
@@ -1451,7 +1475,7 @@
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:call-template name="atop:tApplyCustomization">
+          <xsl:call-template name="atop:tCustomizeIdentSyns">
             <xsl:with-param name="pCustomSpec" select="$vMe" as="element()"/>
             <xsl:with-param name="pBaseSpec" select="$vBaseSpec" as="element()"/>
           </xsl:call-template>
@@ -1466,13 +1490,6 @@
                               ||', base/content/valList='
                               ||exists(
                               $vBaseSpec/tei:content/tei:valList )"/>
-          <!--
-              There is 0 or 1 <content> element; for now, at least,
-              whatever is in the customization simply replaces whatever
-              is in the base ODD. We may change that (based on presence
-              of <valList> and @mode values), but for now …
-          -->
-          <xsl:apply-templates select="tei:content" mode="#current"/>
           <!-- The following handles a <valList> *child*, not one that it inside <content> -->
           <xsl:choose>
             <xsl:when test="tei:valList[ @mode eq 'delete']"/>
@@ -1579,10 +1596,12 @@
   </xd:doc>
   <xsl:template match="dataSpec[ @mode eq 'change']/constraintSpec" mode="atop:mPass09" as="element(constraintSpec)">
     <xsl:param name="pBaseConstraintSpec" as="element(constraintSpec)?"/>
+    <xsl:variable name="vCustomConstraintSpec" as="element(constraintSpec)" select="."/>
     <xsl:copy>
-      <!-- Only possible children are: <del>altIdent</del>, gloss, desc, equiv, and constraint -->
-      <xsl:call-template name="atop:tApplyCustomization">
-        <xsl:with-param name="pCustomSpec" select="." as="element()"/>
+      <!-- Only possible children are altIdent, equiv, gloss, desc, and constraint -->
+      <!-- But note that <altIdent>, per #2966, may go away -->
+      <xsl:call-template name="atop:tCustomizeIdentSyns">
+        <xsl:with-param name="pCustomSpec" select="$vCustomConstraintSpec" as="element()"/>
         <xsl:with-param name="pBaseSpec" select="$pBaseConstraintSpec" as="element()?"/>
       </xsl:call-template>
     </xsl:copy>
@@ -1635,7 +1654,35 @@
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template name="atop:tApplyCustomization">
+  <xd:doc>
+    <xd:desc>
+      <xd:p>Perform the "change" operation on the initial children of
+      a specification element that do not allow a @mode attribute:
+      &lt;altIdent>, &lt;content>, &lt;desc>, &lt;equiv>, &lt;gloss>,
+      and &lt;idno>. (Note that &lt;constraint> of &lt;constraintSpec>
+      and &lt;exemplum> of &lt;moduleSpec> also fall into this
+      category, but since in other *Spec elements they occur after
+      elements that have @mode, they are not processed here.)</xd:p>
+      <xd:p>Note that this template may well generate one or more
+      attributes nodes, so cannot be called after a comment, PI,
+      element, or text node child of the parent has been
+      generated.</xd:p>
+    </xd:desc>
+    <xd:param name="pBaseSpec">The specification element of interest
+    from the base ODD</xd:param>
+    <xd:param name="pCustomSpec">The specification element for the
+    same thing, but from the customization ODD (thus should have
+    mode="chamge").</xd:param>
+    <xd:return>a sequence of 0 or more &lt;altIdent>, &lt;equiv>,
+    &lt;gloss>, &lt;desc>, &lt;content>, and &lt;constraint> elements
+    (that last one is only present if the current specification
+    element is a &lt;constraintSpec>).</xd:return>
+    <xd:desc>The signature is <code>node()*</code> because in addition
+    to a sequence of elements other constructs (generated by applying
+    templates to my children) like comments, PIs, or (probably
+    whitespace-only) text nodes might be returned.</xd:desc>
+  </xd:doc>
+  <xsl:template name="atop:tCustomizeIdentSyns" as="node()*">
     <xsl:param name="pBaseSpec" as="element()?"/>
     <xsl:param name="pCustomSpec" as="element()"/>
     <xsl:apply-templates select="$pBaseSpec/@* except @mode" mode="#current"/>
@@ -1643,33 +1690,58 @@
     <xsl:text>&#x0A;</xsl:text>
     <xsl:comment> *** ATOP: base version of {@ident} {local-name(.)} has been deleted, this (the merged or "change"d version) is being added </xsl:comment>
     <!--
-        Make a list of all the langues used for the <altIdent>s,
-        <equiv>s, <gloss>es, and <desc>s inside this <*Spec>.
+        Have language: altIdent, gloss, desc, idno, and maybe valList
+        Have (sub)?type: altIdent, gloss, desc, idno, 
     -->
-    <xsl:variable name="vAllDocLangs" as="xs:language+">
-      <xsl:variable name="vAllDocXMLLangs" as="xs:language*">
-        <xsl:for-each select="tei:altIdent | tei:equiv | tei:gloss | tei:desc">
-          <xsl:sequence select="$pCustomSpec/ancestor-or-self::*[@xml:lang][1]/@xml:lang cast as xs:language"/>
+    <!--
+        Make a list of all the langues used for the <altIdent>s,
+        <gloss>es, and <desc>s inside this <*Spec> and the base
+        version thereof.
+    -->
+    <xsl:variable name="vAllOurLangs" as="xs:language+">
+      <xsl:variable name="vAllOurXMLLangs" as="xs:language*">
+        <xsl:for-each select="$pCustomSpec/( altIdent | gloss | desc ),
+                                $pBaseSpec/( altIdent | gloss | desc )
+                             ">
+          <xsl:sequence select="(ancestor-or-self::*[@xml:lang]/@xml:lang,'en')[1] cast as xs:language"/>
         </xsl:for-each>
       </xsl:variable>
-      <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllDocXMLLangs ) )"/>
+      <xsl:sequence select="distinct-values( ('en' cast as xs:language, $vAllOurXMLLangs ) )"/>
+    </xsl:variable>
+    <xsl:variable name="vAllOurCategorizations" as="xs:string*">
+      <xsl:for-each select="$pCustomSpec/( altIdent | gloss | desc | idno ),
+                              $pBaseSpec/( altIdent | gloss | desc | idno )
+                            ">
+        <xsl:sequence select="atop:type-and-subtype-of(.)"/>
+      </xsl:for-each>
     </xsl:variable>
     <!--
-        For each language, take the local <altIdent>, <equiv>,
-        <gloss>, or <desc> if there is one, otherwise the base
-        version thereof (if there is one).
+        For each language, take the local <altIdent>, <gloss>, or
+        <desc> if there is one, otherwise the base version thereof (if
+        there is one).
     -->
-    <xsl:for-each select="$vAllDocLangs">
+    <xsl:for-each select="$vAllOurLangs">
       <xsl:variable name="vThisLang" select=". cast as xs:string" as="xs:string"/>
-      <xsl:apply-templates select="( $pCustomSpec/tei:altIdent[ lang( $vThisLang ) ], $pBaseSpec/tei:altIdent[ lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pCustomSpec/tei:equiv[    lang( $vThisLang ) ], $pBaseSpec/tei:equiv[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pCustomSpec/tei:gloss[    lang( $vThisLang ) ], $pBaseSpec/tei:gloss[    lang( $vThisLang ) ] )[1]" mode="#current"/>
-      <xsl:apply-templates select="( $pCustomSpec/tei:desc[     lang( $vThisLang ) ], $pBaseSpec/tei:desc[     lang( $vThisLang ) ] )[1]" mode="#current"/>
+      <xsl:for-each select="distinct-values( $vAllOurCategorizations )">
+        <xsl:variable name="vThisCat" select="." as="xs:string"/>
+        <xsl:comment> DEBUG: I am having fun processing {$vThisLang} and {$vThisCat}! </xsl:comment>
+        <xsl:apply-templates select="( $pCustomSpec/altIdent[ lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ], $pBaseSpec/altIdent[ lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ] )[1]" mode="#current"/>
+        <xsl:apply-templates select="( $pCustomSpec/gloss[    lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ], $pBaseSpec/gloss[    lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ] )[1]" mode="#current"/>
+        <xsl:apply-templates select="( $pCustomSpec/desc[     lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ], $pBaseSpec/desc[     lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ] )[1]" mode="#current"/>
+        <xsl:apply-templates select="( $pCustomSpec/idno[     lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ], $pBaseSpec/idno[     lang( $vThisLang ) ][ atop:type-and-subtype-of(.) eq $vThisCat ] )[1]" mode="#current"/>
+      </xsl:for-each>
     </xsl:for-each>
+    <!--
+        There is 0 or 1 <content> element; for now, at least,
+        whatever is in the customization simply replaces whatever
+        is in the base ODD. We may change that (based on presence
+        of <valList> and @mode values), but for now …
+    -->
     <!-- Following line based in issue #2929 — If Council decides it differently, we may need to change this: -->
-    <xsl:apply-templates select="( $pCustomSpec/tei:content, $pBaseSpec/tei:content )[1]" mode="#current"/>
+    <xsl:apply-templates select="( $pCustomSpec/content, $pBaseSpec/content )[1]" mode="#current"/>
     <!-- Note that per issue #???? we need not worry about a <valList> child-->
-    <xsl:apply-templates select="( $pCustomSpec/tei:constraint, $pBaseSpec/tei:constraint )[1]" mode="#current"/>
+    <!-- Following line only will only ever fire if the spec we are currently processing is a <constraintSpec> -->
+    <xsl:apply-templates select="( $pCustomSpec/constraint, $pBaseSpec/constraint )[1]" mode="#current"/>
     <!-- Q: Should <remarks> be handled here, or in the calling routine, ostensibly after the call to this routine? -->
   </xsl:template>
   

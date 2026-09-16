@@ -479,7 +479,18 @@
     </xsl:choose>
 
   </xsl:function>
-  
+
+  <xd:doc>
+    <xd:desc>Given an element node, return a string that uniquely
+    identifies its @type and @subtype.</xd:desc>
+    <xd:param name="pElementNode">The element node whose
+    categorization we are interested in.</xd:param>
+    <xd:return>A string based on $pElementNode’s @type and @subtype.</xd:return>
+  </xd:doc>
+  <xsl:function name="atop:type-and-subtype-of" as="xs:string">
+    <xsl:param name="pElementNode" as="element()"/>
+    <xsl:sequence select="$pElementNode/@type||'␜'||$pElementNode/@subtype"/>
+  </xsl:function>
   
   <!-- NOTE: Questions for the ATOP team: Should we care about namespace declarations 
        using sch:ns elements? -->
