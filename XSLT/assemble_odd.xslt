@@ -99,7 +99,7 @@
         <xsl:when test="contains( $vTargetVal, '#')">
           <xsl:variable name="vTargetUriPart" select="substring-before( $vTargetVal, '#')" as="xs:string"/>
           <xsl:variable name="vTargetFragment" select="substring-after( $vTargetVal, '#')" as="xs:string"/>
-          <xsl:variable name="vTargetDoc" select="document( atop:resolve-uri( $vTargetUriPart cast as xs:anyURI, / ) )" as="document-node()"/>
+          <xsl:variable name="vTargetDoc" select="document( atop:resolve-uri( $vTargetUriPart cast as xs:anyURI, . ) )" as="document-node()"/>
           <xsl:sequence select="id( $vTargetFragment, $vTargetDoc )"/>
         </xsl:when>
         <!--
