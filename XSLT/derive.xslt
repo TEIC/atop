@@ -1497,8 +1497,10 @@
               <xsl:for-each select="tei:valList (: to set context node :)">
                 <!-- Create a single output <valList> with both base & customized children -->
                 <xsl:copy>
-                  <xsl:apply-templates select="$vBaseSpec/tei:valList/*" mode="#current"/>
-                  <xsl:apply-templates select="tei:valList/*" mode="#current"/>
+		  <xsl:apply-templates select="$vBaseSpec/tei:valList/@*" mode="#current"/>
+		  <xsl:apply-templates select="tei:valList/@*"            mode="#current"/>
+                  <xsl:apply-templates select="$vBaseSpec/tei:valList/*"  mode="#current"/>
+                  <xsl:apply-templates select="tei:valList/*"             mode="#current"/>
                 </xsl:copy>
               </xsl:for-each>
             </xsl:when>
