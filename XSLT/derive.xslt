@@ -1014,6 +1014,7 @@
   </xd:doc>
   <xsl:template match="defaultVal" as="element(defaultVal)" mode="atop:mPass01">
     <xsl:copy>
+      <xsl:apply-templates select="@*" mode="#current"/>
       <xsl:sequence select="normalize-space(.)"/>
     </xsl:copy>
   </xsl:template>
@@ -1136,7 +1137,7 @@
 
   <xd:doc>
     <xd:desc>If an elementSpec/@ident matches one of the things-to-be-deleted,
-    then do not copy it.</xd:desc>
+    then do not copy it (the &lt;elementSpec>).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="elementSpec" mode="atop:mPass03" as="node()?">
@@ -1154,7 +1155,7 @@
 
   <xd:doc>
     <xd:desc>If an elementRef/@key matches one of the things-to-be-deleted,
-    then do not copy it.</xd:desc>
+      then do not copy it (the &lt;elementRef>).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="elementRef" mode="atop:mPass03" as="node()?">
@@ -1188,7 +1189,7 @@
   
   <xd:doc>
     <xd:desc>If a dataSpec/@ident matches one of the things-to-be-deleted,
-      then do not copy it.</xd:desc>
+      then do not copy it (the &lt;dataSpec>).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="dataSpec" mode="atop:mPass04" as="node()?">
@@ -1206,14 +1207,15 @@
   
   <xd:doc>
     <xd:desc>If a dataRef/@key matches one of the things-to-be-deleted,
-    then do not copy it, but rather warn user there is likely to be a
-    problem here.</xd:desc>
+    then do not copy it (the &lt;dataRef>), but rather warn user there
+    is likely to be a problem here.</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
-  <xsl:template match="dataRef" mode="atop:mPass04" as="node()">
+  <xsl:template match="dataRef" mode="atop:mPass04" as="node()+">
     <xsl:param name="tpDeleteUs" tunnel="yes" as="xs:string*"/>
     <xsl:choose>
       <xsl:when test="@key = $tpDeleteUs">
+        <xsl:processing-instruction name="atop" select="'dataRef key='||@key||' deleted.'"/>
         <xsl:comment expand-text="true"> *** ATOP: reference to {@key} datatype deleted here </xsl:comment>
       </xsl:when>
       <xsl:otherwise>
@@ -1241,7 +1243,7 @@
   
   <xd:doc>
     <xd:desc>If a macroSpec/@ident matches one of the things-to-be-deleted,
-      then do not copy it.</xd:desc>
+    then do not copy it (the &lt;macroSpec).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="macroSpec" mode="atop:mPass05" as="node()?">
@@ -1259,7 +1261,7 @@
   
   <xd:doc>
     <xd:desc>If a macroRef/@key matches one of the things-to-be-deleted,
-      then do not copy it.</xd:desc>
+      then do not copy it (the &lt;macroRef).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="macroRef" mode="atop:mPass05" as="node()">
@@ -1293,7 +1295,7 @@
   
   <xd:doc>
     <xd:desc>If a classSpec/@ident matches one of the things-to-be-deleted,
-      then do not copy it.</xd:desc>
+      then do not copy it (the &lt;classSpec).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="classSpec" mode="atop:mPass06" as="element()?">
@@ -1309,7 +1311,7 @@
   
   <xd:doc>
     <xd:desc>If a memberOf/@key or classRef/@key matches one of the things-to-be-deleted,
-      then do not copy it.</xd:desc>
+      then do not copy it (the &lt;classRef> or &lt;memberOf>).</xd:desc>
     <xd:param name="tpDeleteUs">list of NCNames of the idents of elements to be deleted</xd:param>
   </xd:doc>
   <xsl:template match="(classRef|memberOf)" mode="atop:mPass06" as="node()">
@@ -1350,9 +1352,10 @@
       above), change its content to allow whatever.</xd:desc>
   </xd:doc>
   <xsl:template match="datatype[ atop:has-no-content-content(.) ]" mode="atop:mPass07" as="element(datatype)">
+    <xsl:variable name="vKey" as="xs:string" select="child::processing-instruction('atop') => replace('.*=(\i\c*) .*','$1')"/>
     <xsl:copy>
       <xsl:apply-templates select="@*" mode="#current"/>
-      <xsl:comment> *** ATOP: cannot use the {@key} datatype, as it has been deleted; allowing any value </xsl:comment>
+      <xsl:comment> *** ATOP: cannot use the {$vKey} datatype, as it has been deleted; allowing any value </xsl:comment>
       <dataRef name="string"/> <!-- cannot use a TEI datatype as it may have been deleted -->
     </xsl:copy>
   </xsl:template>
@@ -1475,9 +1478,9 @@
         <xsl:variable name="vBaseSpec" as="element(dataSpec)"
                       select="$atop:vBaseOdd//dataSpec[ atop:common-ident(.) eq $vMyCommonIdent ]"/>
         <xsl:copy>
-          <xsl:call-template name="atop:tCustomizeIdentSyns">
-            <xsl:with-param name="pCustomSpec" select="$vMe" as="element()"/>
-            <xsl:with-param name="pBaseSpec" select="$vBaseSpec" as="element()"/>
+          <xsl:call-template name="atop:tcustomize-ident-syns">
+            <xsl:with-param name="pCustomSpec" select="$vMe"       as="element()"/>
+            <xsl:with-param name="pBaseSpec"   select="$vBaseSpec" as="element()"/>
           </xsl:call-template>
           <xsl:message select="'debug09b: ident='
                               ||@ident
@@ -1490,31 +1493,6 @@
                               ||', base/content/valList='
                               ||exists(
                               $vBaseSpec/tei:content/tei:valList )"/>
-          <!-- The following <xsl:choose> handles a <valList> *child*, not one that is inside <content> -->
-          <xsl:choose>
-            <xsl:when test="tei:valList[ @mode eq 'delete']"/>
-            <xsl:when test="tei:valList[ @mode eq 'add'  or  not( @mode ) ]">
-              <xsl:for-each select="tei:valList (: to set context node :)">
-                <!-- Create a single output <valList> with both base & customized children -->
-                <xsl:copy>
-		  <xsl:apply-templates select="$vBaseSpec/tei:valList/@*" mode="#current"/>
-		  <xsl:apply-templates select="tei:valList/@*"            mode="#current"/>
-                  <xsl:apply-templates select="$vBaseSpec/tei:valList/*"  mode="#current"/>
-                  <xsl:apply-templates select="tei:valList/*"             mode="#current"/>
-                </xsl:copy>
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="tei:valList[ @mode eq 'replace']">
-              <xsl:apply-templates select="tei:valList" mode="#current"/>
-            </xsl:when>
-            <xsl:when test="tei:valList[ @mode eq 'change']">
-              <!-- Conveniently, there can be at most 1 <valList> descendant of <dataSpec> -->
-              <xsl:message use-when="$atop:pDebug" select="'debug: call valList change template'"/>
-              <xsl:apply-templates select="tei:valList" mode="atop:mChange">
-                <xsl:with-param name="pSourceValList" select="$vBaseSpec/tei:valList" as="element(tei:valList)"/>
-              </xsl:apply-templates>
-            </xsl:when>
-          </xsl:choose>
           <xsl:text>&#x0A;</xsl:text>
           <xsl:comment> *** ATOP: WINITA! DO THE RIGHT THING for &lt;constraintSpec> (has @mode &amp; @ident) HERE!! </xsl:comment>
           <xsl:apply-templates select="constraintSpec" mode="#current">
@@ -1603,9 +1581,9 @@
     <xsl:copy>
       <!-- Only possible children are altIdent, equiv, gloss, desc, and constraint -->
       <!-- But note that <altIdent>, per #2966, may go away -->
-      <xsl:call-template name="atop:tCustomizeIdentSyns">
+      <xsl:call-template name="atop:tcustomize-ident-syns">
         <xsl:with-param name="pCustomSpec" select="$vCustomConstraintSpec" as="element()"/>
-        <xsl:with-param name="pBaseSpec" select="$pBaseConstraintSpec" as="element()?"/>
+        <xsl:with-param name="pBaseSpec"   select="$pBaseConstraintSpec" as="element()?"/>
       </xsl:call-template>
     </xsl:copy>
   </xsl:template>
@@ -1687,8 +1665,8 @@
     (probably whitespace-only) text nodes might be returned, as they
     could be generated by applying templates to my children.</xd:desc>
   </xd:doc>
-  <xsl:template name="atop:tCustomizeIdentSyns" as="node()*">
-    <xsl:param name="pBaseSpec" as="element()?"/>
+  <xsl:template name="atop:tcustomize-ident-syns" as="node()*">
+    <xsl:param name="pBaseSpec"  as="element()?"/>
     <xsl:param name="pCustomSpec" as="element()"/>
     <xsl:apply-templates select="$pBaseSpec/@* except @mode" mode="#current"/>
     <xsl:apply-templates select="$pCustomSpec/@* except @mode" mode="#current"/>
@@ -1744,17 +1722,54 @@
     <xsl:apply-templates select="$pBaseSpec/equiv"   mode="#current"/>
     <xsl:apply-templates select="$pCustomSpec/equiv" mode="#current"/>
     <!--
-        There is 0 or 1 <content> element; for now, at least,
-        whatever is in the customization simply replaces whatever
-        is in the base ODD. We may change that (based on presence
-        of <valList> and @mode values), but for now …
+        There is 0 or 1 <content> element; unless one or both have a
+        <valList> *child*, for now, at least, whatever is in the
+        customization simply replaces whatever is in the base ODD. We
+        may change that (based on presence of <valList> and @mode
+        values per #2929), but for now …
     -->
     <!-- Following line based in issue #2929 — If Council decides it differently, we may need to change this: -->
-    <xsl:apply-templates select="( $pCustomSpec/content, $pBaseSpec/content )[1]" mode="#current"/>
-    <!-- Note that per issue #???? we need not worry about a <valList> child-->
+    <xsl:apply-templates select="( $pCustomSpec/content[ not( valList ) ], $pBaseSpec/content[ not( valList ) ] )[1]" mode="#current"/>
+    <xsl:if test="$pCustomSpec/content[ valList ]  or  $pBaseSpec/content[ valList ]">
+      <xsl:call-template name="atop:merge-value-lists">
+        <xsl:with-param name="pBaseValListParent"  select="$pBaseSpec/content[valList]"  as="element(content)?"/>
+        <xsl:with-param name="pCustomValListParent" select="$pCustomSpec/content[valList]" as="element(content)"/>
+      </xsl:call-template>
+    </xsl:if>
+    <!-- Note that per issue #???? we need not worry about a <valList> child -->
     <!-- Following line only will only ever fire if the spec we are currently processing is a <constraintSpec> -->
     <xsl:apply-templates select="( $pCustomSpec/constraint, $pBaseSpec/constraint )[1]" mode="#current"/>
     <!-- Q: Should <remarks> be handled here, or in the calling routine, ostensibly after the call to this routine? -->
   </xsl:template>
-  
+
+  <xd:doc>
+    <xd:desc>
+      <xd:p>Perform the "change" operation on the &lt;valList>
+      children of either &lt;content> or &lt;attDef> (not
+      &lt;alternate>).</xd:p>
+    </xd:desc>
+    <xd:param name="pBaseValListParent">The &lt;content> or &lt;attDef> parent of
+    &lt;valList> from the base ODD.</xd:param>
+    <xd:param name="pCustomValListParent">The &lt;cotent> or &lt;attDef> parent of
+    &lt;valList> from the customization ODD.</xd:param>
+    <xd:return>a single &lt;attDef> or &lt;content> element.</xd:return>
+  </xd:doc>
+  <xsl:template name="atop:merge-value-lists" as="element()">
+    <xsl:param name="pBaseValListParent" as="element()?"/> <!-- a <content>, an <attDef>, or empty -->
+    <xsl:param name="pCustomValListParent" as="element()"/> <!-- a <content> or an <attDef> -->
+    <xsl:variable name="vGrandParentMode" select="$pCustomValListParent/parent::*/@mode" as="xs:string"/> <!-- do I need this? -->
+    <xsl:variable name="vParentMode"      select="$pCustomValListParent/@mode" as="xs:string?"/> <!-- empty for <content> -->
+    <xsl:variable name="vValListMode"     select="$pCustomValListParent/valList/@mode" as="xs:string"/>
+    <xsl:element name="{name($pCustomValListParent)}">
+      <xsl:apply-templates select="$pBaseValListParent/@* except @mode" mode="#current"/>
+      <xsl:apply-templates select="$pCustomValListParent/@* except @mode" mode="#current"/>
+      <xsl:choose>
+        <xsl:when test="$vValListMode eq 'replace'">
+          <!-- Umm … this will cause problems when parent <attDef> has other children, no? -->
+          <xsl:apply-templates select="$pCustomValListParent/node()" mode="#current"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:element>
+  </xsl:template>
+
 </xsl:stylesheet>
